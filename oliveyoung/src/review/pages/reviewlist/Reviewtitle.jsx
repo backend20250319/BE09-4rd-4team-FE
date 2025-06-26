@@ -1,5 +1,6 @@
 import { useState } from "react";
 import ReviewList from "./ReviewList"; // 경로 맞게 수정
+import ReviewItem from "./ReviewItem";
 
 export default function ReviewTabExample() {
   const [selected, setSelected] = useState("general");
@@ -25,8 +26,10 @@ export default function ReviewTabExample() {
           한달사용리뷰
         </h2>
       </div>
-
-      <ReviewList type={selected} />
+      <div className = "w-[802px] h-auto padding-[24px]">
+        <ReviewList />
+        <ReviewItem />
+      </div>
     </>
   );
 }
