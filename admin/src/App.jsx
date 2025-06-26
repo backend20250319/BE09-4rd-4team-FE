@@ -12,15 +12,15 @@ export function App() {
   const renderPage = () => {
     switch (currentPage) {
       case 'dashboard':
-        return <Dashboard />;
+        return <Dashboard setCurrentPage={setCurrentPage} />;
       case 'products':
-        return <ProductsTable />;
+        return <ProductsTable setCurrentPage={setCurrentPage} />;
       case 'orders':
-        return <OrdersTable />;
+        return <OrdersTable setCurrentPage={setCurrentPage} />;
       case 'users':
-        return <UsersTable />;
+        return <UsersTable setCurrentPage={setCurrentPage} />;
       default:
-        return <Dashboard />;
+        return <Dashboard setCurrentPage={setCurrentPage} />;
     }
   };
 
