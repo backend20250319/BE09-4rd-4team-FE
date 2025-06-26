@@ -3,6 +3,10 @@ import { SearchIcon, UserPlusIcon, EyeIcon } from 'lucide-react';
 
 export function UsersTable() {
   const [searchTerm, setSearchTerm] = useState('');
+  const [showModal, setShowModal] = useState(false);
+  const [statusFilter, setStatusFilter] = useState('');
+  const [joinDateFilter, setJoinDateFilter] = useState('');
+  const [page, setPage] = useState(1);
 
   const users = [
     { id: 1, name: '김지민', email: 'jimin@example.com', phone: '010-1234-5678', joinDate: '2023-01-15', orders: 12, status: '활성' },
@@ -17,11 +21,51 @@ export function UsersTable() {
     { id: 10, name: '한소희', email: 'sohee@example.com', phone: '010-0123-4567', joinDate: '2023-05-01', orders: 1, status: '활성' }
   ];
 
+  function NewUserModal({ onClose }) {
+  return (
+    <div className="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-30">
+      <div className="w-full max-w-md p-6 bg-white rounded-lg shadow-md">
+        <h2 className="mb-4 text-xl font-bold">신규 회원 등록</h2>
+        <form className="space-y-4">
+          <input type="text" placeholder="회원명" className="w-full p-2 border border-gray-300 rounded" />
+          <input type="text" placeholder="이메일" className="w-full p-2 border border-gray-300 rounded" />
+          <input type="text" placeholder="전화번호" className="w-full p-2 border border-gray-300 rounded" />
+          <input type="date" placeholder="가입일" className="w-full p-2 border border-gray-300 rounded" />
+          <select className="w-full p-2 border border-gray-300 rounded"
+          value = {statusFilter}
+          onChange={(e) => setStatusFilter(e.target.value)}>
+           <option value="">상태</option>
+           <option value="활성">활성</option>
+           <option value="비활성">비활성</option>
+          </select>
+          <div className="flex justify-end gap-2">
+            <button type="button" onClick={onClose} className="px-4 py-2 border border-gray-300 rounded">
+              취소
+            </button>
+            <button type="submit" className="px-4 py-2 bg-[#9BCC47] text-white rounded">
+              등록
+            </button>
+          </div>
+        </form>
+      </div>
+    </div>
+  );
+}
+
+    // 필터링된 회원 목록
+  const filteredUsers = users.filter((user) => {
+    const matchesSearch = user.name.toLowerCase().includes(searchTerm.toLowerCase());
+    const matchesStatus = statusFilter ? user.status === statusFilter : true;
+    const matchesJoinDate = joinDateFilter ? user.joinDate === joinDateFilter : true;
+    return matchesSearch && matchesStatus && matchesJoinDate;
+  });
+
+
   return (
     <div className="space-y-6">
       <div className="flex items-center justify-between">
         <h1 className="text-2xl font-bold text-gray-800">회원 관리</h1>
-        <button className="bg-[#9BCC47] text-white px-4 py-2 rounded-md flex items-center">
+        <button className="bg-[#9BCC47] text-white px-4 py-2 rounded-md flex items-center" onClick={()=> setShowModal(true)}>
           <UserPlusIcon size={16} className="mr-1" />
           신규 회원 등록
         </button>
@@ -45,15 +89,19 @@ export function UsersTable() {
                 <div size={16} className="mr-1" />
                 필터
               </button>
-              <select className="px-4 py-2 border border-gray-300 rounded-md text-sm focus:outline-none focus:ring-2 focus:ring-[#9BCC47] focus:border-transparent">
-                <option>회원상태</option>
-                <option>활성</option>
-                <option>비활성</option>
+              <select className="px-4 py-2 border border-gray-300 rounded-md text-sm focus:outline-none focus:ring-2 focus:ring-[#9BCC47] focus:border-transparent"
+              value={statusFilter}
+              onChange={(e) => setStatusFilter(e.target.value)}>
+                <option value="">회원상태</option>
+                <option value="활성">활성</option>
+                <option value="비활성">비활성</option>
               </select>
-              <select className="px-4 py-2 border border-gray-300 rounded-md text-sm focus:outline-none focus:ring-2 focus:ring-[#9BCC47] focus:border-transparent">
-                <option>가입일순</option>
-                <option>최근가입순</option>
-                <option>오래된순</option>
+              <select className="px-4 py-2 border border-gray-300 rounded-md text-sm focus:outline-none focus:ring-2 focus:ring-[#9BCC47] focus:border-transparent"
+              value={joinDateFilter}
+              onChange={(e) => setJoinDateFilter(e.target.value)}>
+                <option value="">가입일순</option>
+                <option value="최근가입순">최근가입순</option>
+                <option value="오래된순">오래된순</option>
               </select>
             </div>
           </div>
@@ -73,7 +121,7 @@ export function UsersTable() {
               </tr>
             </thead>
             <tbody className="divide-y divide-gray-200">
-              {users.map((user) => (
+              {filteredUsers.map((user) => (
                 <tr key={user.id} className="text-sm">
                   <td className="px-6 py-4 font-medium text-gray-900">{user.name}</td>
                   <td className="px-6 py-4 text-gray-700">{user.email}</td>
@@ -114,14 +162,15 @@ export function UsersTable() {
             <span className="font-medium">10</span> 표시
           </div>
           <div className="flex space-x-1">
-            <button className="px-3 py-1 text-sm border border-gray-300 rounded-md">이전</button>
-            <button className="px-3 py-1 bg-[#9BCC47] text-white rounded-md text-sm">1</button>
-            <button className="px-3 py-1 text-sm border border-gray-300 rounded-md">2</button>
+            <button className="px-3 py-1 text-sm border border-gray-300 rounded-md" onClick={()=> setPage(page - 1)}>이전</button>
+            <button className="px-3 py-1 bg-[#9BCC47] text-white rounded-md text-sm" onClick={()=> setPage ==1 }>1</button>
+            <button className="px-3 py-1 text-sm border border-gray-300 rounded-md" onClick={()=> setPage==2}>2</button>
             <button className="px-3 py-1 text-sm border border-gray-300 rounded-md">3</button>
             <button className="px-3 py-1 text-sm border border-gray-300 rounded-md">다음</button>
           </div>
         </div>
       </div>
+      {showModal && <NewUserModal onClose={() => setShowModal(false)} />}
     </div>
   );
 }
