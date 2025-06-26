@@ -1,38 +1,32 @@
-import React, { useState } from 'react';
-import { Sidebar } from './components/Sidebar';
-import { Dashboard } from './components/Dashboard';
-import { ProductsTable } from './components/ProductsTable';
-import { OrdersTable } from './components/OrdersTable';
-import { UsersTable } from './components/UsersTable';
-import { Header } from './components/Header';
+import React from 'react';
+import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-dom';
+import { ProductsTable } from "./pages/ProductsTable";
+import { UsersTable } from './pages/UsersTable';
+import { OrdersTable } from './pages/OrdersTable';
+import { Dashboard } from './pages/Dashboard';
+import Sidebar from './components/Sidebar';
+import Header from './components/Header';
 
-export function App() {
-  const [currentPage, setCurrentPage] = useState('dashboard');
-
-  const renderPage = () => {
-    switch (currentPage) {
-      case 'dashboard':
-        return <Dashboard />;
-      case 'products':
-        return <ProductsTable />;
-      case 'orders':
-        return <OrdersTable />;
-      case 'users':
-        return <UsersTable />;
-      default:
-        return <Dashboard />;
-    }
-  };
-
+function App() {
   return (
-    <div className="flex h-screen bg-gray-50">
-      <Sidebar currentPage={currentPage} setCurrentPage={setCurrentPage} />
-      <div className="flex flex-col flex-1 overflow-hidden">
-        <Header />
-        <main className="flex-1 p-4 overflow-y-auto md:p-6">
-          {renderPage()}
-        </main>
+    <Router>
+      <div className="flex">
+        <Sidebar />
+        <div className="flex-1">
+          <Header />
+          <main className="p-6">
+            <Routes>
+              <Route path="/" element={<Navigate to="/dashboard" />} />
+              <Route path="/dashboard" element={<Dashboard />} />
+              <Route path="/products" element={<ProductsTable />} />
+              <Route path="/orders" element={<OrdersTable />} />
+              <Route path="/users" element={<UsersTable />} />
+            </Routes>
+          </main>
+        </div>
       </div>
-    </div>
+    </Router>
   );
 }
+
+export default App;

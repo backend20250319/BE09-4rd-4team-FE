@@ -3,6 +3,9 @@ import { SearchIcon, EyeIcon, DownloadIcon } from 'lucide-react';
 
 export function OrdersTable() {
   const [searchTerm, setSearchTerm] = useState('');
+  const [paymentFilter, setPaymentFilter] = useState('');
+  const [statusFilter, setStatusFilter] = useState('');
+
 
   const orders = [
     { id: 'OD-7892', customer: '김지민', date: '2023-05-12', total: '₩ 56,000', payment: '카드결제', status: '배송완료' },
@@ -16,6 +19,22 @@ export function OrdersTable() {
     { id: 'OD-7884', customer: '이민준', date: '2023-05-08', total: '₩ 35,500', payment: '카드결제', status: '배송완료' },
     { id: 'OD-7883', customer: '한소희', date: '2023-05-08', total: '₩ 146,000', payment: '무통장입금', status: '결제대기' }
   ];
+
+  // 필터링된 주문 목록
+  const filteredOrders = orders.filter((order) => {
+  const matchesSearch =
+    order.id.includes(searchTerm) || order.customer.includes(searchTerm);
+  const matchesPayment = paymentFilter === '' || order.payment === paymentFilter;
+  const matchesStatus = statusFilter === '' || order.status === statusFilter;
+
+  return matchesSearch && matchesPayment && matchesStatus;
+});
+
+  
+  
+
+  
+
 
   const downloadCSV = () => {
     const headers = ['주문번호', '고객명', '주문일자', '주문금액', '결제방법', '주문상태'];
@@ -59,21 +78,21 @@ export function OrdersTable() {
                 <div className="mr-1" />
                 필터
               </button>
-              <select className="px-4 py-2 border border-gray-300 rounded-md text-sm focus:outline-none focus:ring-2 focus:ring-[#9BCC47] focus:border-transparent">
-                <option>결제방법</option>
-                <option>카드결제</option>
-                <option>무통장입금</option>
-                <option>카카오페이</option>
-                <option>네이버페이</option>
+              <select className="px-4 py-2 border border-gray-300 rounded-md text-sm focus:outline-none focus:ring-2 focus:ring-[#9BCC47] focus:border-transparent" value ={paymentFilter} onChange={e => setPaymentFilter(e.target.value)}>
+                <option value= "">결제방법</option>
+                <option value= "카드결제">카드결제</option>
+                <option value= "무통장입금">무통장입금</option>
+                <option value= "카카오페이">카카오페이</option>
+                <option value= "네이버페이">네이버페이</option>
               </select>
-              <select className="px-4 py-2 border border-gray-300 rounded-md text-sm focus:outline-none focus:ring-2 focus:ring-[#9BCC47] focus:border-transparent">
-                <option>주문상태</option>
-                <option>결제대기</option>
-                <option>결제완료</option>
-                <option>주문접수</option>
-                <option>배송중</option>
-                <option>배송완료</option>
-                <option>취소요청</option>
+              <select className="px-4 py-2 border border-gray-300 rounded-md text-sm focus:outline-none focus:ring-2 focus:ring-[#9BCC47] focus:border-transparent" value={statusFilter} onChange={e => setStatusFilter(e.target.value)}>
+                <option value="">주문상태</option>
+                <option value="결제대기">결제대기</option>
+                <option value="결제완료">결제완료</option>
+                <option value="주문접수">주문접수</option>
+                <option value="배송중">배송중</option>
+                <option value="배송완료">배송완료</option>
+                <option value="취소요청">취소요청</option>
               </select>
             </div>
           </div>
@@ -91,8 +110,8 @@ export function OrdersTable() {
                 <th className="px-6 py-3">상세보기</th>
               </tr>
             </thead>
-            <tbody className="divide-y divide-gray-200">
-              {orders.map(order => (
+             <tbody className="divide-y divide-gray-200">
+              {filteredOrders.map(order => (
                 <tr key={order.id} className="text-sm">
                   <td className="px-6 py-4 font-medium text-gray-900">{order.id}</td>
                   <td className="px-6 py-4 text-gray-700">{order.customer}</td>
@@ -117,7 +136,7 @@ export function OrdersTable() {
                   </td>
                 </tr>
               ))}
-            </tbody>
+             </tbody>
           </table>
         </div>
         <div className="flex items-center justify-between px-6 py-4 border-t border-gray-200">

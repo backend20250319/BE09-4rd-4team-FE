@@ -3,6 +3,43 @@ import { PlusIcon, SearchIcon, TrashIcon, DownloadIcon } from 'lucide-react';
 
 export function ProductsTable() {
   const [searchTerm, setSearchTerm] = useState('');
+  const [showModal, setShowModal] = useState(false);
+  const [categoryFilter, setCategoryFilter] = useState('');
+  const [statusFilter, setStatusFilter] = useState('');
+
+
+  function NewProductModal({ onClose }) {
+  return (
+    <div className="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-30">
+      <div className="w-full max-w-md p-6 bg-white rounded-lg shadow-md">
+        <h2 className="mb-4 text-xl font-bold">신규 상품 등록</h2>
+        <form className="space-y-4">
+          <input type="text" placeholder="상품명" className="w-full p-2 border border-gray-300 rounded" />
+          <input type="text" placeholder="카테고리" className="w-full p-2 border border-gray-300 rounded" />
+          <input type="number" placeholder="재고 수량" className="w-full p-2 border border-gray-300 rounded" />
+          <input type="text" placeholder="가격 (₩)" className="w-full p-2 border border-gray-300 rounded" />
+          <select className="w-full p-2 border border-gray-300 rounded"
+          value = {statusFilter}
+          onChange={(e) => setStatusFilter(e.target.value)}>
+           <option value="">상태</option>
+           <option value="판매중">판매중</option>
+           <option value="품절임박">품절임박</option>
+           <option value="품절">품절</option>
+          </select>
+          <div className="flex justify-end gap-2">
+            <button type="button" onClick={onClose} className="px-4 py-2 border border-gray-300 rounded">
+              취소
+            </button>
+            <button type="submit" className="px-4 py-2 bg-[#9BCC47] text-white rounded">
+              등록
+            </button>
+          </div>
+        </form>
+      </div>
+    </div>
+  );
+}
+
 
   const products = [
     { id: 1, name: '아이오페 UV 쉴드', category: '선케어', stock: 123, price: '₩ 30,000', status: '판매중' },
@@ -16,6 +53,14 @@ export function ProductsTable() {
     { id: 9, name: '네이처리퍼블릭 알로에 젤', category: '스킨케어', stock: 102, price: '₩ 8,000', status: '판매중' },
     { id: 10, name: '더페이스샵 라이스 클렌징 오일', category: '클렌징', stock: 5, price: '₩ 20,000', status: '품절임박' }
   ];
+
+  // 필터링된 상품 목록
+  const filteredProducts = products.filter((product) => {
+    const matchesSearch = product.name.toLowerCase().includes(searchTerm.toLowerCase());
+    const matchesCategory = categoryFilter ? product.category === categoryFilter : true;
+    const matchesStatus = statusFilter ? product.status === statusFilter : true;
+    return matchesSearch && matchesCategory && matchesStatus;
+  });
 
   const downloadCSV = () => {
     const headers = ['상품명', '카테고리', '재고', '가격', '상태'];
@@ -41,7 +86,7 @@ export function ProductsTable() {
             <DownloadIcon size={16} className="mr-1" />
             엑셀 다운로드
           </button>
-          <button className="bg-[#9BCC47] text-white px-4 py-2 rounded-md flex items-center">
+          <button className="bg-[#9BCC47] text-white px-4 py-2 rounded-md flex items-center" onClick={() => setShowModal(true)}>
             <PlusIcon size={16} className="mr-1" />
             신규 상품 등록
           </button>
@@ -66,18 +111,22 @@ export function ProductsTable() {
                 <div className="mr-1" />
                 필터
               </button>
-              <select className="px-4 py-2 border border-gray-300 rounded-md text-sm focus:outline-none focus:ring-2 focus:ring-[#9BCC47] focus:border-transparent">
-                <option>카테고리</option>
-                <option>스킨케어</option>
-                <option>메이크업</option>
-                <option>선케어</option>
-                <option>클렌징</option>
+              <select className="px-4 py-2 border border-gray-300 rounded-md text-sm focus:outline-none focus:ring-2 focus:ring-[#9BCC47] focus:border-transparent"
+              value={categoryFilter}
+              onChange={e => setCategoryFilter(e.target.value)}>
+                <option value="">카테고리</option>
+                <option value="스킨케어">스킨케어</option>
+                <option value="메이크업">메이크업</option>
+                <option value="선케어">선케어</option>
+                <option value="클렌징">클렌징</option>
               </select>
-              <select className="px-4 py-2 border border-gray-300 rounded-md text-sm focus:outline-none focus:ring-2 focus:ring-[#9BCC47] focus:border-transparent">
-                <option>상태</option>
-                <option>판매중</option>
-                <option>품절임박</option>
-                <option>품절</option>
+              <select className="px-4 py-2 border border-gray-300 rounded-md text-sm focus:outline-none focus:ring-2 focus:ring-[#9BCC47] focus:border-transparent"
+              value={statusFilter}
+              onChange={e => setStatusFilter(e.target.value)}>
+              <option value="">상태</option>
+              <option value="판매중">판매중</option>
+              <option value="품절임박">품절임박</option>
+              <option value="품절">품절</option>
               </select>
             </div>
           </div>
@@ -96,7 +145,7 @@ export function ProductsTable() {
               </tr>
             </thead>
             <tbody className="divide-y divide-gray-200">
-              {products.map(product => (
+              {filteredProducts.map(product => (
                 <tr key={product.id} className="text-sm">
                   <td className="px-6 py-4 font-medium text-gray-900">{product.name}</td>
                   <td className="px-6 py-4 text-gray-700">{product.category}</td>
@@ -140,6 +189,7 @@ export function ProductsTable() {
           </div>
         </div>
       </div>
+      {showModal && <NewProductModal onClose={() => setShowModal(false)} />}
     </div>
   );
 }
