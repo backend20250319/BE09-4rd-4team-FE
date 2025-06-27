@@ -1,16 +1,20 @@
-import React from "react";
-import MyPageNavBar from "../myPage/MyPageNavBar";
+'use client';
 
-export default function LayoutMyPage({ children }) {
+import React from 'react';
+import MyPageNavBar from './components/NavBar';
+
+const MyPageLayout = ({ children }) => {
   return (
-    <div className="flex">
-      {/* 왼쪽 고정 NavBar */}
+    <div className="max-w-[1020px] mx-auto flex mt-7">
+      {/* 왼쪽 고정 Nav */}
       <MyPageNavBar />
 
-      {/* 오른쪽 페이지 바디 영역 */}
-      <div className="flex-1 p-4">
+      {/* 오른쪽 본문 */}
+      <div className="flex-1 ml-10">
         {children}
       </div>
     </div>
   );
-}
+};
+
+export default MyPageLayout;
