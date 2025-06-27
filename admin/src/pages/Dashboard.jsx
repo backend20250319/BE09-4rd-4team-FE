@@ -1,12 +1,11 @@
 // Converted Dashboard.js
 import React from 'react';
+import { useNavigate } from 'react-router-dom';
 import { PackageIcon, ShoppingCartIcon, UsersIcon, TrendingUpIcon } from 'lucide-react';
 
-export function Dashboard({navigate}) {
+export function Dashboard() {
   
-  const navigateTo = (path) => {
-    navigate(path);
-  };
+ const navigate = useNavigate();
 
   const stats = [
     { title: '총 매출', value: '₩ 24,389,000', change: '+12.5%', icon: <TrendingUpIcon size={24} className="text-green-500" /> },
@@ -52,7 +51,7 @@ export function Dashboard({navigate}) {
         <div className="p-6 bg-white border border-gray-100 rounded-lg shadow-sm">
           <div className="flex items-center justify-between mb-4">
             <h2 className="text-lg font-bold text-gray-800">최근 주문</h2>
-            <button className="text-sm text-[#9BCC47] hover:underline" onClick={()=> navigate('orders')}>모든 주문 보기</button>
+            <button className="text-sm text-[#9BCC47] hover:underline" onClick={()=> navigate('/orders')}>모든 주문 보기</button>
           </div>
           <div className="overflow-x-auto">
             <table className="w-full">
@@ -84,7 +83,7 @@ export function Dashboard({navigate}) {
         <div className="p-6 bg-white border border-gray-100 rounded-lg shadow-sm">
           <div className="flex items-center justify-between mb-4">
             <h2 className="text-lg font-bold text-gray-800">인기 상품</h2>
-            <button className="text-sm text-[#9BCC47] hover:underline" onClick={() => navigate('products')}>모든 상품 보기</button>
+            <button className="text-sm text-[#9BCC47] hover:underline" onClick={() => navigate('/products')}>모든 상품 보기</button>
           </div>
           <div className="overflow-x-auto">
             <table className="w-full">
