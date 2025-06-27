@@ -7,6 +7,19 @@ export function UsersTable() {
   const [statusFilter, setStatusFilter] = useState('');
   const [joinDateFilter, setJoinDateFilter] = useState('');
   const [page, setPage] = useState(1);
+  const [currentPage, setCurrentPage] = useState(1);
+
+
+
+
+    // 필터링된 회원 목록
+  const filteredUsers = users.filter((user) => {
+    const matchesSearch = user.name.toLowerCase().includes(searchTerm.toLowerCase());
+    const matchesStatus = statusFilter ? user.status === statusFilter : true;
+    const matchesJoinDate = joinDateFilter ? user.joinDate === joinDateFilter : true;
+    return matchesSearch && matchesStatus && matchesJoinDate;
+  });
+
 
   const users = [
     { id: 1, name: '김지민', email: 'jimin@example.com', phone: '010-1234-5678', joinDate: '2023-01-15', orders: 12, status: '활성' },
@@ -52,13 +65,21 @@ export function UsersTable() {
   );
 }
 
-    // 필터링된 회원 목록
-  const filteredUsers = users.filter((user) => {
-    const matchesSearch = user.name.toLowerCase().includes(searchTerm.toLowerCase());
-    const matchesStatus = statusFilter ? user.status === statusFilter : true;
-    const matchesJoinDate = joinDateFilter ? user.joinDate === joinDateFilter : true;
-    return matchesSearch && matchesStatus && matchesJoinDate;
-  });
+
+
+  // 페이지네이션
+  const itemsPerPage = 5;
+  const totalPages = Math.ceil(filteredUsers.length / itemsPerPage);
+  const paginatedUsers = filteredUsers.slice(
+    (currentPage - 1) * itemsPerPage,
+    currentPage * itemsPerPage
+  );
+
+  const handlePageChange = (page) => {
+    if (page >= 1 && page <= totalPages) {
+      setCurrentPage(page);
+    }
+};
 
 
   return (
@@ -121,7 +142,7 @@ export function UsersTable() {
               </tr>
             </thead>
             <tbody className="divide-y divide-gray-200">
-              {filteredUsers.map((user) => (
+              {paginatedUsers.map((user) => (
                 <tr key={user.id} className="text-sm">
                   <td className="px-6 py-4 font-medium text-gray-900">{user.name}</td>
                   <td className="px-6 py-4 text-gray-700">{user.email}</td>
@@ -155,18 +176,41 @@ export function UsersTable() {
           </table>
         </div>
 
+        {/* …테이블 아래에 붙이는 페이징… */}
         <div className="flex items-center justify-between px-6 py-4 border-t border-gray-200">
-          <div className="text-sm text-gray-700">
-            총 <span className="font-medium">1,245</span>명 회원 중{' '}
-            <span className="font-medium">1</span>-
-            <span className="font-medium">10</span> 표시
-          </div>
+          <div className="text-sm text-gray-700">총 
+            <span className="font-medium">{filteredUsers.length}</span>명 회원 중{' '}
+            <span className="font-medium">{(currentPage - 1) * itemsPerPage + 1}</span>-
+            <span className="font-medium">
+              {Math.min(currentPage * itemsPerPage, filteredUsers.length)}
+            </span>{' '}표시 </div>
           <div className="flex space-x-1">
-            <button className="px-3 py-1 text-sm border border-gray-300 rounded-md" onClick={()=> setPage(page - 1)}>이전</button>
-            <button className="px-3 py-1 bg-[#9BCC47] text-white rounded-md text-sm" onClick={()=> setPage ==1 }>1</button>
-            <button className="px-3 py-1 text-sm border border-gray-300 rounded-md" onClick={()=> setPage==2}>2</button>
-            <button className="px-3 py-1 text-sm border border-gray-300 rounded-md">3</button>
-            <button className="px-3 py-1 text-sm border border-gray-300 rounded-md">다음</button>
+            <button
+              onClick={() => handlePageChange(currentPage - 1)}
+              disabled={currentPage === 1}
+              className="px-3 py-1 text-sm border border-gray-300 rounded-md"
+            >이전
+            </button>
+            {Array.from({ length: totalPages }, (_, i) => (
+              <button key={i}
+                onClick={() => handlePageChange(i + 1)}
+                className={`px-3 py-1 text-sm rounded-md ${
+                  currentPage === i + 1
+                    ? 'bg-[#9BCC47] text-white'
+                    : 'border border-gray-300'
+                }`}
+              >
+                {i + 1}
+              </button>
+            ))}
+
+            <button
+              onClick={() => handlePageChange(currentPage + 1)}
+              disabled={currentPage === totalPages}
+              className="px-3 py-1 text-sm border border-gray-300 rounded-md"
+            >
+              다음
+            </button>
           </div>
         </div>
       </div>

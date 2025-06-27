@@ -5,6 +5,7 @@ export function OrdersTable() {
   const [searchTerm, setSearchTerm] = useState('');
   const [paymentFilter, setPaymentFilter] = useState('');
   const [statusFilter, setStatusFilter] = useState('');
+  const [currentPage, setCurrentPage] = useState(1);
 
 
   const orders = [
@@ -30,11 +31,19 @@ export function OrdersTable() {
   return matchesSearch && matchesPayment && matchesStatus;
 });
 
-  
-  
+  // 페이지네이션
+  const itemsPerPage = 5;
+  const totalPages = Math.ceil(filteredOrders.length / itemsPerPage);
+  const paginatedOrders = filteredOrders.slice(
+    (currentPage - 1) * itemsPerPage,
+    currentPage * itemsPerPage
+  );
 
-  
-
+  const handlePageChange = (page) => {
+    if (page >= 1 && page <= totalPages) {
+      setCurrentPage(page);
+    }
+};
 
   const downloadCSV = () => {
     const headers = ['주문번호', '고객명', '주문일자', '주문금액', '결제방법', '주문상태'];
@@ -111,7 +120,7 @@ export function OrdersTable() {
               </tr>
             </thead>
              <tbody className="divide-y divide-gray-200">
-              {filteredOrders.map(order => (
+              {paginatedOrders.map(order => (
                 <tr key={order.id} className="text-sm">
                   <td className="px-6 py-4 font-medium text-gray-900">{order.id}</td>
                   <td className="px-6 py-4 text-gray-700">{order.customer}</td>
@@ -139,16 +148,46 @@ export function OrdersTable() {
              </tbody>
           </table>
         </div>
-        <div className="flex items-center justify-between px-6 py-4 border-t border-gray-200">
+       {/* 페이지네이션 */}
+       <div className="flex items-center justify-between px-6 py-4 border-t border-gray-200">
           <div className="text-sm text-gray-700">
-            총 <span className="font-medium">235</span>개 주문 중 <span className="font-medium">1</span>-<span className="font-medium">10</span> 표시
+            총 <span className="font-medium">{filteredOrders.length}</span>개 주문 중{' '}
+            <span className="font-medium">{(currentPage - 1) * itemsPerPage + 1}</span>-
+            <span className="font-medium">
+              {Math.min(currentPage * itemsPerPage, filteredOrders.length)}
+            </span>{' '}
+            표시
           </div>
           <div className="flex space-x-1">
-            <button className="px-3 py-1 text-sm border border-gray-300 rounded-md">이전</button>
-            <button className="px-3 py-1 bg-[#9BCC47] text-white rounded-md text-sm">1</button>
-            <button className="px-3 py-1 text-sm border border-gray-300 rounded-md">2</button>
-            <button className="px-3 py-1 text-sm border border-gray-300 rounded-md">3</button>
-            <button className="px-3 py-1 text-sm border border-gray-300 rounded-md">다음</button>
+            <button
+              onClick={() => handlePageChange(currentPage - 1)}
+              disabled={currentPage === 1}
+              className="px-3 py-1 text-sm border border-gray-300 rounded-md"
+            >
+              이전
+            </button>
+
+            {Array.from({ length: totalPages }, (_, i) => (
+              <button
+                key={i}
+                onClick={() => handlePageChange(i + 1)}
+                className={`px-3 py-1 text-sm rounded-md ${
+                  currentPage === i + 1
+                    ? 'bg-[#9BCC47] text-white'
+                    : 'border border-gray-300'
+                }`}
+              >
+                {i + 1}
+              </button>
+            ))}
+
+            <button
+              onClick={() => handlePageChange(currentPage + 1)}
+              disabled={currentPage === totalPages}
+              className="px-3 py-1 text-sm border border-gray-300 rounded-md"
+            >
+              다음
+            </button>
           </div>
         </div>
       </div>
