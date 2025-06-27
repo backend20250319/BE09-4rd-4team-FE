@@ -11,16 +11,6 @@ export function UsersTable() {
 
 
 
-
-    // 필터링된 회원 목록
-  const filteredUsers = users.filter((user) => {
-    const matchesSearch = user.name.toLowerCase().includes(searchTerm.toLowerCase());
-    const matchesStatus = statusFilter ? user.status === statusFilter : true;
-    const matchesJoinDate = joinDateFilter ? user.joinDate === joinDateFilter : true;
-    return matchesSearch && matchesStatus && matchesJoinDate;
-  });
-
-
   const users = [
     { id: 1, name: '김지민', email: 'jimin@example.com', phone: '010-1234-5678', joinDate: '2023-01-15', orders: 12, status: '활성' },
     { id: 2, name: '이하준', email: 'hajun@example.com', phone: '010-2345-6789', joinDate: '2023-02-20', orders: 8, status: '활성' },
@@ -33,6 +23,14 @@ export function UsersTable() {
     { id: 9, name: '이민준', email: 'minjun@example.com', phone: '010-9012-3456', joinDate: '2023-04-18', orders: 2, status: '비활성' },
     { id: 10, name: '한소희', email: 'sohee@example.com', phone: '010-0123-4567', joinDate: '2023-05-01', orders: 1, status: '활성' }
   ];
+
+    // 필터링된 회원 목록
+  const filteredUsers = users.filter((user) => {
+    const matchesSearch = user.name.toLowerCase().includes(searchTerm.toLowerCase());
+    const matchesStatus = statusFilter ? user.status === statusFilter : true;
+    const matchesJoinDate = joinDateFilter ? user.joinDate === joinDateFilter : true;
+    return matchesSearch && matchesStatus && matchesJoinDate;
+  });
 
   function NewUserModal({ onClose }) {
   return (
@@ -176,23 +174,28 @@ export function UsersTable() {
           </table>
         </div>
 
-        {/* …테이블 아래에 붙이는 페이징… */}
+          {/* …테이블 아래에 붙이는 페이징… */}
         <div className="flex items-center justify-between px-6 py-4 border-t border-gray-200">
-          <div className="text-sm text-gray-700">총 
-            <span className="font-medium">{filteredUsers.length}</span>명 회원 중{' '}
+          <div className="text-sm text-gray-700">
+            총 <span className="font-medium">{filteredUsers.length}</span>명 회원 중{' '}
             <span className="font-medium">{(currentPage - 1) * itemsPerPage + 1}</span>-
             <span className="font-medium">
               {Math.min(currentPage * itemsPerPage, filteredUsers.length)}
-            </span>{' '}표시 </div>
+            </span>{' '}
+            표시
+          </div>
           <div className="flex space-x-1">
             <button
               onClick={() => handlePageChange(currentPage - 1)}
               disabled={currentPage === 1}
               className="px-3 py-1 text-sm border border-gray-300 rounded-md"
-            >이전
+            >
+              이전
             </button>
+
             {Array.from({ length: totalPages }, (_, i) => (
-              <button key={i}
+              <button
+                key={i}
                 onClick={() => handlePageChange(i + 1)}
                 className={`px-3 py-1 text-sm rounded-md ${
                   currentPage === i + 1
@@ -213,6 +216,7 @@ export function UsersTable() {
             </button>
           </div>
         </div>
+
       </div>
       {showModal && <NewUserModal onClose={() => setShowModal(false)} />}
     </div>
