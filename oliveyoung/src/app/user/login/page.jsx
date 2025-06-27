@@ -76,14 +76,14 @@ const LoginPage = () => {
       
       <div className="flex justify-between items-center mt-8 p-4 border border-gray-200 rounded">
         {/* 왼쪽: 로고 + 설명 */}
-        <div className="flex items-center">
+        <div >
           <div className="mr-4">
             <img
               src="https://static.oliveyoung.co.kr/pc-static-root/image/login/ico_cjone_230828.png"
               alt="CJ ONE 로고 이미지"
-              className="h-12"
             />
           </div>
+          <br />
           <p className="text-sm text-gray-600 leading-relaxed">
           CJ ONE 통합회원으로 가입하고<br />올리브영에서 편안한 쇼핑하세요
           </p>
@@ -92,7 +92,7 @@ const LoginPage = () => {
         {/* 오른쪽: 회원가입 버튼 */}
         <button
           type="button"
-          className="border border-gray-300 text-sm px-4 py-2 rounded hover:bg-gray-100"
+          className="border border-gray-300 text-sm px-4 py-2 rounded hover:bg-gray-100 min-w-[116px] text-center" 
           onClick={() => router.push('/user/signup')}
         >
           회원가입
