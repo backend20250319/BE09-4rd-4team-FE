@@ -22,7 +22,7 @@ const MyPageNavBar = () => {
   ];
 
   return (
-    <nav className="w-52 p-4 border-r border-gray-200 text-sm">
+    <nav className="w-52 p-4 border-r border-gray-200 text-sm ml-0">
       {/* 상단 '마이페이지' 제목 */}
 
       <div className="mb-10">
@@ -37,7 +37,7 @@ const MyPageNavBar = () => {
             {section.items.map((item) => (
               <li
                 key={item}
-                className="cursor-pointer text-gray-800 hover:text-[#9bce26] text-[13px]"
+                className="cursor-pointer te t-gray-800 hover:text-[#9bce26] text-[13px]"
               >
                 {item}
               </li>
