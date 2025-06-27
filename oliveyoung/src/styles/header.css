@@ -1,0 +1,20 @@
+/* header.css */
+li:hover .bg-arrow-hover {
+  background-position: bottom;
+}
+
+.bg-arrow-hover {
+  background-image: url('/images/arrow.png'); /* 절대 경로로 수정 */
+  background-position: top;
+  background-repeat: no-repeat;
+}
+
+li:active .bg-arrow-active {
+  background-position: bottom;
+}
+
+.bg-arrow-active {
+  background-image: url('/images/arrow.png'); /* 절대 경로로 수정 */
+  background-position: top;
+  background-repeat: no-repeat;
+}
