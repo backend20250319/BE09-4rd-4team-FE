@@ -6,7 +6,8 @@ export function OrdersTable() {
   const [paymentFilter, setPaymentFilter] = useState('');
   const [statusFilter, setStatusFilter] = useState('');
   const [currentPage, setCurrentPage] = useState(1);
-
+  const [selectedOrder, setSelectedOrder] = useState(null);
+  const [showDetail, setShowDetail] = useState(false);
 
   const orders = [
     { id: 'OD-7892', customer: '김지민', date: '2023-05-12', total: '₩ 56,000', payment: '카드결제', status: '배송완료' },
@@ -39,10 +40,10 @@ export function OrdersTable() {
     currentPage * itemsPerPage
   );
 
-  const handlePageChange = (page) => {
-    if (page >= 1 && page <= totalPages) {
-      setCurrentPage(page);
-    }
+const handlePageChange = (page) => {
+  if (page >= 1 && page <= totalPages) {
+    setCurrentPage(page);
+  }
 };
 
   const downloadCSV = () => {
@@ -139,7 +140,10 @@ export function OrdersTable() {
                     </span>
                   </td>
                   <td className="px-6 py-4">
-                    <button className="text-[#9BCC47] hover:text-[#8ab93f]">
+                    <button className="text-[#9BCC47] hover:text-[#8ab93f]" onClick={() => {
+                      setSelectedOrder(order);
+                      setShowDetail(true);
+                    }}>
                       <EyeIcon size={18} />
                     </button>
                   </td>
@@ -190,7 +194,31 @@ export function OrdersTable() {
             </button>
           </div>
         </div>
+
+
+        {/* 상세보기 모달 */}
+        {showDetail && selectedOrder && (
+          <div className="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-50">
+            <div className="p-6 space-y-4 bg-white rounded-lg shadow-lg w-96">
+              <h2 className="text-xl font-bold">주문 상세</h2>
+              <p><strong>주문번호:</strong> {selectedOrder.id}</p>
+              <p><strong>고객명:</strong> {selectedOrder.customer}</p>
+              <p><strong>주문일자:</strong> {selectedOrder.date}</p>
+              <p><strong>주문금액:</strong> {selectedOrder.total}</p>
+              <p><strong>결제방법:</strong> {selectedOrder.payment}</p>
+              <p><strong>주문상태:</strong> {selectedOrder.status}</p>
+              <div className="flex justify-end">
+                <button
+                  onClick={() => setShowDetail(false)}
+                  className="px-4 py-2 bg-[#9BCC47] text-white rounded hover:bg-[#8ab93f]"
+                >
+                  닫기
+                </button>
+              </div>
+            </div>
+          </div>
+        )}
       </div>
     </div>
-  );
+    );
 }

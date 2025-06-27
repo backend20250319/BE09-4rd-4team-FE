@@ -7,7 +7,20 @@ export function ProductsTable() {
   const [categoryFilter, setCategoryFilter] = useState('');
   const [statusFilter, setStatusFilter] = useState('');
   const [currentPage, setCurrentPage] = useState(1);
+  const [products, setProducts] = useState([
+    { id: 1, name: '아이오페 UV 쉴드', category: '선케어', stock: 123, price: '₩ 30,000', status: '판매중' },
+    { id: 2, name: '이니스프리 그린티 세럼', category: '스킨케어', stock: 89, price: '₩ 30,000', status: '판매중' },
+    { id: 3, name: '라네즈 워터 슬리핑 마스크', category: '스킨케어', stock: 64, price: '₩ 30,000', status: '판매중' },
+    { id: 4, name: '에뛰드 드로잉 아이브로우', category: '메이크업', stock: 42, price: '₩ 15,000', status: '품절임박' },
+    { id: 5, name: '미샤 타임 레볼루션 에센스', category: '스킨케어', stock: 78, price: '₩ 30,000', status: '판매중' },
+    { id: 6, name: '토니모리 립톤 겟잇틴트', category: '메이크업', stock: 0, price: '₩ 12,000', status: '품절' },
+    { id: 7, name: '스킨푸드 블랙슈가 마스크', category: '스킨케어', stock: 54, price: '₩ 18,000', status: '판매중' },
+    { id: 8, name: '홀리카홀리카 하드커버 파운데이션', category: '메이크업', stock: 31, price: '₩ 25,000', status: '판매중' },
+    { id: 9, name: '네이처리퍼블릭 알로에 젤', category: '스킨케어', stock: 102, price: '₩ 8,000', status: '판매중' },
+    { id: 10, name: '더페이스샵 라이스 클렌징 오일', category: '클렌징', stock: 5, price: '₩ 20,000', status: '품절임박' }
+  ]);
 
+ 
 
   function NewProductModal({ onClose }) {
   return (
@@ -42,18 +55,6 @@ export function ProductsTable() {
 }
 
 
-  const products = [
-    { id: 1, name: '아이오페 UV 쉴드', category: '선케어', stock: 123, price: '₩ 30,000', status: '판매중' },
-    { id: 2, name: '이니스프리 그린티 세럼', category: '스킨케어', stock: 89, price: '₩ 30,000', status: '판매중' },
-    { id: 3, name: '라네즈 워터 슬리핑 마스크', category: '스킨케어', stock: 64, price: '₩ 30,000', status: '판매중' },
-    { id: 4, name: '에뛰드 드로잉 아이브로우', category: '메이크업', stock: 42, price: '₩ 15,000', status: '품절임박' },
-    { id: 5, name: '미샤 타임 레볼루션 에센스', category: '스킨케어', stock: 78, price: '₩ 30,000', status: '판매중' },
-    { id: 6, name: '토니모리 립톤 겟잇틴트', category: '메이크업', stock: 0, price: '₩ 12,000', status: '품절' },
-    { id: 7, name: '스킨푸드 블랙슈가 마스크', category: '스킨케어', stock: 54, price: '₩ 18,000', status: '판매중' },
-    { id: 8, name: '홀리카홀리카 하드커버 파운데이션', category: '메이크업', stock: 31, price: '₩ 25,000', status: '판매중' },
-    { id: 9, name: '네이처리퍼블릭 알로에 젤', category: '스킨케어', stock: 102, price: '₩ 8,000', status: '판매중' },
-    { id: 10, name: '더페이스샵 라이스 클렌징 오일', category: '클렌징', stock: 5, price: '₩ 20,000', status: '품절임박' }
-  ];
 
   // 필터링된 상품 목록
   const filteredProducts = products.filter((product) => {
@@ -76,6 +77,13 @@ export function ProductsTable() {
       setCurrentPage(page);
     }
 };
+
+ const handleDelete = (id) => {
+    setProducts(prev => prev.filter(p => p.id !== id));
+    // 만약 삭제 후 페이지가 비면 이전 페이지로 이동:
+    const maxPage = Math.ceil((products.length - 1) / itemsPerPage);
+    if (currentPage > maxPage) setCurrentPage(maxPage);
+  };
 
 
   const downloadCSV = () => {
@@ -181,7 +189,7 @@ export function ProductsTable() {
                       <button className="text-blue-600 hover:text-blue-800">
                         <div />
                       </button>
-                      <button className="text-red-600 hover:text-red-800">
+                      <button className="text-red-600 hover:text-red-800"  onClick={() => handleDelete(product.id)}>
                         <TrashIcon size={18} />
                       </button>
                     </div>
