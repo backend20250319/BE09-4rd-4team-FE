@@ -1,7 +1,7 @@
+"use client";
 import { useState } from "react";
-import ReviewList from "./ReviewList"; // 경로 맞게 수정
+import ReviewList from "./ReviewList"
 import ReviewItem from "./ReviewItem";
-
 export default function ReviewTabExample() {
   const [selected, setSelected] = useState("general");
 

@@ -1,5 +1,5 @@
+"use client";
 import { useState } from "react";
-
 export default function ReviewTabs() {
   const [activeTab, setActiveTab] = useState("write");
 

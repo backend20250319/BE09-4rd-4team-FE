@@ -1,4 +1,6 @@
+"use client";
 import { useState } from "react";
+
 import ReviewItem from "./ReviewItem";
 
 // 📌 실제로는 더 많은 데이터가 있어야 페이징이 유의미해요

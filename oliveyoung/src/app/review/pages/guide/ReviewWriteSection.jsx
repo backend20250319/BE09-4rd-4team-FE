@@ -1,7 +1,7 @@
-  import ReviewTabs from "./ReviewTabs";
-  import ReviewPointGuide from "./ReviewPointGuide";
-  import Reviewtitle from "../reviewlist/Reviewtitle"
-  export default function ReviewWriteSection() {
+import ReviewTabs from "./ReviewTabs"
+import ReviewPointGuide from "./ReviewPointGuide"
+import Reviewtitle from "../list/Reviewtitle"
+export default function ReviewWriteSection() {
     return (
       <div className="w-[850px] px-6 py-8">
         <h2 className="text-2xl font-semibold mb-6">리뷰</h2>
