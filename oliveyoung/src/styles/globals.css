@@ -1,0 +1,13 @@
+/* global.css */
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+.container {
+  text-align: center;
+  padding: 20px;
+}
+
+.image-container {
+  margin-top: 20px;
+}

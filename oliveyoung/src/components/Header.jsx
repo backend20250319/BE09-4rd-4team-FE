@@ -1,19 +1,15 @@
+'use client'; 
+import { useState } from 'react';
+import { useRouter } from 'next/navigation';
+import SearchModal from '../app/menu/SearchModal';
+import StoreModal from '../app/menu/StoreModal';
 import '../styles/header.css';
 
-import React, { useState } from 'react';
-
-import SearchModal from './SearchModal';
-import StoreModal from './StoreModal';
-import dream from '../resources/images/dreamIcon.png';
-import logo from '../resources/images/logo.png';
-import search from '../resources/images/search.svg';
-import { useNavigate } from 'react-router-dom';
-
 function Header(props) {
-  const navigate = useNavigate();
+  const router = useRouter();
+
   const [storeHover, setStoreHover] = useState(false);
   const [searchClick, setSearchClick] = useState(false);
-
 
   const chart = [
     { searchWord: '기획', prev: 'keep' },
@@ -30,12 +26,9 @@ function Header(props) {
 
   const handleLocationMouseOver = (e) => {
     e.stopPropagation();
-    // setLocationHover(true);
   };
 
-  const handleLocationMouseOut = () => {
-    // setLocationHover(false);
-  };
+  const handleLocationMouseOut = () => {};
 
   const handleStoreMouseOver = (e) => {
     e.stopPropagation();
@@ -46,9 +39,7 @@ function Header(props) {
     setStoreHover(false);
   };
 
-  const handleRecentClick = () => {
-    // setLocationHover(false);
-  };
+  const handleRecentClick = () => {};
 
   return (
     <div className="flex flex-row justify-center">
@@ -69,9 +60,9 @@ function Header(props) {
         <div className="w-[1020px] h-[90px] flex flex-row justify-between items-center">
           <img
             className="w-[246px] h-[40px] hover:cursor-pointer"
-            src={logo}
+            src="/images/logo.png"
             alt="logo"
-            onClick={() => navigate('/')}
+            onClick={() => router.push('/')}
           />
           <div className="relative">
             <input
@@ -81,7 +72,7 @@ function Header(props) {
               onFocus={() => setSearchClick(true)}
             />
             <div className="absolute right-[15px] top-0 bottom-0 flex items-center hover:cursor-pointer">
-              <img className="w-[20px]" src={search} alt="search" />
+              <img className="w-[20px]" src="/images/search.svg" alt="search" />
             </div>
             <SearchModal searchClick={searchClick} chart={chart} setSearchClick={setSearchClick} />
           </div>
@@ -89,9 +80,8 @@ function Header(props) {
             <li className="text-[#] flex flex-row items-center gap-1 hover:cursor-pointer hover:underline hover:underline-offset-[5px] decoration-2 decoration-black relative border-r px-[15px]">
               <p onMouseOver={handleLocationMouseOver} onMouseOut={handleLocationMouseOut}>
                 오늘드림
-              </p>{' '}
-              <img src={dream} alt="delivery" className="w-[22px]" />
-              {/* <LocationModal locationHover={locationHover} /> */}
+              </p>
+              <img src="/images/dreamIcon.png" alt="delivery" className="w-[22px]" />
             </li>
             <li className="flex flex-row gap-1 items-center hover:cursor-pointer hover:underline hover:underline-offset-[5px] decoration-2 relative border-r px-[15px]">
               <p onMouseOver={handleStoreMouseOver} onMouseOut={handleStoreMouseOut}>
@@ -105,7 +95,6 @@ function Header(props) {
               onClick={handleRecentClick}
             >
               최근 본 상품<div className="w-[7px] h-[4px] bg-arrow-active"></div>
-              {/* {recentClick && <Recent recent={recent} setRecentClick={setRecentClick} recentClick={recentClick} />} */}
             </li>
           </ul>
         </div>
@@ -113,4 +102,5 @@ function Header(props) {
     </div>
   );
 }
+
 export default Header;

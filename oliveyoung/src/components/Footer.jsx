@@ -1,6 +1,6 @@
-import React, { useState } from 'react';
+'use client';
 
-import logo from '../resources/images/logo.png';
+import React, { useState } from 'react';
 
 function Footer(props) {
   const [selectedOption, setSelectedOption] = useState('');
@@ -29,10 +29,10 @@ function Footer(props) {
           </ul>
           <select
             className="w-[235px] h-[30px] px-[10px] border border-[#e5e5e5] text-xs text-[#777]"
-            value={selectedOption}
+            value={selectedOption}  // 'value' 사용
             onChange={handleSelectChange}
           >
-            <option value="" disabled selected>
+            <option value="" disabled>  {/* 'selected' 속성 대신 'value' 사용 */}
               CJ그룹 계열사 바로가기
             </option>
             <option className="pl-[10px]" value="option1">
@@ -45,7 +45,11 @@ function Footer(props) {
       </div>
       <div className="flex flex-row justify-center">
         <div className="relative w-[1020px] flex flex-row justify-between mt-[25px] pl-[236px]">
-          <img className="absolute left-0 bottom-[50%] w-[146px] h-[24px]" src={logo} alt="logo" />
+          <img
+            className="absolute left-0 bottom-[50%] w-[146px] h-[24px]"
+            src="/images/logo.png" // 절대 경로로 수정
+            alt="logo"
+          />
           <div className="flex flex-col">
             <h2 className="mb-[7px] text-xs font-medium">씨제이올리브영 주식회사</h2>
             <p className="text-xs text-[#777] leading-5">대표이사 : 이선정 | 사업자등록번호 : 809-81-01574</p>
@@ -94,4 +98,5 @@ function Footer(props) {
     </div>
   );
 }
+
 export default Footer;

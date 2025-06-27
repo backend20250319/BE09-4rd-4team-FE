@@ -1,13 +1,10 @@
-@tailwind base;
-@tailwind components;
-@tailwind utilities;
-
+/* header.css */
 li:hover .bg-arrow-hover {
   background-position: bottom;
 }
 
 .bg-arrow-hover {
-  background-image: url('../resources/images/arrow.png');
+  background-image: url('/images/arrow.png'); /* 절대 경로로 수정 */
   background-position: top;
   background-repeat: no-repeat;
 }
@@ -17,7 +14,7 @@ li:active .bg-arrow-active {
 }
 
 .bg-arrow-active {
-  background-image: url('../resources/images/arrow.png');
+  background-image: url('/images/arrow.png'); /* 절대 경로로 수정 */
   background-position: top;
   background-repeat: no-repeat;
 }
