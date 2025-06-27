@@ -8,6 +8,9 @@ export function UsersTable() {
   const [joinDateFilter, setJoinDateFilter] = useState('');
   const [page, setPage] = useState(1);
   const [currentPage, setCurrentPage] = useState(1);
+  const [selectedUser, setSelectedUser] = useState(null);
+  const [showDetail, setShowDetail] = useState(false);
+
 
 
 
@@ -163,7 +166,11 @@ export function UsersTable() {
                       <button className="text-blue-600 hover:text-blue-800">
                         <div size={18} />
                       </button>
-                      <button className="text-[#9BCC47] hover:text-[#8ab93f]">
+                      <button className="text-[#9BCC47] hover:text-[#8ab93f]"
+                      onClick={() => {
+                    setSelectedUser(user);
+                    setShowDetail(true);
+                  }}>
                         <EyeIcon size={18} />
                       </button>
                     </div>
@@ -216,6 +223,38 @@ export function UsersTable() {
             </button>
           </div>
         </div>
+
+              {showDetail && selectedUser && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-50">
+          <div className="p-6 space-y-4 bg-white rounded-lg shadow-lg w-96">
+            <h2 className="text-xl font-bold">회원 상세</h2>
+            <p><strong>회원명:</strong> {selectedUser.name}</p>
+            <p><strong>이메일:</strong> {selectedUser.email}</p>
+            <p><strong>전화번호:</strong> {selectedUser.phone}</p>
+            <p><strong>가입일:</strong> {selectedUser.joinDate}</p>
+            <p><strong>주문수:</strong> {selectedUser.orders}</p>
+            <p>
+              <strong>상태:</strong>{' '}
+              <span className={`px-2 py-1 text-xs rounded-full ${
+                selectedUser.status === '활성'
+                  ? 'bg-green-100 text-green-800'
+                  : 'bg-red-100 text-red-800'
+              }`}>
+                {selectedUser.status}
+              </span>
+            </p>
+            <div className="flex justify-end">
+              <button
+                onClick={() => setShowDetail(false)}
+                className="px-4 py-2 bg-[#9BCC47] text-white rounded hover:bg-[#8ab93f]"
+              >
+                닫기
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
+
 
       </div>
       {showModal && <NewUserModal onClose={() => setShowModal(false)} />}
