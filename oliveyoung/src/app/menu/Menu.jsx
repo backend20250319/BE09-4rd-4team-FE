@@ -8,7 +8,7 @@ function Menu(props) {
           <img src="/images/categoryIcon.png" alt="menu" />
           카테고리
         </button>
-        <ul className="pl-[30px] flex flex-row gap-11 font-bold overflow-x-auto">
+        <ul className="pl-[30px] flex flex-row gap-11 font-bold">
           <li className="hover:text-[#f27370] hover:underline hover:underline-offset-[5px] decoration-2 cursor-pointer whitespace-nowrap">
             오특
           </li>
