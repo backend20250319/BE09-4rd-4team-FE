@@ -1,7 +1,12 @@
+import BannerCarousel from "./components/SkinTonerBanner";
+import ProductCarousel from "./components/SkinTonerProduct";
+
 export default function Page() {
   return (
-    <div>
-      <h1>스킨/토너 페이지</h1>
+
+    <div className="flex-row w-[1020px] mx-auto">
+      <BannerCarousel />
+      <ProductCarousel />
     </div>
   );
 }
