@@ -57,6 +57,16 @@ export default function ReviewItem({ data }) {
       {showModal && (
         <div className="fixed inset-0 bg-black bg-opacity-50 flex justify-center items-center z-50">
           <div className="bg-white rounded p-6 max-w-[560px] w-full max-h-[80vh] overflow-y-auto overflow-x-hidden relative">
+            {/* 우측 상단 X 닫기 버튼 */}
+            <button
+              onClick={() => setShowModal(false)}
+              className="absolute top-3 right-11 text-gray-500 hover:text-gray-700 text-2xl font-bold"
+              aria-label="Close modal"
+            >
+              ❌
+            </button>
+
+            {/* 리뷰 작성 폼 */}
             <ReviewWriteMain onClose={() => setShowModal(false)} />
           </div>
         </div>
