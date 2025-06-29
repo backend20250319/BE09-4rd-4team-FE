@@ -5,6 +5,7 @@ import {
   PackageIcon,
   ShoppingCartIcon,
   UsersIcon,
+  TicketIcon,
   SettingsIcon,
   LogOutIcon
 } from 'lucide-react';
@@ -14,7 +15,9 @@ export function Sidebar() {
     { to: '/', label: '대시보드', icon: <LayoutDashboardIcon size={20} /> },
     { to: '/products', label: '상품 관리', icon: <PackageIcon size={20} /> },
     { to: '/orders', label: '주문 관리', icon: <ShoppingCartIcon size={20} /> },
-    { to: '/users', label: '회원 관리', icon: <UsersIcon size={20} /> }
+     { to: '/coupons', label: '쿠폰 관리', icon: <TicketIcon size={20} /> },
+    { to: '/users', label: '회원 관리', icon: <UsersIcon size={20} /> },
+    { to: '/settings', label: '설정', icon: <SettingsIcon size={20} /> }
   ];
 
   return (
