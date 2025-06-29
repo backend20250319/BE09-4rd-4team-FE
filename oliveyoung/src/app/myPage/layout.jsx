@@ -10,7 +10,7 @@ const MyPageLayout = ({ children }) => {
       <MyPageNavBar />
 
       {/* 오른쪽 본문 */}
-      <div className="flex-1 ml-10">
+      <div>
         {children}
       </div>
     </div>
