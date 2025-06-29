@@ -10,7 +10,7 @@ import Header from './components/Header';
 function App() {
   return (
     <Router>
-      <div className="flex">
+      <div className="flex h-screen">
         <Sidebar />
         <div className="flex-1">
           <Header />

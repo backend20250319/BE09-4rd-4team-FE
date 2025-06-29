@@ -1,5 +1,8 @@
 import React, { useState } from 'react';
 import { PlusIcon, SearchIcon, TrashIcon, DownloadIcon } from 'lucide-react';
+import NewProductModal from '../components/NewProductModal';
+
+
 
 export function ProductsTable() {
   const [searchTerm, setSearchTerm] = useState('');
@@ -7,6 +10,8 @@ export function ProductsTable() {
   const [categoryFilter, setCategoryFilter] = useState('');
   const [statusFilter, setStatusFilter] = useState('');
   const [currentPage, setCurrentPage] = useState(1);
+
+  
   const [products, setProducts] = useState([
     { id: 1, name: '아이오페 UV 쉴드', category: '선케어', stock: 123, price: '₩ 30,000', status: '판매중' },
     { id: 2, name: '이니스프리 그린티 세럼', category: '스킨케어', stock: 89, price: '₩ 30,000', status: '판매중' },
@@ -22,37 +27,6 @@ export function ProductsTable() {
 
  
 
-  function NewProductModal({ onClose }) {
-  return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-30">
-      <div className="w-full max-w-md p-6 bg-white rounded-lg shadow-md">
-        <h2 className="mb-4 text-xl font-bold">신규 상품 등록</h2>
-        <form className="space-y-4">
-          <input type="text" placeholder="상품명" className="w-full p-2 border border-gray-300 rounded" />
-          <input type="text" placeholder="카테고리" className="w-full p-2 border border-gray-300 rounded" />
-          <input type="number" placeholder="재고 수량" className="w-full p-2 border border-gray-300 rounded" />
-          <input type="text" placeholder="가격 (₩)" className="w-full p-2 border border-gray-300 rounded" />
-          <select className="w-full p-2 border border-gray-300 rounded"
-          value = {statusFilter}
-          onChange={(e) => setStatusFilter(e.target.value)}>
-           <option value="">상태</option>
-           <option value="판매중">판매중</option>
-           <option value="품절임박">품절임박</option>
-           <option value="품절">품절</option>
-          </select>
-          <div className="flex justify-end gap-2">
-            <button type="button" onClick={onClose} className="px-4 py-2 border border-gray-300 rounded">
-              취소
-            </button>
-            <button type="submit" className="px-4 py-2 bg-[#9BCC47] text-white rounded">
-              등록
-            </button>
-          </div>
-        </form>
-      </div>
-    </div>
-  );
-}
 
 
 
@@ -76,6 +50,17 @@ export function ProductsTable() {
     if (page >= 1 && page <= totalPages) {
       setCurrentPage(page);
     }
+};
+
+ const handleAddProduct = (newProduct) => { 
+    // 새로운 상품에 ID를 부여
+    const nextId = products.length ? Math.max(...products.map((p) => p.id)) + 1 : 1;
+    setProducts((prev) => [...prev, { id: nextId, ...newProduct }]);
+
+    setShowModal(false);
+
+    const newTotalPages = Math.ceil((products.length + 1) / itemsPerPage);
+    setCurrentPage(newTotalPages);
 };
 
  const handleDelete = (id) => {
@@ -242,7 +227,12 @@ export function ProductsTable() {
           </div>
         </div>
       </div>
-      {showModal && <NewProductModal onClose={() => setShowModal(false)} />}
+      {showModal && (
+        <NewProductModal 
+            onAdd={handleAddProduct}
+            onClose={() => setShowModal(false)}
+          />
+        )}
     </div>
   );
 }
