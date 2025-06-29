@@ -63,7 +63,7 @@ export default function ReviewItem({ data }) {
               className="absolute top-3 right-11 text-gray-500 hover:text-gray-700 text-2xl font-bold"
               aria-label="Close modal"
             >
-              ❌
+              ✖️
             </button>
 
             {/* 리뷰 작성 폼 */}
