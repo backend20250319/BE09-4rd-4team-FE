@@ -1,10 +1,14 @@
 "use client";
 
 import React, { useState } from "react";
+import { useRouter } from "next/navigation"; // Next.js의 useRouter
 
 function SkinTonerProduct() {
+  const router = useRouter();
+
   const products = [
     {
+      id: 1,
       img: "/images/skintoner1.jpg",
       name: "[단독기획/속건조해결] 파티온 포도당 하이드로 에센스토너 300ml 더블 기획(2개입)",
       originalPrice: "32,000원",
@@ -141,6 +145,7 @@ function SkinTonerProduct() {
       filterValue: "new",
     },
     {
+      id: 3,
       img: "/images/skintoner18.jpg",
       name: "[수딩진정] 넘버즈인 1번 진정 맑게담은 청초토너 300ml 기획 (+1번 패드 10매 증정)",
       originalPrice: "26,000원",
@@ -165,6 +170,7 @@ function SkinTonerProduct() {
       filterValue: "discount",
     },
     {
+      id: 1,
       img: "/images/skintoner21.jpg",
       name: "[증량] 닥터지 레드 블레미쉬 클리어 수딩 토너 500ml",
       originalPrice: "39,000원",
@@ -301,6 +307,7 @@ function SkinTonerProduct() {
       filterValue: "new",
     },
     {
+      id: 4,
       img: "/images/skintoner38.jpg",
       name: "[흔적미백] 넘버즈인 5번 글루타치온씨 비타수액 에센셜 토너 200ml",
       originalPrice: "24,000원",
@@ -357,101 +364,102 @@ function SkinTonerProduct() {
       filterValue: "lowPrice",
     },
     {
-  img: "/images/skintoner45.jpg",
-  name: "[속보습]닥터지 더모이스처 배리어 D 리퀴드 토너 200ml 기획 (+100ml)",
-  originalPrice: "31,000원",
-  discountedPrice: "24,800",
-  badge: ["세일", "증정", "오늘드림"],
-  filterValue: "popular",
-},
-{
-  img: "/images/skintoner46.jpg",
-  name: "[단독기획]에뛰드 순정 약산성 5.5 진정 토너 700ml 대용량 기획(350ml+리필350ml)",
-  originalPrice: "27,000원",
-  discountedPrice: "24,300",
-  badge: ["쿠폰", "오늘드림"],
-  filterValue: "new",
-},
-{
-  img: "/images/skintoner47.jpg",
-  name: "[속보습] 더랩바이블랑두 올리고 히알루론산 딥 토너 500ml 대용량 기획 (+100ml)",
-  originalPrice: "42,000원",
-  discountedPrice: "37,000",
-  badge: ["오늘드림"],
-  filterValue: "sold",
-},
-{
-  img: "/images/skintoner48.jpg",
-  name: "[단독 리필기획] 구달 어성초 히알루론 수딩 토너 350ml 리필 기획 (+350ml 리필)",
-  originalPrice: "32,000원",
-  discountedPrice: "24,000",
-  badge: ["세일", "오늘드림"],
-  filterValue: "lowPrice",
-},
-{
-  img: "/images/skintoner49.jpg",
-  name: "[모공개선/탄력광채] 넘버즈인 3번 결광가득 에센스 토너 300ml 대용량 기획",
-  originalPrice: "36,000원",
-  discountedPrice: "32,000",
-  badge: ["오늘드림"],
-  filterValue: "discount",
-},
-{
-  img: "/images/skintoner50.jpg",
-  name: "닥터지 에이클리어 밸런싱 토너 200ml 기획 (+화장솜)",
-  originalPrice: "27,000원",
-  discountedPrice: "18,900",
-  badge: ["세일", "증정", "오늘드림"],
-  filterValue: "popular",
-},
-{
-  img: "/images/skintoner51.jpg",
-  name: "[진정보습] 닥터지 레드 블레미쉬 클리어 모이스처 토너 증정 기획 (토너 300ml+크림30ml)",
-  originalPrice: "32,000원",
-  discountedPrice: "25,600",
-  badge: ["세일", "증정", "오늘드림"],
-  filterValue: "new",
-},
-{
-  img: "/images/skintoner52.jpg",
-  name: "[슬로에이징/영양탄력] 닥터지 블랙 스네일 토너 150ml",
-  originalPrice: "18,000원",
-  discountedPrice: "15,600",
-  badge: ["세일", "증정", "오늘드림"],
-  filterValue: "sold",
-},
-{
-  img: "/images/skintoner53.jpg",
-  name: "[각질7층보습] 넘버즈인 4번 메이크업 찰떡 미네랄 토너 200ml 기획 (+50ml 증정)",
-  originalPrice: "28,000원",
-  discountedPrice: "24,000",
-  badge: ["오늘드림"],
-  filterValue: "lowPrice",
-},
-{
-  img: "/images/skintoner54.jpg",
-  name: "[흔적미백] 넘버즈인 5번 글루타치온씨 비타수액 에센셜 토너 200ml 리필 기획(+200ml 리필)",
-  originalPrice: "42,000원",
-  discountedPrice: "36,000",
-  badge: ["오늘드림"],
-  filterValue: "discount",
-},
-{
-  img: "/images/skintoner55.jpg",
-  name: "[증정 기획] 닥터지 레드 블레미쉬 포 맨 멀티 수딩 토너 200ml 보습 기획세트 (+올인원크림 30ml)",
-  originalPrice: "31,000원",
-  discountedPrice: "24,800",
-  badge: ["세일", "증정", "오늘드림"],
-  filterValue: "popular",
-},
-{
-  img: "/images/skintoner56.jpg",
-  name: "[NEW] 닥터지 레드 블레미쉬 클리어 수딩 토너 300ml+300ml 듀오기획",
-  originalPrice: "52,000원",
-  discountedPrice: "46,000",
-  badge: ["증정", "오늘드림"],
-  filterValue: "new",
-},
+      img: "/images/skintoner45.jpg",
+      name: "[속보습]닥터지 더모이스처 배리어 D 리퀴드 토너 200ml 기획 (+100ml)",
+      originalPrice: "31,000원",
+      discountedPrice: "24,800",
+      badge: ["세일", "증정", "오늘드림"],
+      filterValue: "popular",
+    },
+    {
+      img: "/images/skintoner46.jpg",
+      name: "[단독기획]에뛰드 순정 약산성 5.5 진정 토너 700ml 대용량 기획(350ml+리필350ml)",
+      originalPrice: "27,000원",
+      discountedPrice: "24,300",
+      badge: ["쿠폰", "오늘드림"],
+      filterValue: "new",
+    },
+    {
+      img: "/images/skintoner47.jpg",
+      name: "[속보습] 더랩바이블랑두 올리고 히알루론산 딥 토너 500ml 대용량 기획 (+100ml)",
+      originalPrice: "42,000원",
+      discountedPrice: "37,000",
+      badge: ["오늘드림"],
+      filterValue: "sold",
+    },
+    {
+      img: "/images/skintoner48.jpg",
+      name: "[단독 리필기획] 구달 어성초 히알루론 수딩 토너 350ml 리필 기획 (+350ml 리필)",
+      originalPrice: "32,000원",
+      discountedPrice: "24,000",
+      badge: ["세일", "오늘드림"],
+      filterValue: "lowPrice",
+    },
+    {
+      img: "/images/skintoner49.jpg",
+      name: "[모공개선/탄력광채] 넘버즈인 3번 결광가득 에센스 토너 300ml 대용량 기획",
+      originalPrice: "36,000원",
+      discountedPrice: "32,000",
+      badge: ["오늘드림"],
+      filterValue: "discount",
+    },
+    {
+      id: 2,
+      img: "/images/skintoner50.jpg",
+      name: "닥터지 에이클리어 밸런싱 토너 200ml 기획 (+화장솜)",
+      originalPrice: "27,000원",
+      discountedPrice: "18,900",
+      badge: ["세일", "증정", "오늘드림"],
+      filterValue: "popular",
+    },
+    {
+      img: "/images/skintoner51.jpg",
+      name: "[진정보습] 닥터지 레드 블레미쉬 클리어 모이스처 토너 증정 기획 (토너 300ml+크림30ml)",
+      originalPrice: "32,000원",
+      discountedPrice: "25,600",
+      badge: ["세일", "증정", "오늘드림"],
+      filterValue: "new",
+    },
+    {
+      img: "/images/skintoner52.jpg",
+      name: "[슬로에이징/영양탄력] 닥터지 블랙 스네일 토너 150ml",
+      originalPrice: "18,000원",
+      discountedPrice: "15,600",
+      badge: ["세일", "증정", "오늘드림"],
+      filterValue: "sold",
+    },
+    {
+      img: "/images/skintoner53.jpg",
+      name: "[각질7층보습] 넘버즈인 4번 메이크업 찰떡 미네랄 토너 200ml 기획 (+50ml 증정)",
+      originalPrice: "28,000원",
+      discountedPrice: "24,000",
+      badge: ["오늘드림"],
+      filterValue: "lowPrice",
+    },
+    {
+      img: "/images/skintoner54.jpg",
+      name: "[흔적미백] 넘버즈인 5번 글루타치온씨 비타수액 에센셜 토너 200ml 리필 기획(+200ml 리필)",
+      originalPrice: "42,000원",
+      discountedPrice: "36,000",
+      badge: ["오늘드림"],
+      filterValue: "discount",
+    },
+    {
+      img: "/images/skintoner55.jpg",
+      name: "[증정 기획] 닥터지 레드 블레미쉬 포 맨 멀티 수딩 토너 200ml 보습 기획세트 (+올인원크림 30ml)",
+      originalPrice: "31,000원",
+      discountedPrice: "24,800",
+      badge: ["세일", "증정", "오늘드림"],
+      filterValue: "popular",
+    },
+    {
+      img: "/images/skintoner56.jpg",
+      name: "[NEW] 닥터지 레드 블레미쉬 클리어 수딩 토너 300ml+300ml 듀오기획",
+      originalPrice: "52,000원",
+      discountedPrice: "46,000",
+      badge: ["증정", "오늘드림"],
+      filterValue: "new",
+    },
   ];
 
   // --- 필터 & 정렬 옵션 ---
@@ -464,44 +472,46 @@ function SkinTonerProduct() {
   ];
   const [activeFilter, setActiveFilter] = useState("popular");
 
-  // ⭐️ [추가] 필터 적용
-const filteredProducts = products.filter(
-  (product) => product.filterValue === activeFilter
-);
+  // 필터 적용
+  const filteredProducts = products.filter(
+    (product) => product.filterValue === activeFilter
+  );
 
-// --- 상품 개수 옵션 ---
-const PER_PAGE_OPTIONS = [24, 36, 48];
-const [itemsPerPage, setItemsPerPage] = useState(PER_PAGE_OPTIONS[0]);
+  // --- 상품 개수 옵션 ---
+  const PER_PAGE_OPTIONS = [24, 36, 48];
+  const [itemsPerPage, setItemsPerPage] = useState(PER_PAGE_OPTIONS[0]);
 
-// --- 페이지네이션 ---
-// ⭐️ products → filteredProducts로 변경!
-const totalPages = Math.ceil(filteredProducts.length / itemsPerPage);
-const [page, setPage] = useState(1);
+  // --- 페이지네이션 ---
+  const totalPages = Math.ceil(filteredProducts.length / itemsPerPage);
+  const [page, setPage] = useState(1);
 
-// --- 현재 페이지 상품만 보여주기 ---
-// ⭐️ products → filteredProducts로 변경!
-const pagedProducts = filteredProducts.slice(
-  (page - 1) * itemsPerPage,
-  page * itemsPerPage
-);
+  // 현재 페이지 상품만 보여주기
+  const pagedProducts = filteredProducts.slice(
+    (page - 1) * itemsPerPage,
+    page * itemsPerPage
+  );
 
-  // --- 페이지 이동 시 항상 맨 위로 스크롤(선택) ---
+  // 페이지 이동 시 항상 맨 위로 스크롤
   React.useEffect(() => {
     window.scrollTo({ top: 0 });
   }, [page, itemsPerPage]);
+
+  // --- 상품 카드 클릭시 이동 함수 ---
+  const handleCardClick = (id) => {
+    // product1, product2 ...로 이동
+    router.push(`/product/skintoner/product${id}`);
+  };
 
   return (
     <div className="container py-6 mx-auto">
       {/* --- 상단 상품수/필터/뷰개수 --- */}
       <div className="flex items-center justify-between px-2 mb-4">
-        {/* 총 상품수 */}
         <div className="w-full text-2xl font-semibold text-center md:text-2xl">
           <span>스킨/토너 카테고리에 </span>
           <span className="text-[#ff8882] font-bold">{products.length}</span>
           <span> 개의 상품이 등록되어 있습니다.</span>
         </div>
       </div>
-      {/* 구분선 */}
       <hr className="border-t-4 border-[#e6e6e6] my-4" />
       <div className="flex flex-row items-center justify-between px-2 pb-4">
         {/* 필터 버튼 */}
@@ -510,12 +520,9 @@ const pagedProducts = filteredProducts.slice(
             <React.Fragment key={f.value}>
               <button
                 className={`text-lg px-2 py-1 transition 
-          ${
-            activeFilter === f.value
-              ? "text-black font-bold underline underline-offset-[8px]"
-              : "text-[#888] hover:text-black"
-          }
-        `}
+                ${activeFilter === f.value
+                  ? "text-black font-bold underline underline-offset-[8px]"
+                  : "text-[#888] hover:text-black"}`}
                 onClick={() => {
                   setActiveFilter(f.value);
                   setPage(1);
@@ -523,7 +530,6 @@ const pagedProducts = filteredProducts.slice(
               >
                 {f.label}
               </button>
-              {/* 마지막 버튼 뒤엔 선 없음 */}
               {idx < FILTERS.length - 1 && (
                 <span className="h-7 border-l border-[#e6e6e6] mx-2"></span>
               )}
@@ -537,12 +543,9 @@ const pagedProducts = filteredProducts.slice(
             <button
               key={num}
               className={`text-lg font-bold px-1 underline-offset-4 transition
-                ${
-                  itemsPerPage === num
-                    ? "text-black underline"
-                    : "text-[#aaa] hover:text-black"
-                }
-              `}
+                ${itemsPerPage === num
+                  ? "text-black underline"
+                  : "text-[#aaa] hover:text-black"}`}
               onClick={() => {
                 setItemsPerPage(num);
                 setPage(1);
@@ -558,7 +561,10 @@ const pagedProducts = filteredProducts.slice(
       <div className="grid grid-cols-4 gap-6">
         {pagedProducts.map((product, index) => (
           <React.Fragment key={index}>
-            <div className="flex flex-col items-center bg-white rounded-lg">
+            <div
+              className="flex flex-col items-center transition bg-white rounded-lg cursor-pointer"
+              onClick={() => handleCardClick(product.id)} // 클릭 시 라우팅
+            >
               {/* 상품 이미지 */}
               <img
                 src={product.img}
@@ -569,13 +575,7 @@ const pagedProducts = filteredProducts.slice(
               <p className="mb-2 text-lg font-semibold text-center line-clamp-2">
                 {product.name}
               </p>
-              {/* 상품 상세 설명(있으면 표시) */}
-              {product.description && (
-                <strong className="w-[215px] text-center text-sm text-[#777] mt-[10px] cursor-pointer">
-                  {product.description}
-                </strong>
-              )}
-              {/* 가격 정보 (가운데 정렬) */}
+              {/* 가격 정보 */}
               <div className="w-[215px] flex flex-col items-center mt-[5px] text-center">
                 <p className="text-sm line-through font-semibold text-[#a9a9a9]">
                   {product.originalPrice}
@@ -596,17 +596,15 @@ const pagedProducts = filteredProducts.slice(
                     <div
                       key={badgeIdx}
                       className={`h-[20px] rounded-[9px] text-[#fff] text-xs justify-center leading-[7px] flex items-center 
-                        ${
-                          badge === "세일"
-                            ? "bg-[#f65c60]"
-                            : badge === "쿠폰"
-                            ? "bg-[#9bce26]"
-                            : badge === "증정"
-                            ? "bg-[#6fcff7]"
-                            : badge === "오늘드림"
-                            ? "bg-[#f374b7]"
-                            : ""
-                        }`}
+                        ${badge === "세일"
+                          ? "bg-[#f65c60]"
+                          : badge === "쿠폰"
+                          ? "bg-[#9bce26]"
+                          : badge === "증정"
+                          ? "bg-[#6fcff7]"
+                          : badge === "오늘드림"
+                          ? "bg-[#f374b7]"
+                          : ""}`}
                       style={{ width: badgeWidth }}
                     >
                       {badge}
@@ -615,6 +613,7 @@ const pagedProducts = filteredProducts.slice(
                 })}
               </div>
             </div>
+
             {/* 4, 8, 12... 번째 줄 끝마다 구분선 */}
             {(index + 1) % 4 === 0 && (
               <div className="col-span-4">
@@ -633,14 +632,11 @@ const pagedProducts = filteredProducts.slice(
             <button
               key={pageNum}
               onClick={() => setPage(pageNum)}
-              className={`w-16 h-16 text-2xl border rounded font-bold transition 
-                ${
-                  pageNum === page
-                    ? "border-black text-black bg-white"
-                    : "border-[#e1e1e1] text-[#888] bg-white"
-                }
-              `}
-              style={{ minWidth: "60px", minHeight: "60px" }}
+              className={`w-8 h-8 text-xl border rounded font-bold transition 
+                ${pageNum === page
+                  ? "border-black text-black bg-white"
+                  : "border-[#e1e1e1] text-[#888] bg-white"}`}
+              style={{ minWidth: "40px", minHeight: "40px" }}
             >
               {pageNum}
             </button>
@@ -649,8 +645,8 @@ const pagedProducts = filteredProducts.slice(
         {/* 오른쪽 화살표(비활성화, 페이지 많으면 활용 가능) */}
         <button
           disabled
-          className="w-16 h-16 text-2xl border rounded border-[#e1e1e1] text-[#aaa] bg-white flex items-center justify-center"
-          style={{ minWidth: "60px", minHeight: "60px" }}
+          className="w-8 h-8 text-xl border rounded border-[#e1e1e1] text-[#aaa] bg-white flex items-center justify-center"
+          style={{ minWidth: "40px", minHeight: "40px" }}
         >
           <span>&raquo;</span>
         </button>
