@@ -1,5 +1,7 @@
 import React, { useState } from 'react';
 import { SearchIcon, UserPlusIcon, EyeIcon } from 'lucide-react';
+import NewUserModal from '../components/NewUserModal';
+
 
 export function UsersTable() {
   const [searchTerm, setSearchTerm] = useState('');
@@ -11,12 +13,7 @@ export function UsersTable() {
   const [selectedUser, setSelectedUser] = useState(null);
   const [showDetail, setShowDetail] = useState(false);
 
-
-
-
-  const users = [
-    { id: 1, name: '김지민', email: 'jimin@example.com', phone: '010-1234-5678', joinDate: '2023-01-15', orders: 12, status: '활성' },
-    { id: 2, name: '이하준', email: 'hajun@example.com', phone: '010-2345-6789', joinDate: '2023-02-20', orders: 8, status: '활성' },
+  const [users,setUsers] = useState([
     { id: 3, name: '박서연', email: 'seoyeon@example.com', phone: '010-3456-7890', joinDate: '2023-03-10', orders: 5, status: '활성' },
     { id: 4, name: '최준호', email: 'junho@example.com', phone: '010-4567-8901', joinDate: '2023-01-05', orders: 15, status: '활성' },
     { id: 5, name: '정민지', email: 'minji@example.com', phone: '010-5678-9012', joinDate: '2023-04-22', orders: 3, status: '활성' },
@@ -25,7 +22,16 @@ export function UsersTable() {
     { id: 8, name: '장서영', email: 'seoyoung@example.com', phone: '010-8901-2345', joinDate: '2023-01-25', orders: 10, status: '활성' },
     { id: 9, name: '이민준', email: 'minjun@example.com', phone: '010-9012-3456', joinDate: '2023-04-18', orders: 2, status: '비활성' },
     { id: 10, name: '한소희', email: 'sohee@example.com', phone: '010-0123-4567', joinDate: '2023-05-01', orders: 1, status: '활성' }
-  ];
+  ]);
+
+
+  // 신규 회원 등록 핸들러
+  const handleAddUser = (newUser) => {
+    setUsers(prev => [
+      ...prev,
+      {id :prev.length +1 , orders : 0, ...newUser}
+    ]);
+  };
 
     // 필터링된 회원 목록
   const filteredUsers = users.filter((user) => {
@@ -35,36 +41,6 @@ export function UsersTable() {
     return matchesSearch && matchesStatus && matchesJoinDate;
   });
 
-  function NewUserModal({ onClose }) {
-  return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-30">
-      <div className="w-full max-w-md p-6 bg-white rounded-lg shadow-md">
-        <h2 className="mb-4 text-xl font-bold">신규 회원 등록</h2>
-        <form className="space-y-4">
-          <input type="text" placeholder="회원명" className="w-full p-2 border border-gray-300 rounded" />
-          <input type="text" placeholder="이메일" className="w-full p-2 border border-gray-300 rounded" />
-          <input type="text" placeholder="전화번호" className="w-full p-2 border border-gray-300 rounded" />
-          <input type="date" placeholder="가입일" className="w-full p-2 border border-gray-300 rounded" />
-          <select className="w-full p-2 border border-gray-300 rounded"
-          value = {statusFilter}
-          onChange={(e) => setStatusFilter(e.target.value)}>
-           <option value="">상태</option>
-           <option value="활성">활성</option>
-           <option value="비활성">비활성</option>
-          </select>
-          <div className="flex justify-end gap-2">
-            <button type="button" onClick={onClose} className="px-4 py-2 border border-gray-300 rounded">
-              취소
-            </button>
-            <button type="submit" className="px-4 py-2 bg-[#9BCC47] text-white rounded">
-              등록
-            </button>
-          </div>
-        </form>
-      </div>
-    </div>
-  );
-}
 
 
 
@@ -257,7 +233,12 @@ export function UsersTable() {
 
 
       </div>
-      {showModal && <NewUserModal onClose={() => setShowModal(false)} />}
+      {showModal && (
+        <NewUserModal 
+          onAdd={handleAddUser} 
+          onClose={() => setShowModal(false)} 
+        />
+      )}
     </div>
   );
 }
