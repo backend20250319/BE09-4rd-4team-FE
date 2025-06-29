@@ -148,7 +148,7 @@ export default function Order() {
             <Image width={34} height={34} src='/images/mypage/order/my_picture_base.jpg' alt="my_picture_base.jpg"/>
           </div>
           <p className="float-left ml-[10px] text-[18px] leading-[34px] font-bold text-white tracking-[-1px]">
-            BABY OLIVE
+            PINK OLIVE
             <strong className="inline-block ml-[3px]">박*준</strong>
             님 반갑습니다.
           </p>
