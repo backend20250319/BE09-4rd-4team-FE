@@ -25,17 +25,26 @@ const dummyData = {
     보통이에요: 22,
     "자극이 느껴져요": 1,
   },
-  reviews: [
+  reviews: [   // <-- 여기에 내용을 추가하면 자동으로 추가가 된다.
     {
       id: 1,
-      user: "seoeo",
-      date: "2025.06.25",
-      skinType: "복합성",
-      concern: "건성에 좋아요",
-      texture: "자극없이 순해요",
-      content:
-        "진정에 엄청 좋고 제품도 산뜻하게 흡수되는데 돌토너에 알콜이 있었는데도 썼었는데 이것도 너무 진정이네요",
-      images: ["/image/review1.jpg", "/image/review2.jpg"],
+      user: "김하나",
+      date: "2025.06.29",
+      skinType: "지성",
+      concern: "모공",
+      texture: "순해요",
+      content: "피부가 확실히 좋아졌어요.",
+      images: ["/images/sample1.jpg"],
+    },
+    {
+      id: 2,
+      user: "박둘",
+      date: "2025.06.27",
+      skinType: "건성",
+      concern: "보습",
+      texture: "자극 없어요",
+      content: "촉촉해서 만족해요.",
+      images: ["/images/sample1.jpg"],
     },
   ],
 };

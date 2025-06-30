@@ -1,6 +1,6 @@
 "use client";
 import { useState } from "react";
-import ReviewList from "./ReviewList"
+import ReviewList from "./ReviewList";
 import ReviewItem from "./ReviewItem";
 export default function ReviewTabExample() {
   const [selected, setSelected] = useState("general");
@@ -16,17 +16,8 @@ export default function ReviewTabExample() {
         >
           일반 리뷰
         </h2>
-
-        <h2
-          onClick={() => setSelected("monthly")}
-          className={`w-[110.04px] h-[49px] flex items-center justify-center text-[18px] font-semibold cursor-pointer bg-transparent ${
-            selected === "monthly" ? "text-black" : "text-gray-400"
-          }`}
-        >
-          한달사용리뷰
-        </h2>
       </div>
-      <div className = "w-[802px] h-auto padding-[24px]">
+      <div className="w-[802px] h-auto padding-[24px]">
         <ReviewList />
         <ReviewItem />
       </div>
