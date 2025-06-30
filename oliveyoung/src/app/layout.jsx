@@ -1,6 +1,6 @@
 // src/app/layout.jsx
 import Header from '../components/Header'; // 헤더 임포트
-import Footer from '../components/Footer'; // 푸터 임포트
+import Footer from '../components/Footer/Footer'; // 푸터 임포트
 import Menu from '../app/menu/Menu';
 import '../styles/globals.css'; // 글로벌 CSS 임포트
 
