@@ -4,6 +4,7 @@ module.exports = {
   theme: {
     fontFamily: {
       sans: ['NotoSansKR', 'sans-serif'],
+      cj: ['cj_onlyone_new_medium', 'sans-serif'],
     },
     extend: {
       backgroundImage: {
