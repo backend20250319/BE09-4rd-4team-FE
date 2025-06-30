@@ -1,6 +1,5 @@
 import React, { useState } from 'react';
 import { PlusIcon, SearchIcon, TrashIcon, DownloadIcon } from 'lucide-react';
-import NewProductModal from '../components/NewProductModal';
 
 
 

@@ -1,5 +1,4 @@
 import React, { useState } from 'react';
-import NewAdminModal from '../components/NewAdminModal';
 import { PlusIcon } from 'lucide-react';
 
 export function SettingsPage() {

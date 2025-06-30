@@ -1,13 +1,5 @@
 import React from 'react';
 import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-dom';
-import { ProductsTable } from "./pages/ProductsTable";
-import { UsersTable } from './pages/UsersTable';
-import { OrdersTable } from './pages/OrdersTable';
-import { CouponsPage } from './pages/CouponsPage';
-import { SettingsPage } from './pages/SettingsPage';
-import { Dashboard } from './pages/Dashboard';
-import Sidebar from './components/Sidebar';
-import Header from './components/Header';
 
 function App() {
   return (
