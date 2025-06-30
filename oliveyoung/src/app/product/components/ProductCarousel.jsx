@@ -156,7 +156,7 @@ function ProductCarousel() {
         {products.map((product, index) => (
           <div
             key={index}
-            className="flex flex-col items-center bg-white rounded-lg"
+            className="flex flex-col items-center transition-shadow bg-white rounded-lg cursor-pointer"
           >
             <img
               src={product.img}
@@ -191,10 +191,10 @@ function ProductCarousel() {
             <div className="w-[215px] flex flex-row justify-center mt-[5px]">
               {product.badge.map((badge, badgeIdx) => {
                 let badgeWidth = "auto";
-                if (badge === "세일") badgeWidth = "40px";
-                if (badge === "쿠폰") badgeWidth = "40px";
-                if (badge === "증정") badgeWidth = "40px";
-                if (badge === "오늘드림") badgeWidth = "60px";
+                if (badge === "세일") badgeWidth = "35px";
+                if (badge === "쿠폰") badgeWidth = "35px";
+                if (badge === "증정") badgeWidth = "35px";
+                if (badge === "오늘드림") badgeWidth = "55px";
 
                 return (
                   <div

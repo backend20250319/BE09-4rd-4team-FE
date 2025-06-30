@@ -220,7 +220,7 @@ function ProductPage1() {
             <input
               type="checkbox"
               id="todayDream"
-              className="w-4 h-4 mr-2 accent-lime-600"
+              className="w-4 h-4 mr-2 accent-[#f27370]"
             />
             {/* 체크박스 크기 조정 */}
             <label htmlFor="todayDream">
@@ -279,7 +279,7 @@ function ProductPage1() {
           {/* 둥근 모서리 제거 */}
           <p className="mb-2 font-semibold">총정품 안내</p>
           <p className="text-sm text-gray-700">
-            \[일반배송]오늘드림, 픽업 주문시 정품제공
+            [일반배송]오늘드림, 픽업 주문시 정품제공
           </p>
           <p className="text-sm text-gray-700">
             자세히보기: 스킨케어 상품 10,000원 이상 구매시 정품1개 선착순 증정
