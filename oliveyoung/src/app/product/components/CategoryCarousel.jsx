@@ -7,6 +7,7 @@ import 'slick-carousel/slick/slick-theme.css';
 
 // 이미지 절대경로로 바로 지정
 const categories = [
+  { img: '/images/category1.jpg', name: '진정솔루션' },
   { img: '/images/category2.jpg', name: '슬로우에이징' },
   { img: '/images/category3.jpg', name: '클린뷰티' },
   { img: '/images/category4.jpg', name: '크림' },
