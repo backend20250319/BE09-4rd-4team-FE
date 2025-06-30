@@ -1,3 +1,4 @@
+// ReviewDetailPage.jsx
 "use client";
 
 import { useState } from "react";
@@ -5,21 +6,23 @@ import ReviewSummary from "./ReviewSummary";
 import ReviewStats from "./ReviewStats";
 import ReviewList from "./ReviewList";
 
-// 🔧 나중에 백엔드 연동 시 API 호출로 대체할 부분
 const dummyData = {
   rating: 4.8,
   totalReviews: 6802,
   ratingsDistribution: [85, 11, 3, 1, 0],
   skinType: {
-    "건성에 좋아요": 19,
+    "건성에 좋아요": 18,
+    "복합성에 좋아요": 59,
     "지성에 좋아요": 23,
   },
   skinConcern: {
     "보습에 좋아요": 18,
-    "수분공급에 좋아요": 16,
+    "진정에 좋아요": 81,
+    "주름/미백에 좋아요": 16,
   },
   texture: {
     "자극없이 순해요": 78,
+    보통이에요: 22,
     "자극이 느껴져요": 1,
   },
   reviews: [
@@ -41,29 +44,17 @@ export default function ReviewDetailPage() {
   const [data] = useState(dummyData);
 
   return (
-    <div className="max-w-[1020px] mx-auto  py-10 text-sm text-gray-800 ">
-      {/* 첫 줄 */}
-      <hr className="border-t-2 border-gray-800 " />
-      {/* 상단 요약 */}
+    <div className="max-w-[1020px] mx-auto py-10 text-sm text-gray-800">
+      <hr className="border-t-2 border-gray-800" />
       <ReviewSummary data={data} />
-
-      {/* 구분선 */}
       <hr className="border-t border-gray-200 mb-10" />
-
-      {/* 피부타입 / 고민 / 제형도 */}
       <ReviewStats
         skinType={data.skinType}
         skinConcern={data.skinConcern}
         texture={data.texture}
       />
-
-      {/* 구분선 */}
       <hr className="border-t border-gray-200" />
-
-      {/* 리뷰 목록 */}
       <ReviewList reviews={data.reviews} />
-
-      {/* 마지막 줄 */}
       <hr className="border-t border-gray-300" />
     </div>
   );

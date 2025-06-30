@@ -8,7 +8,7 @@ export default function ReviewItem({ review }) {
       <div className="mb-2">
         <span className="text-pink-500 mr-2">★ ★ ★ ★ ★</span>
         <span className="text-gray-600">
-          | 피부타입: {review.skinType} | 피부고민: {review.concern} | 제형도:{" "}
+          | 피부타입: {review.skinType} | 피부고민: {review.concern} | 자극도:{" "}
           {review.texture}
         </span>
       </div>
