@@ -27,7 +27,7 @@ function BannerCarousel() {
     slidesToScroll: 1,
     arrows: false,
     autoplay: autoplay,
-    autoplaySpeed: 5000,
+    autoplaySpeed: 3000,
     beforeChange: (oldIndex, newIndex) => setCurrentSlide(newIndex),
   };
 
@@ -39,11 +39,11 @@ function BannerCarousel() {
             <img
               src={banner}
               alt={`banner${index + 1}`}
-              className="w-full h-auto rounded-lg object-cover"
+              className="object-cover w-full h-auto rounded-lg"
             />
             {index === 0 && (
               <div className="absolute top-[50%] left-[10%] transform -translate-y-1/2">
-                <h2 className="text-3xl font-bold text-black mb-2 leading-snug">
+                <h2 className="mb-2 text-3xl font-bold leading-snug text-black">
                   넘버즈인x지냐<br />
                   스킨케어링<br />
                   파우더 론칭
@@ -53,7 +53,7 @@ function BannerCarousel() {
             )}
             {index === 1 && (
               <div className="absolute top-[50%] left-[10%] transform -translate-y-1/2">
-                <h2 className="text-3xl font-bold text-black mb-2 leading-snug">
+                <h2 className="mb-2 text-3xl font-bold leading-snug text-black">
                   세럼강자<br />
                   토리든<br />
                   NEW&BEST
@@ -63,7 +63,7 @@ function BannerCarousel() {
             )}
             {index === 2 && (
               <div className="absolute top-[50%] left-[10%] transform -translate-y-1/2">
-                <h2 className="text-3xl font-bold text-black mb-2 leading-snug">
+                <h2 className="mb-2 text-3xl font-bold leading-snug text-black">
                   성분에디터<br />
                   BEST 앰플로<br />
                   피부고민 해결!
@@ -73,7 +73,7 @@ function BannerCarousel() {
             )}
             {index === 3 && (
               <div className="absolute top-[50%] left-[10%] transform -translate-y-1/2">
-                <h2 className="text-3xl font-bold text-white mb-2 leading-snug">
+                <h2 className="mb-2 text-3xl font-bold leading-snug text-white">
                   햄랑이의<br />
                   순한 진정 루틴
                 </h2>
@@ -85,7 +85,7 @@ function BannerCarousel() {
       </Slider>
 
       {/* 화살표 & 페이지 */}
-      <div className="absolute bottom-4 right-10 flex items-center bg-black bg-opacity-40 px-3 py-1 rounded">
+      <div className="absolute flex items-center px-3 py-1 bg-black rounded bottom-4 right-10 bg-opacity-40">
         <button
           onClick={() => sliderRef.current.slickPrev()}
           className="w-[10px] h-[14px] text-white text-xl flex justify-center items-center mr-2"
@@ -104,7 +104,7 @@ function BannerCarousel() {
       </div>
 
       {/* 재생/멈춤 버튼 */}
-      <div className="absolute bottom-4 right-2 bg-black bg-opacity-40 px-3 py-1 rounded">
+      <div className="absolute px-3 py-1 bg-black rounded bottom-4 right-2 bg-opacity-40">
         <button
           onClick={() => setAutoplay(!autoplay)}
           className="w-[4px] h-[24px] text-white text-xl flex justify-center items-center"

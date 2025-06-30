@@ -2,7 +2,7 @@ import React from 'react';
 
 function Menu(props) {
   return (
-    <div className="h-[47px] flex flex-row justify-center border-t border-b border-[#dddddd]">
+  <div className="h-[47px] flex flex-row justify-center border-t border-b-2 border-t-[#dddddd] border-b-black">
       <div className="w-[1020px] flex flex-row items-center">
         <button className="w-[170px] h-[47px] border-l border-r border-[#dddddd] flex flex-row justify-start items-center gap-3 pl-[27px] font-bold text-[15px]">
           <img src="/images/categoryIcon.png" alt="menu" />

@@ -7,9 +7,6 @@ function ProductCarousel() {
     {
       img: "/images/skincare1.jpg",
       name: "[대용량150ml] 웰라쥬 리얼 히알루로닉 블루 100 앰플 75ml 1+1 기획",
-      sale: true,
-      coupon: true,
-      today: true,
       originalPrice: "46,000원",
       discountedPrice: "29,900",
       badge: ["세일", "증정", "오늘드림"],
@@ -17,9 +14,6 @@ function ProductCarousel() {
     {
       img: "/images/skincare2.jpg",
       name: "[1+1/모공 수분천재크림] 에스네이처 아쿠아 스쿠알란 수분크림 60ml 더블기획(60ml+60ml)",
-      sale: true,
-      coupon: true,
-      today: false,
       originalPrice: "43,000원",
       discountedPrice: "21,150",
       badge: ["세일", "쿠폰", "오늘드림"],
@@ -27,9 +21,6 @@ function ProductCarousel() {
     {
       img: "/images/skincare3.jpg",
       name: "[6월 올영픽/1+1+증정] 메디힐 마데카소사이드 흔적 리페어 세럼 40+40+10mL",
-      sale: false,
-      coupon: false,
-      today: true,
       originalPrice: "36,900원",
       discountedPrice: "22,500",
       badge: ["세일", "쿠폰", "증정", "오늘드림"],
@@ -37,9 +28,6 @@ function ProductCarousel() {
     {
       img: "/images/skincare4.jpg",
       name: "에스트라 아토베리어365 크림 80ml 기획 (+하이드로 에센스25ml+세라-히알 앰플7ml)",
-      sale: true,
-      coupon: false,
-      today: true,
       originalPrice: "33,000원",
       discountedPrice: "29,700",
       badge: ["세일", "오늘드림"],
@@ -47,9 +35,6 @@ function ProductCarousel() {
     {
       img: "/images/skincare5.jpg",
       name: "[뷰티디바이스 1위] 메디큐브 부스터프로/부스터프로 미니 기획세트 라인업",
-      sale: true,
-      coupon: false,
-      today: false,
       originalPrice: "99,000원",
       discountedPrice: "98,500",
       badge: ["세일", "오늘드림"],
@@ -57,9 +42,6 @@ function ProductCarousel() {
     {
       img: "/images/skincare6.jpg",
       name: "[6월올영픽/이영지Pick/수분진정] 닥터지 레드 블레미쉬 클리어 수딩 크림 70ml 기획 3종",
-      sale: false,
-      coupon: true,
-      today: false,
       originalPrice: "38,000원",
       discountedPrice: "26,700",
       badge: ["세일", "쿠폰", "증정", "오늘드림"],
@@ -67,9 +49,6 @@ function ProductCarousel() {
     {
       img: "/images/skincare7.jpg",
       name: "[6월 올영픽/1등세럼] 브링그린 징크테카 트러블세럼 50ml+25리필(+징크테카 S.O.S 스팟 젤)",
-      sale: true,
-      coupon: true,
-      today: false,
       originalPrice: "56,100원",
       discountedPrice: "28,900",
       badge: ["세일", "쿠폰", "증정", "오늘드림"],
@@ -77,9 +56,6 @@ function ProductCarousel() {
     {
       img: "/images/skincare8.jpg",
       name: "[6월올영픽] 토리든 다이브인 히알루론산 수딩 크림 100ml 더블 한정 기획 (+토너 100ml)",
-      sale: true,
-      coupon: false,
-      today: true,
       originalPrice: "42,000원",
       discountedPrice: "28,100",
       badge: ["세일", "쿠폰", "증정", "오늘드림"],
@@ -87,9 +63,6 @@ function ProductCarousel() {
     {
       img: "/images/skincare9.jpg",
       name: "[6월 올영픽] 에스트라 아토베리어365 하이드로 수딩크림 100ml 대용량 기획 (+수딩크림 30ml+세라-히알 속수분 앰플3ml)",
-      sale: false,
-      coupon: true,
-      today: false,
       originalPrice: "47,000원",
       discountedPrice: "42,300",
       badge: ["세일", "오늘드림"],
@@ -97,9 +70,6 @@ function ProductCarousel() {
     {
       img: "/images/skincare10.jpg",
       name: "[구매인증 이벤트/흔적미백]메디큐브 PDRN 핑크 펩타이드 앰플 30ml 리필기획(본품 30ML+리필 50ML)",
-      sale: false,
-      coupon: true,
-      today: true,
       originalPrice: "46,000원",
       discountedPrice: "25,900",
       badge: ["세일", "오늘드림"],
@@ -107,9 +77,6 @@ function ProductCarousel() {
     {
       img: "/images/skincare11.jpg",
       name: "[1+1+스티커] 라운드랩 소나무 진정 시카 앰플 30ml 더블 기획 (+누누씨스티커모음)",
-      sale: true,
-      coupon: true,
-      today: false,
       originalPrice: "43,000원",
       discountedPrice: "21,400",
       badge: ["세일", "쿠폰", "오늘드림"],
@@ -117,9 +84,6 @@ function ProductCarousel() {
     {
       img: "/images/skincare12.jpg",
       name: "[NO.1 미스트세럼] 달바 퍼스트 스프레이 세럼 100ml 2개 기획",
-      sale: true,
-      coupon: false,
-      today: true,
       originalPrice: "59,800원",
       discountedPrice: "35,200",
       badge: ["세일", "오늘드림"],
@@ -127,9 +91,6 @@ function ProductCarousel() {
     {
       img: "/images/skincare13.jpg",
       name: "라로슈포제 시카플라스트 멀티 리페어 크림 B5 100ml 기획 (+멜라B3 세럼 3ml증정)",
-      sale: true,
-      coupon: false,
-      today: true,
       originalPrice: "50,000원",
       discountedPrice: "40,000",
       badge: ["쿠폰", "오늘드림"],
@@ -137,9 +98,6 @@ function ProductCarousel() {
     {
       img: "/images/skincare14.jpg",
       name: "[6월 올영픽/단독기획]바이오더마 하이드라비오 토너 500ml 기획/단품",
-      sale: true,
-      coupon: false,
-      today: true,
       originalPrice: "38,000원",
       discountedPrice: "27,500",
       badge: ["세일", "오늘드림"],
@@ -147,9 +105,6 @@ function ProductCarousel() {
     {
       img: "/images/skincare15.jpg",
       name: "[6월 올영픽/단독기획] 토리든 다이브인 저분자 히알루론산 세럼 50ml 리필기획(+리필팩 50ml)",
-      sale: true,
-      coupon: false,
-      today: true,
       originalPrice: "36,000원",
       discountedPrice: "24,100",
       badge: ["세일", "쿠폰", "증정", "오늘드림"],
@@ -157,9 +112,6 @@ function ProductCarousel() {
     {
       img: "/images/skincare16.jpg",
       name: "아누아 피디알엔 히알루론산 캡슐 100 세럼 30mL 기획 (+30mL 리필팩)",
-      sale: true,
-      coupon: false,
-      today: true,
       originalPrice: "58,500원",
       discountedPrice: "29,500",
       badge: ["세일", "오늘드림"],
@@ -167,9 +119,6 @@ function ProductCarousel() {
     {
       img: "/images/skincare17.jpg",
       name: "[6월 올영픽] 온그리디언츠 스킨 베리어 카밍 로션 기획(220ml+80ml)",
-      sale: true,
-      coupon: false,
-      today: true,
       originalPrice: "42,000원",
       discountedPrice: "39,900",
       badge: ["오늘드림"],
@@ -177,9 +126,6 @@ function ProductCarousel() {
     {
       img: "/images/skincare18.jpg",
       name: "[1+1+1] 차앤박 프로폴리스 에너지 액티브 앰플 30ml 트리플 기획",
-      sale: true,
-      coupon: false,
-      today: true,
       originalPrice: "74,000원",
       discountedPrice: "39,900",
       badge: ["세일", "쿠폰", "오늘드림"],
@@ -187,9 +133,6 @@ function ProductCarousel() {
     {
       img: "/images/skincare19.jpg",
       name: "[대용량/트러블1등] 파티온 노스카나인 트러블 세럼 50ml 리필 기획(+리필40ml+크림10ml)",
-      sale: true,
-      coupon: false,
-      today: true,
       originalPrice: "54,000원",
       discountedPrice: "33,900",
       badge: ["세일", "오늘드림"],
@@ -197,9 +140,6 @@ function ProductCarousel() {
     {
       img: "/images/skincare20.jpg",
       name: "구달 청귤 비타C 잡티케어 세럼 50ml+31ml 기획",
-      sale: true,
-      coupon: false,
-      today: true,
       originalPrice: "43,000원",
       discountedPrice: "25,400",
       badge: ["세일", "쿠폰", "오늘드림"],
@@ -216,7 +156,7 @@ function ProductCarousel() {
         {products.map((product, index) => (
           <div
             key={index}
-            className="flex flex-col items-center bg-white rounded-lg"
+            className="flex flex-col items-center transition-shadow bg-white rounded-lg cursor-pointer"
           >
             <img
               src={product.img}
@@ -251,10 +191,10 @@ function ProductCarousel() {
             <div className="w-[215px] flex flex-row justify-center mt-[5px]">
               {product.badge.map((badge, badgeIdx) => {
                 let badgeWidth = "auto";
-                if (badge === "세일") badgeWidth = "40px";
-                if (badge === "쿠폰") badgeWidth = "40px";
-                if (badge === "증정") badgeWidth = "40px";
-                if (badge === "오늘드림") badgeWidth = "60px";
+                if (badge === "세일") badgeWidth = "35px";
+                if (badge === "쿠폰") badgeWidth = "35px";
+                if (badge === "증정") badgeWidth = "35px";
+                if (badge === "오늘드림") badgeWidth = "55px";
 
                 return (
                   <div
