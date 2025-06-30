@@ -1,7 +1,8 @@
 import React, { useState } from 'react';
 import { PlusIcon } from 'lucide-react';
+import NewAdminModal from '../components/NewAdminModal';
 
-export function SettingsPage() {
+export default function SettingsPage() {
   const [admins, setAdmins] = useState(['admin@oliveyoung.com']);
   const [showAdminModal, setShowAdminModal] = useState(false);
 

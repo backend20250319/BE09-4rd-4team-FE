@@ -1,5 +1,17 @@
 import React from 'react';
 import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-dom';
+import Sidebar from './components/Sidebar';
+import Header from './components/Header';
+import Dashboard from './pages/Dashboard';
+import ProductsTable from './pages/ProductsTable';
+import OrdersTable from './pages/OrdersTable';
+import CouponsPage from './pages/CouponsPage';
+import UsersTable from './pages/UsersTable';
+import SettingsPage from './pages/SettingsPage';
+
+
+
+
 
 function App() {
   return (
