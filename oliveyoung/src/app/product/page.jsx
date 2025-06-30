@@ -13,7 +13,7 @@ export default function Main() {
         <CategorySidebar />
 
         {/* 오른쪽 컨텐츠 */}
-        <div className="flex flex-col w-[800px]">
+        <div className="flex flex-col w-[770px]">
 
           {/* 카테고리 슬라이드 */}
           <div className="py-6">
