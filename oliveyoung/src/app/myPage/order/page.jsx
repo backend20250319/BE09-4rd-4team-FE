@@ -4,6 +4,7 @@ import React, { useEffect, useState } from "react";
 import dayjs from "dayjs";
 import isSameOrAfter from "dayjs/plugin/isSameOrAfter";
 import isSameOrBefore from "dayjs/plugin/isSameOrBefore";
+import { orderTableData } from "./data/orderTableData";
 import { useSearchParams } from "next/navigation";
 import Image from 'next/image';
 import Link from 'next/link';
@@ -80,7 +81,7 @@ export default function Order() {
 
         window.location.href = `/mypage/order?${params.toString()}`;
       }, 300);
-    }, 2000);
+    }, 1000);
   };
 
   // 조회 버튼 클릭 핸들러
@@ -101,42 +102,31 @@ export default function Order() {
       setTimeout(() => {
         window.location.href = `/mypage/order?${params.toString()}`;
       }, 300);
-    }, 2000);
+    }, 1000);
   };
-
-  {/* 샘플 데이터 */}
-  const orders = [
-    {
-      orderId : "Y2506068131633",
-      totalPrice : 25900,
-      status : "배송완료",
-      createdAt : "2025-06-01",
-      orderItems : [
-      {
-        productName : "바이오더마 센시비오 H2O 850ml(클렌징워터)",
-        brand : "바이오더마",
-        price : 25900,
-        quantity : 1,
-        image_url : "/images/mypage/order/sampleProduct.jpg"
-      },]
-    }
-  ]
 
   const startDate = dayjs(`${periodState.startYear}-${periodState.startMonth}-${periodState.startDay}`);
   const endDate = dayjs(`${periodState.endYear}-${periodState.endMonth}-${periodState.endDay}`);
 
   // 기간 내 주문만 필터링
-  const filteredOrders = orders.filter(order => {
+  const filteredOrders = orderTableData.filter(order => {
     const orderDate = dayjs(order.createdAt);
     return orderDate.isSameOrAfter(startDate) && orderDate.isSameOrBefore(endDate);
   });
 
-  // status 별 캐운트
+  // status 별 카운트
   const statusList = ["주문접수", "결제완료", "배송준비중", "배송중", "배송완료"];
   const statusCounts = statusList.reduce((acc, status) => {
     acc[status] = filteredOrders.filter(order => order.status === status).length;
     return acc;
   }, {});
+
+  const handleMenuClick = (e, href) => {
+    e.preventDefault();
+    setTimeout(() => {
+      window.location.href = href;
+    }, 1000);
+  };
 
   return(
     <div>
@@ -148,7 +138,7 @@ export default function Order() {
             <Image width={34} height={34} src='/images/mypage/order/my_picture_base.jpg' alt="my_picture_base.jpg"/>
           </div>
           <p className="float-left ml-[10px] text-[18px] leading-[34px] font-bold text-white tracking-[-1px]">
-            BABY OLIVE
+            PINK OLIVE
             <strong className="inline-block ml-[3px]">박*준</strong>
             님 반갑습니다.
           </p>
@@ -162,16 +152,16 @@ export default function Order() {
             <li className="float-left w-1/3 text-center">
               <span className="text-[13px] font-bold text-[#555]" >CJ ONE 포인트</span>
               <p className="inline-block pl-[15px] text-[18px] text-[#f27370] tracking-[-1.16px] font-medium cursor-pointer">
-                1,500
+                {(1500).toLocaleString()}
                 <em className="inline-block pl-[5px] text-[13px] font-bold text-[#555555] not-italic">P</em>
               </p>
             </li>
             <li className="float-left w-1/3 text-center">
               <span className="text-[13px] font-bold text-[#555]" >쿠폰</span>
-              <p className="inline-block pl-[15px] text-[18px] text-[#f27370] tracking-[-1.16px] font-medium cursor-pointer">
-                5
+              <Link href="/mypage/coupon" onClick={e => handleMenuClick(e, href)} className="inline-block pl-[15px] text-[18px] text-[#f27370] tracking-[-1.16px] font-medium cursor-pointer">
+                3
                 <em className="inline-block pl-[5px] text-[13px] font-bold text-[#555555] not-italic">개</em>
-              </p>
+              </Link>
             </li>
             <li className="float-left w-1/3 text-center">
               <span className="text-[13px] font-bold text-[#555]" >예치금</span>
@@ -343,8 +333,8 @@ export default function Order() {
         </fieldset>
 
         <p className="pt-[10px] text-[#555555] text-[12px] leading-[18px]">
-          <span className="relative inline-block align-middle px-[10px] text-[#555555] text-[12px] leading-[18px]">2017년 4월 1일 이후 내역만 조회가 가능하며, 이전의 주문내역은 CJMall 주문내역에서 확인하실 수 있습니다.</span>
-          <span className="relative inline-block align-middle px-[10px] text-[#555555] text-[12px] leading-[18px]">매장 구매는 CJ ONE 포인트 적립을 한 경우, 최근 1년 내역만 조회가 가능합니다. (2019년 9월 27일 이후 내역만 조회 가능)</span>
+          <span className="relative inline-block align-middle px-[10px] text-[#555555] text-[12px] leading-[18px] bg-[url('/images/mypage/coupon/bar_2x2.gif')] bg-no-repeat bg-[position:0_7px]">2017년 4월 1일 이후 내역만 조회가 가능하며, 이전의 주문내역은 CJMall 주문내역에서 확인하실 수 있습니다.</span>
+          <span className="relative inline-block align-middle px-[10px] text-[#555555] text-[12px] leading-[18px] bg-[url('/images/mypage/coupon/bar_2x2.gif')] bg-no-repeat bg-[position:0_7px]">매장 구매는 CJ ONE 포인트 적립을 한 경우, 최근 1년 내역만 조회가 가능합니다. (2019년 9월 27일 이후 내역만 조회 가능)</span>
         </p>
 
         {/* 주문/배송 상세 테이블 */}
