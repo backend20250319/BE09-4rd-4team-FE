@@ -80,11 +80,6 @@ export default function SignUpPage() {
             <div className="w-10 h-10 rounded-full bg-orange-500 text-white flex items-center justify-center font-bold">1</div>
             <p className="mt-2 text-sm text-orange-500 font-semibold">회원가입 여부</p>
           </div>
-          {/* <div className="flex-1 border-t-2 border-gray-300 mx-2"></div>
-          <div className="flex flex-col items-center mx-4 text-gray-500">
-            <div className="w-10 h-10 rounded-full border-2 border-gray-300 flex items-center justify-center">2</div>
-            <p className="mt-2 text-sm">약관동의</p>
-          </div> */}
           <div className="flex-1 border-t-2 border-gray-300 mx-2"></div>
           <div className="flex flex-col items-center mx-4 text-gray-500">
             <div className="w-10 h-10 rounded-full border-2 border-gray-300 flex items-center justify-center">2</div>
