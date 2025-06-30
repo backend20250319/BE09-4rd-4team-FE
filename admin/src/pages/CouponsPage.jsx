@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import NewCouponModal from '../components/NewCouponModal';
 import { PlusIcon, TrashIcon } from 'lucide-react';
 
-export function CouponsPage() {
+export default function CouponsPage() {
   const [coupons, setCoupons] = useState([
     { id: 1, name: 'WELCOME10', discount: 10, validUntil: '2025-12-31' },
     { id: 2, name: 'SPRING20', discount: 20, validUntil: '2025-06-30' },
