@@ -11,10 +11,11 @@ const MyPageNavBar = () => {
     {
       title: '마이 쇼핑',
       items: [
-        { label: '주문/배송 조회', href: '/mypage/order' },
-        { label: '장바구니', href: '/order/cart' },
-        { label: '쿠폰', href: '/mypage/coupon' },
-        { label: '리뷰', href: '#' },
+
+        { label: "주문/배송 조회", href: "/mypage/order" },
+        { label: "장바구니", href: "/order/cart" },
+        { label: "쿠폰", href: "/mypage/coupon" },
+        { label: "리뷰", href: "./review/" },
       ],
     },
     {
