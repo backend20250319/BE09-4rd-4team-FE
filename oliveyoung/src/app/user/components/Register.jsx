@@ -140,32 +140,7 @@ const RegistrationForm = () => {
                 <h1 className="text-2xl font-bold text-gray-800 mb-6 text-center">회원가입</h1>
 
                 {/* 진행 단계 (스크린샷 참고) */}
-                <div className="flex justify-around mb-8 border-b pb-4">
-                    <div className="text-center">
-                        <div className="w-10 h-10 rounded-full bg-gray-200 flex items-center justify-center mx-auto mb-1">
-                            <span className="text-gray-600 font-bold">1</span>
-                        </div>
-                        <p className="text-sm text-gray-700">약관동의</p>
-                    </div>
-                    <div className="text-center">
-                        <div className="w-10 h-10 rounded-full bg-gray-200 flex items-center justify-center mx-auto mb-1">
-                            <span className="text-gray-600 font-bold">2</span>
-                        </div>
-                        <p className="text-sm text-gray-700">본인확인</p>
-                    </div>
-                    <div className="text-center">
-                        <div className="w-10 h-10 rounded-full bg-red-500 flex items-center justify-center mx-auto mb-1">
-                            <span className="text-white font-bold">3</span>
-                        </div>
-                        <p className="text-sm text-red-500 font-semibold">회원정보 입력</p>
-                    </div>
-                    <div className="text-center">
-                        <div className="w-10 h-10 rounded-full bg-gray-200 flex items-center justify-center mx-auto mb-1">
-                            <span className="text-gray-600 font-bold">4</span>
-                        </div>
-                        <p className="text-sm text-gray-700">가입완료</p>
-                    </div>
-                </div>
+                
 
                 <p className="text-sm text-gray-600 mb-6 text-center">
                     라이프스타일 멤버십 CJ ONE! 영화, 쇼핑, 외식 등 다양한 서비스를 즐겁게 카드로 즐기세요~

@@ -9,7 +9,7 @@ export default function SignUpHeader() {
         {/* 왼쪽: CJ ONE 로고 + 텍스트 */}
         <div className="flex items-center space-x-2">
           <Image
-            src="/images/cjone-logo.png"  // public/images에 넣은 로고 경로
+            src="/images/cjone-logo.png"  // 로고 경로
             alt="CJ ONE Logo"
             width={40}
             height={40}
@@ -30,3 +30,4 @@ export default function SignUpHeader() {
     </header>
   )
 }
+
