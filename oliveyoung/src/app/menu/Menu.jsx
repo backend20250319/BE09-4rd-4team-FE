@@ -4,37 +4,79 @@ import React, { useState } from "react";
 import { useRouter } from "next/navigation";
 
 const CATEGORY_DATA = {
-  스킨케어: ["스킨케어", "마스크팩", "클렌징", "선케어"],
-  "메이크업/세일": ["파운데이션", "립스틱", "블러셔"],
-  뷰티소품: ["퍼프", "브러쉬", "거울"],
-  "더모 코스메틱": ["민감성", "약산성 클렌저"],
-  맨즈케어: ["면도기", "올인원"],
-  "향수/디퓨저": ["여성향수", "남성향수"],
-  헤어케어: ["샴푸", "트리트먼트"],
-  바디케어: ["바디워시", "바디로션"],
-  건강식품: ["비타민", "홍삼"],
-  푸드: ["간편식", "영양식"],
-  "구강/건강용품": ["칫솔", "마우스워시"],
-  위생용품: ["손소독제", "티슈"],
-  "라이프/케이팝": ["굿즈", "홈데코"],
-  AWARDS: [],
+  스킨케어: [
+    "스킨/토너",
+    "에센스/세럼/앰플",
+    "크림",
+    "로션",
+    "미스트/오일",
+    "스킨케어세트",
+    "스킨케어 디바이스",
+  ],
+  메이크업: ["립메이크업", "베이스메이크업", "아이메이크업"],
+  뷰티소품: ["메이크업소품", "아이소품", "스킨케어소품"],
+  "더모 코스메틱": ["스킨케어", "바디케어", "클렌징", "선케어", "마스크팩"],
+  맨즈케어: ["스킨케어", "메이크업", "쉐이빙/왁싱"],
+  "향수/디퓨저": ["향수", "미니/고체향수", "홈프래그런스"],
+  헤어케어: [
+    "샴푸/린스",
+    "트리트먼트/팩",
+    "두피앰플/토닉",
+    "헤어에센스",
+    "염색약/탈색",
+    "헤어기기/브러시",
+    "스타일링",
+  ],
+  바디케어: [
+    "샤워/입욕",
+    "로션/오일/미스트",
+    "핸드케어",
+    "풋케어",
+    "제모/왁싱",
+    "데오드란트",
+    "선물세트",
+    "베이비",
+  ],
+  건강식품: ["비타민", "영양제", "유산균", "슬리밍/이너뷰티"],
+  푸드: [
+    "식단관리/이너뷰티",
+    "과자/초콜릿/디저트",
+    "생수/음료/커피",
+    "간편식/요리",
+    "베이비푸드",
+  ],
+  구강용품: ["칫솔", "치약", "애프터구강케어", "휴대용세트", "구강가전"],
+  위생용품: [
+    "생리/위생용품",
+    "Y존케어",
+    "성인용품",
+    "마사지젤/오일",
+    "테스터킷",
+    "성인용 기저귀",
+    "화장지",
+  ],
+  패션: ["언더웨어", "홈웨어", "액티브웨어", "패션잡화"],
+  "리빙/가전": [
+    "가전",
+    "주방",
+    "세제/청소",
+    "인테리어/욕실",
+    "반려동물",
+    "베이비",
+  ],
+  "취미/펜시": ["팬시/캐릭터", "문구", "디지털/기기", "음반"],
 };
 
 export default function Menu() {
   const [isCategoryOpen, setIsCategoryOpen] = useState(false);
-  const [activeCategory, setActiveCategory] = useState("스킨케어");
   const router = useRouter();
 
-  const toggleCategory = () => {
-    setIsCategoryOpen((prev) => !prev);
-  };
-
-  const handleMouseEnter = (category) => {
-    setActiveCategory(category);
-  };
-
   const handleSubCategoryClick = (sub) => {
-    if (sub === "스킨케어") {
+    setIsCategoryOpen(false);
+  };
+
+  const handleCategoryClick = (category) => {
+    if (category === "스킨케어") {
       router.push("/product");
       setIsCategoryOpen(false);
     }
@@ -42,20 +84,17 @@ export default function Menu() {
 
   return (
     <div className="relative z-50">
-      {/* 상단 메뉴 바 */}
       <div className="h-[47px] flex justify-center border-t border-b-2 border-t-[#dddddd] border-b-black bg-white">
         <div className="w-[1020px] flex items-center">
-          {/* 카테고리 버튼 */}
           <button
-            onClick={toggleCategory}
-            className="w-[170px] h-[47px] border-l border-r border-[#dddddd] flex items-center gap-3 pl-[27px] font-bold text-[15px]"
+            onClick={() => setIsCategoryOpen(!isCategoryOpen)}
+            className="w-[170px] h-[44px] border border-gray flex items-center gap-3 pl-[27px] font-bold text-[15px] transition-colors duration-200 bg-white text-black]"
           >
             <img src="/images/categoryIcon.png" alt="menu" />
             카테고리
           </button>
 
-          {/* 상단 메뉴 리스트 */}
-          <ul className="pl-[30px] flex flex-row gap-11 font-bold">
+          <ul className="pl-[30px] flex flex-row gap-[42px] text-[15px] font-bold h-[44px] items-center">
             {[
               "오특",
               "랭킹",
@@ -78,50 +117,31 @@ export default function Menu() {
         </div>
       </div>
 
-      {/* 드롭다운 메뉴 */}
       {isCategoryOpen && (
-        <div className="absolute top-[47px] left-0 w-full bg-white z-50">
-          <div className="w-[1020px] mx-auto flex h-[450px] shadow border-b border-[#ddd]">
-            {/* 왼쪽 대분류 */}
-            <ul className="w-[170px] h-full bg-black/80 text-white text-sm font-semibold py-3 px-4 space-y-0">
-              {Object.keys(CATEGORY_DATA).map((category, idx) => (
-                <li
-                  key={idx}
-                  onMouseEnter={() => handleMouseEnter(category)}
-                  className={`py-2 px-2 cursor-pointer ${
-                    activeCategory === category
-                      ? "bg-black text-white font-bold"
-                      : ""
-                  }`}
+        <div className="absolute top-[47px] left-1/2 -translate-x-1/2 w-[1020px] z-50 bg-white border-b shadow">
+          <div className="py-6 px-4 grid grid-cols-5 gap-x-10 gap-y-4 text-sm text-black">
+            {Object.entries(CATEGORY_DATA).map(([category, subs], idx) => (
+              <div key={idx} className="space-y-2 pr-2">
+                <p
+                  onClick={() => handleCategoryClick(category)}
+                  className="font-bold cursor-pointer tracking-wide hover:text-[#f27370]"
                 >
-                  {category === "AWARDS" ? (
-                    <div className="flex items-center gap-1">
-                      AWARDS <span className="text-sm">🏆</span>
-                    </div>
-                  ) : (
-                    category
-                  )}
-                </li>
-              ))}
-            </ul>
-
-            {/* 오른쪽 소분류 (대분류 제목 제거됨) */}
-            <ul className="w-[850px] p-6 text-sm text-black space-y-2">
-              {(CATEGORY_DATA[activeCategory] || []).map((sub, i) => (
-                <li key={i}>
-                  <button
-                    onClick={() => handleSubCategoryClick(sub)}
-                    className={`text-left ${
-                      sub === "스킨케어"
-                        ? "hover:text-[#f27370] hover:underline cursor-pointer"
-                        : "text-gray-600 cursor-default"
-                    }`}
-                  >
-                    {sub}
-                  </button>
-                </li>
-              ))}
-            </ul>
+                  {category}
+                </p>
+                <ul className="space-y-1">
+                  {subs.map((sub, i) => (
+                    <li key={i}>
+                      <button
+                        onClick={() => handleSubCategoryClick(sub)}
+                        className="hover:text-[#f27370] hover:underline cursor-pointer tracking-wide"
+                      >
+                        {sub}
+                      </button>
+                    </li>
+                  ))}
+                </ul>
+              </div>
+            ))}
           </div>
         </div>
       )}
