@@ -3,7 +3,7 @@ import { SearchIcon, UserPlusIcon, EyeIcon } from 'lucide-react';
 import NewUserModal from '../components/NewUserModal';
 
 
-export function UsersTable() {
+export default function UsersTable() {
   const [searchTerm, setSearchTerm] = useState('');
   const [showModal, setShowModal] = useState(false);
   const [statusFilter, setStatusFilter] = useState('');

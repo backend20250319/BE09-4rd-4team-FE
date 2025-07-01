@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { SearchIcon, EyeIcon, DownloadIcon } from 'lucide-react';
 
-export function OrdersTable() {
+export default function OrdersTable() {
   const [searchTerm, setSearchTerm] = useState('');
   const [paymentFilter, setPaymentFilter] = useState('');
   const [statusFilter, setStatusFilter] = useState('');
