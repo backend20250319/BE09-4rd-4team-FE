@@ -5,8 +5,8 @@ export default function ReviewTabs() {
   const router = useRouter();
   const pathname = usePathname();
 
-  // 경로로부터 현재 탭 감지
-  const activeTab = pathname.includes("/review/mine") ? "mine" : "write";
+  // guide_mine 경로일 때 나의 리뷰 탭 활성화
+  const activeTab = pathname.includes("/guide_mine") ? "mine" : "write";
 
   return (
     <div className="w-[785.6px] mx-auto mt-4">
