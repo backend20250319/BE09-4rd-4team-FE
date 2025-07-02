@@ -1,16 +1,17 @@
-'use client';
+"use client";
 
-import React from 'react';
-import MyPageNavBar from './components/NavBar';
-import { usePathname } from 'next/navigation';
+import React from "react";
+import MyPageNavBar from "./components/NavBar";
+import { usePathname } from "next/navigation";
 
 const MyPageLayout = ({ children }) => {
   const pathname = usePathname();
 
   // 특정 경로에서 NavBar 숨기기
   const shouldHideNavBar =
-    pathname.startsWith('/mypage/user/modifyactinfo/modifyactdetailed') ||
-    pathname.startsWith('/mypage/user/modifyactinfo/modifypwd');
+    pathname.startsWith("/mypage/user/modifyactinfo/modifyactdetailed") ||
+    pathname.startsWith("/mypage/user/modifyactinfo/modifypwd") ||
+    pathname.startsWith("/mypage/user/modifyactinfo/minfodification");
 
   if (shouldHideNavBar) {
     return <>{children}</>;
