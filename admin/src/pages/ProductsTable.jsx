@@ -1,10 +1,10 @@
 import React, { useState } from 'react';
 import { PlusIcon, SearchIcon, TrashIcon, DownloadIcon } from 'lucide-react';
-import NewProductModal from '../admin/components/NewProductModal';
+import NewProductModal from '../components/NewProductModal';
 
 
 
-export function ProductsTable() {
+export default function ProductsTable() {
   const [searchTerm, setSearchTerm] = useState('');
   const [showModal, setShowModal] = useState(false);
   const [categoryFilter, setCategoryFilter] = useState('');

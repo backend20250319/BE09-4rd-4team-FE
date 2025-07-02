@@ -90,7 +90,7 @@ export default function Menu() {
             onClick={() => setIsCategoryOpen(!isCategoryOpen)}
             className="w-[170px] h-[44px] border border-gray flex items-center gap-3 pl-[27px] font-bold text-[15px] transition-colors duration-200 bg-white text-black]"
           >
-            <img src="/images/product/categoryIcon.png" alt="menu" />
+            <img src="/images/categoryIcon.png" alt="menu" />
             카테고리
           </button>
 
