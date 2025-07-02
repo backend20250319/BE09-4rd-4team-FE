@@ -11,17 +11,16 @@ const MyPageNavBar = () => {
     {
       title: '마이 쇼핑',
       items: [
-
-        { label: "주문/배송 조회", href: "/mypage/order" },
-        { label: "장바구니", href: "/order/cart" },
-        { label: "쿠폰", href: "/mypage/coupon" },
-        { label: "리뷰", href: "./review/" },
+        { label: '주문/배송 조회', href: '/mypage/order' },
+        { label: '장바구니', href: '/order/cart' },
+        { label: '쿠폰', href: '/mypage/coupon' },
+        { label: '리뷰', href: './review/' },
       ],
     },
     {
       title: '마이 정보',
       items: [
-        { label: '회원정보 수정', href: '#' },
+        { label: '회원정보 수정', href: '/mypage/user/modifyactinfo' },
         { label: '배송지/환불계좌', href: '/mypage/user/getdeliveryinfo' },
         { label: '회원탈퇴', href: '/mypage/user/withdrawal' },
       ],
