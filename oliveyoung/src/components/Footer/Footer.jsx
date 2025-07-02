@@ -47,7 +47,7 @@ function Footer(props) {
         <div className="relative w-[1020px] flex flex-row justify-between mt-[25px] pl-[236px]">
           <img
             className="absolute left-0 bottom-[50%] w-[146px] h-[24px]"
-            src="/images/logo.png" // 절대 경로로 수정
+            src="/images/product/logo.png" // 절대 경로로 수정
             alt="logo"
           />
           <div className="flex flex-col">

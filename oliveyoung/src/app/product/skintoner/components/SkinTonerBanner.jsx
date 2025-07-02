@@ -9,24 +9,24 @@ import "slick-carousel/slick/slick-theme.css";
 const categories = [
   [
     {
-      img: "/images/skintonerbanner1.jpg",
+      img: "/images/product/skintonerbanner1.jpg",
       title: "넘버즈인X지냐\n파우더 론칭 기획",
       desc: "1번 스킨케어링 파우더 론칭 특가",
     },
     {
-      img: "/images/skintonerbanner2.jpg",
+      img: "/images/product/skintonerbanner2.jpg",
       title: "세럼 강자 토리든\nNEW & BEST",
       desc: "추가 할인에 더한 풍성한 증정까지!",
     },
   ],
   [
     {
-      img: "/images/skintonerbanner3.jpg",
+      img: "/images/product/skintonerbanner3.jpg",
       title: "여름 피부, 남자는\n올인원으로 쿨하게",
       desc: "햇빛따위 쿨하게 이겨버리는 알파 올인원",
     },
     {
-      img: "/images/skintonerbanner4.jpg",
+      img: "/images/product/skintonerbanner4.jpg",
       title: "예민한 피부를 위한\n트러블 진정 솔루션",
       desc: "외부자극에 지친 피부를 위한 진정 솔루션",
     },

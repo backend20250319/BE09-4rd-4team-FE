@@ -190,7 +190,7 @@ export default function BrandFilter() {
       {/* --- 경로 아래 구분선 --- */}
       <div className="border-b border-[#e2e2e2] mb-4" />
       {/* --- 큰 타이틀 --- */}
-      <div className="mb-5 text-4xl font-black">스킨/토너</div>
+      <div className="mb-5 text-4xl font-semibold">스킨/토너</div>
       {/* --- 1행 6열 탭 --- */}
       <div className="mb-6">
         <div className="grid grid-cols-6 overflow-hidden rounded">
@@ -249,7 +249,7 @@ export default function BrandFilter() {
       <div className="border-t-2 border-[#d8e49e] pt-4 pb-1 flex bg-white">
         {/* 왼쪽 브랜드 카운트 */}
         <div className="w-[150px] flex flex-col items-start">
-          <div className="mb-2 text-2xl font-black">브랜드</div>
+          <div className="mb-2 text-2xl font-semibold">브랜드</div>
           <div className="mb-1 text-base font-bold text-lime-500">
             Total {brands.length}
           </div>
