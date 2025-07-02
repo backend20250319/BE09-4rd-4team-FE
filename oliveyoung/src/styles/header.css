@@ -4,7 +4,7 @@ li:hover .bg-arrow-hover {
 }
 
 .bg-arrow-hover {
-  background-image: url('/images/arrow.png'); /* 절대 경로로 수정 */
+  background-image: url('/images/product/arrow.png'); /* 절대 경로로 수정 */
   background-position: top;
   background-repeat: no-repeat;
 }
@@ -14,7 +14,7 @@ li:active .bg-arrow-active {
 }
 
 .bg-arrow-active {
-  background-image: url('/images/arrow.png'); /* 절대 경로로 수정 */
+  background-image: url('/images/product/arrow.png'); /* 절대 경로로 수정 */
   background-position: top;
   background-repeat: no-repeat;
 }

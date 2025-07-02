@@ -385,7 +385,7 @@ function ProductPage1() {
                 29,900원
                 <span className="ml-3 text-sm font-normal text-gray-700">
                   혜택 정보
-                  <GoQuestion className="inline-block ml-1 text-base text-gray-500 align-middle cursor-pointer" />
+                  <GoQuestion className="inline-block mb-1 ml-1 text-base text-gray-500 align-middle cursor-pointer" />
                 </span>
               </span>
               {/* 할인 가격 및 혜택정보 */}
@@ -800,6 +800,111 @@ function ProductPage1() {
           </div>
         )}
       </div>
+      {/* 다른 고객이 함께 본 상품 섹션 시작 */}
+      {/* 캐러셀 전체에 좌우 패딩을 적용합니다. */}
+      {/* 상단 구분선과 상단 패딩 추가 */}
+      <div className="relative px-4 pt-8 mt-12 border-t border-gray-200 md:px-0">
+        <div className="flex items-center justify-between mb-8">
+          <h2 className="text-xl font-bold">다른 고객이 함께 본 상품</h2>
+          <a
+            href="#"
+            className="flex items-center text-sm text-gray-600 hover:underline"
+          >
+            더보기 <IoChevronForwardOutline className="ml-1 text-base" />
+          </a>
+        </div>
+
+        {/* 상품 캐러셀/목록 */}
+        <div className="relative">
+          <div className="flex items-center">
+            {/* 왼쪽 화살표 */}
+            <button
+              onClick={handlePrevPage}
+              className="absolute z-10 p-2 -translate-y-1/2 bg-white rounded-full shadow-md -left-10 focus:outline-none"
+            >
+              <IoChevronForwardOutline className="w-5 h-5 text-gray-600 transform rotate-180" />
+            </button>
+
+            {/* 상품 카드 목록 (가로 스크롤) */}
+            <div
+              ref={carouselRef}
+              className="flex w-full space-x-4 overflow-x-hidden scroll-smooth snap-x snap-mandatory"
+            >
+              {products.map((product) => (
+                <div
+                  key={product.id}
+                  // border border-gray-100 및 shadow-sm 제거
+                  className="flex flex-none p-2 mb-6 bg-white snap-start"
+                  style={{
+                    width: `calc((100% - ${
+                      gapWidth * (itemsPerPage - 1)
+                    }px) / ${itemsPerPage})`,
+                  }}
+                >
+                  <div className="flex-shrink-0 w-24 h-24 mr-3">
+                    <img
+                      src={product.img}
+                      alt={product.name}
+                      className="object-contain w-full h-full rounded-md"
+                    />
+                  </div>
+                  <div className="flex flex-col justify-center flex-grow">
+                    <p className="mb-1 text-sm font-semibold line-clamp-2">
+                      {product.name}
+                    </p>
+                    <div className="flex items-baseline mb-1">
+                      <span className="mr-1 text-xs text-gray-400 line-through">
+                        {product.originalPrice}
+                      </span>
+                      <span className="text-base font-bold text-red-500">
+                        {product.discountedPrice}원
+                      </span>
+                    </div>
+                    <div className="flex flex-wrap">
+                      {product.badge.map((badgeText, badgeIdx) => {
+                        let bgColorClass = "";
+                        switch (badgeText) {
+                          case "세일":
+                            bgColorClass = "bg-[#f65c60]";
+                            break;
+                          case "쿠폰":
+                            bgColorClass = "bg-[#9bce26]";
+                            break;
+                          case "증정":
+                            bgColorClass = "bg-[#6fcff7]";
+                            break;
+                          case "오늘드림":
+                            bgColorClass = "bg-[#f374b7]";
+                            break;
+                          default:
+                            bgColorClass = "bg-gray-500";
+                        }
+                        return (
+                          <span
+                            key={badgeIdx}
+                            className={`px-1.5 py-0.5 text-white text-xs rounded-sm mr-1 mb-1 ${bgColorClass}`}
+                          >
+                            {badgeText}
+                          </span>
+                        );
+                      })}
+                    </div>
+                  </div>
+                </div>
+              ))}
+            </div>
+
+            {/* 오른쪽 화살표 */}
+            <button
+              onClick={handleNextPage}
+              className="absolute z-10 p-2 -translate-y-1/2 bg-white rounded-full shadow-md -right-10 focus:outline-none"
+            >
+              <IoChevronForwardOutline className="w-5 h-5 text-gray-600" />
+            </button>
+          </div>
+        </div>
+      </div>
+      {/* "다른 고객이 함께 본 상품" 섹션 끝 */}
     </div>
   );
 }
