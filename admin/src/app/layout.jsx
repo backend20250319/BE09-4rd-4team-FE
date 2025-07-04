@@ -1,16 +1,20 @@
 "use client";
-import Header from "@/components/Header";
 import Sidebar from "@/components/Sidebar";
-import "./global.css"; // Import global styles
+import Header from "@/components/Header";
+import "../styles/globals.css";
 
-export default function RootLayout({ children }) {
+
+
+export default function AdminLayout({ children }) {
   return (
     <html lang="ko">
-      <body className="flex min-h-screen bg-gray-50">
-        <Sidebar />
-        <div className="flex flex-col flex-1">
-          <Header />
-          <main className="flex-1 p-6">{children}</main>
+      <body>
+         <div className="flex min-h-screen">
+          <Sidebar />
+          <main className="flex-1">
+            <Header />
+            <div className="p-6">{children}</div>
+          </main>
         </div>
       </body>
     </html>

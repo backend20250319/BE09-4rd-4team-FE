@@ -2,5 +2,5 @@
   "version": 3,
   "sources": [],
   "sections": [
-    {"offset": {"line": 7, "column": 0}, "map": {"version":3,"sources":["file:///Users/yudaeun/dev/BE09-4rd-4team/BE09-4rd-4team-FE/admin/src/app/page.jsx"],"sourcesContent":["\n'use client'\nimport { useEffect } from \"react\";\nimport { useRouter } from \"next/navigation\";\n\nexport default function RootRedirectPage() {\n  const router = useRouter();\n  useEffect(() => {\n    router.push(\"/admin/dashboard\"); // 로그인 여부에 따라 \"/user/main\" 도 가능\n  }, []);\n  return null;\n}\n"],"names":[],"mappings":";;;AAEA;AACA;AAFA;;;AAIe,SAAS;IACtB,MAAM,SAAS,CAAA,GAAA,kIAAA,CAAA,YAAS,AAAD;IACvB,CAAA,GAAA,qMAAA,CAAA,YAAS,AAAD,EAAE;QACR,OAAO,IAAI,CAAC,qBAAqB,+BAA+B;IAClE,GAAG,EAAE;IACL,OAAO;AACT","debugId":null}}]
+    {"offset": {"line": 7, "column": 0}, "map": {"version":3,"sources":["file:///Users/yudaeun/dev/BE09-4rd-4team/BE09-4rd-4team-FE/admin/src/app/page.jsx"],"sourcesContent":["// src/app/products/page.jsx\n\n\"use client\";\nimport ProductsPage from \"../../components/ProductsPage\"; // 또는 components 위치에 따라 상대경로 조정\n\nexport default function Page() {\n  return <ProductsPage />;\n}\n"],"names":[],"mappings":"AAAA,4BAA4B;;;;;;;;;;AAE5B;;;AAGe,SAAS;IACtB,qBAAO,8OAAC;;;;;AACV","debugId":null}}]
 }
