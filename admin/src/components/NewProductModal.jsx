@@ -23,7 +23,7 @@ export default function NewProductModal({ onClose, onAdd }) {
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-30">
       <div className="w-full max-w-md p-6 bg-white rounded-lg shadow-md">
-        <h2 className="mb-4 text-xl font-bold">신규 상품 등록</h2>
+        <h2 className="mb-4 text-xl font-bold">상품 등록</h2>
         <form className="space-y-4" onSubmit={handleSubmit}>
           <input
             value={name}

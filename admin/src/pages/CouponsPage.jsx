@@ -28,7 +28,7 @@ export default function CouponsPage() {
           onClick={() => setShowModal(true)}
           className="bg-[#9BCC47] text-white px-4 py-2 rounded-md flex items-center"
         >
-          <PlusIcon size={16} className="mr-1" /> 신규 쿠폰 등록
+          <PlusIcon size={16} className="mr-1" />쿠폰 등록
         </button>
       </div>
       <div className="bg-white border rounded shadow-sm">

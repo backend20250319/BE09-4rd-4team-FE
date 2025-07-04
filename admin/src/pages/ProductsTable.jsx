@@ -97,7 +97,7 @@ export default function ProductsTable() {
           </button>
           <button className="bg-[#9BCC47] text-white px-4 py-2 rounded-md flex items-center" onClick={() => setShowModal(true)}>
             <PlusIcon size={16} className="mr-1" />
-            신규 상품 등록
+            상품 등록
           </button>
         </div>
       </div>
