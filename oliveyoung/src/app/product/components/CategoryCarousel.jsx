@@ -7,12 +7,12 @@ import 'slick-carousel/slick/slick-theme.css';
 
 // 이미지 절대경로로 바로 지정
 const categories = [
-  { img: '/images/category1.jpg', name: '진정솔루션' },
-  { img: '/images/category2.jpg', name: '슬로우에이징' },
-  { img: '/images/category3.jpg', name: '클린뷰티' },
-  { img: '/images/category4.jpg', name: '크림' },
-  { img: '/images/category5.jpg', name: '에센스' },
-  { img: '/images/category6.jpg', name: '토너' },
+  { img: '/images/product/category1.jpg', name: '진정솔루션' },
+  { img: '/images/product/category2.jpg', name: '슬로우에이징' },
+  { img: '/images/product/category3.jpg', name: '클린뷰티' },
+  { img: '/images/product/category4.jpg', name: '크림' },
+  { img: '/images/product/category5.jpg', name: '에센스' },
+  { img: '/images/product/category6.jpg', name: '토너' },
 ];
 
 // 👉 커스텀 왼쪽 화살표

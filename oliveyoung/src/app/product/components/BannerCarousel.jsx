@@ -12,10 +12,10 @@ function BannerCarousel() {
 
   // 이미지 경로 절대경로로 선언
   const banners = [
-    '/images/banner1.jpg',
-    '/images/banner2.jpg',
-    '/images/banner3.jpg',
-    '/images/banner4.jpg',
+    '/images/product/banner1.jpg',
+    '/images/product/banner2.jpg',
+    '/images/product/banner3.jpg',
+    '/images/product/banner4.jpg',
   ];
 
   const settings = {
