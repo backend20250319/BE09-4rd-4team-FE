@@ -1,3 +1,4 @@
+"use client";
 import React, { useState } from 'react';
 import { XIcon, UserIcon, MailIcon, PhoneIcon, CalendarIcon, CheckIcon } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
