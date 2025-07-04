@@ -3,17 +3,130 @@
 import cartTableData from "./data/cartTableData"
 import Image from "next/image";
 import Link from "next/link";
+import React, {useState} from "react";
 
 export default function Cart() {
 
-  const itemCount = cartTableData.length;
+  // 상품 상태 관리
+  const [products, setProducts] = useState(cartTableData);
 
+  // 각 상품별 수량, 커스텀 모드, 커스텀 수량 상태 관리
+  const [quantityStates, setQuantityStates] = useState(
+    cartTableData.reduce((acc, product) => {
+      acc[product.id] = {
+        selectedQuantity: product.quantity.toString(),
+        customQuantity: "",
+        isCustomMode: false,
+      };
+      return acc;
+    }, {})
+  );
+
+  // 수량 변경 핸들러
+  const handleQuantityChange = (productId, value) => {
+    setQuantityStates((prev) => ({
+      ...prev,
+      [productId]: {
+        ...prev[productId],
+        selectedQuantity: value,
+        isCustomMode: value === "10+",
+        customQuantity: value === "10+" ? "" : "",
+      },
+    }));
+    if (value !== "10+") {
+      setProducts((prev) =>
+        prev.map((p) =>
+          p.id === productId ? { ...p, quantity: parseInt(value) } : p
+        )
+      );
+    }
+  };
+
+  // 커스텀 수량 입력 핸들러
+  const handleCustomQuantityChange = (productId, value) => {
+    setQuantityStates((prev) => ({
+      ...prev,
+      [productId]: {
+        ...prev[productId],
+        customQuantity: value,
+      },
+    }));
+  };
+
+  // 커스텀 수량 확정 핸들러
+  const handleConfirmCustomQuantity = (productId) => {
+    const quantity = parseInt(quantityStates[productId].customQuantity);
+    if (quantity >= 1) {
+      setProducts((prev) =>
+        prev.map((p) =>
+          p.id === productId ? { ...p, quantity: quantity } : p
+        )
+      );
+      setQuantityStates((prev) => ({
+        ...prev,
+        [productId]: {
+          selectedQuantity: quantity.toString(),
+          customQuantity: quantity > 10 ? quantity.toString() : "",
+          isCustomMode: quantity > 10,
+        },
+      }));
+      if (quantity <= 10) {
+        setQuantityStates((prev) => ({
+          ...prev,
+          [productId]: {
+            ...prev[productId],
+            isCustomMode: false,
+            customQuantity: "",
+            selectedQuantity: quantity.toString(),
+          },
+        }));
+      }
+    }
+  };
+
+  // 총합 계산
+  const totalPrice = products.reduce(
+    (sum, p) => sum + p.price * p.quantity,
+    0
+  );
+
+  // 아이템 개수
+  const itemCount = products.length;
+
+  // 메뉴 클릭 핸들러
   const handleMenuClick = (e, href) => {
     e.preventDefault();
     setTimeout(() => {
       window.location.href = href;
     }, 1000);
   };
+
+  const [checkedIds, setCheckedIds] = useState([]);
+
+  const handleAllCheck = (e) => {
+    if (e.target.checked) {
+      setCheckedIds(products.map((p) => p.id));
+    } else {
+      setCheckedIds([]);
+    }
+  };
+
+  const handleRowCheck = (productId) => (e) => {
+    if (e.target.checked) {
+      setCheckedIds((prev) => [...prev, productId]);
+    } else {
+      setCheckedIds((prev) => prev.filter((id) => id !== productId));
+    }
+  };
+
+  const allChecked = products.length > 0 && checkedIds.length === products.length;
+
+  // 선택된 상품만 합산
+  const selectedProducts = products.filter((p) => checkedIds.includes(p.id));
+  const selectedTotalPrice = selectedProducts.reduce(
+    (sum, p) => sum + p.price * p.quantity,
+    0
+  );
 
   return(
     <div className="overflow-hidden w-full min-w-[1020px]">
@@ -64,7 +177,7 @@ export default function Cart() {
               </span>
             </li>
             <li className="pt-[10px] border-l border-[#e6e6e6] text-[#333] text-[14px] float-left w-[170px] h-[68px] text-center cursor-pointer">
-              <Link href="/order/coupon" onClick={e => handleMenuClick(e, href)}>
+              <Link href="/mypage/coupon" onClick={e => handleMenuClick(e, href)}>
                 <strong className="block mb-[8px]" >할인쿠폰</strong>
                 <span className="block text-[12px]">
                   <span className="mr-[2px] text-[18px] text-[#f27370] align-[-1px] tracking-[-0.02em] font-medium">3</span>개
@@ -110,7 +223,8 @@ export default function Cart() {
           <thead>
             <tr className="text-[#666] text-[14px] leading-[20px] tracking-[-0.04em]">
               <th scope="col" className="h-[40px] border-t-[2px] border-t-[#d6d6d6] border-b border-b-[#ccc] bg-[#fafafa]">
-                <input type="checkbox" className="w-[12px] h-[12px] mx-auto bg-[url('/images/')] bg-[position:0_-20px] bg-transparent cursor-pointer"/>
+                <input type="checkbox" className="w-[12px] h-[12px] mx-auto bg-[url('/images/')] bg-[position:0_-20px] bg-transparent cursor-pointer"
+                checked={allChecked} onChange={handleAllCheck}/>
               </th>
               <th scope="col" className="h-[40px] border-t-[2px] border-t-[#d6d6d6] border-b border-b-[#ccc] bg-[#fafafa]">상품정보</th>
               <th scope="col" className="h-[40px] border-t-[2px] border-t-[#d6d6d6] border-b border-b-[#ccc] bg-[#fafafa]">판매가</th>
@@ -121,25 +235,166 @@ export default function Cart() {
             </tr>
           </thead>
           <tbody>
-            <tr>
-              <td colSpan={7} className="border-b border-b-[#e6e6e6] text-center">
-                <div className="table-row">
-                  <div className="w-[40px] table-cell align-middle">
-                    <input type="checkbox" className = "w-[12px] h-[12px] mx-auto bg-transparent align-middle cursor-pointer"></input>
+            {products.map((product) => (
+              <tr key={product.id}>
+                <td className="border-b border-b-[#e6e6e6] text-center">
+                  <input type="checkbox" className="w-3 h-3 cursor-pointer"
+                    checked={checkedIds.includes(product.id)}
+                    onChange={handleRowCheck(product.id)}/>
+                </td>
+                {/* 상품정보 */}
+                <td className="border-b border-b-[#e6e6e6]">
+                  <div className="flex items-center w-[390px]">
+                    <div className="h-[145px] pt-[30px] pr-[20px] pb-[30px] pl-[20px]">
+                      <Link href="">
+                        <Image width={85} height={85} src={product.image} alt={product.brand} />
+                      </Link>
+                    </div>
+                    <div className="flex-1 pr-[30px]">
+                      <Link href="" className="block">
+                        <span className="block mb-1 text-[#777] font-bold text-[14px]">{product.brand}</span>
+                        <p className="text-sm leading-[18px] text-black">{product.name}</p>
+                      </Link>
+                      <p className="pb-[5px]"></p>
+                      <p className="flex-1 w-[60px] h-[18px] bg-[#f374b7] text-white rounded-[9px] leading-[17px] text-[12px] text-center">오늘드림</p>
+                    </div>
                   </div>
-                  <div className="w-[390px] table-cell align-middle">
-                    <Link href="" className="table-cell relative h-[145ox] pt-[30px] pr-[30px] pb-[30px] pl-[125px] text-left align-midddle cursor-pointer">
-                      <Image width={85} height={85} src="/images/order/coupon/sampleProduct2.jpg" alt="토리든 세럼"/>
-                    </Link>
-                    <Link href="" className="inline-block mb-[5px] text-[#666]">
-                      <span className="block mb-[4px] text-[#777] text-bold"></span>
-                    </Link>
+                </td>
+                {/* 판매가 */}
+                <td className="border-b border-b-[#e6e6e6] text-center">
+                  <span className="text-[14px] text-[#222] font-medium">
+                    <span className="tracking-[-0.02em]">{product.price.toLocaleString()}</span>원
+                  </span>
+                </td>
+                {/* 수량 */}
+                <td className="border-b border-b-[#e6e6e6] text-center">
+                  <div className="w-[60px] space-y-2 mx-auto">
+                    {!quantityStates[product.id].isCustomMode ? (
+                      <select
+                        className="w-full h-[28px] pl-[10px] border rounded-[5px] border-[#ccc] text-[12px] bg-[#fff]"
+                        value={quantityStates[product.id].selectedQuantity}
+                        onChange={(e) => handleQuantityChange(product.id, e.target.value)}
+                      >
+                        {Array.from({ length: 10 }, (_, i) => (
+                          <option key={i + 1} value={i + 1}>{i + 1}</option>
+                        ))}
+                        <option value="10+">10+</option>
+                      </select>
+                    ) : (
+                      <div className="w-[60px]">
+                        <input
+                          type="text"
+                          min="1"
+                          value={quantityStates[product.id].customQuantity}
+                          onChange={(e) => handleCustomQuantityChange(product.id, e.target.value)}
+                          className="w-full h-[28px] px-[5px] border rounded-[5px] border-[#ccc] text-[#222] tracking-[0.5px] text-[12px] bg-[#fff] text-center focus:border-[#9bce26] focus:outline-none"
+                        />
+                        <button
+                          onClick={() => handleConfirmCustomQuantity(product.id)}
+                          disabled={!quantityStates[product.id].customQuantity || quantityStates[product.id].customQuantity < 1}
+                          className="w-full h-[28px] mt-[5px] border border-[#aaa] text-[#666] bg-white text-[12px] rounded-[5px] leading-[28px] text-center font-bold"
+                        >변경</button>
+                      </div>
+                    )}
                   </div>
-                </div>
-              </td>
-            </tr>
+                </td>
+                {/* 구매가 */}
+                <td className="border-b border-b-[#e6e6e6] text-center">
+                  <span className="text-[14px] text-[#e02020] font-medium">
+                    <span className="tracking-[-0.02em]">{(product.price * product.quantity).toLocaleString()}</span>원
+                  </span>
+                </td>
+                {/* 선택 */}
+                <td className="border-b border-b-[#e6e6e6] text-center">
+                  <button className="w-[109px] h-[28px] px-[5px] mb-[5px] border border-[#9bce26] rounded-[5px] leading-[28px] text-[12px] text-[#9bce26] bg-white font-bold">바로구매</button>
+                  <button className="w-[109px] h-[28px] px-[5px] mb-[5px] border border-[#aaa] rounded-[5px] leading-[28px] text-[12px] text-[#666] bg-white font-bold">쇼핑찜</button>
+                  <button className="w-[109px] h-[28px] mb-[5px] border border-[#aaa] rounded-[5px] leading-[28px] text-[12px] text-[#666] bg-white font-bold">삭제</button>
+                </td>
+                {/* 배송정보 */}
+                <td className="border-b border-b-[#e6e6e6] text-center">
+                  <p className="text-[#666] text-[12px] text-center">
+                    <strong className="text-[#333] text-[14px]">{product.delivery}
+                      <span className="block text-[#666] text-[12px] font-medium">{product.deliveryNote}</span>
+                    </strong>
+                  </p>
+                </td>
+              </tr>
+            ))}
           </tbody>
         </table>
+
+        {/* 올리브영 배송상품 */}
+        <div className="mt-[10px] flex justify-between items-start">
+          <div className="float-left w-[300px]">
+            <button type="button" className="px-[15px] border border-[#aaa] text-[#666] bg-white h-[28px] text-[12px] leading-[28px] rounded-[5px] text-center">
+              <span className="inline-block min-w-[40px] font-bold">선택상품 삭제</span>
+            </button>
+            <button type="button" className="px-[15px] ml-[2px] border border-[#aaa] text-[#666] bg-white h-[28px] text-[12px] leading-[28px] rounded-[5px] text-center">
+              <span className="inline-block min-w-[40px] font-bold">품절상품 삭제</span>
+            </button>
+          </div>
+
+          <div className="font-bold text-[#666] float-right w-[700px] mt-[5px] leading-[18px] text-right tracking-[-0.04em] text-[14px]">
+            총 판매가
+            <span className="mr-[1px] text-[16px] font-medium">{selectedTotalPrice.toLocaleString()}</span>원
+            <span className="inline-block mx-[5px] w-[10px] h-[10px] bg-[url('/images/order/cart/ico_sign_cal.png')] bg-[position:0_50%] bg-no-repeat text-left"></span>
+            총 할인금액
+            <span className="mr-[1px] text-[16px] font-medium">0</span>원
+            <span className="inline-block mx-[5px] w-[10px] h-[10px] bg-[url('/images/order/cart/ico_sign_cal.png')] bg-[position:-20px_50%] bg-no-repeat text-left"></span>
+            배송비
+            <span className="mr-[1px] text-[16px] font-medium">0</span>원
+            <span className="inline-block mx-[5px] w-[10px] h-[10px] bg-[url('/images/order/cart/ico_sign_cal.png')] bg-[position:-40px_50%] bg-no-repeat text-left"></span>
+            <span className="text-[14px] text-[#f27370]">
+              총 결제금액
+              <span className="ml-[9px] text-[16px] font-medium">{selectedTotalPrice.toLocaleString()}</span>원
+            </span>
+          </div>
+        </div>
+
+        <div className="mt-[60px] border-t-[2px] border-t-[#9bce26] border-b border-b-[#e6e6e6]">
+          <div className="relative overflow-hidden w-full h-[110px] text-medium">
+            <p className="border-l border-l-[#efefef] float-left w-[340px] h-[110px] pt-[30px] text-center text-[16px] text-[#666] border-r border-r-[#efefef] font-bold">
+              총 판매가
+              <span className="text-[#333] block mt-[10px] text-center text-[16px] font-bold leading-[20px]">
+                <span className="text-[24px] mr-[2px] align-[-2px] tracking-[-0.02em] font-medium">{selectedTotalPrice.toLocaleString()}</span>원
+              </span>
+            </p>
+            <span className="top-1/2 left-[340px] absolute mt-[-15px] ml-[-15px] w-[30px] h-[30px] bg-[url('/images/order/cart/ico_sign_cal2.png')] bg-[position:0_0] bg-no-repeat"></span>
+            <p className="float-left w-[340px] h-[110px] pt-[30px] text-center text-[16px] text-[#666] border-r border-r-[#efefef]">
+              총 할인금액
+              <span className="text-[#f27370] block mt-[10px] text-center text-[16px] font-bold leading-[20px]">
+                <span className="text-[24px] mr-[2px] align-[-2px] tracking-[-0.02em] font-medium">0</span>원
+              </span>
+            </p>
+            <span className="top-1/2 left-[680px] absolute mt-[-15px] ml-[-15px] w-[30px] h-[30px] bg-[url('/images/order/cart/ico_sign_cal2.png')] bg-[position:-30_0] bg-no-repeat"></span>
+            <p className="border-l border-l-[#efefef] float-left w-[340px] h-[110px] pt-[30px] text-center text-[16px] text-[#666] border-r border-r-[#efefef] font-bold">
+              배송비
+              <span className="text-[#333] block mt-[10px] text-center text-[16px] font-bold leading-[20px]">
+                <span className="text-[24px] mr-[2px] align-[-2px] tracking-[-0.02em] font-medium">0</span>원
+              </span>
+            </p>
+          </div>
+          <div className="text-[#333] h-[80px] pt-[30px] px-[30px] text-right bg-[#f6f6f6] border-t-[2px] border-t-[#d6d6d6] text-[22px] font-bold relative leading-[20px]">
+            <span className="absolute top-1/2 left-[30px] h-[30px] -mt-[11px] text-[#888] text-[14px]">
+              <span className="inline-block w-[22px] h-[22px] mr-[7px] mb-[2px] bg-[url('/images/order/cart/ico_arrow_01.gif')] bg-no-repeat align-middle"></span>
+              배송비는 쿠폰할인금액에 따라 변경될 수 있습니다.
+            </span>
+            총 결제예상금액
+            <span className="text-[#ff2828] text-[16px]">
+              <span className="ml-[10px] text-[26px] mr-[2px] align-[-2px] tracking-[-0.02em] font-medium">{selectedTotalPrice.toLocaleString()}</span>원
+            </span>
+          </div>
+        </div>
+
+        <div className="mt-[30px] text-center ">
+          <button type="button" onClick={() => window.location.href = '/order/order'} className="w-[180px] text-[16px] h-[50px] bg-white border border-[#f27370] pt-[11px] pb-[9px] leading-[28px] text-[#f27370] rounded-[5px] text-center font-bold">
+            선택주문 {selectedProducts.length > 0 && `(${selectedProducts.length})`}</button>
+          <button type="button" onClick={() => window.location.href = '/order/order'} className="w-[180px] ml-[7px] text-[16px] h-[50px] bg-[#f27370] pt-[11px] pb-[9px] leading-[30px] text-white rounded-[5px] text-center font-bold">전체주문</button>
+        </div>
+
+        <div className="mt-[30px] py-[20px] border-t border-t-[#ccc]">
+          <p className="text-[12px] text-[#888] text-center font-bold">장바구니 상품은 90일동안, 판매종료 된 상품은 10일동안 보관됩니다.</p>
+        </div>
       </div>
     </div>
   );
