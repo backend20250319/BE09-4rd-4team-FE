@@ -1,5 +1,7 @@
+'use client';
 import React from 'react';
-import { NavLink } from 'react-router-dom';
+import Link from 'next/link';
+import { usePathname } from 'next/navigation';
 import {
   LayoutDashboardIcon,
   PackageIcon,
@@ -7,17 +9,19 @@ import {
   UsersIcon,
   TicketIcon,
   SettingsIcon,
-  LogOutIcon
+  LogOutIcon,
 } from 'lucide-react';
 
-export function Sidebar() {
+export default function Sidebar() {
+  const pathname = usePathname();
+
   const menuItems = [
     { to: '/', label: '대시보드', icon: <LayoutDashboardIcon size={20} /> },
     { to: '/products', label: '상품 관리', icon: <PackageIcon size={20} /> },
     { to: '/orders', label: '주문 관리', icon: <ShoppingCartIcon size={20} /> },
-     { to: '/coupons', label: '쿠폰 관리', icon: <TicketIcon size={20} /> },
+    { to: '/coupons', label: '쿠폰 관리', icon: <TicketIcon size={20} /> },
     { to: '/users', label: '회원 관리', icon: <UsersIcon size={20} /> },
-    { to: '/settings', label: '설정', icon: <SettingsIcon size={20} /> }
+    { to: '/settings', label: '설정', icon: <SettingsIcon size={20} /> },
   ];
 
   return (
@@ -29,17 +33,15 @@ export function Sidebar() {
         <ul className="space-y-1">
           {menuItems.map((item) => (
             <li key={item.to}>
-              <NavLink
-                to={item.to}
-                className={({ isActive }) =>
-                  `flex items-center w-full px-4 py-3 text-left ${
-                    isActive ? 'bg-[#8ab93f] font-medium' : 'hover:bg-[#8ab93f]'
-                  }`
-                }
+              <Link
+                href={item.to}
+                className={`flex items-center w-full px-4 py-3 text-left ${
+                  pathname === item.to ? 'bg-[#8ab93f] font-medium' : 'hover:bg-[#8ab93f]'
+                }`}
               >
                 <span className="mr-3">{item.icon}</span>
                 {item.label}
-              </NavLink>
+              </Link>
             </li>
           ))}
         </ul>
@@ -53,4 +55,3 @@ export function Sidebar() {
     </div>
   );
 }
-export default Sidebar;
