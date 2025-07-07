@@ -213,7 +213,7 @@ function SkinTonerProduct() {
                   {product.originalPrice}
                 </p>
                 <p className="text-xl text-[#e02020] font-bold">
-                  {product.discountedPrice}원
+                  {product.discountedPrice}
                 </p>
               </div>
               {/* 배지 */}
