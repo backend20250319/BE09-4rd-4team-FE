@@ -1,105 +1,152 @@
 "use client";
 
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useMemo } from "react";
 import { useRouter } from "next/navigation";
-import axios from "axios"; // 👈 axios 임포트 추가
+import axios from "axios";
 
-function SkinTonerProduct() {
+function SkinTonerProduct({ selectedBrands }) {
   const router = useRouter();
 
-  // <<<<<<<<<<<< 기존 하드코딩된 products 배열을 제거하고 빈 배열로 초기화 >>>>>>>>>>>>>>
-  const [products, setProducts] = useState([]);
-  const [loading, setLoading] = useState(true); // 로딩 상태 추가
-  const [error, setError] = useState(null);   // 에러 상태 추가
+  const [allProducts, setAllProducts] = useState([]); // 모든 상품 데이터를 저장
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
 
-  // --- API에서 데이터를 가져오는 useEffect 훅 ---
-  useEffect(() => {
-    const fetchProducts = async () => {
-      setLoading(true); // 데이터 로딩 시작
-      setError(null);   // 이전 에러 메시지 초기화
-
-      try {
-        // <<<<<<<<<<<< axios를 사용하여 백엔드 API 호출 >>>>>>>>>>>>>>
-        const response = await axios.get("http://localhost:8080/api/products"); 
-        const data = response.data; // axios는 응답 데이터를 response.data에 바로 넣어줍니다.
-
-        // API에서 받아온 데이터를 프론트엔드에서 사용하는 형식으로 매핑 (기존 하드코딩된 형식과 맞춤)
-        const mappedProducts = data.map((item) => ({
-          id: item.productId,
-          img: item.imageUrl,
-          name: item.productName,
-          // 가격은 API에서 숫자로 온다고 가정하고, 여기서 통화 형식으로 변환합니다.
-          originalPrice: item.originalPrice?.toLocaleString("ko-KR") + "원",
-          discountedPrice: item.discountedPrice?.toLocaleString("ko-KR") + "원",
-          badge: item.badgeNames || [], // 백엔드의 badgeNames (List<String>)를 사용, 없으면 빈 배열
-          filterValue: item.filterValue, // 백엔드의 filterValue 필드 그대로 사용 (가장 중요!)
-          brand: item.brandName,
-        }));
-        setProducts(mappedProducts); // 매핑된 데이터를 products 상태에 저장
-      } catch (error) {
-        console.error("상품 데이터를 가져오는 중 오류 발생:", error);
-        if (error.response) {
-            setError(`상품 데이터를 가져오는 데 실패했습니다: ${error.response.status} - ${error.response.statusText}`);
-        } else if (error.request) {
-            setError("네트워크 오류: 서버에 연결할 수 없습니다.");
-        } else {
-            setError(`요청 오류: ${error.message}`);
-        }
-      } finally {
-        setLoading(false); // 로딩 완료
-      }
-    };
-
-    fetchProducts(); // 컴포넌트가 마운트될 때 데이터 가져오기 함수 실행
-  }, []); // 빈 의존성 배열: 컴포넌트가 처음 렌더링될 때 한 번만 실행
+  const PER_PAGE_OPTIONS = [24, 36, 48];
+  const [itemsPerPage, setItemsPerPage] = useState(PER_PAGE_OPTIONS[0]);
+  const [page, setPage] = useState(1);
 
   // --- 필터 & 정렬 옵션 ---
-  // <<<<<<<<<<<< '전체보기' 필터 옵션 추가 및 초기값 'all'로 설정 >>>>>>>>>>>>>>
   const FILTERS = [
-    { label: "전체보기", value: "all" }, // <-- 추가
+    { label: "전체보기", value: "all" },
     { label: "인기순", value: "popular" },
     { label: "신상품순", value: "new" },
     { label: "판매순", value: "sold" },
     { label: "낮은 가격순", value: "lowPrice" },
     { label: "할인율순", value: "discount" },
   ];
-  const [activeFilter, setActiveFilter] = useState("all"); // <-- 'popular'에서 'all'로 변경
+  const [activeFilter, setActiveFilter] = useState("all");
 
-  // <<<<<<<<<<<< 필터링 로직 수정: 'all'일 경우 전체 상품 반환 >>>>>>>>>>>>>>
-  const filteredProducts = products.filter((product) => {
-    if (activeFilter === "all") {
-      return true; // 'all' 필터가 선택되면 모든 상품을 반환
+  // --- API에서 데이터를 가져오는 useEffect 훅 ---
+  useEffect(() => {
+    const fetchProducts = async () => {
+      setLoading(true);
+      setError(null);
+
+      try {
+        // ⭐️ 백엔드에서 카테고리별 전체 상품만 가져옵니다. (필터링/정렬은 프론트에서)
+        const categoryName = "Skin/Toner"; // 백엔드 카테고리명과 일치시켜야 합니다.
+        const apiUrl = `http://localhost:8080/api/products?categoryName=${categoryName}`;
+        console.log("Fetching all products for category from:", apiUrl);
+
+        const response = await axios.get(apiUrl);
+        const data = response.data;
+
+        // 백엔드 응답이 Spring Data JPA Page 객체 형태인지 (content 필드 확인)
+        // 아니면 직접 배열인지 확인합니다.
+        const productsToMap = (data && Array.isArray(data.content)) ? data.content : (Array.isArray(data) ? data : []);
+
+        const mappedProducts = productsToMap.map((item) => ({
+          id: item.productId,
+          img: item.imageUrl,
+          name: item.productName,
+          brand: item.brandName,
+          // 가격은 API에서 숫자로 온다고 가정하고, 여기서 통화 형식으로 변환합니다.
+          originalPrice: item.originalPrice, // 정렬을 위해 숫자로 유지
+          discountedPrice: item.discountedPrice, // 정렬을 위해 숫자로 유지
+          badge: item.badgeNames || [],
+          // 백엔드에서 생성된 filterValue는 더 이상 사용하지 않습니다.
+          // 필터링 및 정렬에 필요한 다른 필드는 직접 사용합니다 (예: 판매량, 생성일 등)
+        }));
+        setAllProducts(mappedProducts); // 전체 상품 데이터를 저장
+      } catch (error) {
+        console.error("상품 데이터를 가져오는 중 오류 발생:", error);
+        if (error.response) {
+          setError(`상품 데이터를 가져오는 데 실패했습니다: ${error.response.status} - ${error.response.statusText}.`);
+        } else if (error.request) {
+          setError("네트워크 오류: 서버에 연결할 수 없습니다.");
+        } else {
+          setError(`요청 오류: ${error.message}`);
+        }
+        setAllProducts([]);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchProducts();
+  }, []); // 빈 의존성 배열: 컴포넌트 마운트 시 한 번만 전체 데이터 로드
+
+  // ⭐️ useMemo를 사용하여 필터링 및 정렬된 상품 목록을 계산
+  const filteredAndSortedProducts = useMemo(() => {
+    let currentProducts = [...allProducts]; // 원본 allProducts를 복사하여 사용
+
+    // 1. 브랜드 필터링
+    if (selectedBrands && selectedBrands.length > 0) {
+      currentProducts = currentProducts.filter((product) =>
+        selectedBrands.includes(product.brand)
+      );
     }
-    return product.filterValue === activeFilter; // 그 외에는 filterValue와 activeFilter가 일치하는 상품만 반환
-  });
 
-  // --- 상품 개수 옵션 ---
-  const PER_PAGE_OPTIONS = [24, 36, 48];
-  const [itemsPerPage, setItemsPerPage] = useState(PER_PAGE_OPTIONS[0]);
+    // 2. 정렬
+    currentProducts.sort((a, b) => {
+      switch (activeFilter) {
+        case "popular":
+          // 인기순 (필요 시 백엔드에서 'likes' 등의 데이터가 와야 함)
+          // 현재 제공된 데이터에는 '인기'를 나타내는 명확한 필드가 없습니다.
+          // 임시로 id를 사용하거나, 백엔드에서 'likes' 필드를 추가해야 합니다.
+          // 여기서는 예시로 originalPrice를 사용하지만, 실제 인기 기준에 맞게 변경해야 합니다.
+          return b.originalPrice - a.originalPrice; 
+        case "new":
+          // 신상품순 (백엔드에서 'createdAt' 등의 타임스탬프 필드가 와야 함)
+          // 현재 제공된 데이터에는 '신상품'을 나타내는 명확한 필드가 없습니다.
+          // 여기서는 임시로 id를 내림차순으로 정렬하지만, 실제 생성일에 맞게 변경해야 합니다.
+          return b.id - a.id; 
+        case "sold":
+          // 판매순 (백엔드에서 'salesCount' 등의 필드가 와야 함)
+          // 현재 제공된 데이터에는 '판매순'을 나타내는 명확한 필드가 없습니다.
+          // 여기서는 임시로 id를 내림차순으로 정렬하지만, 실제 판매량에 맞게 변경해야 합니다.
+          return b.id - a.id; 
+        case "lowPrice":
+          // 낮은 가격순
+          return a.discountedPrice - b.discountedPrice;
+        case "discount":
+          // 할인율순 계산: (원가 - 할인가) / 원가
+          const discountRateA = (a.originalPrice - a.discountedPrice) / a.originalPrice;
+          const discountRateB = (b.originalPrice - b.discountedPrice) / b.originalPrice;
+          return discountRateB - discountRateA; // 높은 할인율이 먼저 오도록 내림차순
+        default: // "all" 또는 다른 경우
+          return 0; // 정렬하지 않음 (기존 순서 유지)
+      }
+    });
 
-  // --- 페이지네이션 ---
-  // <<<<<<<<<<<< totalPages 계산 시 filteredProducts.length 사용 >>>>>>>>>>>>>>
-  const totalPages = Math.ceil(filteredProducts.length / itemsPerPage);
-  const [page, setPage] = useState(1);
+    return currentProducts;
+  }, [allProducts, selectedBrands, activeFilter]); // 의존성 배열
 
-  // 현재 페이지 상품만 보여주기
-  const pagedProducts = filteredProducts.slice(
+  // 총 상품 개수 및 페이지 수 계산 (필터링 및 정렬된 상품 기준)
+  const totalElements = filteredAndSortedProducts.length;
+  const totalPages = Math.ceil(totalElements / itemsPerPage);
+
+  // 현재 페이지에 해당하는 상품만 슬라이싱
+  const pagedProducts = filteredAndSortedProducts.slice(
     (page - 1) * itemsPerPage,
     page * itemsPerPage
   );
 
+  // --- 필터/정렬/페이지당 아이템 개수 변경 시 페이지 리셋 ---
+  useEffect(() => {
+    setPage(1); // 이 세 가지 상태가 변경되면 항상 1페이지로 돌아감
+  }, [selectedBrands, activeFilter, itemsPerPage]);
+
   // 페이지 이동 시 항상 맨 위로 스크롤
-  // <<<<<<<<<<<< 기존의 window.scrollTo() 유지 (behavior: "smooth" 제거) >>>>>>>>>>>>>>
-  useEffect(() => { // React.useEffect 대신 useEffect 사용 (상단 임포트와 일관성)
-    window.scrollTo(); 
-  }, [page, itemsPerPage]);
+  useEffect(() => {
+    window.scrollTo({ top: 0, behavior: "smooth" });
+  }, [page]); // 페이지 변경 시에만 스크롤
 
   // --- 상품 카드 클릭시 이동 함수 ---
   const handleCardClick = (id) => {
     router.push(`/product/skintoner/product${id}`);
   };
 
-  // <<<<<<<<<<<< 로딩 및 에러 메시지 렌더링 추가 (기존 CSS 형태 유지) >>>>>>>>>>>>>>
   if (loading) {
     return (
       <div className="container py-6 mx-auto">
@@ -130,8 +177,7 @@ function SkinTonerProduct() {
       <div className="flex items-center justify-between px-2 mb-4">
         <div className="w-full text-2xl font-semibold text-center md:text-2xl">
           <span>스킨/토너 카테고리에 </span>
-          {/* <<<<<<<<<<<< filteredProducts.length 사용 >>>>>>>>>>>>>> */}
-          <span className="text-[#ff8882] font-bold">{filteredProducts.length}</span>{" "}
+          <span className="text-[#ff8882] font-bold">{totalElements}</span>{" "}
           <span> 개의 상품이 등록되어 있습니다.</span>
         </div>
       </div>
@@ -150,7 +196,7 @@ function SkinTonerProduct() {
                 }`}
                 onClick={() => {
                   setActiveFilter(f.value);
-                  setPage(1);
+                  // setPage(1); // useEffect에서 처리
                 }}
               >
                 {f.label}
@@ -175,7 +221,7 @@ function SkinTonerProduct() {
                 }`}
               onClick={() => {
                 setItemsPerPage(num);
-                setPage(1);
+                // setPage(1); // useEffect에서 처리
               }}
             >
               {num}
@@ -185,10 +231,9 @@ function SkinTonerProduct() {
       </div>
 
       {/* --- 상품 그리드 --- */}
-      {/* filteredProducts가 아닌 pagedProducts를 맵핑해야 합니다. */}
       <div className="grid grid-cols-4 gap-6">
         {pagedProducts.map((product, index) => (
-          <React.Fragment key={product.id}> {/* key는 고유한 product.id를 사용 */}
+          <React.Fragment key={product.id}>
             <div
               className="flex flex-col items-center transition bg-white rounded-lg cursor-pointer"
               onClick={() => handleCardClick(product.id)}
@@ -210,10 +255,10 @@ function SkinTonerProduct() {
               {/* 가격 정보 */}
               <div className="w-[215px] flex flex-col items-center mt-[5px] text-center">
                 <p className="text-sm line-through font-semibold text-[#a9a9a9]">
-                  {product.originalPrice}
+                  {product.originalPrice.toLocaleString("ko-KR")}원
                 </p>
                 <p className="text-xl text-[#e02020] font-bold">
-                  {product.discountedPrice}
+                  {product.discountedPrice.toLocaleString("ko-KR")}원
                 </p>
               </div>
               {/* 배지 */}
@@ -260,8 +305,19 @@ function SkinTonerProduct() {
       </div>
 
       {/* --- 페이지네이션 --- */}
-      <div className="flex justify-center mt-8 space-x-2 elect-none">
-        {Array.from({ length: Math.min(10, totalPages) }).map((_, i) => {
+      <div className="flex justify-center mt-8 space-x-2 select-none">
+        {/* 이전 페이지 버튼 */}
+        <button
+            disabled={page === 1}
+            onClick={() => setPage((prev) => prev - 1)}
+            className="w-8 h-8 text-xl border rounded border-[#e1e1e1] text-[#aaa] bg-white flex items-center justify-center"
+            style={{ minWidth: "40px", minHeight: "40px" }}
+        >
+            <span>&laquo;</span>
+        </button>
+
+        {/* 페이지 번호들 */}
+        {Array.from({ length: totalPages }).map((_, i) => {
           const pageNum = i + 1;
           return (
             <button
@@ -279,9 +335,9 @@ function SkinTonerProduct() {
             </button>
           );
         })}
-        {/* 오른쪽 화살표(비활성화, 페이지 많으면 활용 가능) */}
+        {/* 다음 페이지 버튼 */}
         <button
-          disabled={page === totalPages} // <<<<<<<<<<<< totalPages와 비교하여 활성화/비활성화
+          disabled={page === totalPages || totalPages === 0} // totalPages가 0일 때도 비활성화
           onClick={() => setPage((prev) => prev + 1)}
           className="w-8 h-8 text-xl border rounded border-[#e1e1e1] text-[#aaa] bg-white flex items-center justify-center"
           style={{ minWidth: "40px", minHeight: "40px" }}

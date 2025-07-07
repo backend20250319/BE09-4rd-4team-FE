@@ -1,43 +1,34 @@
-// src/app/product/skintoner/components/BrandFilter.jsx
 "use client";
 
 import React, { useState, useEffect } from "react";
-// import { useRouter } from "next/navigation"; // useRouter는 이 컴포넌트에서 사용되지 않으므로 제거하거나 주석 처리
-import axios from "axios"; // 👈 Axios 임포트 추가
+import axios from "axios";
 
-// TAB_LIST는 현재 하드코딩된 상태이므로 그대로 둡니다.
 const TAB_LIST = ["전체", "스킨/토너", "", "", "", ""];
 
-// ⭐️ onBrandChange props를 추가하여 부모 컴포넌트에 선택된 브랜드 목록을 전달합니다.
 export default function BrandFilter({ onBrandChange }) {
   const [activeTab, setActiveTab] = useState("전체");
   const [checked, setChecked] = useState([]);
   const [showAll, setShowAll] = useState(false);
 
-  // 1. brands state 추가 (API로부터 받아올 브랜드 목록)
   const [brands, setBrands] = useState([]);
-  // 2. 로딩 상태 추가 (데이터를 불러오는 중인지 표시)
   const [loadingBrands, setLoadingBrands] = useState(true);
-  // 3. 에러 상태 추가 (API 호출 실패 시)
   const [errorBrands, setErrorBrands] = useState(null);
 
-  // 4. useEffect 훅을 사용하여 컴포넌트 마운트 시 API 호출
   useEffect(() => {
     const fetchBrands = async () => {
-      setLoadingBrands(true); // 데이터 로딩 시작
-      setErrorBrands(null);   // 이전 에러 메시지 초기화
+      setLoadingBrands(true);
+      setErrorBrands(null);
 
       try {
         // 백엔드 API 엔드포인트: Postman에서 확인하신 정확한 URL을 사용한다.
         const response = await axios.get('http://localhost:8080/api/brands');
-        
-        const data = response.data; // Axios는 응답 데이터를 response.data에 바로 넣어준다.
+        const data = response.data;
 
-        // ⭐️ API 응답 형태가 `Page<BrandResponseDTO>` 일 수도 있으므로, content 배열을 확인합니다.
-        // 프론트엔드에서 체크박스에 표시할 brandName 필드만 추출하여 state에 저장한다.
-        if (Array.isArray(data)) {
+        // API 응답 형태가 `Page<BrandResponseDTO>` 일 수도 있으므로, content 배열을 확인합니다.
+        // 또는 API가 직접 List<BrandResponseDTO>를 반환할 수도 있습니다.
+        if (Array.isArray(data)) { // List<BrandResponseDTO> 형태일 경우
             setBrands(data.map(brandDto => brandDto.brandName));
-        } else if (data && Array.isArray(data.content)) {
+        } else if (data && Array.isArray(data.content)) { // Page<BrandResponseDTO> 형태일 경우
             setBrands(data.content.map(brandDto => brandDto.brandName));
         } else {
             setErrorBrands("브랜드 데이터를 가져오는 데 실패했습니다: 유효하지 않은 응답 형식");
@@ -47,37 +38,31 @@ export default function BrandFilter({ onBrandChange }) {
 
       } catch (error) {
         console.error("브랜드 목록을 가져오는 중 오류 발생:", error);
-        // Axios 에러 객체를 활용한 상세 에러 처리
         if (error.response) {
-            // 서버 응답이 있는 경우 (예: 4xx, 5xx 에러)
             setErrorBrands(`브랜드 목록을 가져오는 데 실패했습니다: ${error.response.status} - ${error.response.statusText}`);
             console.error("오류 응답 데이터:", error.response.data);
         } else if (error.request) {
-            // 요청은 전송되었지만 응답을 받지 못한 경우 (예: 네트워크 문제)
             setErrorBrands("네트워크 오류: 서버에 연결할 수 없습니다.");
         } else {
-            // 요청을 설정하는 중에 발생한 오류
             setErrorBrands(`요청 오류: ${error.message}`);
         }
         setBrands([]);
       } finally {
-        setLoadingBrands(false); // 로딩 완료
+        setLoadingBrands(false);
       }
     };
 
-    fetchBrands(); // 함수 호출
-  }, []); // 빈 의존성 배열: 컴포넌트가 처음 마운트될 때 한 번만 실행
+    fetchBrands();
+  }, []);
 
-  // ⭐️ 선택된 브랜드 목록(checked)이 변경될 때마다 부모 컴포넌트의 onBrandChange 함수 호출
   useEffect(() => {
     if (onBrandChange) {
       onBrandChange(checked);
     }
-  }, [checked, onBrandChange]); // onBrandChange도 의존성 배열에 추가 (React 권장)
+  }, [checked, onBrandChange]);
 
 
-  // 처음엔 18개만, 더보기 누르면 전체 표시 (API로 받아온 brands를 사용)
-  const shownBrands = showAll ? brands : brands.slice(0, 15); // ⭐️ 18개에서 15개로 변경 (기존 BrandFilter 코드를 따름)
+  const shownBrands = showAll ? brands : brands.slice(0, 15);
 
   const handleCheck = (brand) => {
     setChecked((prev) =>
@@ -85,9 +70,8 @@ export default function BrandFilter({ onBrandChange }) {
     );
   };
 
-  // ⭐️ '선택 초기화' 버튼 핸들러
   const handleReset = () => {
-    setChecked([]); // 선택된 브랜드 목록 초기화
+    setChecked([]);
   };
 
 
@@ -102,7 +86,7 @@ export default function BrandFilter({ onBrandChange }) {
   if (errorBrands) {
     return (
       <div className="px-6 pt-6 pb-3 mt-8 bg-white border border-[#e2e2e2] shadow">
-        <div className="text-center text-red-500">{errorBrands}</div> {/* errorBrands는 이미 문자열이므로 .message 제거 */}
+        <div className="text-center text-red-500">{errorBrands}</div>
       </div>
     );
   }
@@ -178,52 +162,38 @@ export default function BrandFilter({ onBrandChange }) {
         {/* 왼쪽 브랜드 카운트 */}
         <div className="w-[150px] flex flex-col items-start">
           <div className="mb-2 text-2xl font-semibold">브랜드</div>
-          <div className="mb-1 text-base font-bold text-lime-500">
-            {loadingBrands ? (
-              "Loading..."
-            ) : errorBrands ? (
-              <span className="text-red-500">Error</span>
-            ) : (
-              `Total ${brands.length}`
-            )} {/* API로 받아온 brands.length 사용 */}
+          <div className="mb-1 text-base font-semibold text-lime-500">
+            Total {brands.length}
           </div>
         </div>
         {/* 브랜드 체크박스 */}
         <div className="flex flex-wrap flex-1 gap-y-4">
-            {loadingBrands ? (
-                <p>브랜드 목록을 불러오는 중...</p>
-            ) : errorBrands ? (
-                <p className="text-red-500">브랜드 오류: {errorBrands}</p>
-            ) : brands.length === 0 ? (
-                <p>등록된 브랜드가 없습니다.</p>
-            ) : (
-                shownBrands.map((brand) => ( // ⭐️ idx 대신 brand를 key로 사용 (고유성 보장)
-                    <label
-                        key={brand}
-                        className="flex items-center w-1/5 gap-2 cursor-pointer font-lightmedium"
-                    >
-                        <input
-                            type="checkbox"
-                            checked={checked.includes(brand)}
-                            onChange={() => handleCheck(brand)}
-                            className="w-5 h-5 accent-lime-500"
-                        />
-                        {brand}
-                    </label>
-                ))
-            )}
+            {shownBrands.map((brand) => (
+                <label
+                    key={brand}
+                    className="flex items-center w-1/4 gap-2 cursor-pointer font-lightmedium" // ⭐️ w-1/5에서 w-1/4로 변경
+                >
+                    <input
+                        type="checkbox"
+                        checked={checked.includes(brand)}
+                        onChange={() => handleCheck(brand)}
+                        className="w-4 h-4 accent-lime-500"
+                    />
+                    {brand}
+                </label>
+            ))}
         </div>
       </div>
       {/* --- 하단 버튼/초기화 --- */}
       <div className="flex items-center justify-between pt-2 mt-2 border-t">
         <button
           onClick={() => setShowAll((v) => !v)}
-          className="px-6 py-1 text-lg border rounded bg-gray-50 hover:bg-gray-100"
+          className="px-4 py-1 border rounded text-md bg-gray-50 hover:bg-gray-100"
         >
           {showAll ? "접기 ▲" : "더보기 ▼"}
         </button>
         <button
-          onClick={handleReset} // ⭐️ 초기화 함수 호출
+          onClick={handleReset}
           className="ml-auto text-base text-gray-400 hover:text-black"
         >
           선택 초기화
