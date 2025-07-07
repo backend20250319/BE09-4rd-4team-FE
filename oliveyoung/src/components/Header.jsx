@@ -45,11 +45,11 @@ function Header(props) {
     <div className="flex flex-row justify-center">
       <div className="">
         <ul className="py-[1px] h-[30px] flex flex-row justify-end items-center text-[#333333]">
-          <li className="text-xs font-bold">BABYOLIVE박*준</li>
+          <li className="text-xs font-bold">PINKOLIVE박*준</li>
           <li className="text-xs hover:cursor-pointer border-r px-[10px]">로그아웃</li>
           <li  className="text-xs hover:cursor-pointer border-r px-[10px]" 
           onClick={() => router.push('/mypage')}>마이페이지</li>
-          <li className="text-xs hover:cursor-pointer border-r px-[10px]">
+          <li className="text-xs hover:cursor-pointer border-r px-[10px]" onClick={() => router.push('/order/cart')}>
             장바구니
             <span className="text-xs text-[#f27370] font-bold hover:cursor-pointer">(0)</span>
           </li>
