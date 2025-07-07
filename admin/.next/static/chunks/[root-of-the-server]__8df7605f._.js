@@ -7313,7 +7313,7 @@ class Router {
                     });
                     return new Promise(()=>{});
                 }
-                const routerFilterSValue = ("TURBOPACK compile-time value", JSON.parse('{"numItems":6,"errorRate":0.0001,"numBits":116,"numHashes":14,"bitArray":[0,0,0,1,1,1,0,1,1,1,1,1,0,0,0,1,1,0,1,1,1,1,1,0,0,1,1,1,1,0,0,0,1,1,0,0,0,0,1,1,0,1,0,0,1,0,1,1,0,0,1,0,1,1,1,0,1,1,0,1,0,1,1,1,0,1,1,1,0,0,0,1,0,0,0,0,1,0,1,1,1,1,0,1,1,1,0,0,0,0,0,0,0,0,0,1,0,1,1,1,1,0,1,1,0,0,1,0,0,0,1,0,1,1,1,1]}'));
+                const routerFilterSValue = ("TURBOPACK compile-time value", JSON.parse('{"numItems":7,"errorRate":0.0001,"numBits":135,"numHashes":14,"bitArray":[1,1,0,0,0,1,1,1,1,1,0,0,1,1,0,0,0,1,1,1,0,0,0,1,0,1,0,0,1,0,1,0,1,1,1,1,1,0,1,1,1,1,0,1,1,1,0,0,0,1,1,1,0,0,1,1,0,1,1,0,0,0,0,0,1,0,0,0,1,1,1,0,1,1,1,0,0,1,0,1,1,0,0,0,0,1,1,1,1,0,1,1,0,0,1,0,0,1,0,0,0,1,1,0,1,1,0,1,1,0,0,0,1,1,0,1,0,1,1,0,0,0,0,1,0,1,1,0,0,1,1,1,1,0,1]}'));
                 if (!staticFilterData && routerFilterSValue) {
                     staticFilterData = routerFilterSValue ? routerFilterSValue : undefined;
                 }
@@ -20796,7 +20796,7 @@ const _hooksclientcontextsharedruntime = __turbopack_context__.r("[project]/node
 const _onrecoverableerror = __turbopack_context__.r("[project]/node_modules/next/dist/client/react-client-callbacks/on-recoverable-error.js [client] (ecmascript)");
 const _tracer = /*#__PURE__*/ _interop_require_default._(__turbopack_context__.r("[project]/node_modules/next/dist/client/tracing/tracer.js [client] (ecmascript)"));
 const _isnextroutererror = __turbopack_context__.r("[project]/node_modules/next/dist/client/components/is-next-router-error.js [client] (ecmascript)");
-const version = "15.3.4";
+const version = "15.3.5";
 let router;
 const emitter = (0, _mitt.default)();
 const looseToArray = (input)=>[].slice.call(input);
