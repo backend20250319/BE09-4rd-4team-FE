@@ -453,23 +453,23 @@ export default function Order() {
                   <label htmlFor="payMethod1" className="text-[#333] text-[14px] cursor-pointer">신용카드</label>
                 </span>
                 <span className="float-left w-[175px] px-[20px] leading-[35px] text-[#222]">
-                  <input type="radio" id="payMethod1" className="w-[12px] h-[12px] mr-[5px]" />
+                  <input type="radio" id="payMethod1" checked={false} readOnly className="w-[12px] h-[12px] mr-[5px]" />
                   <label htmlFor="payMethod1" className="text-[#333] text-[14px] cursor-pointer">PAYCO</label>
                 </span>
                 <span className="float-left w-[175px] px-[20px] leading-[35px] text-[#222]">
-                  <input type="radio" id="payMethod1" className="w-[12px] h-[12px] mr-[5px]" />
+                  <input type="radio" id="payMethod1" checked={false} readOnly className="w-[12px] h-[12px] mr-[5px]" />
                   <label htmlFor="payMethod1" className="text-[#333] text-[14px] cursor-pointer">카카오페이</label>
                 </span>
                 <span className="float-left w-[175px] px-[20px] leading-[35px] text-[#222]">
-                  <input type="radio" id="payMethod1" className="w-[12px] h-[12px] mr-[5px]" />
+                  <input type="radio" id="payMethod1" checked={false} readOnly className="w-[12px] h-[12px] mr-[5px]" />
                   <label htmlFor="payMethod1" className="text-[#333] text-[14px] cursor-pointer">네이버페이</label>
                 </span>
                 <span className="float-left w-[175px] px-[20px] leading-[35px] text-[#222]">
-                  <input type="radio" id="payMethod1" className="w-[12px] h-[12px] mr-[5px]" />
+                  <input type="radio" id="payMethod1" checked={false} readOnly className="w-[12px] h-[12px] mr-[5px]" />
                   <label htmlFor="payMethod1" className="text-[#333] text-[14px] cursor-pointer">휴대폰결제</label>
                 </span>
                 <span className="float-left w-[175px] px-[20px] leading-[35px] text-[#222]">
-                  <input type="radio" id="payMethod1" className="w-[12px] h-[12px] mr-[5px]" />
+                  <input type="radio" id="payMethod1" checked={false} readOnly className="w-[12px] h-[12px] mr-[5px]" />
                   <label htmlFor="payMethod1" className="text-[#333] text-[14px] cursor-pointer">계좌이체</label>
                 </span>
               </li>
