@@ -1,0 +1,6 @@
+{
+  "version": 3,
+  "sources": [],
+  "sections": [
+    {"offset": {"line": 7, "column": 0}, "map": {"version":3,"sources":["file:///Users/yudaeun/dev/BE09-4rd-4team/BE09-4rd-4team-FE/admin/src/app/page.jsx"],"sourcesContent":["// src/app/products/page.jsx\n\n\"use client\";\nimport ProductsPage from \"../../components/ProductsPage\"; // 또는 components 위치에 따라 상대경로 조정\n\nexport default function Page() {\n  return <ProductsPage />;\n}\n"],"names":[],"mappings":"AAAA,4BAA4B;;;;;;;;;;AAE5B;;;AAGe,SAAS;IACtB,qBAAO,6LAAC;;;;;AACV;KAFwB","debugId":null}}]
+}
