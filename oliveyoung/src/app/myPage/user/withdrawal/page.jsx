@@ -48,7 +48,7 @@ export default function AccountWithdrawalPage() {
             />
           </div>
           <p className="float-left ml-[10px] text-[18px] leading-[34px] font-bold text-white tracking-[-1px]">
-            BABY OLIVE
+            PINK OLIVE
             <strong className="inline-block ml-[3px]">박*준</strong>님 반갑습니다.
           </p>
           <ul className="absolute top-1/2 right-[30px] -mt-[10px]">
