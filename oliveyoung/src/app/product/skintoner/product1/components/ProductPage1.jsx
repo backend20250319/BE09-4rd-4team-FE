@@ -625,11 +625,6 @@ function ProductPage1({ productId }) {
           </button>
         </div>
       </div>
-      {/* "이런 스킨/토너 상품은 어때요?" 섹션 (더미 데이터 사용) */}
-      {/* 이 섹션의 데이터는 현재 더미 데이터를 사용하고 있습니다. 
-          만약 이 부분도 백엔드에서 추천 상품을 가져오고 싶다면, 
-          별도의 API 엔드포인트와 useEffect를 추가해야 합니다.
-           여기서는 기존 더미 데이터와 로직을 유지합니다. */}
       <div className="relative px-4 mt-12 md:px-0">
         <div className="flex items-center justify-between mb-8">
           <h2 className="text-xl font-bold">이런 스킨/토너 상품은 어때요?</h2>

@@ -24,8 +24,8 @@ export default function BrandFilter({ onBrandChange }) {
         const response = await axios.get('http://localhost:8080/api/brands');
         const data = response.data;
 
-        // API 응답 형태가 `Page<BrandResponseDTO>` 일 수도 있으므로, content 배열을 확인합니다.
-        // 또는 API가 직접 List<BrandResponseDTO>를 반환할 수도 있습니다.
+        // API 응답 형태가 `Page<BrandResponseDTO>` 일 수도 있으므로, content 배열을 확인한다.
+        // 또는 API가 직접 List<BrandResponseDTO>를 반환할 수도 있다.
         if (Array.isArray(data)) { // List<BrandResponseDTO> 형태일 경우
             setBrands(data.map(brandDto => brandDto.brandName));
         } else if (data && Array.isArray(data.content)) { // Page<BrandResponseDTO> 형태일 경우

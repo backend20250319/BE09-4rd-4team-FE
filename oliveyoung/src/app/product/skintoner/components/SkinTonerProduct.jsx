@@ -33,26 +33,26 @@ function SkinTonerProduct({ selectedBrands }) {
       setError(null);
 
       try {
-        // ⭐️ 백엔드에서 카테고리별 전체 상품만 가져옵니다. (필터링/정렬은 프론트에서)
+        // 백엔드에서 카테고리별 전체 상품만 가져온다. (필터링/정렬은 프론트에서)
         const categoryName = "Skin/Toner"; // 백엔드 Products 엔티티의 categoryName 필드와 일치해야 함
         const apiUrl = `http://localhost:8080/api/products?categoryName=${categoryName}`;
         console.log("Fetching all products for category from:", apiUrl);
 
         const response = await axios.get(apiUrl);
-        const data = response.data; // 이 data는 이미 ProductResponseDTO 리스트입니다.
+        const data = response.data;
 
-        // 백엔드에서 전달받은 DTO 객체는 이미 필요한 필드들을 포함하고 있습니다.
-        // 프론트에서 사용하는 이름에 맞춰 매핑합니다.
+        // 백엔드에서 전달받은 DTO 객체는 이미 필요한 필드들을 포함
+        // 프론트에서 사용하는 이름에 맞춰 매핑합
         const mappedProducts = data.map((item) => ({
           id: item.productId,
-          imageUrl: item.imageUrl, // 'img' 대신 'imageUrl'로 통일
-          productName: item.productName, // 'name' 대신 'productName'으로 통일
-          brandName: item.brandName, // 'brand' 대신 'brandName'으로 통일
+          imageUrl: item.imageUrl, 
+          productName: item.productName,
+          brandName: item.brandName,
           originalPrice: item.originalPrice,
           discountedPrice: item.discountedPrice,
-          badgeNames: item.badgeNames || [], // 'badge' 대신 'badgeNames'으로 통일
-          createdAt: item.createdAt ? new Date(item.createdAt) : null, // ⭐️ Date 객체로 변환하여 정렬에 용이하게
-          salesCount: item.salesCount || 0, // ⭐️ 판매량이 없을 경우 0으로 초기화
+          badgeNames: item.badgeNames || [], 
+          createdAt: item.createdAt ? new Date(item.createdAt) : null, 
+          salesCount: item.salesCount || 0, 
         }));
         setAllProducts(mappedProducts); // 전체 상품 데이터를 저장
       } catch (error) {
