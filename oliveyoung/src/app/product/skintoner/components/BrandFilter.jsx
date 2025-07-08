@@ -104,7 +104,7 @@ export default function BrandFilter({ onBrandChange }) {
       {/* --- 경로 아래 구분선 --- */}
       <div className="border-b border-[#e2e2e2] mb-4" />
       {/* --- 큰 타이틀 --- */}
-      <div className="mb-5 text-4xl font-semibold">스킨/토너</div>
+      <div className="mb-5 text-3xl font-semibold">스킨/토너</div>
       {/* --- 1행 6열 탭 --- */}
       <div className="mb-6">
         <div className="grid grid-cols-6 overflow-hidden rounded">
@@ -113,7 +113,7 @@ export default function BrandFilter({ onBrandChange }) {
               <button
                 key={tab}
                 className={`
-                  h-[60px] flex items-center justify-center w-full text-lg font-bold
+                  h-[50px] flex items-center justify-center w-full text-lg font-bold
                   border-b
                   ${
                     activeTab === tab
@@ -151,7 +151,7 @@ export default function BrandFilter({ onBrandChange }) {
             ) : (
               <div
                 key={idx}
-                className="bg-white border border-[#e2e2e2] h-[60px]"
+                className="bg-white border border-[#e2e2e2] h-[50px]"
               />
             )
           )}
