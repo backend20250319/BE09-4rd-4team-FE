@@ -2,7 +2,7 @@
 import { useState } from "react";
 
 import ReviewItem from "./ReviewItem";
-
+// 장바구니 상품 조회 api 가지고 와서 사용하기 .
 // 📌 실제로는 더 많은 데이터가 있어야 페이징이 유의미해요
 const dummyData = Array.from({ length: 45 }, (_, i) => ({
   id: i + 1,

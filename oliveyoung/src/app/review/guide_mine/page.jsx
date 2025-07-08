@@ -2,59 +2,46 @@
 
 import { useState, useEffect } from "react";
 import { FaExclamation } from "react-icons/fa";
-import ReviewTabs from "../pages/guide/ReviewTabs"; // 경로는 프로젝트 구조에 맞게
-
-// 3~4개짜리 더미 리뷰 데이터
-const dummyData = [
-  {
-    id: 1,
-    image: "resources/images/product1.jpg",
-    orderType: "주문일자",
-    orderDate: "2025.06.06",
-    brand: "브랜드1",
-    title: "[제목1] 상품 상세 설명 예시",
-    subTitle: "옵션 | 예시 옵션명",
-    place: "온라인몰",
-    dueDate: "2025.09.05",
-    reviewContent: "정말 마음에 들어요! 재구매 의사 있습니다.",
-    reviewDate: "2025.06.25",
-  },
-  {
-    id: 2,
-    image: "resources/images/product2.jpg",
-    orderType: "구매일자",
-    orderDate: "2025.06.02",
-    brand: "브랜드2",
-    title: "[제목2] 상품 상세 설명 예시",
-    subTitle: "옵션 | 라지 사이즈",
-    place: "매장",
-    dueDate: "2025.09.01",
-    reviewContent: "배송이 빨라서 만족합니다.",
-    reviewDate: "2025.06.27",
-  },
-  {
-    id: 3,
-    image: "resources/images/product3.jpg",
-    orderType: "구매일자",
-    orderDate: "2025.06.01",
-    brand: "브랜드3",
-    title: "[제목3] 상품 상세 설명 예시",
-    subTitle: undefined,
-    place: undefined,
-    dueDate: "2025.09.01",
-    reviewContent: "품질이 괜찮고 포장도 안전했어요.",
-    reviewDate: "2025.06.28",
-  },
-];
+import ReviewTabs from "../pages/guide/ReviewTabs"; // 경로는 프로젝트에 맞게 수정
 
 export default function MyReviewsPage() {
   const [reviews, setReviews] = useState([]);
 
   useEffect(() => {
-  console.log("세팅된 리뷰 수:", dummyData.length); // 여기서 3이 찍히면 정상
-  setReviews(dummyData);
-}, []);
+    const fetchReviews = async () => {
+      try {
+        const token = localStorage.getItem("jwtToken");
+        const userId = localStorage.getItem("userId"); // 로그인 후 저장되어 있어야 함
 
+        if (!token || !userId) {
+          console.error("토큰 또는 사용자 ID가 없습니다.");
+          return;
+        }
+
+        const response = await fetch(
+          `http://localhost:8080/api/users/${userId}/reviews`,
+          {
+            method: "GET",
+            headers: {
+              Authorization: `Bearer ${token}`,
+              "Content-Type": "application/json",
+            },
+          }
+        );
+
+        if (!response.ok) {
+          throw new Error("리뷰 조회 실패");
+        }
+
+        const data = await response.json();
+        setReviews(data);
+      } catch (error) {
+        console.error("리뷰를 불러오는 중 오류 발생:", error);
+      }
+    };
+
+    fetchReviews();
+  }, []);
 
   return (
     <div className="max-w-4xl mx-auto py-10">
@@ -98,36 +85,30 @@ export default function MyReviewsPage() {
           <div className="mt-6 px-4">
             {reviews.map((review) => (
               <div
-                key={review.id}
+                key={review.reviewId}
                 className="border p-4 mb-3 rounded shadow-sm bg-white flex justify-between"
               >
                 {/* 좌측: 상품 정보 */}
                 <div className="flex gap-4 w-1/2">
                   <img
-                    src={review.image}
-                    alt={review.title}
+                    src={review.productImageUrl}
+                    alt={review.productTitle}
                     className="w-[80px] h-[80px] object-cover rounded"
                   />
                   <div className="text-sm">
                     <div className="text-gray-500 mb-1">
-                      {review.orderType} | {review.orderDate}
+                      상품번호 | {review.productId}
                     </div>
                     <div className="font-semibold">{review.brand}</div>
-                    <div>{review.title}</div>
-                    {review.subTitle && (
-                      <div className="text-gray-500">{review.subTitle}</div>
-                    )}
-                    {review.place && (
-                      <div className="text-gray-500">{review.place}</div>
-                    )}
+                    <div>{review.productTitle}</div>
                   </div>
                 </div>
 
                 {/* 우측: 리뷰 내용 */}
                 <div className="w-1/2 pl-6 text-sm border-l border-gray-100">
-                  <div className="text-gray-700">{review.reviewContent}</div>
+                  <div className="text-gray-700">{review.content}</div>
                   <div className="text-gray-400 mt-2 text-xs">
-                    작성일자 | {review.reviewDate}
+                    작성일자 | {new Date(review.createdAt).toLocaleDateString()}
                   </div>
                 </div>
               </div>
