@@ -1,5 +1,5 @@
 export default function ReviewTipImages() {
-  const tipImages = ["/images/review1.jpg", "/images/review2.jpg"];
+  const tipImages = ["/images/review/review1.jpg", "/images/review/review2.jpg"];
 
   return (
     <div className="space-y-2 flex flex-col">
