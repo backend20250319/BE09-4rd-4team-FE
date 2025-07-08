@@ -45,11 +45,11 @@ function Header(props) {
     <div className="flex flex-row justify-center">
       <div className="">
         <ul className="py-[1px] h-[30px] flex flex-row justify-end items-center text-[#333333]">
-          <li className="text-xs font-bold">BABYOLIVE박*준</li>
+          <li className="text-xs font-bold">PINKOLIVE박*준</li>
           <li className="text-xs hover:cursor-pointer border-r px-[10px]">로그아웃</li>
           <li  className="text-xs hover:cursor-pointer border-r px-[10px]" 
           onClick={() => router.push('/mypage')}>마이페이지</li>
-          <li className="text-xs hover:cursor-pointer border-r px-[10px]">
+          <li className="text-xs hover:cursor-pointer border-r px-[10px]" onClick={() => router.push('/order/cart')}>
             장바구니
             <span className="text-xs text-[#f27370] font-bold hover:cursor-pointer">(0)</span>
           </li>
@@ -61,7 +61,7 @@ function Header(props) {
         <div className="w-[1020px] h-[90px] flex flex-row justify-between items-center">
           <img
             className="w-[246px] h-[40px] hover:cursor-pointer"
-            src="/images/logo.png"
+            src="/images/product/logo.png"
             alt="logo"
             onClick={() => router.push('/')}
           />
@@ -73,7 +73,7 @@ function Header(props) {
               onFocus={() => setSearchClick(true)}
             />
             <div className="absolute right-[15px] top-0 bottom-0 flex items-center hover:cursor-pointer">
-              <img className="w-[20px]" src="/images/search.svg" alt="search" />
+              <img className="w-[20px]" src="/images/product/search.svg" alt="search" />
             </div>
             <SearchModal searchClick={searchClick} chart={chart} setSearchClick={setSearchClick} />
           </div>
@@ -82,7 +82,7 @@ function Header(props) {
               <p onMouseOver={handleLocationMouseOver} onMouseOut={handleLocationMouseOut}>
                 오늘드림
               </p>
-              <img src="/images/dreamIcon.png" alt="delivery" className="w-[22px]" />
+              <img src="/images/product/dreamIcon.png" alt="delivery" className="w-[22px]" />
             </li>
             <li className="flex flex-row gap-1 items-center hover:cursor-pointer hover:underline hover:underline-offset-[5px] decoration-2 relative border-r px-[15px]">
               <p onMouseOver={handleStoreMouseOver} onMouseOut={handleStoreMouseOut}>

@@ -1,14 +1,15 @@
-"use client";
+'use client';
 
-import Image from "next/image";
-import React from "react";
-import TabNav from "../components/TabNav";
+import Image from 'next/image';
+import React from 'react';
+import TabNav from '../components/TabNav';
+import UserInfoBox from '../components/UserInfoBox';
 
 export default function GetDeliveryInfoPage() {
   return (
     <div className="float-left w-[850px] px-[29px]">
       {/* 유저 info 박스 */}
-      <div className="relative h-[51px] pt-2 pl-[30px] bg-[#eb6d9a]">
+      {/* <div className="relative h-[51px] pt-2 pl-[30px] bg-[#eb6d9a]">
         <div className="relative float-left w-[34px] h-[34px] rounded-full overflow-hidden">
           <span className="absolute top-0 left-0 block overflow-hidden w-[34px] h-[34px] bg-no-repeat bg-[url('/images/mypage/order/bg_grd_01.png')]"></span>
           <Image
@@ -19,7 +20,7 @@ export default function GetDeliveryInfoPage() {
           />
         </div>
         <p className="float-left ml-[10px] text-[18px] leading-[34px] font-bold text-white tracking-[-1px]">
-          BABY OLIVE
+          PINK OLIVE
           <strong className="inline-block ml-[3px]">박*준</strong>님 반갑습니다.
         </p>
         <ul className="absolute top-1/2 right-[30px] -mt-[10px]">
@@ -64,13 +65,13 @@ export default function GetDeliveryInfoPage() {
             </p>
           </li>
         </ul>
-      </div>
+      </div> */}
+
+      <UserInfoBox />
 
       {/* 배송지 내용 */}
       <div>
-        <h2 className="text-xl h-[30px] font-bold mt-[30px] mb-[7px]">
-          배송지/환불계좌
-        </h2>
+        <h2 className="text-xl h-[30px] font-bold mt-[30px] mb-[7px]">배송지/환불계좌</h2>
       </div>
 
       <TabNav />
@@ -80,12 +81,11 @@ export default function GetDeliveryInfoPage() {
         style={{
           backgroundImage:
             "url('https://static.oliveyoung.co.kr/pc-static-root/image/comm/bar_4x4.gif')",
-          backgroundRepeat: "no-repeat",
-          backgroundPosition: "0 7px",
+          backgroundRepeat: 'no-repeat',
+          backgroundPosition: '0 7px',
         }}
       >
-        배송지는 최대 <span className="text-[#9bce26] font-bold">20개</span>까지
-        등록 가능합니다.
+        배송지는 최대 <span className="text-[#9bce26] font-bold">20개</span>까지 등록 가능합니다.
       </p>
 
       {/* 테이블 헤더 */}
@@ -125,12 +125,10 @@ export default function GetDeliveryInfoPage() {
               <p>
                 (01822)
                 <br />
-                <span className="font-semibold">도로명 :</span> 서울 밥먹구
-                산책로 잘가길 9
+                <span className="font-semibold">도로명 :</span> 서울 밥먹구 산책로 잘가길 9
               </p>
               <p className="text-gray-500 text-[12px] mt-1">
-                <span className="font-semibold">지번 :</span> 서울 밥먹구
-                후식동동 91
+                <span className="font-semibold">지번 :</span> 서울 밥먹구 후식동동 91
               </p>
 
               {/* 출입방법 */}
@@ -141,15 +139,11 @@ export default function GetDeliveryInfoPage() {
             </td>
 
             {/* 연락처 */}
-            <td className="w-[20%] px-[5px] py-[30px] text-center">
-              010-****-0944
-            </td>
+            <td className="w-[20%] px-[5px] py-[30px] text-center">010-****-0944</td>
 
             {/* 관리 */}
             <td className="w-[20%] py-2 text-center">
-              <button className="border px-2 py-1 text-[12px] rounded">
-                수정
-              </button>
+              <button className="border px-2 py-1 text-[12px] rounded">수정</button>
             </td>
           </tr>
         </tbody>

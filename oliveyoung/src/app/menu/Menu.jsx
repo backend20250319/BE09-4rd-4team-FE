@@ -88,13 +88,13 @@ export default function Menu() {
         <div className="w-[1020px] flex items-center">
           <button
             onClick={() => setIsCategoryOpen(!isCategoryOpen)}
-            className="w-[170px] h-[44px] border border-gray flex items-center gap-3 pl-[27px] font-bold text-[15px] transition-colors duration-200 bg-white text-black]"
+            className="w-[170px] h-[44px] border-r border-l border-gray flex items-center gap-3 pl-[27px] font-bold text-[15px] transition-colors duration-200 bg-white text-black]"
           >
-            <img src="/images/categoryIcon.png" alt="menu" />
+            <img src="/images/product/categoryIcon.png" alt="menu" />
             카테고리
           </button>
 
-          <ul className="pl-[30px] flex flex-row gap-[42px] text-[15px] font-bold h-[44px] items-center">
+          <ul className="pl-[30px] flex flex-row gap-[48px] text-[15px] font-bold h-[44px] items-center">
             {[
               "오특",
               "랭킹",
@@ -119,9 +119,9 @@ export default function Menu() {
 
       {isCategoryOpen && (
         <div className="absolute top-[47px] left-1/2 -translate-x-1/2 w-[1020px] z-50 bg-white border-b shadow">
-          <div className="py-6 px-4 grid grid-cols-5 gap-x-10 gap-y-4 text-sm text-black">
+          <div className="grid grid-cols-5 px-4 py-6 text-sm text-black gap-x-10 gap-y-4">
             {Object.entries(CATEGORY_DATA).map(([category, subs], idx) => (
-              <div key={idx} className="space-y-2 pr-2">
+              <div key={idx} className="pr-2 space-y-2">
                 <p
                   onClick={() => handleCategoryClick(category)}
                   className="font-bold cursor-pointer tracking-wide hover:text-[#f27370]"

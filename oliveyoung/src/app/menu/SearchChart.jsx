@@ -7,9 +7,9 @@ function SearchChart({ word, rank }) {
       <p className="text-sm text-[#131518] grow">{word.searchWord}</p>
       <div>
         {word.prev === 'up' ? (
-          <img src="/images/up.svg" alt="up" /> 
+          <img src="/images/product/up.svg" alt="up" /> 
         ) : word.prev === 'down' ? (
-          <img src="/images/down.svg" alt="down" />
+          <img src="/images/product/down.svg" alt="down" />
         ) : word.prev === 'keep' ? (
           <span className="text-[11px] text-[#666]]">─</span>
         ) : (

@@ -1,75 +1,17 @@
-"use client";
+'use client';
 
-import Image from "next/image";
-import TabNav from "../components/TabNav";
+import TabNav from '../components/TabNav';
+import UserInfoBox from '../components/UserInfoBox';
 
 export default function GetRfdActListPage() {
   return (
     <div className="float-left w-[850px] px-[29px]">
       {/* 유저 info 박스 */}
-      <div className="relative h-[51px] pt-2 pl-[30px] bg-[#eb6d9a]">
-        <div className="relative float-left w-[34px] h-[34px] rounded-full overflow-hidden">
-          <span className="absolute top-0 left-0 block overflow-hidden w-[34px] h-[34px] bg-no-repeat bg-[url('/images/mypage/order/bg_grd_01.png')]"></span>
-          <Image
-            width={34}
-            height={34}
-            src="/images/mypage/order/my_picture_base.jpg"
-            alt="my_picture_base.jpg"
-          />
-        </div>
-        <p className="float-left ml-[10px] text-[18px] leading-[34px] font-bold text-white tracking-[-1px]">
-          BABY OLIVE
-          <strong className="inline-block ml-[3px]">박*준</strong>님 반갑습니다.
-        </p>
-        <ul className="absolute top-1/2 right-[30px] -mt-[10px]">
-          <li className="inline-block pr-[15px] text-[13px] text-white font-bold bg-[url('/images/mypage/order/ico_arrow7x10_2.png')] bg-no-repeat bg-[length:5px_10px] bg-[position:100%_50%] cursor-pointer">
-            올리브 멤버스 라운지
-          </li>
-          <li className="inline-block pr-[15px] ml-[30px] text-[13px] text-white font-bold bg-[url('/images/mypage/order/ico_arrow7x10_2.png')] bg-no-repeat bg-[length:5px_10px] bg-[position:100%_50%] cursor-pointer">
-            나의 프로필
-          </li>
-        </ul>
-      </div>
-
-      <div className="py-[19px] border border-t-0 border-[#cccccc]">
-        <ul className="flex">
-          <li className="float-left w-1/3 text-center">
-            <span className="text-[13px] font-bold text-[#555]">
-              CJ ONE 포인트
-            </span>
-            <p className="inline-block pl-[15px] text-[18px] text-[#f27370] tracking-[-1.16px] font-medium cursor-pointer">
-              1,500
-              <em className="inline-block pl-[5px] text-[13px] font-bold text-[#555555] not-italic">
-                P
-              </em>
-            </p>
-          </li>
-          <li className="float-left w-1/3 text-center">
-            <span className="text-[13px] font-bold text-[#555]">쿠폰</span>
-            <p className="inline-block pl-[15px] text-[18px] text-[#f27370] tracking-[-1.16px] font-medium cursor-pointer">
-              5
-              <em className="inline-block pl-[5px] text-[13px] font-bold text-[#555555] not-italic">
-                개
-              </em>
-            </p>
-          </li>
-          <li className="float-left w-1/3 text-center">
-            <span className="text-[13px] font-bold text-[#555]">예치금</span>
-            <p className="inline-block pl-[15px] text-[18px] text-[#f27370] tracking-[-1.16px] font-medium cursor-pointer">
-              0
-              <em className="inline-block pl-[5px] text-[13px] font-bold text-[#555555] not-italic">
-                원
-              </em>
-            </p>
-          </li>
-        </ul>
-      </div>
+      <UserInfoBox />
 
       {/* 배송지 내용 */}
       <div>
-        <h2 className="text-xl h-[30px] font-bold mt-[30px] mb-[7px]">
-          배송지/환불계좌
-        </h2>
+        <h2 className="text-xl h-[30px] font-bold mt-[30px] mb-[7px]">배송지/환불계좌</h2>
       </div>
 
       <TabNav />
@@ -117,19 +59,13 @@ export default function GetRfdActListPage() {
 
         {/* 안내 문구 */}
         <ul className="mt-4 text-[12px] text-[#666] leading-[20px] list-disc list-inside">
+          <li>계좌를 변경하시려면 기존 계좌를 삭제한 후 새로 등록해 주시기 바랍니다.</li>
           <li>
-            계좌를 변경하시려면 기존 계좌를 삭제한 후 새로 등록해 주시기
-            바랍니다.
-          </li>
-          <li>
-            결제취소에 대해 현금으로 환불 받아야 하는 경우 등록하신 계좌로
-            환불되오니 정확히 기입해 주시기 바랍니다.
+            결제취소에 대해 현금으로 환불 받아야 하는 경우 등록하신 계좌로 환불되오니 정확히 기입해
+            주시기 바랍니다.
           </li>
           <li>본인 명의 계좌만 등록 가능합니다.</li>
-          <li>
-            환불 처리를 위해 계좌정보를 수집하며, 관련 법령에 따라 5년간
-            보관합니다.
-          </li>
+          <li>환불 처리를 위해 계좌정보를 수집하며, 관련 법령에 따라 5년간 보관합니다.</li>
         </ul>
       </div>
     </div>
