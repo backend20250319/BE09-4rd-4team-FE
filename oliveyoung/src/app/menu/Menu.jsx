@@ -88,13 +88,13 @@ export default function Menu() {
         <div className="w-[1020px] flex items-center">
           <button
             onClick={() => setIsCategoryOpen(!isCategoryOpen)}
-            className="w-[170px] h-[44px] border border-gray flex items-center gap-3 pl-[27px] font-bold text-[15px] transition-colors duration-200 bg-white text-black]"
+            className="w-[170px] h-[44px] border-r border-l border-gray flex items-center gap-3 pl-[27px] font-bold text-[15px] transition-colors duration-200 bg-white text-black]"
           >
             <img src="/images/product/categoryIcon.png" alt="menu" />
             카테고리
           </button>
 
-          <ul className="pl-[30px] flex flex-row gap-[42px] text-[15px] font-bold h-[44px] items-center">
+          <ul className="pl-[30px] flex flex-row gap-[48px] text-[15px] font-bold h-[44px] items-center">
             {[
               "오특",
               "랭킹",
