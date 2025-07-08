@@ -148,7 +148,7 @@ function ProductCarousel() {
 
   return (
     <div className="container py-6 mx-auto">
-      <h2 className="mb-6 text-3xl font-bold text-center">
+      <h2 className="mb-6 text-2xl font-bold text-center">
         스킨케어에서 많이 본 상품이에요
       </h2>
       <div className="grid grid-cols-4 gap-6">
@@ -166,7 +166,7 @@ function ProductCarousel() {
               {product.price}
             </p>
             {/* 상품명 2줄로 제한하고 말줄임 처리 */}
-            <p className="mb-2 text-lg font-semibold text-center line-clamp-2">
+            <p className="font-semibold text-center ext-lg line-clamp-2">
               {product.name}
             </p>
             {/* 상품 상세 설명 */}
