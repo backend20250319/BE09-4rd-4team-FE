@@ -182,7 +182,7 @@ function ProductCarousel() {
               <p className="text-sm line-through font-semibold text-[#a9a9a9]">
                 {product.originalPrice}
               </p>
-              <p className="text-xl text-[#e02020] font-bold">
+              <p className="text-xl text-[#e02020] font-semibold">
                 {product.discountedPrice}원
               </p>
             </div>
