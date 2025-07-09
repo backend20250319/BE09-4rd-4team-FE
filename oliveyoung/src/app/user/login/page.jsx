@@ -2,9 +2,11 @@
 
 import React, { useState } from 'react';
 import { useRouter } from 'next/navigation';
-
+import { useAuth } from '@/contexts/AuthContext';
+import axios from 'axios';
 
 const LoginPage = () => {
+  const { login } = useAuth();
   const router = useRouter();
   const [userId, setUserId] = useState('');
   const [password, setPassword] = useState('');
@@ -13,21 +15,31 @@ const LoginPage = () => {
   const handleLogin = async (e) => {
     e.preventDefault();
 
- try {
-    // TODO: 나중에 아래 주석 풀고 실제 axios 호출할 것
-    // const response = await axios.post('http://localhost:8080/api/v1/user-service/auth/login', { userId, password });
+    try {
+      const response = await axios.post('http://localhost:8080/api/auth/login', {
+        userId,
+        password,
+      });
 
-    // ---- 임시 더미 성공 처리 ----
-    if (userId === 'test' && password === '1234') {
+      const { accessToken, refreshToken, userName } = response.data.data;
+
+      // AuthContext의 login() 사용
+      login(accessToken, refreshToken, userName); // <- 이거!
+
+      // 이제 상태가 바뀌므로 Header도 자동 반영됨
       router.push('/');
-    } else {
-      alert('아이디 혹은 비밀번호를 잘못 입력하셨습니다.');
+    } catch (err) {
+      if (axios.isAxiosError(err)) {
+        const msg =
+          err.response?.status === 401
+            ? '아이디 또는 비밀번호가 잘못되었습니다.'
+            : err.response?.data?.message || '로그인 중 오류가 발생했습니다.';
+        alert(msg);
+      } else {
+        alert('예기치 못한 오류가 발생했습니다.');
+      }
     }
-  } catch (err) {
-    console.error('로그인 실패', err);
-    alert('아이디 혹은 비밀번호를 잘못 입력하셨습니다.');
-  }
-};
+  };
 
   return (
     <div className="max-w-md mx-auto mt-12 p-6">
@@ -69,37 +81,40 @@ const LoginPage = () => {
       </form>
 
       <div className="mt-4 flex justify-center space-x-4 text-sm text-gray-600">
-        <a href="#" className="hover:underline">아이디 찾기</a>
+        <a href="#" className="hover:underline">
+          아이디 찾기
+        </a>
         <span>|</span>
-        <a href="#" className="hover:underline">비밀번호 찾기</a>
+        <a href="#" className="hover:underline">
+          비밀번호 찾기
+        </a>
       </div>
-      
+
       <div className="flex justify-between items-center mt-8 p-4">
         {/* 왼쪽: 로고 + 설명 */}
-        <div >
+        <div>
           <img
             src="https://static.oliveyoung.co.kr/pc-static-root/image/login/ico_cjone_230828.png"
             alt="CJ ONE 로고 이미지"
             className="mr-4 w-40 "
           />
           <p className="text-sm text-gray-600 leading-relaxed ">
-          CJ ONE 통합회원으로 가입하고<br />올리브영에서 편안한 쇼핑하세요
+            CJ ONE 통합회원으로 가입하고
+            <br />
+            올리브영에서 편안한 쇼핑하세요
           </p>
         </div>
 
         {/* 오른쪽: 회원가입 버튼 */}
         <button
           type="button"
-          className="border border-gray-300 text-sm px-4 py-2 rounded hover:bg-gray-100 min-w-[116px] text-center mt-16" 
+          className="border border-gray-300 text-sm px-4 py-2 rounded hover:bg-gray-100 min-w-[116px] text-center mt-16"
           onClick={() => router.push('/user/signup')}
         >
           회원가입
         </button>
       </div>
-
     </div>
-
-    
   );
 };
 
