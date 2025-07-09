@@ -1,5 +1,9 @@
+
+import { getImageUrl } from "@/utils/image";
+const imageUrl = getImageUrl("review/review1.jpg");
+const imageUrl2 = getImageUrl("review/review2.jpg");
 export default function ReviewTipImages() {
-  const tipImages = ["/images/review/review1.jpg", "/images/review/review2.jpg"];
+  const tipImages = [imageUrl, imageUrl2];
 
   return (
     <div className="space-y-2 flex flex-col">
