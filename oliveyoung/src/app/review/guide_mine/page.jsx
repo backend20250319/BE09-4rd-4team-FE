@@ -1,8 +1,8 @@
-"use client";
+'use client';
 
-import { useState, useEffect } from "react";
-import { FaExclamation } from "react-icons/fa";
-import ReviewTabs from "../pages/guide/ReviewTabs"; // 경로는 프로젝트에 맞게 수정
+import { useState, useEffect } from 'react';
+import { FaExclamation } from 'react-icons/fa';
+import ReviewTabs from '../pages/guide/ReviewTabs'; // 경로는 프로젝트에 맞게 수정
 
 export default function MyReviewsPage() {
   const [reviews, setReviews] = useState([]);
@@ -10,33 +10,30 @@ export default function MyReviewsPage() {
   useEffect(() => {
     const fetchReviews = async () => {
       try {
-        const token = localStorage.getItem("jwtToken");
-        const userId = localStorage.getItem("userId"); // 로그인 후 저장되어 있어야 함
+        const token = localStorage.getItem('jwtToken');
+        const userId = localStorage.getItem('userId'); // 로그인 후 저장되어 있어야 함
 
         if (!token || !userId) {
-          console.error("토큰 또는 사용자 ID가 없습니다.");
+          console.error('토큰 또는 사용자 ID가 없습니다.');
           return;
         }
 
-        const response = await fetch(
-          `http://localhost:8080/api/users/${userId}/reviews`,
-          {
-            method: "GET",
-            headers: {
-              Authorization: `Bearer ${token}`,
-              "Content-Type": "application/json",
-            },
-          }
-        );
+        const response = await fetch(`http://localhost:8080/api/users/${userId}/reviews`, {
+          method: 'GET',
+          headers: {
+            Authorization: `Bearer ${token}`,
+            'Content-Type': 'application/json',
+          },
+        });
 
         if (!response.ok) {
-          throw new Error("리뷰 조회 실패");
+          throw new Error('리뷰 조회 실패');
         }
 
         const data = await response.json();
         setReviews(data);
       } catch (error) {
-        console.error("리뷰를 불러오는 중 오류 발생:", error);
+        console.error('리뷰를 불러오는 중 오류 발생:', error);
       }
     };
 
@@ -54,8 +51,7 @@ export default function MyReviewsPage() {
         {/* 정책 문구 */}
         <div className="mt-6 text-gray-600 text-sm leading-relaxed space-y-2">
           <p className="pl-4 text-indent-[-1rem]">
-            • 리뷰 정책 위반으로 블라인드된 리뷰는 상품상세페이지 리뷰목록에
-            노출되지 않습니다.
+            • 리뷰 정책 위반으로 블라인드된 리뷰는 상품상세페이지 리뷰목록에 노출되지 않습니다.
             <br />
             블라인드 리뷰 운영정책을 확인해주세요
           </p>
@@ -63,8 +59,7 @@ export default function MyReviewsPage() {
 
         {/* 누적 리뷰 건수 */}
         <div className="text-left mt-10 text-[16px] font-semibold border-b pb-3">
-          누적 리뷰건수{" "}
-          <span className="text-red-500 font-bold">{reviews.length}</span> 건
+          누적 리뷰건수 <span className="text-red-500 font-bold">{reviews.length}</span> 건
         </div>
 
         {/* 테이블 헤더 */}
@@ -96,9 +91,7 @@ export default function MyReviewsPage() {
                     className="w-[80px] h-[80px] object-cover rounded"
                   />
                   <div className="text-sm">
-                    <div className="text-gray-500 mb-1">
-                      상품번호 | {review.productId}
-                    </div>
+                    <div className="text-gray-500 mb-1">상품번호 | {review.productId}</div>
                     <div className="font-semibold">{review.brand}</div>
                     <div>{review.productTitle}</div>
                   </div>

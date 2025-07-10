@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import axios from 'axios';
+import { useEffect } from 'react';
 
 const RegistrationForm = ({ setStep }) => {
   // 폼 데이터를 담을 상태 (state)
@@ -16,17 +17,78 @@ const RegistrationForm = ({ setStep }) => {
     phonePart3: '', // 휴대폰 번호 뒷자리
     emailLocal: '', // 이메일 로컬 부분 (예: user)
     emailDomain: '', // 이메일 도메인 부분 (예: example.com)
-    receiveMarketingEmail: false, // 마케팅 이메일 수신 동의 여부
-    receiveMarketingSMS: false, // 마케팅 SMS 수신 동의 여부
+    // receiveMarketingEmail: false, // 마케팅 이메일 수신 동의 여부
+    // receiveMarketingSMS: false, // 마케팅 SMS 수신 동의 여부
   });
 
   // 유효성 검사 오류를 담을 상태 (state)
   const [errors, setErrors] = useState({});
-
   const [idCheckMessage, setIdCheckMessage] = useState('');
   const [isIdAvailable, setIsIdAvailable] = useState(null); // true / false / null
+  const [isIdValid, setIsIdValid] = useState(false);
+  const [idValidationMessage, setIdValidationMessage] = useState('');
+  const [passwordValidationMessage, setPasswordValidationMessage] = useState('');
+  const [isPasswordValid, setIsPasswordValid] = useState(false);
+  const [isPasswordMatch, setIsPasswordMatch] = useState(true);
 
-  // ✅ 반드시 이 안에 있어야 함!
+  const handleUserIdChange = (e) => {
+    const id = e.target.value;
+    setFormData((prev) => ({ ...prev, userId: id }));
+
+    // 1. 영문 소문자 또는 숫자 이외의 문자가 있으면
+    if (!/^[a-z0-9]*$/.test(id)) {
+      setIdValidationMessage('영문 소문자, 숫자만 입력 가능합니다.');
+      setIsIdValid(false);
+    }
+    // 2. 길이가 6~12 자리가 아니면
+    else if (id.length < 6 || id.length > 12) {
+      setIdValidationMessage('아이디는 6~12자리여야 합니다.');
+      setIsIdValid(false);
+    }
+    // 3. 숫자만 또는 영문만 있는 경우 → 두 가지 모두 있어야 함
+    else if (/^[0-9]+$/.test(id) || /^[a-z]+$/.test(id)) {
+      setIdValidationMessage('영문 소문자와 숫자를 조합하여 입력해주세요.');
+      setIsIdValid(false);
+    }
+    // 4. 형식 통과
+    else {
+      setIdValidationMessage('사용 가능한 형식입니다.');
+      setIsIdValid(true);
+    }
+
+    // 중복확인 메시지 초기화
+    setIdCheckMessage('');
+    setIsIdAvailable(null);
+  };
+
+  const handlePasswordChange = (e) => {
+    const password = e.target.value;
+    setFormData((prev) => ({ ...prev, password }));
+
+    const hasLetter = /[a-zA-Z]/.test(password);
+    const hasNumber = /[0-9]/.test(password);
+    const hasSpecial = /[!@#$%^&*(),.?":{}|<>]/.test(password);
+    const repeatedChar = /(.)\1\1\1/.test(password); // 동일문자 4회 이상 반복
+
+    if (password.length < 8 || password.length > 12) {
+      setPasswordValidationMessage('비밀번호는 8~12자여야 합니다.');
+      setIsPasswordValid(false);
+    } else if (!(hasLetter && hasNumber && hasSpecial)) {
+      setPasswordValidationMessage('영문자, 숫자, 특수문자를 모두 포함해야 합니다.');
+      setIsPasswordValid(false);
+    } else if (repeatedChar) {
+      setPasswordValidationMessage('동일 문자를 4번 이상 사용할 수 없습니다.');
+      setIsPasswordValid(false);
+    } else {
+      setPasswordValidationMessage('사용 가능한 비밀번호입니다.');
+      setIsPasswordValid(true);
+    }
+  };
+
+  useEffect(() => {
+    setIsPasswordMatch(formData.password === formData.passwordCheck);
+  }, [formData.password, formData.passwordCheck]);
+
   const handleCheckUserId = async () => {
     if (!formData.userId.trim()) {
       setIdCheckMessage('아이디를 입력해주세요.');
@@ -70,7 +132,6 @@ const RegistrationForm = ({ setStep }) => {
     if (!formData.userName.trim()) newErrors.userName = '이름을 입력해주세요.';
     if (!formData.userId.trim()) newErrors.userId = '아이디를 입력해주세요.';
     if (!formData.password) newErrors.password = '비밀번호를 입력해주세요.';
-    if (formData.password.length < 8) newErrors.password = '비밀번호는 8자 이상이어야 합니다.';
     if (formData.password !== formData.passwordCheck)
       newErrors.passwordCheck = '비밀번호가 일치하지 않습니다.';
     // if (!formData.birthYear || !formData.birthMonth || !formData.birthDay) newErrors.birthDate = '생년월일을 선택해주세요.';
@@ -90,7 +151,7 @@ const RegistrationForm = ({ setStep }) => {
     if (validateForm()) {
       // 유효성 검사 통과 시
       // 데이터베이스 저장을 위해 휴대폰 번호와 이메일 주소를 합침
-      const fullPhoneNumber = `${formData.phonePart1}${formData.phonePart2}${formData.phonePart3}`;
+      const fullPhoneNumber = `${formData.phonePart1}-${formData.phonePart2}-${formData.phonePart3}`;
       const fullEmail = `${formData.emailLocal}@${formData.emailDomain}`;
 
       const dataToSend = {
@@ -98,45 +159,34 @@ const RegistrationForm = ({ setStep }) => {
         userId: formData.userId,
         password: formData.password, // 비밀번호는 백엔드에서 해싱될 예정
         // birthDate: `${formData.birthYear}-${formData.birthMonth}-${formData.birthDay}`, // YYYY-MM-DD 형식
-        phoneNumber: fullPhoneNumber,
+        phone: fullPhoneNumber,
         email: fullEmail,
-        receiveMarketingEmail: formData.receiveMarketingEmail,
-        receiveMarketingSMS: formData.receiveMarketingSMS,
+        // receiveMarketingEmail: formData.receiveMarketingEmail,
+        // receiveMarketingSMS: formData.receiveMarketingSMS,
       };
 
       console.log('제출할 데이터:', dataToSend);
 
-      // --- 중요: 이 부분에서 백엔드 API 호출이 이루어집니다 ---
+      // --- 이 부분에서 백엔드 API ---
       try {
-        // 예시 API 호출 (실제 API 엔드포인트로 교체 필요)
-        const response = await fetch('/api/register', {
-          method: 'POST', // POST 요청
-          headers: {
-            'Content-Type': 'application/json', // JSON 형식으로 데이터 전송
-          },
-          body: JSON.stringify(dataToSend), // JavaScript 객체를 JSON 문자열로 변환하여 전송
-        });
+        const response = await axios.post('http://localhost:8080/api/user/signup', dataToSend);
 
-        if (response.ok) {
-          const result = await response.json();
-          console.log('회원가입 성공:', result);
+        if (response.status === 201) {
+          console.log('회원가입 성공:', response.data);
           alert('회원가입이 완료되었습니다!');
-          setStep(3); // ✅ 가입 완료 화면으로 전환
+          setStep(3); // 가입 완료 화면으로 전환
         } else {
-          // 응답이 실패했을 경우
-          const errorData = await response.json(); // 오류 데이터를 JSON으로 파싱
-          console.error('회원가입 실패:', errorData);
-          alert(`회원가입 실패: ${errorData.message || '알 수 없는 오류'}`);
-          // 백엔드에서 받은 특정 오류 메시지 표시
+          alert(`회원가입 실패: ${response.data.message || '알 수 없는 오류'}`);
         }
       } catch (error) {
-        // 네트워크 오류 발생 시
-        console.error('회원가입 중 네트워크 오류:', error);
-        alert('네트워크 오류가 발생했습니다. 다시 시도해주세요.');
+        // 빨간 콘솔 에러 없애고, 사용자 alert만
+        if (axios.isAxiosError(error)) {
+          const message = error.response?.data?.message || '알 수 없는 오류입니다.';
+          alert(`회원가입 실패: ${message}`);
+        } else {
+          alert('네트워크 오류가 발생했습니다. 다시 시도해주세요.');
+        }
       }
-    } else {
-      console.log('폼 유효성 검사 실패:', errors);
-      alert('입력된 정보를 확인해주세요.');
     }
   };
 
@@ -194,7 +244,7 @@ const RegistrationForm = ({ setStep }) => {
                   name="userName"
                   value={formData.userName}
                   onChange={handleChange}
-                  className="border border-gray-300 p-2 rounded-md w-full focus:outline-none focus:ring-2 focus:ring-red-300"
+                  className="border border-gray-300 p-2 rounded-md w-full focus:outline-none focus:ring-1 focus:ring-[#ADFF2F]"
                   placeholder="이름을 입력해주세요."
                 />
                 {errors.userName && <p className="text-red-500 text-xs mt-1">{errors.userName}</p>}
@@ -211,21 +261,40 @@ const RegistrationForm = ({ setStep }) => {
                   type="text"
                   id="userId"
                   name="userId"
-                  value={formData.id}
-                  onChange={handleChange}
-                  className="border border-gray-300 p-2 rounded-md flex-grow focus:outline-none focus:ring-2 focus:ring-red-300"
+                  value={formData.userId}
+                  onChange={handleUserIdChange}
+                  className="border border-gray-300 p-2 rounded-md flex-grow focus:outline-none focus:ring-1 focus:ring-[#ADFF2F]"
                   placeholder="아이디를 입력해주세요."
                 />
+                <p className={`text-xs mt-1 ${isIdValid ? 'text-green-600' : 'text-red-500'}`}>
+                  {idValidationMessage}
+                </p>
                 <button
                   type="button"
                   onClick={handleCheckUserId}
-                  className="bg-gray-700 text-white px-4 py-2 rounded-md text-sm whitespace-nowrap hover:bg-gray-800 transition-colors"
+                  disabled={!isIdValid}
+                  className={`px-4 py-2 rounded-md text-xs whitespace-nowrap transition-colors
+                        ${
+                          isIdValid
+                            ? 'bg-gray-700 text-white hover:bg-gray-800'
+                            : 'bg-gray-300 text-gray-500 cursor-not-allowed'
+                        }
+                      `}
                 >
                   중복확인
                 </button>
               </div>
               {errors.userId && (
                 <p className="text-red-500 text-xs col-start-2 col-span-2 mt-1">{errors.userId}</p>
+              )}
+              {idCheckMessage && (
+                <p
+                  className={`text-xs col-start-2 col-span-2 mt-1 ${
+                    isIdAvailable ? 'text-green-600' : 'text-red-500'
+                  }`}
+                >
+                  {idCheckMessage}
+                </p>
               )}
               <div className="col-start-2 col-span-2 text-sm text-gray-600 mt-1">
                 <p>
@@ -250,23 +319,25 @@ const RegistrationForm = ({ setStep }) => {
                   id="password"
                   name="password"
                   value={formData.password}
-                  onChange={handleChange}
-                  className="border border-gray-300 p-2 rounded-md w-full focus:outline-none focus:ring-2 focus:ring-red-300"
+                  onChange={handlePasswordChange}
+                  className="border border-gray-300 p-2 rounded-md w-full focus:outline-none focus:ring-1 focus:ring-[#ADFF2F]"
                   placeholder="비밀번호를 입력해주세요."
                 />
+                {passwordValidationMessage && (
+                  <p
+                    className={`text-xs mt-1 ${
+                      isPasswordValid ? 'text-green-600' : 'text-red-500'
+                    }`}
+                  >
+                    {passwordValidationMessage}
+                  </p>
+                )}
                 {errors.password && <p className="text-red-500 text-xs mt-1">{errors.password}</p>}
-                <div className="text-sm text-gray-600 mt-1">
-                  <p>
-                    영문 대문자, 영문 소문자, 숫자, 특수문자 중 3가지 이상을 조합하여 10~16자를
-                    입력해주세요.
-                  </p>
-                  <p>
-                    생년월일, 전화번호 등 개인정보와 관련된 숫자, 동일 숫자 3자리 이상 반복, 동일
-                    문자 4자리 이상 반복은 사용 불가능합니다.
-                  </p>
-                  <p>아이디와 동일한 비밀번호는 사용 불가능합니다.</p>
-                  <p>이전 사용 비밀번호와 동일한 비밀번호는 사용 불가능합니다.</p>
-                  <p>비밀번호는 6개월마다 1회씩 변경을 권장합니다.</p>
+                <div className="text-[12px] text-gray-600 mt-1">
+                  <ul>
+                    <li>영문자, 숫자, 특수문자를 모두 조합하여 8~12자리를 입력해주세요.</li>
+                    <li>동일문자를 4번 이상 사용할 수 없습니다.</li>
+                  </ul>
                 </div>
               </div>
             </div>
@@ -286,9 +357,18 @@ const RegistrationForm = ({ setStep }) => {
                   name="passwordCheck"
                   value={formData.passwordCheck}
                   onChange={handleChange}
-                  className="border border-gray-300 p-2 rounded-md w-full focus:outline-none focus:ring-2 focus:ring-red-300"
+                  className="border border-gray-300 p-2 rounded-md w-full focus:outline-none focus:ring-1 focus:ring-[#ADFF2F]"
                   placeholder="비밀번호를 다시 한번 입력해주세요."
                 />
+                {formData.password && formData.passwordCheck && (
+                  <p
+                    className={`text-xs mt-1 ${
+                      isPasswordMatch ? 'text-green-600' : 'text-red-500'
+                    }`}
+                  >
+                    {isPasswordMatch ? '비밀번호가 일치합니다.' : '비밀번호가 일치하지 않습니다.'}
+                  </p>
+                )}
                 {errors.passwordCheck && (
                   <p className="text-red-500 text-xs mt-1">{errors.passwordCheck}</p>
                 )}
@@ -305,7 +385,7 @@ const RegistrationForm = ({ setStep }) => {
                                     name="birthYear"
                                     value={formData.birthYear}
                                     onChange={handleChange}
-                                    className="border border-gray-300 p-2 rounded-md flex-1 focus:outline-none focus:ring-2 focus:ring-red-300"
+                                    className="border border-gray-300 p-2 rounded-md flex-1 focus:outline-none focus:ring-1 focus:ring-[#ADFF2F]"
                                 >
                                     <option value="">년</option>
                                     {getYears().map(year => (
@@ -316,7 +396,7 @@ const RegistrationForm = ({ setStep }) => {
                                     name="birthMonth"
                                     value={formData.birthMonth}
                                     onChange={handleChange}
-                                    className="border border-gray-300 p-2 rounded-md flex-1 focus:outline-none focus:ring-2 focus:ring-red-300"
+                                    className="border border-gray-300 p-2 rounded-md flex-1 focus:outline-none focus:ring-1 focus:ring-[#ADFF2F]"
                                 >
                                     <option value="">월</option>
                                     {getNumbers(1, 12).map(month => (
@@ -327,7 +407,7 @@ const RegistrationForm = ({ setStep }) => {
                                     name="birthDay"
                                     value={formData.birthDay}
                                     onChange={handleChange}
-                                    className="border border-gray-300 p-2 rounded-md flex-1 focus:outline-none focus:ring-2 focus:ring-red-300"
+                                    className="border border-gray-300 p-2 rounded-md flex-1 focus:outline-none focus:ring-1 focus:ring-[#ADFF2F]"
                                 >
                                     <option value="">일</option>
                                     {getNumbers(1, 31).map(day => (
@@ -343,7 +423,7 @@ const RegistrationForm = ({ setStep }) => {
 
             {/* 휴대폰 번호 입력 필드 */}
             <div className="grid grid-cols-3 gap-4 mb-4 items-center">
-              <label className="text-gray-700 font-medium flex items-center">
+              <label htmlFor="phone" className="text-gray-700 font-medium flex items-center">
                 <span className="text-red-500 text-xs mr-1">*</span> 휴대폰번호
               </label>
               <div className="col-span-2 flex space-x-2">
@@ -351,7 +431,7 @@ const RegistrationForm = ({ setStep }) => {
                   name="phonePart1"
                   value={formData.phonePart1}
                   onChange={handleChange}
-                  className="border border-gray-300 p-2 rounded-md w-20 focus:outline-none focus:ring-2 focus:ring-red-300"
+                  className="border border-gray-300 p-2 rounded-md w-20 focus:outline-none focus:ring-1 focus:ring-[#ADFF2F]"
                 >
                   <option value="010">010</option>
                   <option value="011">011</option>
@@ -367,7 +447,7 @@ const RegistrationForm = ({ setStep }) => {
                   value={formData.phonePart2}
                   onChange={handleChange}
                   maxLength="4"
-                  className="border border-gray-300 p-2 rounded-md flex-1 focus:outline-none focus:ring-2 focus:ring-red-300"
+                  className="border border-gray-300 p-2 rounded-md flex-1 focus:outline-none focus:ring-1 focus:ring-[#ADFF2F]"
                 />
                 <span className="self-center">-</span>
                 <input
@@ -376,7 +456,7 @@ const RegistrationForm = ({ setStep }) => {
                   value={formData.phonePart3}
                   onChange={handleChange}
                   maxLength="4"
-                  className="border border-gray-300 p-2 rounded-md flex-1 focus:outline-none focus:ring-2 focus:ring-red-300"
+                  className="border border-gray-300 p-2 rounded-md flex-1 focus:outline-none focus:ring-1 focus:ring-[#ADFF2F]"
                 />
               </div>
               {errors.phone && (
@@ -398,7 +478,7 @@ const RegistrationForm = ({ setStep }) => {
                   name="emailLocal"
                   value={formData.emailLocal}
                   onChange={handleChange}
-                  className="border border-gray-300 p-2 rounded-md flex-1 focus:outline-none focus:ring-2 focus:ring-red-300"
+                  className="border border-gray-300 p-2 rounded-md flex-1 focus:outline-none focus:ring-1 focus:ring-[#ADFF2F]"
                 />
                 <span className="self-center">@</span>
                 <input
@@ -406,35 +486,29 @@ const RegistrationForm = ({ setStep }) => {
                   name="emailDomain"
                   value={formData.emailDomain}
                   onChange={handleChange}
-                  className="border border-gray-300 p-2 rounded-md flex-1 focus:outline-none focus:ring-2 focus:ring-red-300"
+                  className="border border-gray-300 p-2 rounded-md flex-1 focus:outline-none focus:ring-1 focus:ring-[#ADFF2F]"
                 />
                 <select
                   name="emailDomainSelect"
                   onChange={(e) =>
                     setFormData((prev) => ({ ...prev, emailDomain: e.target.value }))
                   }
-                  className="border border-gray-300 p-2 rounded-md w-32 focus:outline-none focus:ring-2 focus:ring-red-300"
+                  className="border border-gray-300 p-2 rounded-md w-32 focus:outline-none focus:ring-1 focus:ring-[#ADFF2F]"
                 >
                   <option value="">직접입력</option>
                   <option value="naver.com">naver.com</option>
                   <option value="daum.net">daum.net</option>
                   <option value="gmail.com">gmail.com</option>
                   <option value="nate.com">nate.com</option>
-                  <option value="hotmail.com">hotmail.com</option>
                 </select>
               </div>
               {errors.email && (
                 <p className="text-red-500 text-xs col-start-2 col-span-2 mt-1">{errors.email}</p>
               )}
-              <div className="col-start-2 col-span-2 text-sm text-gray-600 mt-1">
-                <p>비밀번호 찾기, 본인확인 시에 사용됩니다. (이메일로만 재확인 가능합니다.)</p>
-              </div>
             </div>
           </div>
-
           {/* 선택 정보 섹션 */}
-          <div className="mb-8 border-t pt-6"></div>
-
+          <div className="mb-8  pt-6"></div> {/* border-t */}
           {/* 제출 버튼 */}
           <div className="flex justify-center space-x-4 mt-8">
             <button
@@ -446,7 +520,25 @@ const RegistrationForm = ({ setStep }) => {
             </button>
             <button
               type="submit"
-              className="bg-red-500 text-white px-8 py-3 rounded-md font-semibold hover:bg-red-600 transition-colors"
+              disabled={
+                !isIdValid || // 아이디 형식이 유효해야 함
+                isIdAvailable !== true || // 중복확인 결과가 true여야 함
+                !formData.userName ||
+                !formData.password ||
+                !formData.passwordCheck ||
+                formData.password !== formData.passwordCheck
+              }
+              className={`px-8 py-3 rounded-md font-semibold transition-colors
+                   ${
+                     !isIdValid ||
+                     isIdAvailable !== true ||
+                     !formData.userName ||
+                     !formData.password ||
+                     !formData.passwordCheck ||
+                     formData.password !== formData.passwordCheck
+                       ? 'bg-[#8ec324] text-white opacity-50 cursor-not-allowed'
+                       : 'bg-[#8ec324] text-white hover:bg-[#899A00]'
+                   }`}
             >
               가입
             </button>

@@ -9,7 +9,7 @@ export function AuthProvider({ children }) {
   const [userName, setUserName] = useState('');
   const router = useRouter();
   const [isLoggingOut, setIsLoggingOut] = useState(false);
-  const [isLoading, setIsLoading] = useState(false);
+  const [accessToken, setAccessToken] = useState('');
 
   // 앱 시작 시 localStorage 값으로 초기화
   const [hydrated, setHydrated] = useState(false);
@@ -25,6 +25,7 @@ export function AuthProvider({ children }) {
       const token = localStorage.getItem('accessToken');
       const name = localStorage.getItem('userName');
       setIsLoggedIn(!!token);
+      setAccessToken(token || '');
       setUserName(name || '');
     }
   }, []);
@@ -33,6 +34,7 @@ export function AuthProvider({ children }) {
     localStorage.setItem('accessToken', accessToken);
     localStorage.setItem('refreshToken', refreshToken);
     localStorage.setItem('userName', userName);
+    setAccessToken(accessToken);
     setIsLoggedIn(true);
     setUserName(userName);
   };
@@ -49,6 +51,7 @@ export function AuthProvider({ children }) {
       // 상태 업데이트
       setIsLoggedIn(false);
       setUserName('');
+      setAccessToken('');
 
       setIsLoggingOut(false); // 로딩 끝
 
@@ -60,7 +63,7 @@ export function AuthProvider({ children }) {
 
   return (
     <AuthContext.Provider
-      value={{ isLoggedIn, userName, setIsLoggedIn, setUserName, login, logout }}
+      value={{ isLoggedIn, userName, accessToken, setIsLoggedIn, setUserName, login, logout }}
     >
       {children}
     </AuthContext.Provider>
