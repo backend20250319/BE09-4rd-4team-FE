@@ -1,6 +1,7 @@
 "use client";
 
 import { useState, useEffect } from "react";
+import axios from "axios";
 import ReviewProductHeader from "./ReviewProductHeader";
 import ReviewRatingSection from "./ReviewRatingSection";
 import ReviewSkinTypeSection from "./ReviewSkinTypeSection";
@@ -26,13 +27,14 @@ export default function ReviewWriteLayout({ productId, onClose }) {
   const [skinConcern, setSkinConcern] = useState("");
   const [texture, setTexture] = useState("");
   const [content, setContent] = useState("");
+  const [images, setImages] = useState([]); // images 상태 추가 (누락 시 에러 방지)
 
   // 상품 정보 불러오기
   useEffect(() => {
     const fetchProduct = async () => {
       try {
-        const res = await fetch(`http://localhost:8080/api/products/${productId}`);
-        const result = await res.json();
+        const res = await axios.get(`http://localhost:8080/api/products/${productId}`);
+        const result = res.data;
         if (result.success) {
           setProduct(result.data);
         } else {
@@ -62,19 +64,18 @@ export default function ReviewWriteLayout({ productId, onClose }) {
     };
 
     try {
-      const res = await fetch(
+      const res = await axios.post(
         `http://localhost:8080/api/products/${productId}/reviews`,
+        payload,
         {
-          method: "POST",
           headers: {
             "Content-Type": "application/json",
             ...(token && { Authorization: `Bearer ${token}` }),
           },
-          body: JSON.stringify(payload),
         }
       );
 
-      const result = await res.json();
+      const result = res.data;
 
       if (result.success) {
         alert("리뷰 등록 성공!");
