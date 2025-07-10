@@ -3,6 +3,7 @@
 
 import { useEffect, useState } from "react";
 import { useParams } from "next/navigation";
+import axios from "axios";
 import ReviewSummary from "./ReviewSummary";
 import ReviewStats from "./ReviewStats";
 import ReviewList from "./ReviewList";
@@ -17,9 +18,8 @@ export default function ReviewDetailPage() {
 
     const fetchData = async () => {
       try {
-        const res = await fetch(`http://localhost:8080/api/products/${productId}/reviews`);
-        const result = await res.json();
-        setData(result);
+        const res = await axios.get(`http://localhost:8080/api/products/${productId}/reviews`);
+        setData(res.data);
       } catch (error) {
         console.error("리뷰 데이터 요청 실패:", error);
       } finally {

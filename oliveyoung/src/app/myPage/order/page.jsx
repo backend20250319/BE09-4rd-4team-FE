@@ -206,7 +206,7 @@ export default function Order() {
           })}
         </ul>
 
-        <fieldset className="mt-[20px] overflow-hidden relative w-full mt-[20px] mb-0 pt-[20px] pr-[20px] pb-[20px] pl-[20px] bg-[#fafafa] box-border rounded-[5px]">
+        <fieldset className="mt-[20px] overflow-hidden relative w-full mb-0 pt-[20px] pr-[20px] pb-[20px] pl-[20px] bg-[#fafafa] box-border rounded-[5px]">
           <div className="mb-[14px]">
             <p className="float-left mr-[20px] text-[#666666] text-[12px] font-bold leading-[30px] tracking-[-0.48px]">구매 유형</p>
             <ul className="flex">
@@ -372,7 +372,7 @@ export default function Order() {
                         <ul>
                         <li className="font-medium text-[#131518] list-none">{order.createdAt}</li>
                         <li className="mt-[2px] block font-medium text-[#9bce26] leading-[1.27] break-all align-top list-none">{order.orderId}</li>
-                        <li className="mt-[2px] leading-[1.27] relative overflow-hidden font-bold text-[12px] tracking-[-0.45px] h-auto p-0 mt-0 leading-[1.27] text-[#b2b8be] border-b-0 cursor-pointer list-none underline">상세보기</li>
+                        <li className="mt-[2px] leading-[1.27] relative overflow-hidden font-bold text-[12px] tracking-[-0.45px] h-auto p-0  text-[#b2b8be] border-b-0 cursor-pointer list-none underline">상세보기</li>
                       </ul>
                       </td> )}
                       <td className="border-t border-l border-[#e6e6e6] pl-5 pt-[30px] pb-[30px] px-[5px] text-left text-[#333333] text-[14px] leading-[18px]">

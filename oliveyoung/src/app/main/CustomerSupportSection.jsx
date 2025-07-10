@@ -12,7 +12,7 @@ export default function CustomerSupportSection() {
         {/* 공지사항 */}
         <div>
           <div className="flex justify-between h-[60px] items-center border-b ">
-            <div className="font-semibold text-[18px] font-bold ">공지사항</div>
+            <div className="text-semibold text-[18px] font-bold ">공지사항</div>
             <div className="text-left text-[14px] text-gray-500 -ml-[360px]">
               새로운 소식이 없어요
             </div>

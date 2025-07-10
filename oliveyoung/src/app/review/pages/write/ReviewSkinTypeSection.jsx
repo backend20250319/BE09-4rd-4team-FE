@@ -7,7 +7,7 @@ export default function ReviewSkinTypeSection() {
 
   return (
     <div>
-      <p className="mb-2 font-medium font-semibold">어떤 피부타입에 사용하면 좋은가요?</p>
+      <p className="mb-2 font-medium text-semibold">어떤 피부타입에 사용하면 좋은가요?</p>
       <div className="flex gap-4">
         {options.map((opt) => (
           <label
