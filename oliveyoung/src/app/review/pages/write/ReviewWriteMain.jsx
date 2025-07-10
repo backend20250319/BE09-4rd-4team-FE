@@ -53,7 +53,7 @@ export default function ReviewWriteLayout({ productId, onClose }) {
 
   // 리뷰 등록
   const handleSubmit = async () => {
-    const token = localStorage.getItem("jwtToken");
+    const token = localStorage.getItem("accessToken");
 
     const payload = {
       content,
