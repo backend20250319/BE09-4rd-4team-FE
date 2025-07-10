@@ -1,6 +1,6 @@
 // src/app/product/skintoner/product1/page.jsx
 
-import ProductPage1 from "./components/ProductPage1";
+import ProductPage from "./components/ProductPage";
 
 export default function Product1Page() {
   // 백엔드 API가 /api/products/skintoner/product1 형태를 원하므로,
@@ -9,7 +9,7 @@ export default function Product1Page() {
 
   return (
     <div className="w-full max-w-[1020px] mx-auto">
-      <ProductPage1 productId={productIdentifier} />
+      <ProductPage productId={productIdentifier} />
     </div>
   );
 }

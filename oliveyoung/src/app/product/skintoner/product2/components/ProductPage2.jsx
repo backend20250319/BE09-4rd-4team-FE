@@ -1,54 +1,57 @@
-"use client";
+// src/app/product/skintoner/product1/components/ProductPage2.jsx
 
-import React, { useState, useRef, useEffect } from "react";
+"use client"; // 클라이언트 컴포넌트임을 명시
+
+import React, { useState, useEffect, useRef } from "react";
 import { FaFacebookF, FaLink } from "react-icons/fa";
 import { IoChevronForwardOutline } from "react-icons/io5";
 import { GoQuestion } from "react-icons/go";
 import { FaRegHeart, FaGift } from "react-icons/fa";
 import { IoEyeOutline } from "react-icons/io5";
 import { CiCircleMinus, CiCirclePlus } from "react-icons/ci";
+import axios from "axios"; // axios 임포트
 
-// 상품설명 탭 클릭 시 보여줄 이미지 컴포넌트
+// ProductDescription 컴포넌트 (변경 없음)
 const ProductDescription = () => {
   const descriptionImages = [
     "/images/product/detailpage1.jpg",
-    "/images/product/detailpage15.jpg",
-    "/images/product/detailpage16.jpg",
-    "/images/product/detailpage17.jpg",
-    "/images/product/detailpage18.gif",
-    "/images/product/detailpage19.jpg",
-    "/images/product/detailpage20.jpg",
-    "/images/product/detailpage21.jpg",
-    "/images/product/detailpage22.jpg",
+    "/images/product/detailpage2.jpg",
+    "/images/product/detailpage3.jpg",
+    "/images/product/detailpage4.jpg",
+    "/images/product/detailpage5.jpg",
+    "/images/product/detailpage13.jpg",
+    "/images/product/detailpage6.gif",
+    "/images/product/detailpage14.jpg",
+    "/images/product/detailpage7.jpg",
+    "/images/product/detailpage8.jpg",
+    "/images/product/detailpage9.gif",
+    "/images/product/detailpage10.jpg",
+    "/images/product/detailpage11.jpg",
+    "/images/product/detailpage12.jpg",
   ];
 
-  // 상품 설명이 확장되었는지 여부를 관리하는 상태
   const [isDescriptionExpanded, setIsDescriptionExpanded] = useState(false);
-  // 처음에 보여줄 이미지 개수 설정
-  const initialImageCount = 2; // 이미지에서 처음에 2개 정도만 보이는 것 같아 2로 설정했습니다. 필요에 따라 조절하세요.
+  const initialImageCount = 2;
 
-  // "더보기" 또는 "접기" 버튼 클릭 시 상태를 토글하는 함수
   const toggleDescription = () => {
     setIsDescriptionExpanded(!isDescriptionExpanded);
   };
 
-  // 현재 보여줄 이미지 배열을 결정
   const visibleImages = isDescriptionExpanded
-    ? descriptionImages // 확장되었으면 모든 이미지
-    : descriptionImages.slice(0, initialImageCount); // 아니면 initialImageCount 만큼만
+    ? descriptionImages
+    : descriptionImages.slice(0, initialImageCount);
 
   return (
     <div className="flex flex-col items-center justify-center p-4">
       {visibleImages.map((imagePath, index) => (
         <img
-          key={index} // key prop은 각 리스트 아이템을 고유하게 식별하는 데 사용됩니다.
+          key={index}
           src={imagePath}
-          alt={`상품 상세 설명 ${index + 1}`} // 접근성을 위해 alt 텍스트에 인덱스 추가
-          className="w-full max-w-[800px] h-auto object-contain mb-2" // 이미지 간 간격 추가 (선택 사항)
+          alt={`상품 상세 설명 ${index + 1}`}
+          className="w-full max-w-[800px] h-auto object-contain mb-2"
         />
       ))}
 
-      {/* "상품설명 더보기" 버튼 (초기 이미지 개수보다 많고, 아직 확장되지 않았을 때만 표시) */}
       {descriptionImages.length > initialImageCount &&
         !isDescriptionExpanded && (
           <button
@@ -60,9 +63,8 @@ const ProductDescription = () => {
           </button>
         )}
 
-      {/* "상품설명 접기" 버튼 및 안내 문구 (확장되었을 때만 표시) */}
       {isDescriptionExpanded && (
-        <div className="flex flex-col items-center">
+        <div className="flex flex-col items-center mt-6">
           <div className="px-6 py-3 mb-6 text-xs text-black bg-gray-100 border rounded">
             본 상품 정보(상품 상세, 상품 설명 등)의 내용은 해당 협력사가 직접
             등록한 것입니다.
@@ -72,47 +74,53 @@ const ProductDescription = () => {
             onClick={toggleDescription}
           >
             상품설명 접기{" "}
-            <IoChevronForwardOutline className="inline-block ml-1 text-black align-middle transform rotate-180" />{" "}
-            {/* 접기 아이콘은 반대 방향 */}
+            <IoChevronForwardOutline className="inline-block ml-1 text-black align-middle transform rotate-180" />
           </button>
         </div>
       )}
-
-      {/* 이미지 아래에 추가할 텍스트가 있다면 여기에 작성합니다.
-          모든 이미지가 보이거나, 처음부터 initialImageCount보다 적은 이미지가 있을 때만 이 텍스트를 표시합니다. */}
-      {/* {(!isDescriptionExpanded && descriptionImages.length <= initialImageCount) || isDescriptionExpanded ? (
-        <>
-          <p className="mt-8 text-xl font-bold">피부와 헤리티지 기반 더모 코스메틱 No.1 닥터지</p>
-          <p className="mt-2 text-base text-center text-gray-700">
-            피부와 헤리티지 기반의 기술력을 담아 <br/>누구나 건강한 피부를 가질 수 있도록 제품을 개발합니다.
-          </p>
-        </>
-      ) : null} */}
     </div>
   );
 };
 
-function ProductPage2() {
-  const thumbnailPaths = [
+// ProductPage1 컴포넌트 시작
+function ProductPage1({ productId }) {
+  // productId를 props로 받습니다.
+  const [productData, setProductData] = useState(null);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
+
+  // ⭐⭐ 이곳에 fixedThumbnailPaths를 선언하고, mainImage의 초기값에 사용합니다. ⭐⭐
+  const fixedThumbnailPaths = [
     "/images/product/thumbnail5.jpg",
     "/images/product/thumbnail6.jpg",
     "/images/product/thumbnail7.jpg",
+    "/images/product/thumbnail8.jpg",
   ];
 
+  // ⭐ mainImage의 초기값을 fixedThumbnailPaths의 첫 번째 요소로 설정합니다.
   const [mainImage, setMainImage] = useState(
-    thumbnailPaths && thumbnailPaths.length > 0
-      ? thumbnailPaths[0]
-      : "/images/product/skintoner50.jpg"
+    fixedThumbnailPaths.length > 0
+      ? fixedThumbnailPaths[0]
+      : "/images/product/skintoner21.jpg" // fallback 이미지
   );
+
   const handleThumbnailClick = (imagePath) => {
     setMainImage(imagePath);
   };
 
-  const [isBrandLiked, setIsBrandLiked] = useState(false);
-  const handleBrandLikeToggle = () => {
-    setIsBrandLiked(!isBrandLiked);
-  };
+  const carouselRef = useRef(null);
+  const itemsPerPage = 3; // 한 페이지에 표시할 상품 수
+  const [currentPage, setCurrentPage] = useState(0); // 현재 페이지 인덱스 (0부터 시작)
+  const [pageWidth, setPageWidth] = useState(0); // 한 페이지의 정확한 너비
+  // 새로 추가: 활성화된 탭 상태
+  const [activeTab, setActiveTab] = useState("상품설명"); // 기본값 '상품설명'
 
+  // Tailwind의 space-x-4는 기본적으로 16px (1rem) 입니다.
+  const gapWidth = 16;
+
+
+  // 캐러셀 더미 데이터 (productData fetching 로직 뒤에 있지만, 캐러셀 로직이 먼저 참조할 수 있도록 상단에 선언합니다)
+  // products 변수를 선언하여 productsCarousel을 참조하도록 합니다.
   const products = [
     {
       id: 10,
@@ -236,25 +244,16 @@ function ProductPage2() {
     },
   ];
 
-  const carouselRef = useRef(null);
-  const itemsPerPage = 3; // 한 페이지에 표시할 상품 수
-  const [currentPage, setCurrentPage] = useState(0); // 현재 페이지 인덱스 (0부터 시작)
-  const [pageWidth, setPageWidth] = useState(0); // 한 페이지의 정확한 너비
-  // 새로 추가: 활성화된 탭 상태
-  const [activeTab, setActiveTab] = useState("상품설명"); // 기본값 '상품설명'
-
-  // Tailwind의 space-x-4는 기본적으로 16px (1rem) 입니다.
-  const gapWidth = 16;
-
   // 캐러셀 너비 계산 (컴포넌트 마운트 시 및 리사이즈 시)
   useEffect(() => {
     const calculatePageWidth = () => {
       if (carouselRef.current && carouselRef.current.children.length > 0) {
         // 첫 번째 상품 카드 요소의 실제 너비를 가져옵니다. (offsetWidth는 padding 포함)
+        // 캐러셀 내의 첫 번째 아이템의 너비를 기준으로 계산합니다.
         const firstItem = carouselRef.current.children[0];
         const itemWidth = firstItem.offsetWidth;
 
-        // 한 페이지의 너비는 3개 상품의 너비와 그 사이 2개의 간격을 더한 값입니다.
+        // 한 페이지의 너비는 itemsPerPage 개수 상품의 너비와 그 사이 (itemsPerPage - 1) 개의 간격을 더한 값입니다.
         const calculatedPageWidth =
           itemWidth * itemsPerPage + gapWidth * (itemsPerPage - 1);
 
@@ -266,6 +265,7 @@ function ProductPage2() {
         console.log("Container Scroll Width:", carouselRef.current.scrollWidth);
         console.log("Container Client Width:", carouselRef.current.clientWidth);
       }
+      
     };
 
     calculatePageWidth(); // 초기 계산
@@ -293,7 +293,7 @@ function ProductPage2() {
   const handlePrevPage = () => {
     if (carouselRef.current && pageWidth > 0) {
       const totalPages = Math.ceil(products.length / itemsPerPage);
-      const prevPage = (currentPage - 1 + totalPages) % totalPages;
+      const prevPage = (currentPage - 1 + totalPages) % totalPages; // 순환 캐러셀
       setCurrentPage(prevPage);
 
       const targetScrollLeft = prevPage * pageWidth;
@@ -304,122 +304,218 @@ function ProductPage2() {
     }
   };
 
+  useEffect(() => {
+    const fetchProductDetails = async () => {
+      if (!productId) {
+        setLoading(false);
+        setError("상품 ID가 제공되지 않았습니다.");
+        return;
+      }
+
+      setLoading(true);
+      setError(null);
+
+      try {
+        const apiUrl = `http://localhost:8080/api/products/skintoner/${productId}`;
+        console.log(
+          `Fetching product details for ID: ${productId} from ${apiUrl}`
+        );
+
+        const response = await axios.get(apiUrl);
+        const data = response.data;
+
+        setProductData(data);
+        setMainImage(data.imageUrl || fixedThumbnailPaths[0]);
+      } catch (err) {
+        console.error(`상품 상세 정보 로드 실패 (ID: ${productId}):`, err);
+        if (err.response) {
+          setError(
+            `상품 정보를 불러오는 데 실패했습니다: ${err.response.status} - ${
+              err.response.data.message || "알 수 없는 서버 오류"
+            }`
+          );
+        } else if (err.request) {
+          setError(
+            "상품 정보를 불러오는 데 실패했습니다: 서버로부터 응답을 받지 못했습니다."
+          );
+        } else {
+          setError(
+            "상품 정보를 불러오는 데 실패했습니다: 요청을 보내는 중 오류가 발생했습니다."
+          );        setMainImage(data.imageUrl || fixedThumbnailPaths[0]);
+
+        }
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchProductDetails();
+  }, [productId]); // productId가 변경될 때마다 useEffect 재실행
+
+  // 로딩, 에러, 데이터 없음 상태 처리
+  if (loading) {
+    return (
+      <div className="flex items-center justify-center h-screen">
+        <p>상품 정보를 불러오는 중...</p>
+      </div>
+    );
+  }
+
+  if (error) {
+    return (
+      <div className="flex items-center justify-center h-screen text-red-500">
+        <p>{error}</p>
+      </div>
+    );
+  }
+
+  if (!productData) {
+    return (
+      <div className="flex items-center justify-center h-screen">
+        <p>상품 정보를 찾을 수 없습니다.</p>
+      </div>
+    );
+  }
+
+  // 상품 이미지 썸네일 경로 생성: 백엔드 DTO에 subImageUrls 필드가 있다면 사용
+  const thumbnailPaths =
+    productData.subImageUrls && Array.isArray(productData.subImageUrls) && productData.subImageUrls.length > 0
+      ? [productData.imageUrl, ...productData.subImageUrls]
+      : fixedThumbnailPaths;
+
+  // 캐러셀 더미 데이터 (products 변수로 대체되었으므로 이 부분은 삭제되거나, products 변수 선언 시 사용됩니다.)
+  // const productsCarousel = [...]; // 이 부분은 이제 위에 products 변수로 대체되었습니다.
+
   return (
     <div className="relative max-w-6xl mx-auto font-sans bg-white">
-      {/* 상단 경로 (Breadcrumbs) - 구분선 추가됨 */}
+      {/* 상단 경로 (Breadcrumbs) - productData 활용 */}
       <div className="flex items-center px-4 py-3 pb-2 mb-6 text-sm text-gray-400 border-b md:px-0">
         <span>홈</span>
         <span className="mx-1">&gt;</span>
-        <span>스킨케어</span>
+        <span>{productData.categoryName || "카테고리"}</span>
         <span className="mx-1">&gt;</span>
         <span>스킨/토너</span>
         <span className="mx-1">&gt;</span>
-        <span className="text-black ">
-          닥터지 에이클리어 밸런싱 토너 200ml 기획 (+화장솜)
-        </span>
+        <span className="text-black ">{productData.productName}</span>
       </div>
+
       {/* 메인 상품 콘텐츠 */}
       <div className="flex flex-col gap-12 p-4 md:flex-row md:p-0">
         {/* 왼쪽 섹션: 상품 메인 이미지 및 썸네일 */}
         <div className="flex flex-col lg:w-3/5">
           <div className="relative w-full max-w-[500px] h-[500px] mb-8">
-            {/* 상품 메인 이미지: mainImage 상태에 따라 이미지 경로 변경 */}
             <img
               src={mainImage}
-              alt="닥터지 에이클리어 밸런싱 토너 200ml 기획 (+화장솜)"
+              alt={productData.productName}
               className="object-contain w-full h-full rounded-md"
             />
           </div>
-          {/* 썸네일 목록 */}
+          {/* 썸네일 목록 - thumbnailPaths 사용 */}
           <ul className="flex justify-center space-x-2">
-            {thumbnailPaths.map(
-              (
-                imagePath,
-                index // 이미지 경로 배열을 사용하여 렌더링
-              ) => (
-                <li
-                  key={imagePath}
-                  className={`w-[80px] h-[80px] cursor-pointer ${
-                    mainImage === imagePath // 현재 메인 이미지와 일치하는 썸네일에 활성화 스타일 적용
-                      ? "border-2 border-black"
-                      : "border border-gray-300"
-                  } hover:border-black`}
-                  onClick={() => handleThumbnailClick(imagePath)} // 클릭 시 핸들러 호출
-                >
-                  <a href="#" onClick={(e) => e.preventDefault()}>
-                    {" "}
-                    {/* 기본 링크 동작 방지 */}
-                    <img
-                      src={imagePath} // 정의된 썸네일 이미지 경로 사용
-                      alt={`썸네일 이미지 ${index + 1}`} // 접근성을 위한 대체 텍스트
-                      className="object-contain w-full h-full"
-                    />
-                  </a>
-                </li>
-              )
-            )}
+            {thumbnailPaths.map((imagePath, index) => (
+              <li
+                key={imagePath}
+                className={`w-[80px] h-[80px] cursor-pointer ${
+                  mainImage === imagePath
+                    ? "border-2 border-black"
+                    : "border border-gray-300"
+                } hover:border-black`}
+                onClick={() => handleThumbnailClick(imagePath)}
+              >
+                <a href="#" onClick={(e) => e.preventDefault()}>
+                  <img
+                    src={imagePath}
+                    alt={`썸네일 이미지 ${index + 1}`}
+                    className="object-contain w-full h-full"
+                  />
+                </a>
+              </li>
+            ))}
           </ul>
         </div>
 
-        {/* 오른쪽 섹션: 상품 상세 정보 */}
+        {/* 오른쪽 섹션: 상품 상세 정보 - productData 활용 */}
         <div className="p-4 md:w-1/2 lg:w-3/5 md:p-0">
-          <p className="mb-1 text-sm text-black">닥터지 &gt;</p>
+          <p className="mb-1 text-sm text-black">
+            {productData.brandName} &gt;
+          </p>
           <h1 className="mb-2 text-2xl font-semibold">
-            닥터지 에이클리어 밸런싱 토너 200ml 기획 (+화장솜)
+            {productData.productName}
           </h1>
 
           {/* 가격 정보 */}
           <div className="mb-2">
             <div className="flex items-baseline space-x-2">
-              <span className="mr-1 text-lg text-gray-400 line-through">
-                27,000원
-              </span>
-              {/* 원래 가격 */}
+              {productData.originalPrice && (
+                <span className="mr-1 text-lg text-gray-400 line-through">
+                  {productData.originalPrice.toLocaleString()}원
+                </span>
+              )}
               <span className="text-2xl font-bold text-[#e02020]">
-                18,900원
+                {productData.discountedPrice.toLocaleString()}원
                 <span className="ml-3 text-sm font-normal text-gray-700">
                   혜택 정보
                   <GoQuestion className="inline-block mb-1 ml-1 text-base text-gray-500 align-middle cursor-pointer" />
                 </span>
               </span>
-              {/* 할인 가격 및 혜택정보 */}
             </div>
           </div>
 
-          {/* 상품 뱃지 (세일, 증정, 오늘드림) */}
+          {/* 상품 뱃지 */}
           <div className="flex items-center mb-2">
-            <span className="px-2 py-0.5 bg-[#f65c60] text-white text-xs rounded-[9px]">
-              세일
-            </span>
-            <span className="px-2 py-0.5 bg-[#f374b7] text-white text-xs rounded-[9px]">
-              오늘드림
-            </span>
+            {productData.badgeNames &&
+              productData.badgeNames.map((badgeText, index) => {
+                let bgColorClass = "";
+                switch (badgeText) {
+                  case "세일":
+                    bgColorClass = "bg-[#f65c60]";
+                    break;
+                  case "쿠폰":
+                    bgColorClass = "bg-[#9bce26]";
+                    break;
+                  case "증정":
+                    bgColorClass = "bg-[#6fcff7]";
+                    break;
+                  case "오늘드림":
+                    bgColorClass = "bg-[#f374b7]";
+                    break;
+                  default:
+                    bgColorClass = "bg-gray-500";
+                }
+                return (
+                  <span
+                    key={index}
+                    className={`px-2 py-0.5 text-white text-xs rounded-[9px] mr-1 ${bgColorClass}`}
+                  >
+                    {badgeText}
+                  </span>
+                );
+              })}
           </div>
-
+          {/* 뷰 카운트 */}
           <p className="text-sm text-gray-600">
-            <IoEyeOutline className="inline-block ml-1 font-bold text-base text-[#f27370] align-middle cursor-pointer" />{" "}
-            {/* 눈 모양 아이콘으로 변경 */}
-            <span className="font-extrabold text-[#f27370]">7</span>
-            <span className="text-[#f27370]">명이 보고있어요</span>
+            {productData.viewCount && (
+              <>
+                <IoEyeOutline className="inline-block ml-1 font-bold text-base text-[#f27370] align-middle cursor-pointer" />{" "}
+                <span className="font-extrabold text-[#f27370]">
+                  {productData.viewCount.toLocaleString()}
+                </span>
+                <span className="text-[#f27370]">명이 보고있어요</span>
+              </>
+            )}
           </p>
 
-          {/* 배송 정보 */}
+          {/* 배송 정보 (기존 유지) */}
           <div className="py-4">
-            {/* 테두리 제거 */}
             <span className="mb-2 text-lg font-semibold">배송정보</span>
             <GoQuestion className="inline-block mb-1 ml-1 text-base text-gray-500 cursor-pointer" />
             <ul className="text-sm text-gray-700">
               <li className="flex mt-2 mb-2">
-                {" "}
-                {/* li에 flex를 주고, 내부 요소들을 가로로 정렬 */}
                 <span className="font-semibold text-gray-700 w-25">
                   일반배송
                 </span>
-                <span className="mx-2 text-gray-300">|</span>{" "}
-                {/* 세로 구분선 */}
+                <span className="mx-2 text-gray-300">|</span>
                 <div className="flex flex-col flex-1">
-                  {" "}
-                  {/* 나머지 공간을 차지하고, 내부 콘텐츠는 세로로 정렬 */}
                   <span>2,500원 (20,000원 이상 무료배송)</span>
                   <span className="text-gray-700 ">
                     올리브영 배송: 평균 4일 이내 배송
@@ -430,31 +526,26 @@ function ProductPage2() {
                 <span className="font-semibold text-gray-700 w-25">
                   오늘드림
                 </span>
-                <span className="mx-2 text-gray-300">|</span>{" "}
-                {/* 세로 구분선 추가 */}
+                <span className="mx-2 text-gray-300">|</span>
                 <div className="flex items-center flex-1">
                   2,500원 또는 5,000원
                   <GoQuestion className="inline-block mb-1 ml-1 text-base text-gray-500 cursor-pointer" />
                 </div>
               </li>
-              {/* 픽업 정보 아래 구분선 추가 */}
               <li className="flex items-center pb-3 border-b border-gray-200">
                 <span className="mr-6 font-semibold text-gray-700 w-25">
                   픽업
                 </span>
-                <span className="mx-2 text-gray-300">|</span>{" "}
-                {/* 세로 구분선 추가 */}
+                <span className="mx-2 text-gray-300">|</span>
                 <div className="flex items-center flex-1">
                   배송비 조건 없음
-                  <GoQuestion className="inline-block mb-1 ml-1 text-base text-gray-500 cursor-pointer" />
+                  <GoQuestion className="inline-block ml-1 text-base text-gray-500 cursor-pointer" />
                 </div>
               </li>
             </ul>
           </div>
-
-          {/* 결제 혜택 */}
+          {/* 결제 혜택 (기존 유지) */}
           <div className="mb-2 border-b ">
-            {/* 테두리 제거 */}
             <p className="mb-2 text-lg font-semibold">결제혜택</p>
             <ul className="text-sm text-gray-700">
               <li className="flex items-center mb-1">
@@ -471,90 +562,75 @@ function ProductPage2() {
               </li>
             </ul>
           </div>
-
-          {/* 구매 수량 선택 */}
+          {/* 구매 수량 선택 (기존 유지) */}
           <div className="flex items-center justify-between py-4 mb-4 border-b border-gray-200">
             <span className="text-lg font-semibold">구매수량</span>
             <div className="flex items-center border border-gray-300 rounded-sm">
-              {/* 테두리 및 둥근 모서리 조정 */}
               <button className="flex items-center justify-center w-8 h-8 text-lg text-gray-600 rounded-l-sm hover:bg-gray-100">
-                <CiCircleMinus className="w-5 h-5" /> {/* 아이콘 변경 */}
+                <CiCircleMinus className="w-5 h-5" />
               </button>
-              {/* 버튼 크기, 폰트 조정 */}
               <input
                 type="text"
                 value="1"
                 readOnly
-                className="w-12 h-8 text-sm text-center border-l border-r border-gray-300" // 입력 필드 크기, 폰트 조정
+                className="w-12 h-8 text-sm text-center border-l border-r border-gray-300"
               />
               <button className="flex items-center justify-center w-8 h-8 text-lg text-gray-600 rounded-r-sm hover:bg-gray-100">
-                <CiCirclePlus className="w-5 h-5" /> {/* 아이콘 변경 */}
+                <CiCirclePlus className="w-5 h-5" />
               </button>
-              {/* 버튼 크기, 폰트 조정 */}
             </div>
           </div>
-
-          {/* 총 상품 금액 */}
+          {/* 총 상품 금액 (productData 활용) */}
           <div className="flex items-center justify-between py-4 mb-6 border-b-2 border-[#e02020]">
-            {/* 배경색 제거, 패딩 조정 */}
             <span className="text-lg font-bold text-[#e02020]">
               상품금액 합계
             </span>
-            {/* 폰트 굵기 제거 */}
-            <span className="text-xl font-bold text-red-500">18,900원</span>
-            {/* 색상 강조 */}
+            <span className="text-xl font-bold text-red-500">
+              {productData.discountedPrice.toLocaleString()}원
+            </span>
           </div>
-
-          {/* 오늘드림 체크박스 */}
+          {/* 오늘드림 체크박스 (기존 유지) */}
           <div className="flex items-center mb-4 text-sm">
             <input
               type="checkbox"
               id="todayDream"
               className="w-4 h-4 mr-2 accent-[#f27370]"
             />
-            {/* 체크박스 크기 조정 */}
             <label htmlFor="todayDream">
               오늘드림으로 받아 보시겠어요?
               <GoQuestion className="inline-block mb-1 ml-1 text-base text-gray-600 align-middle cursor-pointer" />
             </label>
           </div>
-
-          {/* 액션 버튼 (장바구니, 바로구매, 찜하기) */}
+          {/* 액션 버튼 (장바구니, 바로구매, 찜하기 - 기존 유지) */}
           <div className="flex mb-8 space-x-2">
             <button className="flex-1 py-3 text-lg border border-[#f27370] text-[#f27370] hover:bg-white">
-              {/* 테두리, 색상, 폰트, 둥근 모서리 조정 */}
               장바구니
             </button>
             <button className="flex-1 py-3 text-lg text-white bg-[#f27370] hover:bg-[#f27370]">
-              {/* 배경, 폰트, 둥근 모서리 조정 */}
               바로구매
             </button>
-            {/* 선물 상자 아이콘 추가 */}
             <button className="flex items-center justify-center border bg-[#f27370] border-gray-300 rounded-sm w-14 hover:bg-gray-50">
-              <FaGift className="w-6 h-6 text-white" />{" "}
-              {/* FaGift 아이콘 사용 */}
+              <FaGift className="w-6 h-6 text-white" />
             </button>
             <button className="flex items-center justify-center border border-gray-300 w-14 h-14 hover:bg-white">
-              {/* 크기, 테두리, 둥근 모서리 조정 */}
               <FaRegHeart className="w-6 h-6 text-gray-600" />
-              {/* 하트 아이콘 추가 */}
             </button>
           </div>
         </div>
       </div>
-
-      {/* 고객 리뷰 섹션 */}
+      
+      {/* 고객 리뷰 섹션 - productData 활용 */}
       <div className="flex items-center justify-between px-4 py-4 mt-4 border-t border-gray-200 md:px-0">
-        {/* 테두리 유지, 패딩 조정 */}
         <div className="flex items-center">
           <span className="mr-2 text-lg font-bold">고객 리뷰</span>
           <div className="flex items-center">
             {/* 별점 - 시각적 표현을 위한 간소화 */}
             <span className="mr-1 text-2xl text-[#f27370]">★★★★☆</span>
             <span className="mr-1 font-bold">4.8</span>
-            <span className="text-gray-500">(401건)</span>
+            <span className="text-gray-500">(3,833건)</span>
           </div>
         </div>
+        {/* URL 공유 버튼 (기존 유지) */}
         <div className="flex space-x-2">
           <button className="flex items-center px-3 py-1 text-sm text-gray-600 border border-gray-300 rounded hover:bg-gray-50">
             <FaFacebookF className="mr-1 text-blue-600" /> URL
@@ -564,10 +640,9 @@ function ProductPage2() {
           </button>
         </div>
       </div>
-
       {/* 추가 정보 섹션 */}
       <div className="px-4 mt-6 md:px-0">
-        {/* 정품 인증/공지 */}
+        {/* 증정품 안내 (기존 유지) */}
         <div className="p-4 mb-6 bg-gray-50">
           <p className="mb-2 font-semibold">증정품 안내</p>
           <p className="text-sm text-gray-700">
@@ -578,10 +653,8 @@ function ProductPage2() {
             증정
           </p>
         </div>
-
-        {/* 매장 찾기 버튼 및 닥터지 브랜드관 버튼 */}
+        {/* 매장 찾기 버튼 및 브랜드관 버튼 (productData.brandName 활용) */}
         <div className="flex justify-start mb-6 space-x-5">
-          {/* 구매 가능 수령매장 찾기 버튼 (기존) */}
           <a
             href="javascript:;"
             title="구매 가능 올영매장 찾기"
@@ -602,22 +675,16 @@ function ProductPage2() {
             구매 가능 수령매장 찾기
             <IoChevronForwardOutline className="ml-2" />
           </a>
-
-          {/* 닥터지 브랜드관 버튼 (수정) */}
-          <button
-            className="flex items-center justify-center flex-1 px-6 py-3 font-semibold text-gray-700 border border-gray-300 rounded-md hover:bg-gray-50"
-            // 원래는 data-attr 등 추가 속성 필요할 수 있음
-          >
+          <button className="flex items-center justify-center flex-1 px-6 py-3 font-semibold text-gray-700 border border-gray-300 rounded-md hover:bg-gray-50">
             <span
               className="inline-block w-12 h-8 mr-2 bg-center bg-cover rounded-full"
               style={{
-                backgroundImage:
-                  "url('https://image.oliveyoung.co.kr/uploads/images/onlBrandMgmt/2021/4/7996462662502374809.jpg')",
+                backgroundImage: `url('https://image.oliveyoung.co.kr/uploads/images/onlBrandMgmt/2021/4/7996462662502374809.jpg')`,
               }}
               role="img"
               aria-label="Dr.G Logo"
             ></span>
-            닥터지 브랜드관
+            {productData.brandName} 브랜드관
             <IoChevronForwardOutline className="ml-2" />
           </button>
         </div>
@@ -758,7 +825,7 @@ function ProductPage2() {
           } flex-1 py-2 text-center border-l border-gray-200`}
           onClick={() => setActiveTab("리뷰")}
         >
-          리뷰 (401)
+          리뷰 (3,833)
         </button>
         <button
           className={`${
@@ -768,7 +835,7 @@ function ProductPage2() {
           } flex-1 py-2 text-center border-l border-gray-200`} // 좌측 구분선 추가
           onClick={() => setActiveTab("Q&A")}
         >
-          Q&A (4)
+          Q&A (38)
         </button>
       </div>
 
@@ -791,7 +858,6 @@ function ProductPage2() {
           </div>
         )}
       </div>
-
       {/* 다른 고객이 함께 본 상품 섹션 시작 */}
       {/* 캐러셀 전체에 좌우 패딩을 적용합니다. */}
       {/* 상단 구분선과 상단 패딩 추가 */}
@@ -901,4 +967,4 @@ function ProductPage2() {
   );
 }
 
-export default ProductPage2;
+export default ProductPage1;
