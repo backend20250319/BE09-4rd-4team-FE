@@ -45,20 +45,22 @@ function SkinTonerProduct({ selectedBrands }) {
         // 프론트에서 사용하는 이름에 맞춰 매핑합
         const mappedProducts = data.map((item) => ({
           id: item.productId,
-          imageUrl: item.imageUrl, 
+          imageUrl: item.imageUrl,
           productName: item.productName,
           brandName: item.brandName,
           originalPrice: item.originalPrice,
           discountedPrice: item.discountedPrice,
-          badgeNames: item.badgeNames || [], 
-          createdAt: item.createdAt ? new Date(item.createdAt) : null, 
-          salesCount: item.salesCount || 0, 
+          badgeNames: item.badgeNames || [],
+          createdAt: item.createdAt ? new Date(item.createdAt) : null,
+          salesCount: item.salesCount || 0,
         }));
         setAllProducts(mappedProducts); // 전체 상품 데이터를 저장
       } catch (error) {
         console.error("상품 데이터를 가져오는 중 오류 발생:", error);
         if (error.response) {
-          setError(`상품 데이터를 가져오는 데 실패했습니다: ${error.response.status} - ${error.response.statusText}.`);
+          setError(
+            `상품 데이터를 가져오는 데 실패했습니다: ${error.response.status} - ${error.response.statusText}.`
+          );
         } else if (error.request) {
           setError("네트워크 오류: 서버에 연결할 수 없습니다.");
         } else {
@@ -79,8 +81,8 @@ function SkinTonerProduct({ selectedBrands }) {
 
     // 1. 브랜드 필터링
     if (selectedBrands && selectedBrands.length > 0) {
-      currentProducts = currentProducts.filter((product) =>
-        selectedBrands.includes(product.brandName) // product.brand -> product.brandName
+      currentProducts = currentProducts.filter(
+        (product) => selectedBrands.includes(product.brandName) // product.brand -> product.brandName
       );
     }
 
@@ -105,8 +107,10 @@ function SkinTonerProduct({ selectedBrands }) {
           return a.discountedPrice - b.discountedPrice;
         case "discount":
           // 할인율순 계산: (원가 - 할인가) / 원가
-          const discountRateA = (a.originalPrice - a.discountedPrice) / a.originalPrice;
-          const discountRateB = (b.originalPrice - b.discountedPrice) / b.originalPrice;
+          const discountRateA =
+            (a.originalPrice - a.discountedPrice) / a.originalPrice;
+          const discountRateB =
+            (b.originalPrice - b.discountedPrice) / b.originalPrice;
           return discountRateB - discountRateA; // 높은 할인율이 먼저 오도록 내림차순
         default: // "all" 또는 다른 경우
           return 0; // 정렬하지 않음 (기존 순서 유지)
@@ -241,15 +245,16 @@ function SkinTonerProduct({ selectedBrands }) {
                 {product.brandName} {/* product.brand -> product.brandName */}
               </p>
               {/* 상품명 2줄로 제한 */}
-              <p className="mb-2 text-lg font-semibold text-center line-clamp-2">
-                {product.productName} {/* product.name -> product.productName */}
+              <p className="mb-1 text-lg font-semibold text-center line-clamp-2">
+                {product.productName}{" "}
+                {/* product.name -> product.productName */}
               </p>
               {/* 가격 정보 */}
-              <div className="w-[215px] flex flex-col items-center mt-[5px] text-center">
+              <div className="mb-1 w-[215px] flex flex-row items-center justify-center gap-x-2">
                 <p className="text-sm line-through font-semibold text-[#a9a9a9]">
                   {product.originalPrice.toLocaleString("ko-KR")}원
                 </p>
-                <p className="text-xl text-[#e02020] font-bold">
+                <p className="text-xl text-[#e02020] font-semibold">
                   {product.discountedPrice.toLocaleString("ko-KR")}원
                 </p>
               </div>
@@ -300,12 +305,12 @@ function SkinTonerProduct({ selectedBrands }) {
       <div className="flex justify-center mt-8 space-x-2 select-none">
         {/* 이전 페이지 버튼 */}
         <button
-            disabled={page === 1}
-            onClick={() => setPage((prev) => prev - 1)}
-            className="w-8 h-8 text-xl border rounded border-[#e1e1e1] text-[#aaa] bg-white flex items-center justify-center"
-            style={{ minWidth: "40px", minHeight: "40px" }}
+          disabled={page === 1}
+          onClick={() => setPage((prev) => prev - 1)}
+          className="w-8 h-8 text-xl border rounded border-[#e1e1e1] text-[#aaa] bg-white flex items-center justify-center"
+          style={{ minWidth: "40px", minHeight: "40px" }}
         >
-            <span>&laquo;</span>
+          <span>&laquo;</span>
         </button>
 
         {/* 페이지 번호들 */}

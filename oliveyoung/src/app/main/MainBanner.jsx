@@ -3,6 +3,9 @@
 import { useState } from "react";
 import { useRouter } from "next/navigation";
 
+import { getImageUrl } from "@/utils/image";
+
+const imageUrl = getImageUrl("mainpage/mainbanner.jpg");
 const CATEGORY_DATA = {
   스킨케어: ["스킨케어", "마스크팩", "클렌징", "선케어"],
   "메이크업/세일": ["메이크업", "네일"],
@@ -73,7 +76,7 @@ export default function MainBanner() {
       <div
         className="flex-1 w-[1920px] h-full bg-cover bg-center relative -mt-5 right-[215px]"
         style={{
-          backgroundImage: "url('/images/mainpage/mainbanner.jpg')",
+          backgroundImage: `url(${imageUrl})`
         }}
       >
         {/* 텍스트 오버레이 */}

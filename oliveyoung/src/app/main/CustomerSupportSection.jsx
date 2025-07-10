@@ -1,7 +1,9 @@
 "use client";
 
 import Image from "next/image";
+import { getImageUrl } from "@/utils/image";
 
+const imageUrl = getImageUrl("mainpage/QRcode.png");
 export default function CustomerSupportSection() {
   return (
     <div className="w-[1020px] h-[246px] mx-auto flex justify-between items-start border-t border-gray-300 ">
@@ -41,10 +43,11 @@ export default function CustomerSupportSection() {
       </div>
 
       {/* 오른쪽: QR코드 */}
+      {/* 오른쪽: QR코드 */}
       <div className="w-[340px] h-full flex items-center justify-center">
         <div className="text-center">
           <Image
-            src="/images/mainpage/QRcode.png"
+            src={imageUrl} // ← 여기 수정됨
             alt="모바일 앱 QR"
             width={340}
             height={235.5}

@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
+import axios from 'axios';
 
-const RegistrationForm = () => {
+const RegistrationForm = ({ setStep }) => {
   // 폼 데이터를 담을 상태 (state)
   const [formData, setFormData] = useState({
     userName: '', // 이름
@@ -21,6 +22,38 @@ const RegistrationForm = () => {
 
   // 유효성 검사 오류를 담을 상태 (state)
   const [errors, setErrors] = useState({});
+
+  const [idCheckMessage, setIdCheckMessage] = useState('');
+  const [isIdAvailable, setIsIdAvailable] = useState(null); // true / false / null
+
+  // ✅ 반드시 이 안에 있어야 함!
+  const handleCheckUserId = async () => {
+    if (!formData.userId.trim()) {
+      setIdCheckMessage('아이디를 입력해주세요.');
+      setIsIdAvailable(null);
+      return;
+    }
+
+    try {
+      const response = await axios.post('http://localhost:8080/api/user/signup/checkid', {
+        userId: formData.userId,
+      });
+
+      const isDuplicate = response.data.duplicate;
+
+      if (isDuplicate) {
+        setIdCheckMessage('이미 사용 중인 아이디입니다.');
+        setIsIdAvailable(false);
+      } else {
+        setIdCheckMessage('사용 가능한 아이디입니다.');
+        setIsIdAvailable(true);
+      }
+    } catch (error) {
+      console.error('아이디 중복 확인 실패:', error);
+      setIdCheckMessage('서버 오류로 확인할 수 없습니다.');
+      setIsIdAvailable(null);
+    }
+  };
 
   // 입력 필드 값 변경 핸들러
   const handleChange = (e) => {
@@ -85,11 +118,10 @@ const RegistrationForm = () => {
         });
 
         if (response.ok) {
-          // 응답이 성공적일 경우 (HTTP 상태 코드 200-299)
-          const result = await response.json(); // 응답 본문을 JSON으로 파싱
+          const result = await response.json();
           console.log('회원가입 성공:', result);
           alert('회원가입이 완료되었습니다!');
-          // 성공 메시지를 보여주거나 다른 페이지로 리다이렉트
+          setStep(3); // ✅ 가입 완료 화면으로 전환
         } else {
           // 응답이 실패했을 경우
           const errorData = await response.json(); // 오류 데이터를 JSON으로 파싱
@@ -129,32 +161,11 @@ const RegistrationForm = () => {
 
   return (
     <div className="min-h-screen bg-gray-100 flex flex-col items-center">
-      {/* 헤더 / 내비게이션 (스크린샷 참고) */}
-      <div className="w-full bg-white shadow-sm py-4 px-6 flex justify-between items-center">
-        <div className="flex items-center space-x-4">
-          <img
-            src="https://www.cjone.com/cjmweb/images/common/logo_cjone.png"
-            alt="CJ ONE 로고"
-            className="h-6"
-          />
-          <span className="text-gray-600">TRUE LIFESTYLE MEMBERSHIP</span>
-        </div>
-        <div className="flex items-center space-x-4">
-          <span className="text-sm text-gray-500">건강한 아름다움을 꿈꾸게 하는 브랜드</span>
-          <img
-            src="https://www.cjone.com/cjmweb/images/common/logo_oliveyoung.png"
-            alt="올리브영 로고"
-            className="h-6"
-          />
-        </div>
-      </div>
-
       {/* 메인 콘텐츠 영역 */}
-      <div className="bg-white p-8 rounded-lg shadow-md w-full max-w-4xl my-8">
+      <div className="bg-white p-8 rounded-lg w-full max-w-4xl my-8">
         <h1 className="text-2xl font-bold text-gray-800 mb-6 text-center">회원가입</h1>
 
-        {/* 진행 단계 (스크린샷 참고) */}
-
+        {/* 진행 단계 */}
         <p className="text-sm text-gray-600 mb-6 text-center">
           라이프스타일 멤버십 CJ ONE! 영화, 쇼핑, 외식 등 다양한 서비스를 즐겁게 카드로 즐기세요~
         </p>
@@ -207,6 +218,7 @@ const RegistrationForm = () => {
                 />
                 <button
                   type="button"
+                  onClick={handleCheckUserId}
                   className="bg-gray-700 text-white px-4 py-2 rounded-md text-sm whitespace-nowrap hover:bg-gray-800 transition-colors"
                 >
                   중복확인

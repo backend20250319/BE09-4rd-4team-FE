@@ -2,7 +2,7 @@
 
 "use client"; // 클라이언트 컴포넌트임을 명시
 
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import { FaFacebookF, FaLink } from "react-icons/fa";
 import { IoChevronForwardOutline } from "react-icons/io5";
 import { GoQuestion } from "react-icons/go";
@@ -89,93 +89,39 @@ function ProductPage1({ productId }) {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
 
-  const [mainImage, setMainImage] = useState("");
+  // ⭐⭐ 이곳에 fixedThumbnailPaths를 선언하고, mainImage의 초기값에 사용합니다. ⭐⭐
+  const fixedThumbnailPaths = [
+    "/images/product/thumbnail1.jpg",
+    "/images/product/thumbnail2.jpg",
+    "/images/product/thumbnail3.jpg",
+    "/images/product/thumbnail4.jpg",
+  ];
+
+  // ⭐ mainImage의 초기값을 fixedThumbnailPaths의 첫 번째 요소로 설정합니다.
+  const [mainImage, setMainImage] = useState(
+    fixedThumbnailPaths.length > 0
+      ? fixedThumbnailPaths[0]
+      : "/images/product/skintoner21.jpg" // fallback 이미지
+  );
+
   const handleThumbnailClick = (imagePath) => {
     setMainImage(imagePath);
   };
 
-  useEffect(() => {
-    const fetchProductDetails = async () => {
-      if (!productId) {
-        setLoading(false);
-        setError("상품 ID가 제공되지 않았습니다.");
-        return;
-      }
+  const carouselRef = useRef(null);
+  const itemsPerPage = 3; // 한 페이지에 표시할 상품 수
+  const [currentPage, setCurrentPage] = useState(0); // 현재 페이지 인덱스 (0부터 시작)
+  const [pageWidth, setPageWidth] = useState(0); // 한 페이지의 정확한 너비
+  // 새로 추가: 활성화된 탭 상태
+  const [activeTab, setActiveTab] = useState("상품설명"); // 기본값 '상품설명'
 
-      setLoading(true);
-      setError(null);
+  // Tailwind의 space-x-4는 기본적으로 16px (1rem) 입니다.
+  const gapWidth = 16;
 
-      try {
-        const apiUrl = `http://localhost:8080/api/products/skintoner/${productId}`;
-        console.log(
-          `Fetching product details for ID: ${productId} from ${apiUrl}`
-        );
 
-        const response = await axios.get(apiUrl);
-        const data = response.data;
-
-        setProductData(data);
-        setMainImage(data.imageUrl);
-      } catch (err) {
-        console.error(`상품 상세 정보 로드 실패 (ID: ${productId}):`, err);
-        if (err.response) {
-          setError(
-            `상품 정보를 불러오는 데 실패했습니다: ${err.response.status} - ${
-              err.response.data.message || "알 수 없는 서버 오류"
-            }`
-          );
-        } else if (err.request) {
-          setError(
-            "상품 정보를 불러오는 데 실패했습니다: 서버로부터 응답을 받지 못했습니다."
-          );
-        } else {
-          setError(
-            "상품 정보를 불러오는 데 실패했습니다: 요청을 보내는 중 오류가 발생했습니다."
-          );
-        }
-      } finally {
-        setLoading(false);
-      }
-    };
-
-    fetchProductDetails();
-  }, [productId]); // productId가 변경될 때마다 useEffect 재실행
-
-  // 로딩, 에러, 데이터 없음 상태 처리
-  if (loading) {
-    return (
-      <div className="flex items-center justify-center h-screen">
-        <p>상품 정보를 불러오는 중...</p>
-      </div>
-    );
-  }
-
-  if (error) {
-    return (
-      <div className="flex items-center justify-center h-screen text-red-500">
-        <p>{error}</p>
-      </div>
-    );
-  }
-
-  if (!productData) {
-    return (
-      <div className="flex items-center justify-center h-screen">
-        <p>상품 정보를 찾을 수 없습니다.</p>
-      </div>
-    );
-  }
-
-  // 상품 이미지 썸네일 경로 생성: 백엔드 DTO에 subImageUrls 필드가 있다면 사용
-  const thumbnailPaths =
-    productData.subImageUrls &&
-    Array.isArray(productData.subImageUrls) &&
-    productData.subImageUrls.length > 0
-      ? [productData.imageUrl, ...productData.subImageUrls]
-      : [productData.imageUrl];
-
-  // 캐러셀 더미 데이터 (변경 없음)
-  const productsCarousel = [
+  // 캐러셀 더미 데이터 (productData fetching 로직 뒤에 있지만, 캐러셀 로직이 먼저 참조할 수 있도록 상단에 선언합니다)
+  // products 변수를 선언하여 productsCarousel을 참조하도록 합니다.
+  const products = [
     {
       id: 10,
       img: "/images/product/skintoner6.jpg",
@@ -298,8 +244,147 @@ function ProductPage1({ productId }) {
     },
   ];
 
-  // ... (캐러셀 관련 useRef, useState, useEffect 등 기존 로직 유지) ...
-  // 캐러셀 로직은 이 답변에서 크게 변경하지 않습니다.
+  // 캐러셀 너비 계산 (컴포넌트 마운트 시 및 리사이즈 시)
+  useEffect(() => {
+    const calculatePageWidth = () => {
+      if (carouselRef.current && carouselRef.current.children.length > 0) {
+        // 첫 번째 상품 카드 요소의 실제 너비를 가져옵니다. (offsetWidth는 padding 포함)
+        // 캐러셀 내의 첫 번째 아이템의 너비를 기준으로 계산합니다.
+        const firstItem = carouselRef.current.children[0];
+        const itemWidth = firstItem.offsetWidth;
+
+        // 한 페이지의 너비는 itemsPerPage 개수 상품의 너비와 그 사이 (itemsPerPage - 1) 개의 간격을 더한 값입니다.
+        const calculatedPageWidth =
+          itemWidth * itemsPerPage + gapWidth * (itemsPerPage - 1);
+
+        setPageWidth(calculatedPageWidth);
+
+        // Debugging: 실제 계산된 itemWidth와 calculatedPageWidth를 콘솔에 출력하여 확인
+        console.log("Item Width:", itemWidth);
+        console.log("Calculated Page Width:", calculatedPageWidth);
+        console.log("Container Scroll Width:", carouselRef.current.scrollWidth);
+        console.log("Container Client Width:", carouselRef.current.clientWidth);
+      }
+      
+    };
+
+    calculatePageWidth(); // 초기 계산
+    window.addEventListener("resize", calculatePageWidth); // 리사이즈 시 다시 계산
+
+    return () => {
+      window.removeEventListener("resize", calculatePageWidth); // 컴포넌트 언마운트 시 이벤트 리스너 제거
+    };
+  }, [itemsPerPage, products.length]);
+
+  const handleNextPage = () => {
+    if (carouselRef.current && pageWidth > 0) {
+      const totalPages = Math.ceil(products.length / itemsPerPage);
+      const nextPage = (currentPage + 1) % totalPages;
+      setCurrentPage(nextPage);
+
+      const targetScrollLeft = nextPage * pageWidth;
+      carouselRef.current.scrollTo({
+        left: targetScrollLeft,
+        behavior: "smooth",
+      });
+    }
+  };
+
+  const handlePrevPage = () => {
+    if (carouselRef.current && pageWidth > 0) {
+      const totalPages = Math.ceil(products.length / itemsPerPage);
+      const prevPage = (currentPage - 1 + totalPages) % totalPages; // 순환 캐러셀
+      setCurrentPage(prevPage);
+
+      const targetScrollLeft = prevPage * pageWidth;
+      carouselRef.current.scrollTo({
+        left: targetScrollLeft,
+        behavior: "smooth",
+      });
+    }
+  };
+
+  useEffect(() => {
+    const fetchProductDetails = async () => {
+      if (!productId) {
+        setLoading(false);
+        setError("상품 ID가 제공되지 않았습니다.");
+        return;
+      }
+
+      setLoading(true);
+      setError(null);
+
+      try {
+        const apiUrl = `http://localhost:8080/api/products/skintoner/${productId}`;
+        console.log(
+          `Fetching product details for ID: ${productId} from ${apiUrl}`
+        );
+
+        const response = await axios.get(apiUrl);
+        const data = response.data;
+
+        setProductData(data);
+        setMainImage(data.imageUrl || fixedThumbnailPaths[0]);
+      } catch (err) {
+        console.error(`상품 상세 정보 로드 실패 (ID: ${productId}):`, err);
+        if (err.response) {
+          setError(
+            `상품 정보를 불러오는 데 실패했습니다: ${err.response.status} - ${
+              err.response.data.message || "알 수 없는 서버 오류"
+            }`
+          );
+        } else if (err.request) {
+          setError(
+            "상품 정보를 불러오는 데 실패했습니다: 서버로부터 응답을 받지 못했습니다."
+          );
+        } else {
+          setError(
+            "상품 정보를 불러오는 데 실패했습니다: 요청을 보내는 중 오류가 발생했습니다."
+          );        setMainImage(data.imageUrl || fixedThumbnailPaths[0]);
+
+        }
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchProductDetails();
+  }, [productId]); // productId가 변경될 때마다 useEffect 재실행
+
+  // 로딩, 에러, 데이터 없음 상태 처리
+  if (loading) {
+    return (
+      <div className="flex items-center justify-center h-screen">
+        <p>상품 정보를 불러오는 중...</p>
+      </div>
+    );
+  }
+
+  if (error) {
+    return (
+      <div className="flex items-center justify-center h-screen text-red-500">
+        <p>{error}</p>
+      </div>
+    );
+  }
+
+  if (!productData) {
+    return (
+      <div className="flex items-center justify-center h-screen">
+        <p>상품 정보를 찾을 수 없습니다.</p>
+      </div>
+    );
+  }
+
+  // 상품 이미지 썸네일 경로 생성: 백엔드 DTO에 subImageUrls 필드가 있다면 사용
+  const thumbnailPaths =
+    productData.subImageUrls && Array.isArray(productData.subImageUrls) && productData.subImageUrls.length > 0
+      ? [productData.imageUrl, ...productData.subImageUrls]
+      : fixedThumbnailPaths;
+
+  // 캐러셀 더미 데이터 (products 변수로 대체되었으므로 이 부분은 삭제되거나, products 변수 선언 시 사용됩니다.)
+  // const productsCarousel = [...]; // 이 부분은 이제 위에 products 변수로 대체되었습니다.
 
   return (
     <div className="relative max-w-6xl mx-auto font-sans bg-white">
@@ -374,11 +459,6 @@ function ProductPage1({ productId }) {
                 </span>
               </span>
             </div>
-            {productData.discountRate && (
-              <span className="text-xl font-bold text-[#e02020] ml-2">
-                {productData.discountRate}%
-              </span>
-            )}
           </div>
 
           {/* 상품 뱃지 */}
@@ -538,32 +618,16 @@ function ProductPage1({ productId }) {
           </div>
         </div>
       </div>
+      
       {/* 고객 리뷰 섹션 - productData 활용 */}
       <div className="flex items-center justify-between px-4 py-4 mt-4 border-t border-gray-200 md:px-0">
         <div className="flex items-center">
           <span className="mr-2 text-lg font-bold">고객 리뷰</span>
           <div className="flex items-center">
-            {productData.averageRating && (
-              <>
-                <span className="mr-1 text-2xl text-[#f27370]">
-                  {"⭐".repeat(Math.floor(productData.averageRating))}
-                  {productData.averageRating % 1 !== 0 &&
-                  productData.averageRating % 1 >= 0.5
-                    ? "★"
-                    : ""}
-                </span>
-                <span className="mr-1 font-bold">
-                  {productData.averageRating}
-                </span>
-                <span className="text-gray-500">
-                  (
-                  {productData.reviewCount
-                    ? productData.reviewCount.toLocaleString()
-                    : 0}
-                  건)
-                </span>
-              </>
-            )}
+            {/* 별점 - 시각적 표현을 위한 간소화 */}
+            <span className="mr-1 text-2xl text-[#f27370]">★★★★☆</span>
+            <span className="mr-1 font-bold">4.8</span>
+            <span className="text-gray-500">(3,833건)</span>
           </div>
         </div>
         {/* URL 공유 버튼 (기존 유지) */}
@@ -625,7 +689,11 @@ function ProductPage1({ productId }) {
           </button>
         </div>
       </div>
+
+      {/* "이런 스킨/토너 상품은 어때요?" 섹션 시작 */}
+      {/* 이 div에 px-4를 추가하여 캐러셀 전체에 좌우 패딩을 적용합니다. */}
       <div className="relative px-4 mt-12 md:px-0">
+        {/* 이 div에서는 이제 px-4를 제거합니다. */}
         <div className="flex items-center justify-between mb-8">
           <h2 className="text-xl font-bold">이런 스킨/토너 상품은 어때요?</h2>
           <a
@@ -635,9 +703,266 @@ function ProductPage1({ productId }) {
             더보기 <IoChevronForwardOutline className="ml-1 text-base" />
           </a>
         </div>
-        {/* 캐러셀 로직 및 HTML (기존 유지) */}
-        {/* ... */}
+
+        {/* 상품 캐러셀/목록 */}
+        <div className="relative">
+          <div className="flex items-center">
+            {/* 왼쪽 화살표 */}
+            <button
+              onClick={handlePrevPage}
+              className="absolute z-10 p-2 -translate-y-1/2 bg-white rounded-full shadow-md -left-10 focus:outline-none"
+            >
+              <IoChevronForwardOutline className="w-5 h-5 text-gray-600 transform rotate-180" />
+            </button>
+
+            {/* 상품 카드 목록 (가로 스크롤) */}
+            <div
+              ref={carouselRef}
+              className="flex w-full space-x-4 overflow-x-hidden scroll-smooth snap-x snap-mandatory"
+            >
+              {products.map((product) => (
+                <div
+                  key={product.id}
+                  // border border-gray-100 및 shadow-sm 제거
+                  className="flex flex-none p-2 mb-6 bg-white snap-start"
+                  style={{
+                    width: `calc((100% - ${
+                      gapWidth * (itemsPerPage - 1)
+                    }px) / ${itemsPerPage})`,
+                  }}
+                >
+                  <div className="flex-shrink-0 w-24 h-24 mr-3">
+                    <img
+                      src={product.img}
+                      alt={product.name}
+                      className="object-contain w-full h-full rounded-md"
+                    />
+                  </div>
+                  <div className="flex flex-col justify-center flex-grow">
+                    <p className="mb-1 text-sm font-semibold line-clamp-2">
+                      {product.name}
+                    </p>
+                    <div className="flex items-baseline mb-1">
+                      <span className="mr-1 text-xs text-gray-400 line-through">
+                        {product.originalPrice}
+                      </span>
+                      <span className="text-base font-bold text-red-500">
+                        {product.discountedPrice}원
+                      </span>
+                    </div>
+                    <div className="flex flex-wrap">
+                      {product.badge.map((badgeText, badgeIdx) => {
+                        let bgColorClass = "";
+                        switch (badgeText) {
+                          case "세일":
+                            bgColorClass = "bg-[#f65c60]";
+                            break;
+                          case "쿠폰":
+                            bgColorClass = "bg-[#9bce26]";
+                            break;
+                          case "증정":
+                            bgColorClass = "bg-[#6fcff7]";
+                            break;
+                          case "오늘드림":
+                            bgColorClass = "bg-[#f374b7]";
+                            break;
+                          default:
+                            bgColorClass = "bg-gray-500";
+                        }
+                        return (
+                          <span
+                            key={badgeIdx}
+                            className={`px-1.5 py-0.5 text-white text-xs rounded-sm mr-1 mb-1 ${bgColorClass}`}
+                          >
+                            {badgeText}
+                          </span>
+                        );
+                      })}
+                    </div>
+                  </div>
+                </div>
+              ))}
+            </div>
+
+            {/* 오른쪽 화살표 */}
+            <button
+              onClick={handleNextPage}
+              className="absolute z-10 p-2 -translate-y-1/2 bg-white rounded-full shadow-md -right-10 focus:outline-none"
+            >
+              <IoChevronForwardOutline className="w-5 h-5 text-gray-600" />
+            </button>
+          </div>
+        </div>
       </div>
+
+      {/* 하단 내비게이션 (탭 메뉴) */}
+      <div className="flex justify-around text-lg font-semibold text-gray-700 border border-gray-200">
+        <button
+          className={`${
+            activeTab === "상품설명"
+              ? "bg-gray-100 border-b-2 border-black" // 활성화된 탭 배경 및 하단 강조
+              : "hover:bg-gray-50" // 비활성화 탭 호버 효과
+          } flex-1 py-2 text-center`}
+          onClick={() => setActiveTab("상품설명")}
+        >
+          상품설명
+        </button>
+        <button
+          className={`${
+            activeTab === "구매정보"
+              ? "bg-gray-100 border-b-2 border-black" // <-- border-blue-500을 border-black으로 변경
+              : "hover:bg-gray-50"
+          } flex-1 py-2 text-center border-l border-gray-200`}
+          onClick={() => setActiveTab("구매정보")}
+        >
+          구매정보
+        </button>
+        <button
+          className={`${
+            activeTab === "리뷰"
+              ? "bg-gray-100 border-b-2 border-black"
+              : "hover:bg-gray-50"
+          } flex-1 py-2 text-center border-l border-gray-200`}
+          onClick={() => setActiveTab("리뷰")}
+        >
+          리뷰 (3,833)
+        </button>
+        <button
+          className={`${
+            activeTab === "Q&A"
+              ? "bg-gray-100 border-b-2 border-black"
+              : "hover:bg-gray-50"
+          } flex-1 py-2 text-center border-l border-gray-200`} // 좌측 구분선 추가
+          onClick={() => setActiveTab("Q&A")}
+        >
+          Q&A (38)
+        </button>
+      </div>
+
+      {/* 탭 내용 표시 영역 */}
+      <div className="mt-8">
+        {activeTab === "상품설명" && <ProductDescription />}
+        {activeTab === "구매정보" && (
+          <div className="p-4 text-center">
+            <p className="text-gray-600">구매 정보 섹션입니다.</p>
+          </div>
+        )}
+        {activeTab === "리뷰" && (
+          <div className="p-4 text-center">
+            <p className="text-gray-600">리뷰 섹션입니다.</p>
+          </div>
+        )}
+        {activeTab === "Q&A" && (
+          <div className="p-4 text-center">
+            <p className="text-gray-600">Q&A 섹션입니다.</p>
+          </div>
+        )}
+      </div>
+      {/* 다른 고객이 함께 본 상품 섹션 시작 */}
+      {/* 캐러셀 전체에 좌우 패딩을 적용합니다. */}
+      {/* 상단 구분선과 상단 패딩 추가 */}
+      <div className="relative px-4 pt-8 mt-12 border-t border-gray-200 md:px-0">
+        <div className="flex items-center justify-between mb-8">
+          <h2 className="text-xl font-bold">다른 고객이 함께 본 상품</h2>
+          <a
+            href="#"
+            className="flex items-center text-sm text-gray-600 hover:underline"
+          >
+            더보기 <IoChevronForwardOutline className="ml-1 text-base" />
+          </a>
+        </div>
+
+        {/* 상품 캐러셀/목록 */}
+        <div className="relative">
+          <div className="flex items-center">
+            {/* 왼쪽 화살표 */}
+            <button
+              onClick={handlePrevPage}
+              className="absolute z-10 p-2 -translate-y-1/2 bg-white rounded-full shadow-md -left-10 focus:outline-none"
+            >
+              <IoChevronForwardOutline className="w-5 h-5 text-gray-600 transform rotate-180" />
+            </button>
+
+            {/* 상품 카드 목록 (가로 스크롤) */}
+            <div
+              ref={carouselRef}
+              className="flex w-full space-x-4 overflow-x-hidden scroll-smooth snap-x snap-mandatory"
+            >
+              {products.map((product) => (
+                <div
+                  key={product.id}
+                  // border border-gray-100 및 shadow-sm 제거
+                  className="flex flex-none p-2 mb-6 bg-white snap-start"
+                  style={{
+                    width: `calc((100% - ${
+                      gapWidth * (itemsPerPage - 1)
+                    }px) / ${itemsPerPage})`,
+                  }}
+                >
+                  <div className="flex-shrink-0 w-24 h-24 mr-3">
+                    <img
+                      src={product.img}
+                      alt={product.name}
+                      className="object-contain w-full h-full rounded-md"
+                    />
+                  </div>
+                  <div className="flex flex-col justify-center flex-grow">
+                    <p className="mb-1 text-sm font-semibold line-clamp-2">
+                      {product.name}
+                    </p>
+                    <div className="flex items-baseline mb-1">
+                      <span className="mr-1 text-xs text-gray-400 line-through">
+                        {product.originalPrice}
+                      </span>
+                      <span className="text-base font-bold text-red-500">
+                        {product.discountedPrice}원
+                      </span>
+                    </div>
+                    <div className="flex flex-wrap">
+                      {product.badge.map((badgeText, badgeIdx) => {
+                        let bgColorClass = "";
+                        switch (badgeText) {
+                          case "세일":
+                            bgColorClass = "bg-[#f65c60]";
+                            break;
+                          case "쿠폰":
+                            bgColorClass = "bg-[#9bce26]";
+                            break;
+                          case "증정":
+                            bgColorClass = "bg-[#6fcff7]";
+                            break;
+                          case "오늘드림":
+                            bgColorClass = "bg-[#f374b7]";
+                            break;
+                          default:
+                            bgColorClass = "bg-gray-500";
+                        }
+                        return (
+                          <span
+                            key={badgeIdx}
+                            className={`px-1.5 py-0.5 text-white text-xs rounded-sm mr-1 mb-1 ${bgColorClass}`}
+                          >
+                            {badgeText}
+                          </span>
+                        );
+                      })}
+                    </div>
+                  </div>
+                </div>
+              ))}
+            </div>
+
+            {/* 오른쪽 화살표 */}
+            <button
+              onClick={handleNextPage}
+              className="absolute z-10 p-2 -translate-y-1/2 bg-white rounded-full shadow-md -right-10 focus:outline-none"
+            >
+              <IoChevronForwardOutline className="w-5 h-5 text-gray-600" />
+            </button>
+          </div>
+        </div>
+      </div>
+      {/* "다른 고객이 함께 본 상품" 섹션 끝 */}
     </div>
   );
 }
