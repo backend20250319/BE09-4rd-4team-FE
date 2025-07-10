@@ -9,13 +9,14 @@ const ProductCard = ({ product }) => {
       <div className="relative w-[200px] h-[200px] mb-2">
         <Image
           src={product.image}
-          alt={product.title}
+          alt={product.title || "상품 이미지"}
           fill
           className="object-cover rounded"
+          sizes="200px"
         />
       </div>
-      <p className="text-[13px] leading-tight line-clamp-2">{product.title}</p>
-      <div className="mt-1 text-[15px] font-semibold text-[#f63]">
+      <p className="text-[13px] leading-tight line-clamp-2 text-center">{product.title}</p>
+      <div className="mt-1 text-[15px] font-semibold text-[#f63] text-center">
         {product.discountPrice}원
         {product.originalPrice && (
           <span className="text-gray-400 line-through text-xs ml-2">
@@ -23,7 +24,8 @@ const ProductCard = ({ product }) => {
           </span>
         )}
       </div>
-      <div className="flex flex-wrap gap-1 mt-1">
+      {/* 라벨을 flex로 감싸고 justify-center로 정렬 */}
+      <div className="flex flex-wrap gap-1 mt-1 justify-center">
         {product.labels?.map((label, i) => (
           <span
             key={i}
