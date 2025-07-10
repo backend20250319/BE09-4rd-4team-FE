@@ -26,7 +26,6 @@ export default function ReviewWriteLayout({ productId, onClose }) {
   const [skinConcern, setSkinConcern] = useState("");
   const [texture, setTexture] = useState("");
   const [content, setContent] = useState("");
-  const [images, setImages] = useState([]);
 
   // 상품 정보 불러오기
   useEffect(() => {
@@ -59,8 +58,7 @@ export default function ReviewWriteLayout({ productId, onClose }) {
       rating,
       skinType,
       skinConcern,
-      texture,
-      images,
+      texture
     };
 
     try {
