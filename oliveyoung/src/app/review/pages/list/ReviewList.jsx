@@ -1,29 +1,51 @@
 "use client";
-import { useState } from "react";
-
+import { useEffect, useState } from "react";
+import { FaExclamation } from "react-icons/fa";
 import ReviewItem from "./ReviewItem";
-// 장바구니 상품 조회 api 가지고 와서 사용하기 .
-// 📌 실제로는 더 많은 데이터가 있어야 페이징이 유의미해요
-const dummyData = Array.from({ length: 45 }, (_, i) => ({
-  id: i + 1,
-  image: "resources/images/product1.jpg",
-  orderType: i % 2 === 0 ? "주문일자" : "구매일자",
-  orderDate: "2025.06.06",
-  brand: `브랜드${i + 1}`,
-  title: `[제목${i + 1}] 상품 상세 설명 예시`,
-  subTitle: i % 3 === 0 ? "옵션 | 예시 옵션명" : undefined,
-  place: i % 4 === 0 ? "매장" : undefined,
-  dueDate: "2025.09.05",
-}));
 
-const ITEMS_PER_PAGE = 20;
+const ITEMS_PER_PAGE = 10;
 
 export default function ReviewList() {
+  const [data, setData] = useState([]);
   const [currentPage, setCurrentPage] = useState(1);
+  const [loading, setLoading] = useState(true);
 
-  const totalPages = Math.ceil(dummyData.length / ITEMS_PER_PAGE);
+  // 실제 장바구니 데이터 불러오기
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const res = await fetch("/api/v1/order-service/carts"); // 실제 API 주소 사용
+        if (!res.ok) throw new Error("장바구니 조회 실패");
+        const result = await res.json();
+        setData(result); // result가 배열이면 이렇게
+      } catch (error) {
+        console.error(error);
+        setData([]);
+      } finally {
+        setLoading(false);
+      }
+    };
+    fetchData();
+  }, []);
+
+  // 페이지네이션 계산
+  const totalPages = Math.ceil(data.length / ITEMS_PER_PAGE);
   const startIndex = (currentPage - 1) * ITEMS_PER_PAGE;
-  const currentItems = dummyData.slice(startIndex, startIndex + ITEMS_PER_PAGE);
+  const currentItems = data.slice(startIndex, startIndex + ITEMS_PER_PAGE);
+
+  if (loading) return <div>로딩 중...</div>;
+  
+  // 상품이 없는 경우 아이콘+메시지
+  if (!data.length) {
+    return (
+      <div className="flex flex-col items-center justify-center py-20 text-gray-500 border-b">
+        <div className="w-[100px] h-[100px] flex items-center justify-center border-2 border-gray-300 rounded-full mb-4">
+          <FaExclamation className="text-3xl text-gray-300" />
+        </div>
+        <p className="text-sm">장바구니에 담긴 상품이 없습니다.</p>
+      </div>
+    );
+  }
 
   return (
     <div className="mt-6">
