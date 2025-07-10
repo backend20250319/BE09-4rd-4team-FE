@@ -63,7 +63,7 @@ export default function Coupon() {
 
       {/* 쿠폰 */}
       <div className="float-left w-[850px] min-h-[640px] px-[29px] pb-[40px] bg-[#fff]">
-        <div className="pt-[25px] overflow-hidden relative w-full pt-[35px] pb-[7px]">
+        <div className="pt-[25px] overflow-hidden relative w-full pb-[7px]">
           <h2 className="float-left text-[#333] text-[20px] leading-[30px] font-bold">쿠폰</h2>
         </div>
         <ul className="overflow-hidden w-full h-[80px] py-[20px] bg-white rounded-[5px] border border-[#696969]">
