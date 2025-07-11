@@ -1,7 +1,9 @@
 "use client";
+
+import axios from 'axios';
 import React, { useState } from 'react';
 import { SearchIcon, UserPlusIcon, EyeIcon } from 'lucide-react';
-import NewUserModal from '../../../components/NewUserModal'; // 위치 확인 필수
+import NewAdminModal from '../../../components/NewAdminModal'; // 위치 확인 필수
 
 
 export default function UsersPage() {
@@ -13,8 +15,10 @@ export default function UsersPage() {
   const [currentPage, setCurrentPage] = useState(1);
   const [selectedUser, setSelectedUser] = useState(null);
   const [showDetail, setShowDetail] = useState(false);
+  const [users, setUsers] = useState([]);
 
-  const [users,setUsers] = useState([
+
+  /*const [users,setUsers] = useState([
     { id: 3, name: '박서연', email: 'seoyeon@example.com', phone: '010-3456-7890', joinDate: '2023-03-10', orders: 5, status: '활성' },
     { id: 4, name: '최준호', email: 'junho@example.com', phone: '010-4567-8901', joinDate: '2023-01-05', orders: 15, status: '활성' },
     { id: 5, name: '정민지', email: 'minji@example.com', phone: '010-5678-9012', joinDate: '2023-04-22', orders: 3, status: '활성' },
@@ -23,26 +27,42 @@ export default function UsersPage() {
     { id: 8, name: '장서영', email: 'seoyoung@example.com', phone: '010-8901-2345', joinDate: '2023-01-25', orders: 10, status: '활성' },
     { id: 9, name: '이민준', email: 'minjun@example.com', phone: '010-9012-3456', joinDate: '2023-04-18', orders: 2, status: '비활성' },
     { id: 10, name: '한소희', email: 'sohee@example.com', phone: '010-0123-4567', joinDate: '2023-05-01', orders: 1, status: '활성' }
-  ]);
+  ]);*/
 
 
-  // 신규 회원 등록 핸들러
-  const handleAddUser = (newUser) => {
-    setUsers(prev => [
-      ...prev,
-      {id :prev.length +1 , orders : 0, ...newUser}
-    ]);
+  // 신규 관리자 등록 핸들러
+  const handleAddAdmin = async (formData) => {
+    const token = localStorage.getItem('accessToken');
+    try {
+      const response = await axios.post(
+          'http://localhost:8080/api/admin/users/create-admin',
+          formData,
+          {
+            headers: {
+              // Authorization: `Bearer ${token}`,
+              'Content-Type': 'application/json',
+            },
+          }
+      );
+      alert("✅ 관리자 등록 성공!");
+    } catch (error) {
+      console.error("❌ 관리자 등록 실패:", error.response?.data || error.message);
+      alert("등록 실패: " + (error.response?.data?.message || '서버 오류'));
+      throw error; // ❗ 반드시 필요
+    }
   };
 
-    // 필터링된 회원 목록
+
+  //관리자 전체 목록 조회
+
+
+  // 필터링된 회원 목록
   const filteredUsers = users.filter((user) => {
     const matchesSearch = user.name.toLowerCase().includes(searchTerm.toLowerCase());
     const matchesStatus = statusFilter ? user.status === statusFilter : true;
     const matchesJoinDate = joinDateFilter ? user.joinDate === joinDateFilter : true;
     return matchesSearch && matchesStatus && matchesJoinDate;
   });
-
-
 
 
   // 페이지네이션
@@ -66,7 +86,7 @@ export default function UsersPage() {
         <h1 className="text-2xl font-bold text-gray-800">회원 관리</h1>
         <button className="bg-[#9BCC47] text-white px-4 py-2 rounded-md flex items-center" onClick={()=> setShowModal(true)}>
           <UserPlusIcon size={16} className="mr-1" />
-          신규 회원 등록
+          신규 관리자 등록
         </button>
       </div>
 
@@ -235,9 +255,10 @@ export default function UsersPage() {
 
       </div>
       {showModal && (
-        <NewUserModal 
-          onAdd={handleAddUser} 
-          onClose={() => setShowModal(false)} 
+        <NewAdminModal
+          onAdd={handleAddAdmin}
+          onClose={() => setShowModal(false)}
+          showModal={showModal}
         />
       )}
     </div>

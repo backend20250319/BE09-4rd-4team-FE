@@ -1,5 +1,6 @@
 "use client";
-import React, { useState } from 'react';
+
+import React, {useEffect, useState} from 'react';
 import { PlusIcon, SearchIcon, TrashIcon, DownloadIcon } from 'lucide-react';
 import NewProductModal from '../../../components/NewProductModal'; // 위치 확인 필수
 
@@ -11,24 +12,36 @@ export default function ProductsPage() {
   const [categoryFilter, setCategoryFilter] = useState('');
   const [statusFilter, setStatusFilter] = useState('');
   const [currentPage, setCurrentPage] = useState(1);
+  const [products,setProducts] = useState([]);
 
-  
-  const [products, setProducts] = useState([
-    { id: 1, name: '아이오페 UV 쉴드', category: '선케어', stock: 123, price: '₩ 30,000', status: '판매중' },
-    { id: 2, name: '이니스프리 그린티 세럼', category: '스킨케어', stock: 89, price: '₩ 30,000', status: '판매중' },
-    { id: 3, name: '라네즈 워터 슬리핑 마스크', category: '스킨케어', stock: 64, price: '₩ 30,000', status: '판매중' },
-    { id: 4, name: '에뛰드 드로잉 아이브로우', category: '메이크업', stock: 42, price: '₩ 15,000', status: '품절임박' },
-    { id: 5, name: '미샤 타임 레볼루션 에센스', category: '스킨케어', stock: 78, price: '₩ 30,000', status: '판매중' },
-    { id: 6, name: '토니모리 립톤 겟잇틴트', category: '메이크업', stock: 0, price: '₩ 12,000', status: '품절' },
-    { id: 7, name: '스킨푸드 블랙슈가 마스크', category: '스킨케어', stock: 54, price: '₩ 18,000', status: '판매중' },
-    { id: 8, name: '홀리카홀리카 하드커버 파운데이션', category: '메이크업', stock: 31, price: '₩ 25,000', status: '판매중' },
-    { id: 9, name: '네이처리퍼블릭 알로에 젤', category: '스킨케어', stock: 102, price: '₩ 8,000', status: '판매중' },
-    { id: 10, name: '더페이스샵 라이스 클렌징 오일', category: '클렌징', stock: 5, price: '₩ 20,000', status: '품절임박' }
-  ]);
+  useEffect(() => {
+    const fetchProducts = async () => {
+      try {
+        const response = await fetch(`http://localhost:8080/api/products`);
+      if(!response.ok){
+        throw new Error('상품 정보를 불러오지 못했습니다.');
+      }
+        const data = await response.json();
 
- 
-
-
+        const mappedData = data.map(p => ({
+          id : p.productId,
+          name : p.productName,
+          category: p.categoryName,
+          stock: p.stock,
+          price : `W ${p.discountedPrice.toLocaleString()}`,
+          status: p.stock === 0
+            ? '품절'
+              :p.stock <=10
+            ? '품절임박'
+              : '판매중'
+        }));
+        setProducts(mappedData);
+      }catch (error){
+        console.error('상품 가져오기 오류 ', error);
+      }
+    }
+    fetchProducts();
+  })
 
 
   // 필터링된 상품 목록
@@ -53,23 +66,54 @@ export default function ProductsPage() {
     }
 };
 
- const handleAddProduct = (newProduct) => { 
-    // 새로운 상품에 ID를 부여
-    const nextId = products.length ? Math.max(...products.map((p) => p.id)) + 1 : 1;
-    setProducts((prev) => [...prev, { id: nextId, ...newProduct }]);
-
-    setShowModal(false);
-
-    const newTotalPages = Math.ceil((products.length + 1) / itemsPerPage);
-    setCurrentPage(newTotalPages);
-};
-
  const handleDelete = (id) => {
     setProducts(prev => prev.filter(p => p.id !== id));
     // 만약 삭제 후 페이지가 비면 이전 페이지로 이동:
     const maxPage = Math.ceil((products.length - 1) / itemsPerPage);
     if (currentPage > maxPage) setCurrentPage(maxPage);
   };
+
+  const handleAddProduct = async (newProduct) => {
+    try {
+      const response = await fetch('/api/products',{
+        method :'POST',
+        headers : {
+          'Content-Type' : 'application/json',
+        },
+        body :JSON.stringify({
+          productName: newProduct.name,
+          categoryName: newProduct.category,
+          stock : newProduct.stock,
+          originalPrice: parseInt(newProduct.price.replace(/[^0-9]g/,''),10),
+          imageUrl: 'https://example.com/image.jpg',
+          state : newProduct.state,
+        }),
+      });
+
+      if(!response.ok){
+        throw new Error('상품 등록 실패');
+      }
+
+      const fetchResponse = await fetch('/api/products');
+      const data = await fetchResponse.json();
+      const mappedData = data.map( p => ( {
+        id : p.productId,
+        name : p.productName,
+        category: p.categoryName,
+        stock: p.stock,
+        price: `W ${p.discountedPrice.toLocaleString()}`,
+        state: p.stock === 0 ? '품절'
+            :p.stock <= 10 ? '품절임박' : '판매중',
+      }));
+      setProducts(mappedData);
+      setShowModal(false);
+      setCurrentPage(1);
+    }catch(error) {
+      console.error('상품 등록 오류', error);
+    }
+  };
+
+
 
 
   const downloadCSV = () => {
