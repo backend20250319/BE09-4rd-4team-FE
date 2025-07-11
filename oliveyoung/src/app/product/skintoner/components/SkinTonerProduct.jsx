@@ -81,8 +81,10 @@ function SkinTonerProduct({ selectedBrands }) {
         case "lowPrice":
           return a.discountedPrice - b.discountedPrice;
         case "discount":
-          const discountRateA = (a.originalPrice - a.discountedPrice) / a.originalPrice;
-          const discountRateB = (b.originalPrice - b.discountedPrice) / b.originalPrice;
+          const discountRateA =
+            (a.originalPrice - a.discountedPrice) / a.originalPrice;
+          const discountRateB =
+            (b.originalPrice - b.discountedPrice) / b.originalPrice;
           return discountRateB - discountRateA;
         default:
           return 0;
@@ -108,10 +110,11 @@ function SkinTonerProduct({ selectedBrands }) {
     window.scrollTo({ top: 0, behavior: "smooth" });
   }, [page]);
 
+  // ✅ prefix 포함해서 넘겨야 함
   const handleCardClick = (id) => {
     router.push(`/product/skintoner/product${id}`);
   };
-
+  
   if (loading) {
     return (
       <div className="container py-6 mx-auto">
