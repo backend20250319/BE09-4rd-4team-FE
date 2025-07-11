@@ -16,7 +16,7 @@ const RelatedProducts = () => {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
 
-  // ✅ 전체 상품 가져오고 랜덤 12개 추출
+  // 전체 상품 가져오고 랜덤 12개 추출함
   useEffect(() => {
     const fetchRelatedProducts = async () => {
       setLoading(true);
