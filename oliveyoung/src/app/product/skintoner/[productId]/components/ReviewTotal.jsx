@@ -31,7 +31,7 @@ export default function ReviewTotal({ reviews }) {
         );
       } else {
         stars.push(
-          <FaStar key={i} className="text-gray-300 text-2xl inline-block" />
+          <FaStar key={i} className="inline-block text-2xl text-gray-300" />
         );
       }
     }
@@ -42,8 +42,8 @@ export default function ReviewTotal({ reviews }) {
     <div className="flex items-center">
       <span className="mr-2 text-lg font-bold">고객 리뷰</span>
       <span className="flex items-center mr-2">{renderStars()}</span>
-      <span className="mr-1 font-bold text-2xl">{avgRating.toFixed(1)}</span>
-      <span className="text-gray-500 text-xl">
+      <span className="mr-1 text-2xl font-bold">{avgRating.toFixed(1)}</span>
+      <span className="text-xl text-gray-500">
         ({totalReviews.toLocaleString()}건)
       </span>
     </div>
