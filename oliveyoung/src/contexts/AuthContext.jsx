@@ -59,11 +59,38 @@ export function AuthProvider({ children }) {
     }, 500);
   };
 
+  const logoutSilently = () => {
+    setIsLoggingOut(true); // 로딩 시작
+
+    setTimeout(() => {
+      // 토큰 제거
+      localStorage.removeItem('accessToken');
+      localStorage.removeItem('refreshToken');
+      localStorage.removeItem('userName');
+
+      // 상태 업데이트
+      setIsLoggedIn(false);
+      setUserName('');
+      setAccessToken('');
+
+      setIsLoggingOut(false); // 로딩 끝
+    }, 500);
+  };
+
   if (!hydrated) return null; // SSR에서는 아무 것도 렌더링하지 않음
 
   return (
     <AuthContext.Provider
-      value={{ isLoggedIn, userName, accessToken, setIsLoggedIn, setUserName, login, logout }}
+      value={{
+        isLoggedIn,
+        userName,
+        accessToken,
+        setIsLoggedIn,
+        setUserName,
+        login,
+        logout,
+        logoutSilently,
+      }}
     >
       {children}
     </AuthContext.Provider>
