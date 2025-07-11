@@ -6,7 +6,7 @@ import ProductPage from "./components/ProductPage";
 import { useParams } from "next/navigation";
 
 export default function ProductDynamicPage() {
-  const { productId } = useParams(); // URL에서 가져옴!
+  const { productId } = useParams();
 
   return (
     <div className="w-full max-w-[1020px] mx-auto">

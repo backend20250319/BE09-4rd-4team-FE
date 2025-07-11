@@ -112,7 +112,7 @@ function SkinTonerProduct({ selectedBrands }) {
 
   // ✅ prefix 포함해서 넘겨야 함
   const handleCardClick = (id) => {
-    router.push(`/product/skintoner/product${id}`);
+    router.push(`/product/skintoner/${id}`);
   };
   
   if (loading) {
