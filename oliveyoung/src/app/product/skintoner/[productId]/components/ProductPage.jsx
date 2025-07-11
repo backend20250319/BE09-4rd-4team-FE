@@ -44,7 +44,6 @@ function ProductPage({ productId }) {
     else setLoading(false);
   }, [productId]);
 
-  // ✅ 안전 파싱: thumbnailImages
   const thumbnailPaths =
     typeof productData?.thumbnailImages === "string"
       ? productData.thumbnailImages.split(",").map((s) => s.trim())
@@ -52,7 +51,6 @@ function ProductPage({ productId }) {
       ? productData.thumbnailImages
       : [];
 
-  // ✅ 안전 파싱: descriptionImages
   const descriptionImages =
     typeof productData?.descriptionImages === "string"
       ? productData.descriptionImages.split(",").map((s) => s.trim())
@@ -86,7 +84,7 @@ function ProductPage({ productId }) {
 
   return (
     <div className="relative max-w-6xl mx-auto font-sans bg-white">
-      {/* 👉 BreadCrumb */}
+      {/* BreadCrumb */}
       <div className="flex items-center px-4 py-3 pb-2 mb-6 text-sm text-gray-400 border-b md:px-0">
         <span>홈</span>
         <span className="mx-1">&gt;</span>
@@ -97,7 +95,7 @@ function ProductPage({ productId }) {
         <span className="text-black">{productData.productName}</span>
       </div>
 
-      {/* 👉 상단 상품 이미지 + 정보 */}
+      {/* 상단 상품 이미지 + 정보 */}
       <div className="flex flex-col gap-12 p-4 md:flex-row md:p-0">
         <ProductImage
           productData={productData}
@@ -109,7 +107,7 @@ function ProductPage({ productId }) {
         </div>
       </div>
 
-      {/* 👉 고객 리뷰 + SNS 공유 */}
+      {/* 고객 리뷰 + SNS 공유 */}
       <div className="flex items-center justify-between px-4 py-4 mt-4 border-t border-gray-200 md:px-0">
         <div className="flex items-center">
           <ReviewTotal reviews={reviews} />
@@ -124,7 +122,7 @@ function ProductPage({ productId }) {
         </div>
       </div>
 
-      {/* 👉 증정품 안내, 매장찾기 */}
+      {/* 증정품 안내, 매장찾기 */}
       <div className="px-4 mt-6 md:px-0">
         <div className="p-4 mb-6 bg-gray-50">
           <p className="mb-2 font-semibold">증정품 안내</p>
@@ -171,7 +169,7 @@ function ProductPage({ productId }) {
         </div>
       </div>
 
-      {/* 👉 하단 연관상품 + Tabs + 최근 본 상품 */}
+      {/* 하단 연관상품 + Tabs + 최근 본 상품 */}
       <RelatedProducts />
       <ProductTabs productId={productId} reviews={reviews} />
 
