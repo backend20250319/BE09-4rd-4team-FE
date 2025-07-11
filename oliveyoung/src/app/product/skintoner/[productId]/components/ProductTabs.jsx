@@ -1,13 +1,29 @@
-
-// src/app/product/skintoner/product1/components/product-page/ProductTabs.jsx
 "use client";
 
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import ProductDescription from "./ProductDescription";
 import ReviewDetailPage from "@/app/reviewtest/ReviewDetailPage";
+import axios from "axios";
 
-const ProductTabs = () => {
+const ProductTabs = ({ productId }) => {
   const [activeTab, setActiveTab] = useState("상품설명");
+  const [reviews, setReviews] = useState([]);
+
+  // ⭐ 페이지 로드시/상품ID 변경시 바로 리뷰 패칭
+  useEffect(() => {
+    if (productId) {
+      axios
+        .get(`http://localhost:8080/api/products/${productId}/reviews`)
+        .then((res) => {
+          const data = res.data;
+          if (Array.isArray(data.data)) setReviews(data.data);
+          else setReviews([]);
+        })
+        .catch(() => setReviews([]));
+    }
+  }, [productId]);
+
+  const totalReviews = reviews.length;
 
   return (
     <div>
@@ -40,7 +56,7 @@ const ProductTabs = () => {
           } flex-1 py-2 text-center border-l border-gray-200`}
           onClick={() => setActiveTab("리뷰")}
         >
-          리뷰 (3,833)
+          리뷰 ({totalReviews.toLocaleString()})
         </button>
         <button
           className={`${
@@ -63,7 +79,7 @@ const ProductTabs = () => {
         )}
         {activeTab === "리뷰" && (
           <div className="p-4 text-center">
-            <ReviewDetailPage />
+            <ReviewDetailPage reviews={reviews} />
           </div>
         )}
         {activeTab === "Q&A" && (

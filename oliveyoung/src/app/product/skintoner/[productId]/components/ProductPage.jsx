@@ -165,7 +165,7 @@ function ProductPage({ productId }) {
 
       {/* 👉 하단 연관/탭/최근 본 상품 */}
       <RelatedProducts />
-      <ProductTabs />
+      <ProductTabs productId={productId} reviews={reviews} />
       <ViewedWithProducts />
     </div>
   );
