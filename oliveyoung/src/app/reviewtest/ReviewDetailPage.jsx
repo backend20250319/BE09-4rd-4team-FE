@@ -1,69 +1,50 @@
-// ReviewDetailPage.jsx
 "use client";
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
+import { useParams } from "next/navigation";
+import axios from "axios";
 import ReviewSummary from "./ReviewSummary";
 import ReviewStats from "./ReviewStats";
 import ReviewList from "./ReviewList";
 
-const dummyData = {
-  rating: 4.8,
-  totalReviews: 6802,
-  ratingsDistribution: [85, 11, 3, 1, 0],
-  skinType: {
-    "건성에 좋아요": 18,
-    "복합성에 좋아요": 59,
-    "지성에 좋아요": 23,
-  },
-  skinConcern: {
-    "보습에 좋아요": 18,
-    "진정에 좋아요": 81,
-    "주름/미백에 좋아요": 16,
-  },
-  texture: {
-    "자극없이 순해요": 78,
-    보통이에요: 22,
-    "자극이 느껴져요": 1,
-  },
-  reviews: [   // <-- 여기에 내용을 추가하면 자동으로 추가가 된다.
-    {
-      id: 1,
-      user: "김하나",
-      date: "2025.06.29",
-      skinType: "지성",
-      concern: "모공",
-      texture: "순해요",
-      content: "피부가 확실히 좋아졌어요.",
-      images: ["/images/sample1.jpg"],
-    },
-    {
-      id: 2,
-      user: "박둘",
-      date: "2025.06.27",
-      skinType: "건성",
-      concern: "보습",
-      texture: "자극 없어요",
-      content: "촉촉해서 만족해요.",
-      images: ["/images/sample1.jpg"],
-    },
-  ],
-};
-
 export default function ReviewDetailPage() {
-  const [data] = useState(dummyData);
+  const { productId } = useParams();
+  const [reviews, setReviews] = useState([]);
+  const [loading, setLoading] = useState(true);
 
+  useEffect(() => {
+    if (!productId) return;
+
+    const fetchData = async () => {
+      try {
+        const res = await axios.get(
+          `http://localhost:8080/api/products/${productId}/reviews`
+        );
+        setReviews(res.data.data || []); // 리뷰 배열만 저장
+      } catch (error) {
+        console.error("리뷰 데이터 요청 실패:", error);
+        setReviews([]); // 에러 시 빈 배열
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchData();
+  }, [productId]);
+
+  if (loading) return <div className="text-center py-10">로딩 중...</div>;
+  if (!reviews || reviews.length === 0)
+    return <div className="text-center py-10">리뷰가 없습니다</div>;
+
+  // **리뷰 배열을 컴포넌트에 바로 전달**
   return (
     <div className="max-w-[1020px] mx-auto py-10 text-sm text-gray-800">
       <hr className="border-t-2 border-gray-800" />
-      <ReviewSummary data={data} />
+      <ReviewSummary reviews={reviews} />
       <hr className="border-t border-gray-200 mb-10" />
-      <ReviewStats
-        skinType={data.skinType}
-        skinConcern={data.skinConcern}
-        texture={data.texture}
-      />
+      <ReviewStats reviews={reviews} />
       <hr className="border-t border-gray-200" />
-      <ReviewList reviews={data.reviews} />
+      <ReviewList reviews={reviews} />
       <hr className="border-t border-gray-300" />
     </div>
   );

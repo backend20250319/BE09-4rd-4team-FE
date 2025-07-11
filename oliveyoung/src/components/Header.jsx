@@ -1,15 +1,28 @@
-'use client'; 
-import { useState } from 'react';
+'use client';
+import { useState, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
 import SearchModal from '../app/menu/SearchModal';
 import StoreModal from '../app/menu/StoreModal';
+import { useAuth } from '@/contexts/AuthContext';
 import '../styles/header.css';
 
 function Header(props) {
   const router = useRouter();
-
+  const { isLoggedIn, userName, logout } = useAuth();
   const [storeHover, setStoreHover] = useState(false);
   const [searchClick, setSearchClick] = useState(false);
+
+  // 이름 가운데 글자 마스킹
+  const maskUserName = (name) => {
+    if (!name) return '';
+    if (name.length === 2) {
+      return name[0] + '*';
+    }
+    if (name.length >= 3) {
+      return name[0] + '*' + name[name.length - 1];
+    }
+    return name;
+  };
 
   const chart = [
     { searchWord: '기획', prev: 'keep' },
@@ -45,14 +58,48 @@ function Header(props) {
     <div className="flex flex-row justify-center">
       <div className="">
         <ul className="py-[1px] h-[30px] flex flex-row justify-end items-center text-[#333333]">
-          <li className="text-xs font-bold">BABYOLIVE박*준</li>
-          <li className="text-xs hover:cursor-pointer border-r px-[10px]">로그아웃</li>
-          <li  className="text-xs hover:cursor-pointer border-r px-[10px]" 
-          onClick={() => router.push('/mypage')}>마이페이지</li>
-          <li className="text-xs hover:cursor-pointer border-r px-[10px]">
-            장바구니
-            <span className="text-xs text-[#f27370] font-bold hover:cursor-pointer">(0)</span>
-          </li>
+          {isLoggedIn ? (
+            <>
+              <li className="text-xs font-bold">PINKOLIVE{maskUserName(userName)}</li>
+              <li className="text-xs hover:cursor-pointer border-r px-[10px]" onClick={logout}>
+                로그아웃
+              </li>
+              <li
+                className="text-xs hover:cursor-pointer border-r px-[10px]"
+                onClick={() => router.push('/mypage')}
+              >
+                마이페이지
+              </li>
+              <li
+                className="text-xs hover:cursor-pointer border-r px-[10px]"
+                onClick={() => router.push('/order/cart')}
+              >
+                장바구니
+                <span className="text-xs text-[#f27370] font-bold hover:cursor-pointer">(0)</span>
+              </li>
+            </>
+          ) : (
+            <>
+              <li
+                className="text-xs hover:cursor-pointer border-r px-[10px]"
+                onClick={() => router.push('/user/signup')}
+              >
+                회원가입
+              </li>
+              <li
+                className="text-xs hover:cursor-pointer border-r px-[10px]"
+                onClick={() => router.push('/user/login')}
+              >
+                로그인
+              </li>
+              <li
+                className="text-xs hover:cursor-pointer border-r px-[10px]"
+                onClick={() => router.push('/order/cart')}
+              >
+                장바구니
+              </li>
+            </>
+          )}
           <li className="text-xs hover:cursor-pointer border-r px-[10px]">주문배송</li>
           <li className="text-xs hover:cursor-pointer border-r px-[10px]">고객센터</li>
           <li className="text-xs hover:cursor-pointer border-r px-[10px]">올영매장</li>

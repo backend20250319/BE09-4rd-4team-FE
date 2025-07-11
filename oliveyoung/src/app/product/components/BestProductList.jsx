@@ -34,13 +34,12 @@ export default function BestProductList() {
 
   return (
     <div className="mt-8">
-      <h2 className="mb-4 text-3xl font-bold text-center">스킨케어의 BEST만 모아봤어요</h2>
-      <div className="grid grid-cols-5 gap-6">
+      <h2 className="mb-4 text-2xl font-bold text-center">스킨케어의 BEST만 모아봤어요</h2>      <div className="grid grid-cols-5 gap-6">
         {bestProducts.map((item, idx) => (
           <div className="flex flex-col items-center text-sm cursor-pointer" key={idx}>
             <img src={item.src} alt={`product${idx + 1}`} className="w-full mb-2 rounded-md" />
-            <p className="text-left line-clamp-2">{item.name}</p>
-            <p className="text-sm text-[#999] line-through mb-0">{item.origin}</p>
+            <p className="font-medium text-left line-clamp-2">{item.name}</p>
+            <p className="text-sm text-[#999] line-through">{item.origin}</p>
             <p className="text-[#e02020] font-bold text-lg">{item.price}</p>
           </div>
         ))}

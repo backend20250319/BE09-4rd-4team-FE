@@ -1,174 +1,67 @@
 "use client";
 
-import React, { useState } from "react";
-
-// 예시 브랜드 리스트 (실제로는 DB/API로 받아와야 함)
-const brands = [
-  "구달",
-  "그레이멜린",
-  "글로오아시스",
-  "나인위시스",
-  "넘버즈인",
-  "녹스",
-  "뉴라덤",
-  "닐스야드 레머디스",
-  "다슈",
-  "닥터디퍼런트",
-  "닥터멜락신",
-  "닥터브로너스",
-  "닥터자르트",
-  "닥터지",
-  "닥터하스킨",
-  "담바",
-  "달팡",
-  "더랩바이블랑두",
-  "더마인",
-  "더마펌",
-  "더말로지카",
-  "더바디샵",
-  "더샘",
-  "더페이스샵",
-  "더후",
-  "떼루파머",
-  "미마크3",
-  "디오디너리",
-  "디퍼",
-  "딕셔니스트",
-  "라끄베르",
-  "라네즈",
-  "라로슈포제",
-  "라벨라뷰티",
-  "라운드랩",
-  "랩시리즈",
-  "레이저사이티",
-  "로벡틴",
-  "리얼베리어",
-  "리엔케이",
-  "리우젤",
-  "리쥬란",
-  "마녀공장",
-  "마리엔메이",
-  "마몽드",
-  "맥",
-  "메디큐브",
-  "메디필",
-  "메이크프렘",
-  "몰바니",
-  "미구하라",
-  "믹순",
-  "바버501",
-  "바비브라운",
-  "바이오마마",
-  "바이오던스",
-  "바이오힐 보",
-  "반코르",
-  "브리올옴옴",
-  "브링그린",
-  "보이앤앤에이뷰티",
-  "비레디",
-  "비마이셀프",
-  "비오템",
-  "비오템 옴옴",
-  "비욘드",
-  "비플레인",
-  "빌리프",
-  "생블랑쉬",
-  "설화수",
-  "성분에디터",
-  "센텔리안24",
-  "셀라맥스",
-  "셀렌저",
-  "셀퓨전씨",
-  "스쿳해마쉬",
-  "스킨1004",
-  "스킨푸드",
-  "스튜디오17",
-  "슬로스피",
-  "사가고",
-  "식물나라",
-  "싸이닉",
-  "아누아",
-  "아떼",
-  "아벤느",
-  "아비브",
-  "아이디얼포맨",
-  "아이소이",
-  "아이오페",
-  "아임폼",
-  "아크네스",
-  "아크웰",
-  "애즈이즈투비",
-  "어나더페이스",
-  "에뛰드",
-  "에르쯔틴",
-  "에센허브",
-  "에스네이처",
-  "에스테덤",
-  "에스트라",
-  "에스티로더",
-  "엠도씨",
-  "엠블럼릴리스",
-  "연작",
-  "오브제",
-  "올리고더미",
-  "우노",
-  "온스트라움",
-  "원씽",
-  "웰라쥬",
-  "유리아쥬",
-  "유세린",
-  "이니스프리",
-  "이즈앤트리",
-  "인터미션",
-  "잇츠스킨",
-  "제나벨",
-  "제로이드",
-  "조선녀",
-  "지디엘",
-  "차앤박",
-  "컴포트존",
-  "케어놀로지",
-  "케어존",
-  "코스알엑스",
-  "코스톡",
-  "큐어",
-  "크리니크",
-  "클랩랩파노드",
-  "키엘",
-  "테라로직",
-  "토니모리",
-  "토리든",
-  "톤28",
-  "트러블레스",
-  "티엘스",
-  "파타온",
-  "파파레서피",
-  "포레스트",
-  "포엘리에",
-  "폴라초이스",
-  "폴리",
-  "프랭클리",
-  "프리메라",
-  "플라스킨",
-  "플로디카",
-  "플리프",
-  "피지오겔",
-  "피죤",
-  "피토메르",
-  "필리",
-  "하다라보",
-  "하루하루원더",
-  "한율",
-];
+import React, { useState, useEffect } from "react";
+import axios from "axios";
 
 const TAB_LIST = ["전체", "스킨/토너", "", "", "", ""];
 
-export default function BrandFilter() {
+export default function BrandFilter({ onBrandChange }) {
   const [activeTab, setActiveTab] = useState("전체");
   const [checked, setChecked] = useState([]);
   const [showAll, setShowAll] = useState(false);
 
-  // 처음엔 18개만, 더보기 누르면 전체 표시
+  const [brands, setBrands] = useState([]);
+  const [loadingBrands, setLoadingBrands] = useState(true);
+  const [errorBrands, setErrorBrands] = useState(null);
+
+  useEffect(() => {
+    const fetchBrands = async () => {
+      setLoadingBrands(true);
+      setErrorBrands(null);
+
+      try {
+        // 백엔드 API 엔드포인트: Postman에서 확인하신 정확한 URL을 사용한다.
+        const response = await axios.get('http://localhost:8080/api/brands');
+        const data = response.data;
+
+        // API 응답 형태가 `Page<BrandResponseDTO>` 일 수도 있으므로, content 배열을 확인한다.
+        // 또는 API가 직접 List<BrandResponseDTO>를 반환할 수도 있다.
+        if (Array.isArray(data)) { // List<BrandResponseDTO> 형태일 경우
+            setBrands(data.map(brandDto => brandDto.brandName));
+        } else if (data && Array.isArray(data.content)) { // Page<BrandResponseDTO> 형태일 경우
+            setBrands(data.content.map(brandDto => brandDto.brandName));
+        } else {
+            setErrorBrands("브랜드 데이터를 가져오는 데 실패했습니다: 유효하지 않은 응답 형식");
+            console.error("Invalid brand API response:", data);
+            setBrands([]);
+        }
+
+      } catch (error) {
+        console.error("브랜드 목록을 가져오는 중 오류 발생:", error);
+        if (error.response) {
+            setErrorBrands(`브랜드 목록을 가져오는 데 실패했습니다: ${error.response.status} - ${error.response.statusText}`);
+            console.error("오류 응답 데이터:", error.response.data);
+        } else if (error.request) {
+            setErrorBrands("네트워크 오류: 서버에 연결할 수 없습니다.");
+        } else {
+            setErrorBrands(`요청 오류: ${error.message}`);
+        }
+        setBrands([]);
+      } finally {
+        setLoadingBrands(false);
+      }
+    };
+
+    fetchBrands();
+  }, []);
+
+  useEffect(() => {
+    if (onBrandChange) {
+      onBrandChange(checked);
+    }
+  }, [checked, onBrandChange]);
+
+
   const shownBrands = showAll ? brands : brands.slice(0, 15);
 
   const handleCheck = (brand) => {
@@ -176,6 +69,27 @@ export default function BrandFilter() {
       prev.includes(brand) ? prev.filter((b) => b !== brand) : [...prev, brand]
     );
   };
+
+  const handleReset = () => {
+    setChecked([]);
+  };
+
+
+  if (loadingBrands) {
+    return (
+      <div className="px-6 pt-6 pb-3 mt-8 bg-white border border-[#e2e2e2] shadow">
+        <div className="text-center text-gray-500">브랜드 목록을 불러오는 중...</div>
+      </div>
+    );
+  }
+
+  if (errorBrands) {
+    return (
+      <div className="px-6 pt-6 pb-3 mt-8 bg-white border border-[#e2e2e2] shadow">
+        <div className="text-center text-red-500">{errorBrands}</div>
+      </div>
+    );
+  }
 
   return (
     <div className="px-6 pt-6 pb-3 mt-8 bg-white border border-[#e2e2e2] shadow">
@@ -190,7 +104,7 @@ export default function BrandFilter() {
       {/* --- 경로 아래 구분선 --- */}
       <div className="border-b border-[#e2e2e2] mb-4" />
       {/* --- 큰 타이틀 --- */}
-      <div className="mb-5 text-4xl font-semibold">스킨/토너</div>
+      <div className="mb-5 text-3xl font-semibold">스킨/토너</div>
       {/* --- 1행 6열 탭 --- */}
       <div className="mb-6">
         <div className="grid grid-cols-6 overflow-hidden rounded">
@@ -199,7 +113,7 @@ export default function BrandFilter() {
               <button
                 key={tab}
                 className={`
-                  h-[60px] flex items-center justify-center w-full text-lg font-bold
+                  h-[50px] flex items-center justify-center w-full text-lg font-bold
                   border-b
                   ${
                     activeTab === tab
@@ -208,8 +122,6 @@ export default function BrandFilter() {
                   }
                   ${idx === 0 ? "rounded-tl rounded-bl" : ""}
                 `}
-                // (버튼 부분만 예시, 전체 코드도 아래에 첨부)
-
                 style={{
                   borderLeft:
                     idx === 0
@@ -239,7 +151,7 @@ export default function BrandFilter() {
             ) : (
               <div
                 key={idx}
-                className="bg-white border border-[#e2e2e2] h-[60px]"
+                className="bg-white border border-[#e2e2e2] h-[50px]"
               />
             )
           )}
@@ -250,38 +162,38 @@ export default function BrandFilter() {
         {/* 왼쪽 브랜드 카운트 */}
         <div className="w-[150px] flex flex-col items-start">
           <div className="mb-2 text-2xl font-semibold">브랜드</div>
-          <div className="mb-1 text-base font-bold text-lime-500">
+          <div className="mb-1 text-base font-semibold text-lime-500">
             Total {brands.length}
           </div>
         </div>
         {/* 브랜드 체크박스 */}
         <div className="flex flex-wrap flex-1 gap-y-4">
-          {shownBrands.map((brand, idx) => (
-            <label
-              key={brand}
-              className="flex items-center w-1/5 gap-2 cursor-pointer font-lightmedium"
-            >
-              <input
-                type="checkbox"
-                checked={checked.includes(brand)}
-                onChange={() => handleCheck(brand)}
-                className="w-5 h-5 accent-lime-500"
-              />
-              {brand}
-            </label>
-          ))}
+            {shownBrands.map((brand) => (
+                <label
+                    key={brand}
+                    className="flex items-center w-1/4 gap-2 cursor-pointer font-lightmedium" // ⭐️ w-1/5에서 w-1/4로 변경
+                >
+                    <input
+                        type="checkbox"
+                        checked={checked.includes(brand)}
+                        onChange={() => handleCheck(brand)}
+                        className="w-4 h-4 accent-lime-500"
+                    />
+                    {brand}
+                </label>
+            ))}
         </div>
       </div>
       {/* --- 하단 버튼/초기화 --- */}
       <div className="flex items-center justify-between pt-2 mt-2 border-t">
         <button
           onClick={() => setShowAll((v) => !v)}
-          className="px-6 py-1 text-lg border rounded bg-gray-50 hover:bg-gray-100"
+          className="px-4 py-1 border rounded text-md bg-gray-50 hover:bg-gray-100"
         >
           {showAll ? "접기 ▲" : "더보기 ▼"}
         </button>
         <button
-          onClick={() => setChecked([])}
+          onClick={handleReset}
           className="ml-auto text-base text-gray-400 hover:text-black"
         >
           선택 초기화
