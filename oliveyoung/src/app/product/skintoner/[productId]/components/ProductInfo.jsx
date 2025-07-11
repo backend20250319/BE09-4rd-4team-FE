@@ -5,20 +5,41 @@ import { GoQuestion } from "react-icons/go";
 import { IoEyeOutline } from "react-icons/io5";
 
 const ProductInfo = ({ productData }) => {
+  if (!productData) {
+    return (
+      <div className="py-10 text-center text-red-500">
+        상품 정보를 불러올 수 없습니다.
+      </div>
+    );
+  }
+
+  const {
+    brandName = "",
+    productName = "",
+    originalPrice = 0,
+    discountedPrice = 0,
+    badgeNames = [],
+    viewCount = 0,
+  } = productData;
+
   return (
     <>
-      <p className="mb-1 text-sm text-black">{productData.brandName} &gt;</p>
-      <h1 className="mb-2 text-2xl font-semibold">{productData.productName}</h1>
+      {/* 브랜드명 */}
+      <p className="mb-1 text-sm text-black">{brandName} &gt;</p>
 
+      {/* 상품명 */}
+      <h1 className="mb-2 text-2xl font-semibold">{productName}</h1>
+
+      {/* 가격 */}
       <div className="mb-2">
         <div className="flex items-baseline space-x-2">
-          {productData.originalPrice && (
+          {originalPrice > 0 && (
             <span className="mr-1 text-lg text-gray-400 line-through">
-              {productData.originalPrice.toLocaleString()}원
+              {originalPrice.toLocaleString()}원
             </span>
           )}
           <span className="text-2xl font-bold text-[#e02020]">
-            {productData.discountedPrice.toLocaleString()}원
+            {discountedPrice.toLocaleString()}원
             <span className="ml-3 text-sm font-normal text-gray-700">
               혜택 정보
               <GoQuestion className="inline-block mb-1 ml-1 text-base text-gray-500 align-middle cursor-pointer" />
@@ -27,9 +48,10 @@ const ProductInfo = ({ productData }) => {
         </div>
       </div>
 
-      <div className="flex items-center mb-2">
-        {productData.badgeNames &&
-          productData.badgeNames.map((badgeText, index) => {
+      {/* 뱃지 */}
+      {badgeNames.length > 0 && (
+        <div className="flex items-center mb-2">
+          {badgeNames.map((badgeText, index) => {
             let bgColorClass = "";
             switch (badgeText) {
               case "세일":
@@ -56,19 +78,19 @@ const ProductInfo = ({ productData }) => {
               </span>
             );
           })}
-      </div>
+        </div>
+      )}
 
-      <p className="text-sm text-gray-600">
-        {productData.viewCount && (
-          <>
-            <IoEyeOutline className="inline-block ml-1 font-bold text-base text-[#f27370] align-middle cursor-pointer" />{" "}
-            <span className="font-extrabold text-[#f27370]">
-              {productData.viewCount.toLocaleString()}
-            </span>
-            <span className="text-[#f27370]">명이 보고있어요</span>
-          </>
-        )}
-      </p>
+      {/* 조회수 */}
+      {viewCount > 0 && (
+        <p className="text-sm text-gray-600">
+          <IoEyeOutline className="inline-block ml-1 font-bold text-base text-[#f27370] align-middle cursor-pointer" />{" "}
+          <span className="font-extrabold text-[#f27370]">
+            {viewCount.toLocaleString()}
+          </span>
+          <span className="text-[#f27370]">명이 보고있어요</span>
+        </p>
+      )}
     </>
   );
 };
