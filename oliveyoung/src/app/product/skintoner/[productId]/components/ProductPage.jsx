@@ -173,7 +173,8 @@ function ProductPage({ productId }) {
 
       {/* 👉 하단 연관상품 + Tabs + 최근 본 상품 */}
       <RelatedProducts />
-      <ProductTabs descriptionImages={descriptionImages} />
+      <ProductTabs productId={productId} reviews={reviews} />
+
       <ViewedWithProducts />
     </div>
   );

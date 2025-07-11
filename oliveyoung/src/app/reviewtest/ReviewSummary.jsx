@@ -79,7 +79,7 @@ export default function ReviewSummary({ reviews }) {
 
       {/* 그래프 영역 */}
       <div className="pt-[38px]">
-        <RatingDistribution ratingsDistribution={ratingsDistribution} />
+        <RatingDistribution reviews={reviews} />
       </div>
     </div>
   );
