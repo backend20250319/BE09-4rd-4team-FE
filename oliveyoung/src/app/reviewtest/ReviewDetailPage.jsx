@@ -1,4 +1,3 @@
-// /products/[productId]/reviews.jsx
 "use client";
 
 import { useEffect, useState } from "react";
@@ -9,8 +8,8 @@ import ReviewStats from "./ReviewStats";
 import ReviewList from "./ReviewList";
 
 export default function ReviewDetailPage() {
-  const { productId } = useParams(); // 상품 ID 가져오기
-  const [data, setData] = useState(null);
+  const { productId } = useParams();
+  const [reviews, setReviews] = useState([]);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
@@ -18,10 +17,13 @@ export default function ReviewDetailPage() {
 
     const fetchData = async () => {
       try {
-        const res = await axios.get(`http://localhost:8080/api/products/${productId}/reviews`);
-        setData(res.data);
+        const res = await axios.get(
+          `http://localhost:8080/api/products/${productId}/reviews`
+        );
+        setReviews(res.data.data || []); // 리뷰 배열만 저장
       } catch (error) {
         console.error("리뷰 데이터 요청 실패:", error);
+        setReviews([]); // 에러 시 빈 배열
       } finally {
         setLoading(false);
       }
@@ -31,20 +33,18 @@ export default function ReviewDetailPage() {
   }, [productId]);
 
   if (loading) return <div className="text-center py-10">로딩 중...</div>;
-  if (!data) return <div className="text-center py-10">리뷰가 없습니다</div>;
+  if (!reviews || reviews.length === 0)
+    return <div className="text-center py-10">리뷰가 없습니다</div>;
 
+  // **리뷰 배열을 컴포넌트에 바로 전달**
   return (
     <div className="max-w-[1020px] mx-auto py-10 text-sm text-gray-800">
       <hr className="border-t-2 border-gray-800" />
-      <ReviewSummary data={data} />
+      <ReviewSummary reviews={reviews} />
       <hr className="border-t border-gray-200 mb-10" />
-      <ReviewStats
-        skinType={data.skinType}
-        skinConcern={data.skinConcern}
-        texture={data.texture}
-      />
+      <ReviewStats reviews={reviews} />
       <hr className="border-t border-gray-200" />
-      <ReviewList reviews={data.reviews} />
+      <ReviewList reviews={reviews} />
       <hr className="border-t border-gray-300" />
     </div>
   );

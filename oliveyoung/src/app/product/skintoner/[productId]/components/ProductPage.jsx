@@ -10,48 +10,38 @@ import RelatedProducts from "./RelatedProducts";
 import ViewedWithProducts from "./ViewedWithProducts";
 import { FaFacebookF, FaLink } from "react-icons/fa";
 import { IoChevronForwardOutline } from "react-icons/io5";
+import ReviewTotal from "./ReviewTotal";
 
 function ProductPage({ productId }) {
   const [productData, setProductData] = useState(null);
+  const [reviews, setReviews] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
 
   useEffect(() => {
-    const fetchProductDetails = async () => {
-      if (!productId) {
-        setLoading(false);
-        setError("❌ 상품 ID가 제공되지 않았습니다.");
-        return;
-      }
-
+    const fetchAll = async () => {
+      setLoading(true);
       try {
-        setLoading(true);
-        setError(null);
+        const [productRes, reviewsRes] = await Promise.all([
+          axios.get(`http://localhost:8080/api/products/${productId}`),
+          axios.get(`http://localhost:8080/api/products/${productId}/reviews`),
+        ]);
+        setProductData(productRes.data);
 
-        const apiUrl = `http://localhost:8080/api/products/${productId}`;
-        console.log(`✅ 상품 상세 요청: ${apiUrl}`);
-
-        const response = await axios.get(apiUrl);
-        setProductData(response.data);
-
-        console.log("✅ 불러온 상품 데이터:", response.data);
+        // 리뷰 데이터 추출 (API 응답 구조에 따라 조정)
+        const reviewResult = reviewsRes.data;
+        if (Array.isArray(reviewResult.data)) setReviews(reviewResult.data);
+        else setReviews([]);
       } catch (err) {
-        console.error(err);
-        if (err.response) {
-          setError(
-            `상품 로드 실패: ${err.response.status} - ${
-              err.response.data.message || "알 수 없는 오류"
-            }`
-          );
-        } else {
-          setError("상품 정보를 불러오는 중 네트워크 오류가 발생했습니다.");
-        }
+        setError("데이터를 불러오는 중 오류 발생");
+        setProductData(null);
+        setReviews([]);
       } finally {
         setLoading(false);
       }
     };
-
-    fetchProductDetails();
+    if (productId) fetchAll();
+    else setLoading(false);
   }, [productId]);
 
   // ✅ 안전 파싱: thumbnailImages
@@ -122,12 +112,7 @@ function ProductPage({ productId }) {
       {/* 👉 고객 리뷰 + SNS 공유 */}
       <div className="flex items-center justify-between px-4 py-4 mt-4 border-t border-gray-200 md:px-0">
         <div className="flex items-center">
-          <span className="mr-2 text-lg font-bold">고객 리뷰</span>
-          <div className="flex items-center">
-            <span className="mr-1 text-2xl text-[#f27370]">★★★★☆</span>
-            <span className="mr-1 font-bold">4.8</span>
-            <span className="text-gray-500">(3,833건)</span>
-          </div>
+          <ReviewTotal reviews={reviews} />
         </div>
         <div className="flex space-x-2">
           <button className="flex items-center px-3 py-1 text-sm text-gray-600 border border-gray-300 rounded hover:bg-gray-50">
@@ -147,7 +132,8 @@ function ProductPage({ productId }) {
             [일반배송] 오늘드림, 픽업 주문 시 정품 제공
           </p>
           <p className="text-sm text-gray-700">
-            전 회원 올리브영 전 상품 70,000원 이상 구매 시, 증정품 1개 선착순 증정
+            전 회원 올리브영 전 상품 70,000원 이상 구매 시, 증정품 1개 선착순
+            증정
           </p>
         </div>
         <div className="flex justify-start mb-6 space-x-5">
