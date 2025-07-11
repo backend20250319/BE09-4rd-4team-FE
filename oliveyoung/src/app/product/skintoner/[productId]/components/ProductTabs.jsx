@@ -5,7 +5,9 @@ import ProductDescription from "./ProductDescription";
 import ReviewDetailPage from "@/app/reviewtest/ReviewDetailPage";
 import axios from "axios";
 
+
 const ProductTabs = ({ productId }) => {
+
   const [activeTab, setActiveTab] = useState("상품설명");
   const [reviews, setReviews] = useState([]);
 
@@ -71,7 +73,9 @@ const ProductTabs = ({ productId }) => {
       </div>
 
       <div className="mt-8">
-        {activeTab === "상품설명" && <ProductDescription />}
+        {activeTab === "상품설명" && (
+          <ProductDescription descriptionImages={descriptionImages} />
+        )}
         {activeTab === "구매정보" && (
           <div className="p-4 text-center">
             <p className="text-gray-600">구매 정보 섹션입니다.</p>
