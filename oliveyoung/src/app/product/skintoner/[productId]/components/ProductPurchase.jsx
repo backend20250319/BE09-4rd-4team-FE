@@ -1,11 +1,14 @@
 "use client";
 
 import React from "react";
+import { useRouter } from "next/navigation"; // ✅ 추가
 import { GoQuestion } from "react-icons/go";
 import { CiCircleMinus, CiCirclePlus } from "react-icons/ci";
 import { FaRegHeart, FaGift } from "react-icons/fa";
 
 const ProductPurchase = ({ productData }) => {
+  const router = useRouter(); // ✅ 선언
+
   return (
     <>
       <div className="py-4">
@@ -17,7 +20,7 @@ const ProductPurchase = ({ productData }) => {
             <span className="mx-2 text-gray-300">|</span>
             <div className="flex flex-col flex-1">
               <span>2,500원 (20,000원 이상 무료배송)</span>
-              <span className="text-gray-700 ">
+              <span className="text-gray-700">
                 올리브영 배송: 평균 4일 이내 배송
               </span>
             </div>
@@ -41,12 +44,12 @@ const ProductPurchase = ({ productData }) => {
         </ul>
       </div>
 
-      <div className="mb-2 border-b ">
+      <div className="mb-2 border-b">
         <p className="mb-2 text-lg font-semibold">결제혜택</p>
         <ul className="text-sm text-gray-700">
           <li className="flex items-center mb-1">
             <span>
-              THE CJ 카드 추가 10%할인
+              THE CJ 카드 추가 10% 할인
               <GoQuestion className="inline-block ml-1 text-base text-gray-500 align-middle cursor-pointer" />
             </span>
           </li>
@@ -97,7 +100,10 @@ const ProductPurchase = ({ productData }) => {
       </div>
 
       <div className="flex mb-8 space-x-2">
-        <button className="flex-1 py-3 text-lg border border-[#f27370] text-[#f27370] hover:bg-white">
+        <button
+          className="flex-1 py-3 text-lg border border-[#f27370] text-[#f27370] hover:bg-white"
+          onClick={() => router.push("/order/cart")} // ✅ 이동!
+        >
           장바구니
         </button>
         <button className="flex-1 py-3 text-lg text-white bg-[#f27370] hover:bg-[#f27370]">
