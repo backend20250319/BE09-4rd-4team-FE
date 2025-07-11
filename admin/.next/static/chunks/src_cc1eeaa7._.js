@@ -14,7 +14,6 @@ var __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$lucide$2d$re
 var __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$lucide$2d$react$2f$dist$2f$esm$2f$icons$2f$user$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__$3c$export__default__as__UserIcon$3e$__ = __turbopack_context__.i("[project]/node_modules/lucide-react/dist/esm/icons/user.js [app-client] (ecmascript) <export default as UserIcon>");
 var __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$lucide$2d$react$2f$dist$2f$esm$2f$icons$2f$mail$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__$3c$export__default__as__MailIcon$3e$__ = __turbopack_context__.i("[project]/node_modules/lucide-react/dist/esm/icons/mail.js [app-client] (ecmascript) <export default as MailIcon>");
 var __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$lucide$2d$react$2f$dist$2f$esm$2f$icons$2f$phone$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__$3c$export__default__as__PhoneIcon$3e$__ = __turbopack_context__.i("[project]/node_modules/lucide-react/dist/esm/icons/phone.js [app-client] (ecmascript) <export default as PhoneIcon>");
-var __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$lucide$2d$react$2f$dist$2f$esm$2f$icons$2f$calendar$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__$3c$export__default__as__CalendarIcon$3e$__ = __turbopack_context__.i("[project]/node_modules/lucide-react/dist/esm/icons/calendar.js [app-client] (ecmascript) <export default as CalendarIcon>");
 var __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$lucide$2d$react$2f$dist$2f$esm$2f$icons$2f$check$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__$3c$export__default__as__CheckIcon$3e$__ = __turbopack_context__.i("[project]/node_modules/lucide-react/dist/esm/icons/check.js [app-client] (ecmascript) <export default as CheckIcon>");
 var __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$framer$2d$motion$2f$dist$2f$es$2f$render$2f$components$2f$motion$2f$proxy$2e$mjs__$5b$app$2d$client$5d$__$28$ecmascript$29$__ = __turbopack_context__.i("[project]/node_modules/framer-motion/dist/es/render/components/motion/proxy.mjs [app-client] (ecmascript)");
 var __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$framer$2d$motion$2f$dist$2f$es$2f$components$2f$AnimatePresence$2f$index$2e$mjs__$5b$app$2d$client$5d$__$28$ecmascript$29$__ = __turbopack_context__.i("[project]/node_modules/framer-motion/dist/es/components/AnimatePresence/index.mjs [app-client] (ecmascript)");
@@ -24,16 +23,32 @@ var _s = __turbopack_context__.k.signature();
 ;
 ;
 ;
-function NewUserModal({ onAdd, onClose }) {
+function NewUserModal({ onAdd, onClose, showModal }) {
     _s();
     const [step, setStep] = (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$index$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["useState"])(1);
     const [form, setForm] = (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$index$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["useState"])({
-        name: '',
+        userId: '',
+        password: 'test1234',
+        userName: '',
         email: '',
-        phone: '',
-        joinDate: '',
-        status: ''
+        phone: ''
     });
+    (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$index$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["useEffect"])({
+        "NewUserModal.useEffect": ()=>{
+            if (showModal) {
+                setForm({
+                    userId: '',
+                    password: 'test1234',
+                    userName: '',
+                    email: '',
+                    phone: ''
+                });
+                setStep(1); // ✅ 모달 열릴 때 첫 단계로 초기화
+            }
+        }
+    }["NewUserModal.useEffect"], [
+        showModal
+    ]);
     const handleNext = ()=>setStep((prev)=>Math.min(prev + 1, 3));
     const handleBack = ()=>setStep((prev)=>Math.max(prev - 1, 1));
     const handleChange = (e)=>{
@@ -43,13 +58,20 @@ function NewUserModal({ onAdd, onClose }) {
                 [name]: value
             }));
     };
-    const handleSubmit = (e)=>{
+    const handleSubmit = async (e)=>{
         e.preventDefault();
-        onAdd(form);
-        onClose();
+        console.log("🚨 최종 제출 form:", form);
+        try {
+            await onAdd(form); // ✅ 성공 시만 모달 닫기
+            onClose();
+        } catch (error) {
+            console.error("❌ 등록 실패:", error);
+            alert("등록에 실패했습니다. 다시 시도해주세요.");
+        // 모달은 닫히지 않음
+        }
     };
     return /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$framer$2d$motion$2f$dist$2f$es$2f$components$2f$AnimatePresence$2f$index$2e$mjs__$5b$app$2d$client$5d$__$28$ecmascript$29$__["AnimatePresence"], {
-        children: /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$framer$2d$motion$2f$dist$2f$es$2f$render$2f$components$2f$motion$2f$proxy$2e$mjs__$5b$app$2d$client$5d$__$28$ecmascript$29$__["motion"].div, {
+        children: showModal && /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$framer$2d$motion$2f$dist$2f$es$2f$render$2f$components$2f$motion$2f$proxy$2e$mjs__$5b$app$2d$client$5d$__$28$ecmascript$29$__["motion"].div, {
             className: "fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-40",
             initial: {
                 opacity: 0
@@ -92,22 +114,22 @@ function NewUserModal({ onAdd, onClose }) {
                                         className: "text-[#9BCC47]"
                                     }, void 0, false, {
                                         fileName: "[project]/src/components/NewUserModal.jsx",
-                                        lineNumber: 42,
-                                        columnNumber: 15
+                                        lineNumber: 70,
+                                        columnNumber: 21
                                     }, this),
                                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("h3", {
                                         className: "text-xl font-bold text-gray-800",
-                                        children: "신규 회원 등록"
+                                        children: "신규 관리자 등록"
                                     }, void 0, false, {
                                         fileName: "[project]/src/components/NewUserModal.jsx",
-                                        lineNumber: 43,
-                                        columnNumber: 15
+                                        lineNumber: 71,
+                                        columnNumber: 21
                                     }, this)
                                 ]
                             }, void 0, true, {
                                 fileName: "[project]/src/components/NewUserModal.jsx",
-                                lineNumber: 41,
-                                columnNumber: 13
+                                lineNumber: 69,
+                                columnNumber: 19
                             }, this),
                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("button", {
                                 type: "button",
@@ -118,19 +140,19 @@ function NewUserModal({ onAdd, onClose }) {
                                     className: "text-gray-600"
                                 }, void 0, false, {
                                     fileName: "[project]/src/components/NewUserModal.jsx",
-                                    lineNumber: 46,
-                                    columnNumber: 15
+                                    lineNumber: 74,
+                                    columnNumber: 21
                                 }, this)
                             }, void 0, false, {
                                 fileName: "[project]/src/components/NewUserModal.jsx",
-                                lineNumber: 45,
-                                columnNumber: 13
+                                lineNumber: 73,
+                                columnNumber: 19
                             }, this)
                         ]
                     }, void 0, true, {
                         fileName: "[project]/src/components/NewUserModal.jsx",
-                        lineNumber: 40,
-                        columnNumber: 11
+                        lineNumber: 68,
+                        columnNumber: 17
                     }, this),
                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
                         className: "flex items-center justify-between",
@@ -148,18 +170,18 @@ function NewUserModal({ onAdd, onClose }) {
                                     }
                                 }, void 0, false, {
                                     fileName: "[project]/src/components/NewUserModal.jsx",
-                                    lineNumber: 54,
-                                    columnNumber: 17
+                                    lineNumber: 82,
+                                    columnNumber: 25
                                 }, this)
                             }, i, false, {
                                 fileName: "[project]/src/components/NewUserModal.jsx",
-                                lineNumber: 53,
-                                columnNumber: 15
+                                lineNumber: 81,
+                                columnNumber: 23
                             }, this))
                     }, void 0, false, {
                         fileName: "[project]/src/components/NewUserModal.jsx",
-                        lineNumber: 51,
-                        columnNumber: 11
+                        lineNumber: 79,
+                        columnNumber: 17
                     }, this),
                     step === 1 && /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
                         className: "space-y-3",
@@ -172,28 +194,67 @@ function NewUserModal({ onAdd, onClose }) {
                                         className: "mr-2 text-gray-500"
                                     }, void 0, false, {
                                         fileName: "[project]/src/components/NewUserModal.jsx",
-                                        lineNumber: 67,
-                                        columnNumber: 17
+                                        lineNumber: 95,
+                                        columnNumber: 25
                                     }, this),
                                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("input", {
-                                        name: "name",
-                                        value: form.name,
+                                        name: "userId",
+                                        value: form.userId,
                                         onChange: handleChange,
                                         type: "text",
-                                        placeholder: "회원명",
+                                        placeholder: "아이디",
                                         className: "w-full p-2 border border-gray-300 rounded",
                                         required: true
                                     }, void 0, false, {
                                         fileName: "[project]/src/components/NewUserModal.jsx",
-                                        lineNumber: 68,
-                                        columnNumber: 17
+                                        lineNumber: 96,
+                                        columnNumber: 25
                                     }, this)
                                 ]
                             }, void 0, true, {
                                 fileName: "[project]/src/components/NewUserModal.jsx",
-                                lineNumber: 66,
-                                columnNumber: 15
+                                lineNumber: 94,
+                                columnNumber: 23
                             }, this),
+                            /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("label", {
+                                className: "flex items-center",
+                                children: [
+                                    /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$lucide$2d$react$2f$dist$2f$esm$2f$icons$2f$user$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__$3c$export__default__as__UserIcon$3e$__["UserIcon"], {
+                                        size: 18,
+                                        className: "mr-2 text-gray-500"
+                                    }, void 0, false, {
+                                        fileName: "[project]/src/components/NewUserModal.jsx",
+                                        lineNumber: 107,
+                                        columnNumber: 25
+                                    }, this),
+                                    /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("input", {
+                                        name: "userName",
+                                        value: form.userName,
+                                        onChange: handleChange,
+                                        type: "text",
+                                        placeholder: "이름",
+                                        className: "w-full p-2 border border-gray-300 rounded",
+                                        required: true
+                                    }, void 0, false, {
+                                        fileName: "[project]/src/components/NewUserModal.jsx",
+                                        lineNumber: 108,
+                                        columnNumber: 25
+                                    }, this)
+                                ]
+                            }, void 0, true, {
+                                fileName: "[project]/src/components/NewUserModal.jsx",
+                                lineNumber: 106,
+                                columnNumber: 23
+                            }, this)
+                        ]
+                    }, void 0, true, {
+                        fileName: "[project]/src/components/NewUserModal.jsx",
+                        lineNumber: 93,
+                        columnNumber: 21
+                    }, this),
+                    step === 2 && /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
+                        className: "space-y-3",
+                        children: [
                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("label", {
                                 className: "flex items-center",
                                 children: [
@@ -202,8 +263,8 @@ function NewUserModal({ onAdd, onClose }) {
                                         className: "mr-2 text-gray-500"
                                     }, void 0, false, {
                                         fileName: "[project]/src/components/NewUserModal.jsx",
-                                        lineNumber: 79,
-                                        columnNumber: 17
+                                        lineNumber: 125,
+                                        columnNumber: 25
                                     }, this),
                                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("input", {
                                         name: "email",
@@ -215,24 +276,15 @@ function NewUserModal({ onAdd, onClose }) {
                                         required: true
                                     }, void 0, false, {
                                         fileName: "[project]/src/components/NewUserModal.jsx",
-                                        lineNumber: 80,
-                                        columnNumber: 17
+                                        lineNumber: 126,
+                                        columnNumber: 25
                                     }, this)
                                 ]
                             }, void 0, true, {
                                 fileName: "[project]/src/components/NewUserModal.jsx",
-                                lineNumber: 78,
-                                columnNumber: 15
-                            }, this)
-                        ]
-                    }, void 0, true, {
-                        fileName: "[project]/src/components/NewUserModal.jsx",
-                        lineNumber: 65,
-                        columnNumber: 13
-                    }, this),
-                    step === 2 && /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
-                        className: "space-y-3",
-                        children: [
+                                lineNumber: 124,
+                                columnNumber: 23
+                            }, this),
                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("label", {
                                 className: "flex items-center",
                                 children: [
@@ -241,8 +293,8 @@ function NewUserModal({ onAdd, onClose }) {
                                         className: "mr-2 text-gray-500"
                                     }, void 0, false, {
                                         fileName: "[project]/src/components/NewUserModal.jsx",
-                                        lineNumber: 96,
-                                        columnNumber: 17
+                                        lineNumber: 137,
+                                        columnNumber: 25
                                     }, this),
                                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("input", {
                                         name: "phone",
@@ -253,108 +305,57 @@ function NewUserModal({ onAdd, onClose }) {
                                         className: "w-full p-2 border border-gray-300 rounded"
                                     }, void 0, false, {
                                         fileName: "[project]/src/components/NewUserModal.jsx",
-                                        lineNumber: 97,
-                                        columnNumber: 17
+                                        lineNumber: 138,
+                                        columnNumber: 25
                                     }, this)
                                 ]
                             }, void 0, true, {
                                 fileName: "[project]/src/components/NewUserModal.jsx",
-                                lineNumber: 95,
-                                columnNumber: 15
-                            }, this),
-                            /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("label", {
-                                className: "flex items-center",
-                                children: [
-                                    /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$lucide$2d$react$2f$dist$2f$esm$2f$icons$2f$calendar$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__$3c$export__default__as__CalendarIcon$3e$__["CalendarIcon"], {
-                                        size: 18,
-                                        className: "mr-2 text-gray-500"
-                                    }, void 0, false, {
-                                        fileName: "[project]/src/components/NewUserModal.jsx",
-                                        lineNumber: 107,
-                                        columnNumber: 17
-                                    }, this),
-                                    /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("input", {
-                                        name: "joinDate",
-                                        value: form.joinDate,
-                                        onChange: handleChange,
-                                        type: "date",
-                                        className: "w-full p-2 border border-gray-300 rounded"
-                                    }, void 0, false, {
-                                        fileName: "[project]/src/components/NewUserModal.jsx",
-                                        lineNumber: 108,
-                                        columnNumber: 17
-                                    }, this)
-                                ]
-                            }, void 0, true, {
-                                fileName: "[project]/src/components/NewUserModal.jsx",
-                                lineNumber: 106,
-                                columnNumber: 15
+                                lineNumber: 136,
+                                columnNumber: 23
                             }, this)
                         ]
                     }, void 0, true, {
                         fileName: "[project]/src/components/NewUserModal.jsx",
-                        lineNumber: 94,
-                        columnNumber: 13
+                        lineNumber: 123,
+                        columnNumber: 21
                     }, this),
                     step === 3 && /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
                         className: "space-y-3",
                         children: /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("label", {
-                            className: "flex items-center space-x-2",
+                            className: "flex items-center",
                             children: [
                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("span", {
-                                    children: "상태:"
+                                    className: "w-20",
+                                    children: "비밀번호:"
                                 }, void 0, false, {
                                     fileName: "[project]/src/components/NewUserModal.jsx",
-                                    lineNumber: 122,
-                                    columnNumber: 17
+                                    lineNumber: 154,
+                                    columnNumber: 25
                                 }, this),
-                                /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("select", {
-                                    name: "status",
-                                    value: form.status,
+                                /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("input", {
+                                    name: "password",
+                                    value: form.password,
                                     onChange: handleChange,
-                                    className: "w-full p-2 border border-gray-300 rounded focus:ring-0",
-                                    required: true,
-                                    children: [
-                                        /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("option", {
-                                            value: "",
-                                            children: "선택"
-                                        }, void 0, false, {
-                                            fileName: "[project]/src/components/NewUserModal.jsx",
-                                            lineNumber: 130,
-                                            columnNumber: 19
-                                        }, this),
-                                        /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("option", {
-                                            value: "활성",
-                                            children: "활성"
-                                        }, void 0, false, {
-                                            fileName: "[project]/src/components/NewUserModal.jsx",
-                                            lineNumber: 131,
-                                            columnNumber: 19
-                                        }, this),
-                                        /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("option", {
-                                            value: "비활성",
-                                            children: "비활성"
-                                        }, void 0, false, {
-                                            fileName: "[project]/src/components/NewUserModal.jsx",
-                                            lineNumber: 132,
-                                            columnNumber: 19
-                                        }, this)
-                                    ]
-                                }, void 0, true, {
+                                    type: "password",
+                                    placeholder: "비밀번호",
+                                    className: "w-full p-2 border border-gray-300 rounded",
+                                    required: true
+                                }, void 0, false, {
                                     fileName: "[project]/src/components/NewUserModal.jsx",
-                                    lineNumber: 123,
-                                    columnNumber: 17
+                                    lineNumber: 155,
+                                    columnNumber: 25
                                 }, this)
                             ]
                         }, void 0, true, {
                             fileName: "[project]/src/components/NewUserModal.jsx",
-                            lineNumber: 121,
-                            columnNumber: 15
+                            lineNumber: 153,
+                            columnNumber: 23
                         }, this)
                     }, void 0, false, {
                         fileName: "[project]/src/components/NewUserModal.jsx",
-                        lineNumber: 120,
-                        columnNumber: 13
+                        lineNumber: 152,
+                        columnNumber: 21
                     }, this),
                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
                         className: "flex justify-between mt-4",
@@ -366,12 +367,12 @@ function NewUserModal({ onAdd, onClose }) {
                                 children: "뒤로"
                             }, void 0, false, {
                                 fileName: "[project]/src/components/NewUserModal.jsx",
-                                lineNumber: 141,
-                                columnNumber: 15
+                                lineNumber: 172,
+                                columnNumber: 23
                             }, this) : /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {}, void 0, false, {
                                 fileName: "[project]/src/components/NewUserModal.jsx",
-                                lineNumber: 144,
-                                columnNumber: 17
+                                lineNumber: 175,
+                                columnNumber: 23
                             }, this),
                             step < 3 ? /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("button", {
                                 type: "button",
@@ -380,8 +381,8 @@ function NewUserModal({ onAdd, onClose }) {
                                 children: "다음"
                             }, void 0, false, {
                                 fileName: "[project]/src/components/NewUserModal.jsx",
-                                lineNumber: 147,
-                                columnNumber: 15
+                                lineNumber: 177,
+                                columnNumber: 23
                             }, this) : /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("button", {
                                 type: "submit",
                                 className: "flex items-center px-4 py-2 bg-[#9BCC47] text-white rounded-md",
@@ -391,40 +392,40 @@ function NewUserModal({ onAdd, onClose }) {
                                         className: "mr-1"
                                     }, void 0, false, {
                                         fileName: "[project]/src/components/NewUserModal.jsx",
-                                        lineNumber: 152,
-                                        columnNumber: 17
+                                        lineNumber: 182,
+                                        columnNumber: 25
                                     }, this),
                                     " 등록"
                                 ]
                             }, void 0, true, {
                                 fileName: "[project]/src/components/NewUserModal.jsx",
-                                lineNumber: 151,
-                                columnNumber: 15
+                                lineNumber: 181,
+                                columnNumber: 23
                             }, this)
                         ]
                     }, void 0, true, {
                         fileName: "[project]/src/components/NewUserModal.jsx",
-                        lineNumber: 139,
-                        columnNumber: 11
+                        lineNumber: 170,
+                        columnNumber: 17
                     }, this)
                 ]
             }, void 0, true, {
                 fileName: "[project]/src/components/NewUserModal.jsx",
-                lineNumber: 32,
-                columnNumber: 9
+                lineNumber: 59,
+                columnNumber: 15
             }, this)
         }, void 0, false, {
             fileName: "[project]/src/components/NewUserModal.jsx",
-            lineNumber: 26,
-            columnNumber: 7
+            lineNumber: 53,
+            columnNumber: 13
         }, this)
     }, void 0, false, {
         fileName: "[project]/src/components/NewUserModal.jsx",
-        lineNumber: 25,
-        columnNumber: 5
+        lineNumber: 51,
+        columnNumber: 7
     }, this);
 }
-_s(NewUserModal, "v+fW/A9yM2p9TZKsjdTJB2vTRno=");
+_s(NewUserModal, "87ZWwKbTSapY5vxTxKIum1DOxW0=");
 _c = NewUserModal;
 var _c;
 __turbopack_context__.k.register(_c, "NewUserModal");
@@ -441,6 +442,7 @@ __turbopack_context__.s({
     "default": (()=>UsersPage)
 });
 var __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__ = __turbopack_context__.i("[project]/node_modules/next/dist/compiled/react/jsx-dev-runtime.js [app-client] (ecmascript)");
+var __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$axios$2f$lib$2f$axios$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__ = __turbopack_context__.i("[project]/node_modules/axios/lib/axios.js [app-client] (ecmascript)");
 var __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$index$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__ = __turbopack_context__.i("[project]/node_modules/next/dist/compiled/react/index.js [app-client] (ecmascript)");
 var __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$lucide$2d$react$2f$dist$2f$esm$2f$icons$2f$search$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__$3c$export__default__as__SearchIcon$3e$__ = __turbopack_context__.i("[project]/node_modules/lucide-react/dist/esm/icons/search.js [app-client] (ecmascript) <export default as SearchIcon>");
 var __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$lucide$2d$react$2f$dist$2f$esm$2f$icons$2f$user$2d$plus$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__$3c$export__default__as__UserPlusIcon$3e$__ = __turbopack_context__.i("[project]/node_modules/lucide-react/dist/esm/icons/user-plus.js [app-client] (ecmascript) <export default as UserPlusIcon>");
@@ -449,6 +451,7 @@ var __TURBOPACK__imported__module__$5b$project$5d2f$src$2f$components$2f$NewUser
 ;
 var _s = __turbopack_context__.k.signature();
 "use client";
+;
 ;
 ;
 ;
@@ -462,90 +465,31 @@ function UsersPage() {
     const [currentPage, setCurrentPage] = (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$index$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["useState"])(1);
     const [selectedUser, setSelectedUser] = (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$index$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["useState"])(null);
     const [showDetail, setShowDetail] = (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$index$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["useState"])(false);
-    const [users, setUsers] = (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$index$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["useState"])([
-        {
-            id: 3,
-            name: '박서연',
-            email: 'seoyeon@example.com',
-            phone: '010-3456-7890',
-            joinDate: '2023-03-10',
-            orders: 5,
-            status: '활성'
-        },
-        {
-            id: 4,
-            name: '최준호',
-            email: 'junho@example.com',
-            phone: '010-4567-8901',
-            joinDate: '2023-01-05',
-            orders: 15,
-            status: '활성'
-        },
-        {
-            id: 5,
-            name: '정민지',
-            email: 'minji@example.com',
-            phone: '010-5678-9012',
-            joinDate: '2023-04-22',
-            orders: 3,
-            status: '활성'
-        },
-        {
-            id: 6,
-            name: '송지원',
-            email: 'jiwon@example.com',
-            phone: '010-6789-0123',
-            joinDate: '2023-02-14',
-            orders: 7,
-            status: '비활성'
-        },
-        {
-            id: 7,
-            name: '윤도현',
-            email: 'dohyun@example.com',
-            phone: '010-7890-1234',
-            joinDate: '2023-03-30',
-            orders: 4,
-            status: '활성'
-        },
-        {
-            id: 8,
-            name: '장서영',
-            email: 'seoyoung@example.com',
-            phone: '010-8901-2345',
-            joinDate: '2023-01-25',
-            orders: 10,
-            status: '활성'
-        },
-        {
-            id: 9,
-            name: '이민준',
-            email: 'minjun@example.com',
-            phone: '010-9012-3456',
-            joinDate: '2023-04-18',
-            orders: 2,
-            status: '비활성'
-        },
-        {
-            id: 10,
-            name: '한소희',
-            email: 'sohee@example.com',
-            phone: '010-0123-4567',
-            joinDate: '2023-05-01',
-            orders: 1,
-            status: '활성'
-        }
-    ]);
-    // 신규 회원 등록 핸들러
-    const handleAddUser = (newUser)=>{
-        setUsers((prev)=>[
-                ...prev,
-                {
-                    id: prev.length + 1,
-                    orders: 0,
-                    ...newUser
+    const [users, setUsers] = (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$index$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["useState"])([]);
+    /*const [users,setUsers] = useState([
+    { id: 3, name: '박서연', email: 'seoyeon@example.com', phone: '010-3456-7890', joinDate: '2023-03-10', orders: 5, status: '활성' },
+    { id: 4, name: '최준호', email: 'junho@example.com', phone: '010-4567-8901', joinDate: '2023-01-05', orders: 15, status: '활성' },
+    { id: 5, name: '정민지', email: 'minji@example.com', phone: '010-5678-9012', joinDate: '2023-04-22', orders: 3, status: '활성' },
+    { id: 6, name: '송지원', email: 'jiwon@example.com', phone: '010-6789-0123', joinDate: '2023-02-14', orders: 7, status: '비활성' },
+    { id: 7, name: '윤도현', email: 'dohyun@example.com', phone: '010-7890-1234', joinDate: '2023-03-30', orders: 4, status: '활성' },
+    { id: 8, name: '장서영', email: 'seoyoung@example.com', phone: '010-8901-2345', joinDate: '2023-01-25', orders: 10, status: '활성' },
+    { id: 9, name: '이민준', email: 'minjun@example.com', phone: '010-9012-3456', joinDate: '2023-04-18', orders: 2, status: '비활성' },
+    { id: 10, name: '한소희', email: 'sohee@example.com', phone: '010-0123-4567', joinDate: '2023-05-01', orders: 1, status: '활성' }
+  ]);*/ // 신규 회원 등록 핸들러
+    const handleAddAdmin = async (formData)=>{
+        const token = localStorage.getItem('accessToken');
+        try {
+            const response = await __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$axios$2f$lib$2f$axios$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["default"].post('http://localhost:8080/api/admin/create-admin', formData, {
+                headers: {
+                    Authorization: `Bearer ${token}`,
+                    'Content-Type': 'application/json'
                 }
-            ]);
+            });
+            alert("✅ 관리자 등록 성공!");
+        } catch (error) {
+            alert("❌ 관리자 등록 실패: " + (error.response?.data?.message || '서버 오류'));
+            throw error;
+        }
     };
     // 필터링된 회원 목록
     const filteredUsers = users.filter((user)=>{
@@ -574,7 +518,7 @@ function UsersPage() {
                         children: "회원 관리"
                     }, void 0, false, {
                         fileName: "[project]/src/app/admin/users/page.jsx",
-                        lineNumber: 66,
+                        lineNumber: 83,
                         columnNumber: 9
                     }, this),
                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("button", {
@@ -586,20 +530,20 @@ function UsersPage() {
                                 className: "mr-1"
                             }, void 0, false, {
                                 fileName: "[project]/src/app/admin/users/page.jsx",
-                                lineNumber: 68,
+                                lineNumber: 85,
                                 columnNumber: 11
                             }, this),
                             "신규 회원 등록"
                         ]
                     }, void 0, true, {
                         fileName: "[project]/src/app/admin/users/page.jsx",
-                        lineNumber: 67,
+                        lineNumber: 84,
                         columnNumber: 9
                     }, this)
                 ]
             }, void 0, true, {
                 fileName: "[project]/src/app/admin/users/page.jsx",
-                lineNumber: 65,
+                lineNumber: 82,
                 columnNumber: 7
             }, this),
             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -621,7 +565,7 @@ function UsersPage() {
                                             onChange: (e)=>setSearchTerm(e.target.value)
                                         }, void 0, false, {
                                             fileName: "[project]/src/app/admin/users/page.jsx",
-                                            lineNumber: 77,
+                                            lineNumber: 94,
                                             columnNumber: 15
                                         }, this),
                                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$lucide$2d$react$2f$dist$2f$esm$2f$icons$2f$search$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__$3c$export__default__as__SearchIcon$3e$__["SearchIcon"], {
@@ -629,13 +573,13 @@ function UsersPage() {
                                             className: "absolute left-3 top-2.5 text-gray-400"
                                         }, void 0, false, {
                                             fileName: "[project]/src/app/admin/users/page.jsx",
-                                            lineNumber: 84,
+                                            lineNumber: 101,
                                             columnNumber: 15
                                         }, this)
                                     ]
                                 }, void 0, true, {
                                     fileName: "[project]/src/app/admin/users/page.jsx",
-                                    lineNumber: 76,
+                                    lineNumber: 93,
                                     columnNumber: 13
                                 }, this),
                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -649,14 +593,14 @@ function UsersPage() {
                                                     className: "mr-1"
                                                 }, void 0, false, {
                                                     fileName: "[project]/src/app/admin/users/page.jsx",
-                                                    lineNumber: 88,
+                                                    lineNumber: 105,
                                                     columnNumber: 17
                                                 }, this),
                                                 "필터"
                                             ]
                                         }, void 0, true, {
                                             fileName: "[project]/src/app/admin/users/page.jsx",
-                                            lineNumber: 87,
+                                            lineNumber: 104,
                                             columnNumber: 15
                                         }, this),
                                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("select", {
@@ -669,7 +613,7 @@ function UsersPage() {
                                                     children: "회원상태"
                                                 }, void 0, false, {
                                                     fileName: "[project]/src/app/admin/users/page.jsx",
-                                                    lineNumber: 94,
+                                                    lineNumber: 111,
                                                     columnNumber: 17
                                                 }, this),
                                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("option", {
@@ -677,7 +621,7 @@ function UsersPage() {
                                                     children: "활성"
                                                 }, void 0, false, {
                                                     fileName: "[project]/src/app/admin/users/page.jsx",
-                                                    lineNumber: 95,
+                                                    lineNumber: 112,
                                                     columnNumber: 17
                                                 }, this),
                                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("option", {
@@ -685,13 +629,13 @@ function UsersPage() {
                                                     children: "비활성"
                                                 }, void 0, false, {
                                                     fileName: "[project]/src/app/admin/users/page.jsx",
-                                                    lineNumber: 96,
+                                                    lineNumber: 113,
                                                     columnNumber: 17
                                                 }, this)
                                             ]
                                         }, void 0, true, {
                                             fileName: "[project]/src/app/admin/users/page.jsx",
-                                            lineNumber: 91,
+                                            lineNumber: 108,
                                             columnNumber: 15
                                         }, this),
                                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("select", {
@@ -704,7 +648,7 @@ function UsersPage() {
                                                     children: "가입일순"
                                                 }, void 0, false, {
                                                     fileName: "[project]/src/app/admin/users/page.jsx",
-                                                    lineNumber: 101,
+                                                    lineNumber: 118,
                                                     columnNumber: 17
                                                 }, this),
                                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("option", {
@@ -712,7 +656,7 @@ function UsersPage() {
                                                     children: "최근가입순"
                                                 }, void 0, false, {
                                                     fileName: "[project]/src/app/admin/users/page.jsx",
-                                                    lineNumber: 102,
+                                                    lineNumber: 119,
                                                     columnNumber: 17
                                                 }, this),
                                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("option", {
@@ -720,30 +664,30 @@ function UsersPage() {
                                                     children: "오래된순"
                                                 }, void 0, false, {
                                                     fileName: "[project]/src/app/admin/users/page.jsx",
-                                                    lineNumber: 103,
+                                                    lineNumber: 120,
                                                     columnNumber: 17
                                                 }, this)
                                             ]
                                         }, void 0, true, {
                                             fileName: "[project]/src/app/admin/users/page.jsx",
-                                            lineNumber: 98,
+                                            lineNumber: 115,
                                             columnNumber: 15
                                         }, this)
                                     ]
                                 }, void 0, true, {
                                     fileName: "[project]/src/app/admin/users/page.jsx",
-                                    lineNumber: 86,
+                                    lineNumber: 103,
                                     columnNumber: 13
                                 }, this)
                             ]
                         }, void 0, true, {
                             fileName: "[project]/src/app/admin/users/page.jsx",
-                            lineNumber: 75,
+                            lineNumber: 92,
                             columnNumber: 11
                         }, this)
                     }, void 0, false, {
                         fileName: "[project]/src/app/admin/users/page.jsx",
-                        lineNumber: 74,
+                        lineNumber: 91,
                         columnNumber: 9
                     }, this),
                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -760,7 +704,7 @@ function UsersPage() {
                                                 children: "회원명"
                                             }, void 0, false, {
                                                 fileName: "[project]/src/app/admin/users/page.jsx",
-                                                lineNumber: 113,
+                                                lineNumber: 130,
                                                 columnNumber: 17
                                             }, this),
                                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("th", {
@@ -768,7 +712,7 @@ function UsersPage() {
                                                 children: "이메일"
                                             }, void 0, false, {
                                                 fileName: "[project]/src/app/admin/users/page.jsx",
-                                                lineNumber: 114,
+                                                lineNumber: 131,
                                                 columnNumber: 17
                                             }, this),
                                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("th", {
@@ -776,7 +720,7 @@ function UsersPage() {
                                                 children: "전화번호"
                                             }, void 0, false, {
                                                 fileName: "[project]/src/app/admin/users/page.jsx",
-                                                lineNumber: 115,
+                                                lineNumber: 132,
                                                 columnNumber: 17
                                             }, this),
                                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("th", {
@@ -784,7 +728,7 @@ function UsersPage() {
                                                 children: "가입일"
                                             }, void 0, false, {
                                                 fileName: "[project]/src/app/admin/users/page.jsx",
-                                                lineNumber: 116,
+                                                lineNumber: 133,
                                                 columnNumber: 17
                                             }, this),
                                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("th", {
@@ -792,7 +736,7 @@ function UsersPage() {
                                                 children: "주문수"
                                             }, void 0, false, {
                                                 fileName: "[project]/src/app/admin/users/page.jsx",
-                                                lineNumber: 117,
+                                                lineNumber: 134,
                                                 columnNumber: 17
                                             }, this),
                                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("th", {
@@ -800,7 +744,7 @@ function UsersPage() {
                                                 children: "상태"
                                             }, void 0, false, {
                                                 fileName: "[project]/src/app/admin/users/page.jsx",
-                                                lineNumber: 118,
+                                                lineNumber: 135,
                                                 columnNumber: 17
                                             }, this),
                                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("th", {
@@ -808,18 +752,18 @@ function UsersPage() {
                                                 children: "관리"
                                             }, void 0, false, {
                                                 fileName: "[project]/src/app/admin/users/page.jsx",
-                                                lineNumber: 119,
+                                                lineNumber: 136,
                                                 columnNumber: 17
                                             }, this)
                                         ]
                                     }, void 0, true, {
                                         fileName: "[project]/src/app/admin/users/page.jsx",
-                                        lineNumber: 112,
+                                        lineNumber: 129,
                                         columnNumber: 15
                                     }, this)
                                 }, void 0, false, {
                                     fileName: "[project]/src/app/admin/users/page.jsx",
-                                    lineNumber: 111,
+                                    lineNumber: 128,
                                     columnNumber: 13
                                 }, this),
                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("tbody", {
@@ -832,7 +776,7 @@ function UsersPage() {
                                                     children: user.name
                                                 }, void 0, false, {
                                                     fileName: "[project]/src/app/admin/users/page.jsx",
-                                                    lineNumber: 125,
+                                                    lineNumber: 142,
                                                     columnNumber: 19
                                                 }, this),
                                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("td", {
@@ -840,7 +784,7 @@ function UsersPage() {
                                                     children: user.email
                                                 }, void 0, false, {
                                                     fileName: "[project]/src/app/admin/users/page.jsx",
-                                                    lineNumber: 126,
+                                                    lineNumber: 143,
                                                     columnNumber: 19
                                                 }, this),
                                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("td", {
@@ -848,7 +792,7 @@ function UsersPage() {
                                                     children: user.phone
                                                 }, void 0, false, {
                                                     fileName: "[project]/src/app/admin/users/page.jsx",
-                                                    lineNumber: 127,
+                                                    lineNumber: 144,
                                                     columnNumber: 19
                                                 }, this),
                                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("td", {
@@ -856,7 +800,7 @@ function UsersPage() {
                                                     children: user.joinDate
                                                 }, void 0, false, {
                                                     fileName: "[project]/src/app/admin/users/page.jsx",
-                                                    lineNumber: 128,
+                                                    lineNumber: 145,
                                                     columnNumber: 19
                                                 }, this),
                                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("td", {
@@ -864,7 +808,7 @@ function UsersPage() {
                                                     children: user.orders
                                                 }, void 0, false, {
                                                     fileName: "[project]/src/app/admin/users/page.jsx",
-                                                    lineNumber: 129,
+                                                    lineNumber: 146,
                                                     columnNumber: 19
                                                 }, this),
                                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("td", {
@@ -874,12 +818,12 @@ function UsersPage() {
                                                         children: user.status
                                                     }, void 0, false, {
                                                         fileName: "[project]/src/app/admin/users/page.jsx",
-                                                        lineNumber: 131,
+                                                        lineNumber: 148,
                                                         columnNumber: 21
                                                     }, this)
                                                 }, void 0, false, {
                                                     fileName: "[project]/src/app/admin/users/page.jsx",
-                                                    lineNumber: 130,
+                                                    lineNumber: 147,
                                                     columnNumber: 19
                                                 }, this),
                                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("td", {
@@ -893,12 +837,12 @@ function UsersPage() {
                                                                     size: 18
                                                                 }, void 0, false, {
                                                                     fileName: "[project]/src/app/admin/users/page.jsx",
-                                                                    lineNumber: 144,
+                                                                    lineNumber: 161,
                                                                     columnNumber: 25
                                                                 }, this)
                                                             }, void 0, false, {
                                                                 fileName: "[project]/src/app/admin/users/page.jsx",
-                                                                lineNumber: 143,
+                                                                lineNumber: 160,
                                                                 columnNumber: 23
                                                             }, this),
                                                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("button", {
@@ -911,45 +855,45 @@ function UsersPage() {
                                                                     size: 18
                                                                 }, void 0, false, {
                                                                     fileName: "[project]/src/app/admin/users/page.jsx",
-                                                                    lineNumber: 151,
+                                                                    lineNumber: 168,
                                                                     columnNumber: 25
                                                                 }, this)
                                                             }, void 0, false, {
                                                                 fileName: "[project]/src/app/admin/users/page.jsx",
-                                                                lineNumber: 146,
+                                                                lineNumber: 163,
                                                                 columnNumber: 23
                                                             }, this)
                                                         ]
                                                     }, void 0, true, {
                                                         fileName: "[project]/src/app/admin/users/page.jsx",
-                                                        lineNumber: 142,
+                                                        lineNumber: 159,
                                                         columnNumber: 21
                                                     }, this)
                                                 }, void 0, false, {
                                                     fileName: "[project]/src/app/admin/users/page.jsx",
-                                                    lineNumber: 141,
+                                                    lineNumber: 158,
                                                     columnNumber: 19
                                                 }, this)
                                             ]
                                         }, user.id, true, {
                                             fileName: "[project]/src/app/admin/users/page.jsx",
-                                            lineNumber: 124,
+                                            lineNumber: 141,
                                             columnNumber: 17
                                         }, this))
                                 }, void 0, false, {
                                     fileName: "[project]/src/app/admin/users/page.jsx",
-                                    lineNumber: 122,
+                                    lineNumber: 139,
                                     columnNumber: 13
                                 }, this)
                             ]
                         }, void 0, true, {
                             fileName: "[project]/src/app/admin/users/page.jsx",
-                            lineNumber: 110,
+                            lineNumber: 127,
                             columnNumber: 11
                         }, this)
                     }, void 0, false, {
                         fileName: "[project]/src/app/admin/users/page.jsx",
-                        lineNumber: 109,
+                        lineNumber: 126,
                         columnNumber: 9
                     }, this),
                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -964,7 +908,7 @@ function UsersPage() {
                                         children: filteredUsers.length
                                     }, void 0, false, {
                                         fileName: "[project]/src/app/admin/users/page.jsx",
-                                        lineNumber: 164,
+                                        lineNumber: 181,
                                         columnNumber: 15
                                     }, this),
                                     "명 회원 중",
@@ -974,7 +918,7 @@ function UsersPage() {
                                         children: (currentPage - 1) * itemsPerPage + 1
                                     }, void 0, false, {
                                         fileName: "[project]/src/app/admin/users/page.jsx",
-                                        lineNumber: 165,
+                                        lineNumber: 182,
                                         columnNumber: 13
                                     }, this),
                                     "-",
@@ -983,7 +927,7 @@ function UsersPage() {
                                         children: Math.min(currentPage * itemsPerPage, filteredUsers.length)
                                     }, void 0, false, {
                                         fileName: "[project]/src/app/admin/users/page.jsx",
-                                        lineNumber: 166,
+                                        lineNumber: 183,
                                         columnNumber: 13
                                     }, this),
                                     ' ',
@@ -991,7 +935,7 @@ function UsersPage() {
                                 ]
                             }, void 0, true, {
                                 fileName: "[project]/src/app/admin/users/page.jsx",
-                                lineNumber: 163,
+                                lineNumber: 180,
                                 columnNumber: 11
                             }, this),
                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -1004,7 +948,7 @@ function UsersPage() {
                                         children: "이전"
                                     }, void 0, false, {
                                         fileName: "[project]/src/app/admin/users/page.jsx",
-                                        lineNumber: 172,
+                                        lineNumber: 189,
                                         columnNumber: 13
                                     }, this),
                                     Array.from({
@@ -1015,7 +959,7 @@ function UsersPage() {
                                             children: i + 1
                                         }, i, false, {
                                             fileName: "[project]/src/app/admin/users/page.jsx",
-                                            lineNumber: 181,
+                                            lineNumber: 198,
                                             columnNumber: 15
                                         }, this)),
                                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("button", {
@@ -1025,19 +969,19 @@ function UsersPage() {
                                         children: "다음"
                                     }, void 0, false, {
                                         fileName: "[project]/src/app/admin/users/page.jsx",
-                                        lineNumber: 194,
+                                        lineNumber: 211,
                                         columnNumber: 13
                                     }, this)
                                 ]
                             }, void 0, true, {
                                 fileName: "[project]/src/app/admin/users/page.jsx",
-                                lineNumber: 171,
+                                lineNumber: 188,
                                 columnNumber: 11
                             }, this)
                         ]
                     }, void 0, true, {
                         fileName: "[project]/src/app/admin/users/page.jsx",
-                        lineNumber: 162,
+                        lineNumber: 179,
                         columnNumber: 9
                     }, this),
                     showDetail && selectedUser && /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -1050,7 +994,7 @@ function UsersPage() {
                                     children: "회원 상세"
                                 }, void 0, false, {
                                     fileName: "[project]/src/app/admin/users/page.jsx",
-                                    lineNumber: 207,
+                                    lineNumber: 224,
                                     columnNumber: 13
                                 }, this),
                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("p", {
@@ -1059,7 +1003,7 @@ function UsersPage() {
                                             children: "회원명:"
                                         }, void 0, false, {
                                             fileName: "[project]/src/app/admin/users/page.jsx",
-                                            lineNumber: 208,
+                                            lineNumber: 225,
                                             columnNumber: 16
                                         }, this),
                                         " ",
@@ -1067,7 +1011,7 @@ function UsersPage() {
                                     ]
                                 }, void 0, true, {
                                     fileName: "[project]/src/app/admin/users/page.jsx",
-                                    lineNumber: 208,
+                                    lineNumber: 225,
                                     columnNumber: 13
                                 }, this),
                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("p", {
@@ -1076,7 +1020,7 @@ function UsersPage() {
                                             children: "이메일:"
                                         }, void 0, false, {
                                             fileName: "[project]/src/app/admin/users/page.jsx",
-                                            lineNumber: 209,
+                                            lineNumber: 226,
                                             columnNumber: 16
                                         }, this),
                                         " ",
@@ -1084,7 +1028,7 @@ function UsersPage() {
                                     ]
                                 }, void 0, true, {
                                     fileName: "[project]/src/app/admin/users/page.jsx",
-                                    lineNumber: 209,
+                                    lineNumber: 226,
                                     columnNumber: 13
                                 }, this),
                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("p", {
@@ -1093,7 +1037,7 @@ function UsersPage() {
                                             children: "전화번호:"
                                         }, void 0, false, {
                                             fileName: "[project]/src/app/admin/users/page.jsx",
-                                            lineNumber: 210,
+                                            lineNumber: 227,
                                             columnNumber: 16
                                         }, this),
                                         " ",
@@ -1101,7 +1045,7 @@ function UsersPage() {
                                     ]
                                 }, void 0, true, {
                                     fileName: "[project]/src/app/admin/users/page.jsx",
-                                    lineNumber: 210,
+                                    lineNumber: 227,
                                     columnNumber: 13
                                 }, this),
                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("p", {
@@ -1110,7 +1054,7 @@ function UsersPage() {
                                             children: "가입일:"
                                         }, void 0, false, {
                                             fileName: "[project]/src/app/admin/users/page.jsx",
-                                            lineNumber: 211,
+                                            lineNumber: 228,
                                             columnNumber: 16
                                         }, this),
                                         " ",
@@ -1118,7 +1062,7 @@ function UsersPage() {
                                     ]
                                 }, void 0, true, {
                                     fileName: "[project]/src/app/admin/users/page.jsx",
-                                    lineNumber: 211,
+                                    lineNumber: 228,
                                     columnNumber: 13
                                 }, this),
                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("p", {
@@ -1127,7 +1071,7 @@ function UsersPage() {
                                             children: "주문수:"
                                         }, void 0, false, {
                                             fileName: "[project]/src/app/admin/users/page.jsx",
-                                            lineNumber: 212,
+                                            lineNumber: 229,
                                             columnNumber: 16
                                         }, this),
                                         " ",
@@ -1135,7 +1079,7 @@ function UsersPage() {
                                     ]
                                 }, void 0, true, {
                                     fileName: "[project]/src/app/admin/users/page.jsx",
-                                    lineNumber: 212,
+                                    lineNumber: 229,
                                     columnNumber: 13
                                 }, this),
                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("p", {
@@ -1144,7 +1088,7 @@ function UsersPage() {
                                             children: "상태:"
                                         }, void 0, false, {
                                             fileName: "[project]/src/app/admin/users/page.jsx",
-                                            lineNumber: 214,
+                                            lineNumber: 231,
                                             columnNumber: 15
                                         }, this),
                                         ' ',
@@ -1153,13 +1097,13 @@ function UsersPage() {
                                             children: selectedUser.status
                                         }, void 0, false, {
                                             fileName: "[project]/src/app/admin/users/page.jsx",
-                                            lineNumber: 215,
+                                            lineNumber: 232,
                                             columnNumber: 15
                                         }, this)
                                     ]
                                 }, void 0, true, {
                                     fileName: "[project]/src/app/admin/users/page.jsx",
-                                    lineNumber: 213,
+                                    lineNumber: 230,
                                     columnNumber: 13
                                 }, this),
                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -1170,47 +1114,48 @@ function UsersPage() {
                                         children: "닫기"
                                     }, void 0, false, {
                                         fileName: "[project]/src/app/admin/users/page.jsx",
-                                        lineNumber: 224,
+                                        lineNumber: 241,
                                         columnNumber: 15
                                     }, this)
                                 }, void 0, false, {
                                     fileName: "[project]/src/app/admin/users/page.jsx",
-                                    lineNumber: 223,
+                                    lineNumber: 240,
                                     columnNumber: 13
                                 }, this)
                             ]
                         }, void 0, true, {
                             fileName: "[project]/src/app/admin/users/page.jsx",
-                            lineNumber: 206,
+                            lineNumber: 223,
                             columnNumber: 11
                         }, this)
                     }, void 0, false, {
                         fileName: "[project]/src/app/admin/users/page.jsx",
-                        lineNumber: 205,
+                        lineNumber: 222,
                         columnNumber: 9
                     }, this)
                 ]
             }, void 0, true, {
                 fileName: "[project]/src/app/admin/users/page.jsx",
-                lineNumber: 73,
+                lineNumber: 90,
                 columnNumber: 7
             }, this),
             showModal && /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$src$2f$components$2f$NewUserModal$2e$jsx__$5b$app$2d$client$5d$__$28$ecmascript$29$__["default"], {
-                onAdd: handleAddUser,
-                onClose: ()=>setShowModal(false)
+                onAdd: handleAddAdmin,
+                onClose: ()=>setShowModal(false),
+                showModal: showModal
             }, void 0, false, {
                 fileName: "[project]/src/app/admin/users/page.jsx",
-                lineNumber: 238,
+                lineNumber: 255,
                 columnNumber: 9
             }, this)
         ]
     }, void 0, true, {
         fileName: "[project]/src/app/admin/users/page.jsx",
-        lineNumber: 64,
+        lineNumber: 81,
         columnNumber: 5
     }, this);
 }
-_s(UsersPage, "WM0T6GAvjoWUCJeLQJCoWZDxKyo=");
+_s(UsersPage, "WsTNM2d1yJkkKMHdNhSW2HOTHJo=");
 _c = UsersPage;
 var _c;
 __turbopack_context__.k.register(_c, "UsersPage");

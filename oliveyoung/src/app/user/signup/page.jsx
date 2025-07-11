@@ -4,7 +4,9 @@
 import axios from 'axios';
 import { useState } from 'react';
 import RegistrationForm from '../components/Register';
-import AlreadySignedUp from '../components/AlreadySignedUp'; // 새로 만든 컴포넌트 임포트
+import AlreadySignedUp from '../components/AlreadySignedUp';
+import WelcomeMessage from '../components/WelComeMessage';
+
 // SignUpHeader와 SignUpFooter도 필요하다면 임포트하여 사용하세요.
 // import SignUpHeader from '../components/SignUpHeader';
 // import SignUpFooter from '../components/SignUpFooter';
@@ -134,15 +136,12 @@ export default function SignUpPage() {
         </div>
         {/* 회원 여부 확인 결과에 따른 조건부 렌더링 */}
         {step === 3 ? (
-          <div className="text-center mt-10">
-            <h2 className="text-2xl font-bold text-green-600 mb-4">🎉 가입이 완료되었습니다!</h2>
-            <p className="text-gray-700">이제 로그인 후 서비스를 이용하실 수 있습니다.</p>
-          </div>
+          <WelcomeMessage userName={userName} />
         ) : isDuplicate === true ? (
           <AlreadySignedUp userName={maskUserName(userName)} /> // 이미 회원이면 AlreadySignedUp 컴포넌트 렌더링
         ) : isDuplicate === false ? (
           // 가입 가능한 사용자일 경우 다음 단계로 이동하는 UI
-          <RegistrationForm />
+          <RegistrationForm setStep={setStep} />
         ) : (
           <>
             <p className="text-center mb-11 text-gray-600">

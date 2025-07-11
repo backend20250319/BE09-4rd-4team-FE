@@ -1,27 +1,80 @@
 'use client';
 
-import React, { useState } from 'react';
+import React, { useState,useEffect } from 'react';
+import axios from 'axios';
 import NewCouponModal from '../../../components/NewCouponModal'; // 위치 확인 필수
 import { PlusIcon, TrashIcon } from 'lucide-react';
 
+
+
 export default function CouponsPage() {
-  const [coupons, setCoupons] = useState([
+  /*const [coupons, setCoupons] = useState([
     { id: 1, name: 'WELCOME10', discount: 10, validUntil: '2025-12-31' },
     { id: 2, name: 'SPRING20', discount: 20, validUntil: '2025-06-30' },
     { id: 3, name: 'SUMMER15', discount: 15, validUntil: '2025-08-31' },
-  ]);
+  ]);*/
+// 날짜 포맷 함수 추가
+  const formatDate = (datetime) => {
+    return new Date(datetime).toISOString().split('T')[0]; // "2025-07-11"
+  };
 
+  const [coupons, setCoupons] = useState([]);
   const [showModal, setShowModal] = useState(false);
 
-  const handleAdd = (coupon) => {
-    const nextId = coupons.length ? Math.max(...coupons.map(c => c.id)) + 1 : 1;
-    setCoupons(prev => [...prev, { id: nextId, ...coupon }]);
-    setShowModal(false);
+  const fetchCoupons = async () => {
+    try {
+      const token = localStorage.getItem("accessToken");
+
+      const response = await axios.get('http://localhost:8080/api/admin/coupons', {
+        headers: {
+          Authorization: `Bearer ${token}`, // ✅ 올바른 템플릿 문자열
+          "Content-Type": "application/json"
+        },
+      });
+
+      setCoupons(response.data.data)
+      } catch (error) {
+      console.error('❌ 쿠폰 목록 조회 실패:', error);
+    }
   };
 
-  const handleDelete = (id) => {
-    setCoupons(prev => prev.filter(c => c.id !== id));
+
+
+  useEffect(() => {
+    fetchCoupons();
+  }, []);
+
+  const handleAdd = async (couponData) => {
+    try {
+      console.log("📦 보낼 couponData:", couponData); // 확인용
+      const token = localStorage.getItem('accessToken');
+
+      await axios.post('http://localhost:8080/api/admin/coupons', couponData, {
+        headers: {
+          Authorization: `Bearer ${token}`,
+          'Content-Type': 'application/json',
+        },
+      });
+
+      setShowModal(false);
+      fetchCoupons();
+    } catch (error) {
+      console.error('❌ 쿠폰 등록 실패:', error);
+    }
   };
+
+
+
+
+  const handleDelete = async (id) => {
+    try {
+      await axios.delete(`/api/coupons/${id}`);
+      fetchCoupons(); // 삭제 후 목록 갱신
+    } catch (error) {
+      console.error('❌ 쿠폰 삭제 실패:', error);
+    }
+  };
+
 
   return (
     <div className="space-y-6">
@@ -51,9 +104,9 @@ export default function CouponsPage() {
               <tr key={c.id}>
                 <td className="px-4 py-2">{c.name}</td>
                 <td className="px-4 py-2">{c.discount}</td>
-                <td className="px-4 py-2">{c.validUntil}</td>
+                <td className="px-4 py-2">{formatDate(c.validUntil)}</td>
                 <td className="px-4 py-2">
-                  <button
+                <button
                     onClick={() => handleDelete(c.id)}
                     className="text-red-600 hover:text-red-800"
                   >
