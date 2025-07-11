@@ -3,21 +3,14 @@
 import React, { useState, useEffect } from "react";
 import { getImageUrl } from "@/utils/image";
 
-const ProductImage = ({ productData, fixedThumbnailPaths = [] }) => {
-  // ✅ 메인 이미지 경로 결정 (fallback 제거)
+const ProductImage = ({ productData, thumbnailPaths = [] }) => {
   const initialMainImage = productData.imageUrl
     ? getImageUrl(productData.imageUrl)
-    : fixedThumbnailPaths.length > 0
-    ? getImageUrl(fixedThumbnailPaths[0])
+    : thumbnailPaths.length > 0
+    ? getImageUrl(thumbnailPaths[0])
     : null;
 
   const [mainImage, setMainImage] = useState(initialMainImage);
-
-  // ✅ 썸네일 리스트 결정 (메인 + 서브 이미지)
-  const thumbnailPaths =
-    Array.isArray(productData.subImageUrls) && productData.subImageUrls.length > 0
-      ? [productData.imageUrl, ...productData.subImageUrls]
-      : fixedThumbnailPaths;
 
   const handleThumbnailClick = (imagePath) => {
     setMainImage(getImageUrl(imagePath));
@@ -25,7 +18,6 @@ const ProductImage = ({ productData, fixedThumbnailPaths = [] }) => {
 
   useEffect(() => {
     setMainImage(initialMainImage);
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [productData]);
 
   return (
@@ -56,13 +48,11 @@ const ProductImage = ({ productData, fixedThumbnailPaths = [] }) => {
               } hover:border-black`}
               onClick={() => handleThumbnailClick(imagePath)}
             >
-              <a href="#" onClick={(e) => e.preventDefault()}>
-                <img
-                  src={getImageUrl(imagePath)}
-                  alt={`썸네일 이미지 ${index + 1}`}
-                  className="object-contain w-full h-full"
-                />
-              </a>
+              <img
+                src={getImageUrl(imagePath)}
+                alt={`썸네일 이미지 ${index + 1}`}
+                className="object-contain w-full h-full"
+              />
             </li>
           ))}
         </ul>
