@@ -4,6 +4,7 @@
 
 import React, { useState } from "react";
 import ProductDescription from "./ProductDescription";
+import ReviewDetailPage from "@/app/reviewtest/ReviewDetailPage";
 
 const ProductTabs = () => {
   const [activeTab, setActiveTab] = useState("상품설명");
@@ -62,7 +63,7 @@ const ProductTabs = () => {
         )}
         {activeTab === "리뷰" && (
           <div className="p-4 text-center">
-            <p className="text-gray-600">리뷰 섹션입니다.</p>
+            <ReviewDetailPage />
           </div>
         )}
         {activeTab === "Q&A" && (
