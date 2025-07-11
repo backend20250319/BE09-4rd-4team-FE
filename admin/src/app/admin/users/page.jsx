@@ -1,7 +1,9 @@
 "use client";
-import React, { useState } from 'react';
+
+import axios from 'axios';
+import React, { useState, useEffect} from 'react';
 import { SearchIcon, UserPlusIcon, EyeIcon } from 'lucide-react';
-import NewUserModal from '../../../components/NewUserModal'; // 위치 확인 필수
+import NewAdminModal from '../../../components/NewAdminModal'; // 위치 확인 필수
 
 
 export default function UsersPage() {
@@ -13,8 +15,11 @@ export default function UsersPage() {
   const [currentPage, setCurrentPage] = useState(1);
   const [selectedUser, setSelectedUser] = useState(null);
   const [showDetail, setShowDetail] = useState(false);
+  const [users, setUsers] = useState([]);
 
-  const [users,setUsers] = useState([
+
+
+  /*const [users,setUsers] = useState([
     { id: 3, name: '박서연', email: 'seoyeon@example.com', phone: '010-3456-7890', joinDate: '2023-03-10', orders: 5, status: '활성' },
     { id: 4, name: '최준호', email: 'junho@example.com', phone: '010-4567-8901', joinDate: '2023-01-05', orders: 15, status: '활성' },
     { id: 5, name: '정민지', email: 'minji@example.com', phone: '010-5678-9012', joinDate: '2023-04-22', orders: 3, status: '활성' },
@@ -23,26 +28,58 @@ export default function UsersPage() {
     { id: 8, name: '장서영', email: 'seoyoung@example.com', phone: '010-8901-2345', joinDate: '2023-01-25', orders: 10, status: '활성' },
     { id: 9, name: '이민준', email: 'minjun@example.com', phone: '010-9012-3456', joinDate: '2023-04-18', orders: 2, status: '비활성' },
     { id: 10, name: '한소희', email: 'sohee@example.com', phone: '010-0123-4567', joinDate: '2023-05-01', orders: 1, status: '활성' }
-  ]);
+  ]);*/
 
 
-  // 신규 회원 등록 핸들러
-  const handleAddUser = (newUser) => {
-    setUsers(prev => [
-      ...prev,
-      {id :prev.length +1 , orders : 0, ...newUser}
-    ]);
+  // 신규 관리자 등록 핸들러
+  const handleAddAdmin = async (formData) => {
+    const token = localStorage.getItem('accessToken');
+    try {
+      const response = await axios.post(
+          'http://localhost:8080/api/admin/users/create-admin',
+          formData,
+          {
+            headers: {
+              // Authorization: `Bearer ${token}`,
+              'Content-Type': 'application/json',
+            },
+          }
+      );
+      alert("✅ 관리자 등록 성공!");
+    } catch (error) {
+      console.error("❌ 관리자 등록 실패:", error.response?.data || error.message);
+      alert("등록 실패: " + (error.response?.data?.message || '서버 오류'));
+      throw error; // ❗ 반드시 필요
+    }
   };
 
-    // 필터링된 회원 목록
+  useEffect(() => {
+    fetchAdmins();
+  }, []);
+
+  //관리자 전체 목록 조회
+  const fetchAdmins = async () => {
+    try {
+      const token = localStorage.getItem('accessToken');
+      const response = await axios.get('http://localhost:8080/api/admin/users', {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      });
+
+      console.log("✅ 관리자 응답:", response.data); // 👈 이거 찍어보세요
+      setUsers(response.data.data); // ✅ 핵심 수정: 배열만 전달
+    } catch (error) {
+      console.error("❌ 관리자 목록 조회 실패:", error.response?.data || error.message);
+    }
+  };
+
   const filteredUsers = users.filter((user) => {
-    const matchesSearch = user.name.toLowerCase().includes(searchTerm.toLowerCase());
-    const matchesStatus = statusFilter ? user.status === statusFilter : true;
-    const matchesJoinDate = joinDateFilter ? user.joinDate === joinDateFilter : true;
+    const matchesSearch = user.userName.toLowerCase().includes(searchTerm.toLowerCase());
+    const matchesStatus = true; // 현재 응답엔 status 없음
+    const matchesJoinDate = joinDateFilter ? user.createdAt === joinDateFilter : true;
     return matchesSearch && matchesStatus && matchesJoinDate;
   });
-
-
 
 
   // 페이지네이션
@@ -63,10 +100,10 @@ export default function UsersPage() {
   return (
     <div className="space-y-6">
       <div className="flex items-center justify-between">
-        <h1 className="text-2xl font-bold text-gray-800">회원 관리</h1>
+        <h1 className="text-2xl font-bold text-gray-800">관리자 회원 관리</h1>
         <button className="bg-[#9BCC47] text-white px-4 py-2 rounded-md flex items-center" onClick={()=> setShowModal(true)}>
           <UserPlusIcon size={16} className="mr-1" />
-          신규 회원 등록
+          신규 관리자 등록
         </button>
       </div>
 
@@ -77,7 +114,7 @@ export default function UsersPage() {
               <input
                 type="text"
                 className="w-full pl-10 pr-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-[#9BCC47] focus:border-transparent"
-                placeholder="이름 또는 이메일 검색..."
+                placeholder="이름 검색..."
                 value={searchTerm}
                 onChange={(e) => setSearchTerm(e.target.value)}
               />
@@ -109,56 +146,45 @@ export default function UsersPage() {
         <div className="overflow-x-auto">
           <table className="w-full">
             <thead>
-              <tr className="text-xs font-medium tracking-wider text-left text-gray-500 uppercase bg-gray-50">
-                <th className="px-6 py-3">회원명</th>
-                <th className="px-6 py-3">이메일</th>
-                <th className="px-6 py-3">전화번호</th>
-                <th className="px-6 py-3">가입일</th>
-                <th className="px-6 py-3">주문수</th>
-                <th className="px-6 py-3">상태</th>
-                <th className="px-6 py-3">관리</th>
-              </tr>
+            <tr className="text-xs font-medium tracking-wider text-left text-gray-500 uppercase bg-gray-50">
+              <th className="px-6 py-3">회원명</th>
+              <th className="px-6 py-3">이메일</th>
+              <th className="px-6 py-3">전화번호</th>
+              <th className="px-6 py-3">가입일</th>
+              <th className="px-6 py-3">주문수</th>
+              <th className="px-6 py-3">상태</th>
+              <th className="px-6 py-3">관리</th>
+            </tr>
             </thead>
             <tbody className="divide-y divide-gray-200">
-              {paginatedUsers.map((user) => (
-                <tr key={user.id} className="text-sm">
-                  <td className="px-6 py-4 font-medium text-gray-900">{user.name}</td>
+            {paginatedUsers.map((user, index) => (
+                <tr key={user.userId || index} className="text-sm">
+                  <td className="px-6 py-4 font-medium text-gray-900">{user.userName}</td>
                   <td className="px-6 py-4 text-gray-700">{user.email}</td>
                   <td className="px-6 py-4 text-gray-700">{user.phone}</td>
-                  <td className="px-6 py-4 text-gray-700">{user.joinDate}</td>
-                  <td className="px-6 py-4 text-gray-700">{user.orders}</td>
-                  <td className="px-6 py-4">
-                    <span
-                      className={`px-2 py-1 text-xs rounded-full ${
-                        user.status === '활성'
-                          ? 'bg-green-100 text-green-800'
-                          : 'bg-red-100 text-red-800'
-                      }`}
-                    >
-                      {user.status}
-                    </span>
-                  </td>
+                  <td className="px-6 py-4 text-gray-700">{user.createdAt?.split("T")[0]}</td>
+                  <td className="px-6 py-4 text-gray-700">-</td>
+                  <td className="px-6 py-4 text-gray-700">-</td>
                   <td className="px-6 py-4">
                     <div className="flex space-x-2">
-                      <button className="text-blue-600 hover:text-blue-800">
-                        <div size={18} />
-                      </button>
-                      <button className="text-[#9BCC47] hover:text-[#8ab93f]"
-                      onClick={() => {
-                    setSelectedUser(user);
-                    setShowDetail(true);
-                  }}>
-                        <EyeIcon size={18} />
+                      <button
+                          className="text-[#9BCC47] hover:text-[#8ab93f]"
+                          onClick={() => {
+                            setSelectedUser(user);
+                            setShowDetail(true);
+                          }}
+                      >
+                        <EyeIcon size={18}/>
                       </button>
                     </div>
                   </td>
                 </tr>
-              ))}
+            ))}
             </tbody>
           </table>
         </div>
 
-          {/* …테이블 아래에 붙이는 페이징… */}
+        {/* …테이블 아래에 붙이는 페이징… */}
         <div className="flex items-center justify-between px-6 py-4 border-t border-gray-200">
           <div className="text-sm text-gray-700">
             총 <span className="font-medium">{filteredUsers.length}</span>명 회원 중{' '}
@@ -170,15 +196,15 @@ export default function UsersPage() {
           </div>
           <div className="flex space-x-1">
             <button
-              onClick={() => handlePageChange(currentPage - 1)}
-              disabled={currentPage === 1}
-              className="px-3 py-1 text-sm border border-gray-300 rounded-md"
+                onClick={() => handlePageChange(currentPage - 1)}
+                disabled={currentPage === 1}
+                className="px-3 py-1 text-sm border border-gray-300 rounded-md"
             >
               이전
             </button>
 
-            {Array.from({ length: totalPages }, (_, i) => (
-              <button
+            {Array.from({length: totalPages}, (_, i) => (
+                <button
                 key={i}
                 onClick={() => handlePageChange(i + 1)}
                 className={`px-3 py-1 text-sm rounded-md ${
@@ -201,43 +227,33 @@ export default function UsersPage() {
           </div>
         </div>
 
-              {showDetail && selectedUser && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-50">
-          <div className="p-6 space-y-4 bg-white rounded-lg shadow-lg w-96">
-            <h2 className="text-xl font-bold">회원 상세</h2>
-            <p><strong>회원명:</strong> {selectedUser.name}</p>
-            <p><strong>이메일:</strong> {selectedUser.email}</p>
-            <p><strong>전화번호:</strong> {selectedUser.phone}</p>
-            <p><strong>가입일:</strong> {selectedUser.joinDate}</p>
-            <p><strong>주문수:</strong> {selectedUser.orders}</p>
-            <p>
-              <strong>상태:</strong>{' '}
-              <span className={`px-2 py-1 text-xs rounded-full ${
-                selectedUser.status === '활성'
-                  ? 'bg-green-100 text-green-800'
-                  : 'bg-red-100 text-red-800'
-              }`}>
-                {selectedUser.status}
-              </span>
-            </p>
-            <div className="flex justify-end">
-              <button
-                onClick={() => setShowDetail(false)}
-                className="px-4 py-2 bg-[#9BCC47] text-white rounded hover:bg-[#8ab93f]"
-              >
-                닫기
-              </button>
+        {showDetail && selectedUser && (
+            <div className="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-50">
+              <div className="p-6 space-y-4 bg-white rounded-lg shadow-lg w-96">
+                <h2 className="text-xl font-bold">회원 상세</h2>
+                <p><strong>회원명:</strong> {selectedUser.userName}</p>
+                <p><strong>이메일:</strong> {selectedUser.email}</p>
+                <p><strong>전화번호:</strong> {selectedUser.phone}</p>
+                <p><strong>가입일:</strong> {selectedUser.createdAt?.split("T")[0]}</p>
+                <div className="flex justify-end">
+                  <button
+                      onClick={() => setShowDetail(false)}
+                      className="px-4 py-2 bg-[#9BCC47] text-white rounded hover:bg-[#8ab93f]"
+                  >
+                    닫기
+                  </button>
+                </div>
+              </div>
             </div>
-          </div>
-        </div>
-      )}
+        )}
 
 
       </div>
       {showModal && (
-        <NewUserModal 
-          onAdd={handleAddUser} 
-          onClose={() => setShowModal(false)} 
+        <NewAdminModal
+          onAdd={handleAddAdmin}
+          onClose={() => setShowModal(false)}
+          showModal={showModal}
         />
       )}
     </div>
