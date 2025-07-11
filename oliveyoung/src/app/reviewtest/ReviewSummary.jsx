@@ -15,23 +15,41 @@ const getText = (rating) => {
   return "별로예요";
 };
 
-export default function ReviewSummary({ data }) {
+export default function ReviewSummary({ reviews }) {
+  if (!reviews || reviews.length === 0) {
+    return <div className="w-full text-center py-10">리뷰가 없습니다</div>;
+  }
+
+  // 평균 평점 계산
+  const avgRating =
+    reviews.reduce((sum, r) => sum + (r.rating || 0), 0) / reviews.length;
+
+  // 리뷰 개수
+  const totalReviews = reviews.length;
+
+  // 평점 분포 예시 (5~1점 카운트)
+  const ratingsDistribution = [0, 0, 0, 0, 0];
+  reviews.forEach((r) => {
+    const idx = 5 - Math.round(r.rating); // 5~1점 → 0~4 index
+    if (ratingsDistribution[idx] !== undefined) ratingsDistribution[idx]++;
+  });
+
   return (
     <div className="w-[1020px] h-[231px] flex items-center gap-6">
       {/* 이모지 영역 */}
       <div className="w-[280px] h-[231px] flex flex-col items-center justify-center">
         <div className="text-[100px] w-[100px] h-[100px] flex items-center justify-center">
-          {getEmoji(data.rating)}
+          {getEmoji(avgRating)}
         </div>
         <div className="text-md font-semibold mt-2 text-center w-full">
-          {getText(data.rating)}
+          {getText(avgRating)}
         </div>
       </div>
 
       {/* 점수 영역 */}
       <div className="w-[361px] h-[231px] flex flex-col items-center justify-center text-center border-l border-gray-300 pl-6">
         <div className="text-gray-500 mb-[30px]">
-          총 {data.totalReviews.toLocaleString()}건
+          총 {totalReviews.toLocaleString()}건
         </div>
         <div className="flex items-end gap-2">
           <div
@@ -43,7 +61,7 @@ export default function ReviewSummary({ data }) {
               lineHeight: "54px",
             }}
           >
-            {data.rating}
+            {avgRating.toFixed(1)}
           </div>
           <div
             style={{
@@ -56,13 +74,12 @@ export default function ReviewSummary({ data }) {
             점
           </div>
         </div>
-
-        <RatingStars rating={data.rating} />
+        <RatingStars rating={avgRating} />
       </div>
 
       {/* 그래프 영역 */}
       <div className="pt-[38px]">
-        <RatingDistribution ratingsDistribution={data.ratingsDistribution} />
+        <RatingDistribution ratingsDistribution={ratingsDistribution} />
       </div>
     </div>
   );
