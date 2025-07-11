@@ -3,7 +3,8 @@
 import cartTableData from "./data/cartTableData"
 import Image from "next/image";
 import Link from "next/link";
-import React, {useState} from "react";
+import React, {useState, useEffect } from "react";
+import axios from 'axios';
 
 export default function Cart() {
 
@@ -128,6 +129,55 @@ export default function Cart() {
     0
   );
 
+  // user 정보 가져오기
+  const [userInfo, setUserInfo] = useState({
+    userName: ''
+  });
+
+  useEffect(() => {
+    const token = localStorage.getItem('accessToken');
+    if (!token) return;
+
+    const fetchUserInfo = async () => {
+      try {
+        const res = await axios.get('http://localhost:8080/api/mypage/info', {
+          headers: {  
+            Authorization: `Bearer ${token}`,
+          },
+        });
+
+        const { userName } = res.data.data;
+        setUserInfo({ userName });
+
+        // 2. 장바구니 정보 가져오기
+        const cartRes = await axios.get(`http://localhost:8080/api/carts/items?userId=${userId}`, {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        });
+
+        setProducts(cartRes.data);
+
+      } catch (e) {
+        console.error('유저 정보 가져오기 실패:', e);
+      }
+    };
+
+    fetchUserInfo();
+  }, []);
+
+  // 이름 마스킹 함수
+  const maskUserName = (name) => {
+    if (!name || name.length < 2) return name;
+
+    if (name.length === 2) {
+      return name[0] + '*';
+    }
+
+    return name[0] + '*'.repeat(name.length - 2) + name[name.length - 1];
+  };
+  
+
   return(
     <div className="overflow-hidden w-full min-w-[1020px]">
       <div className="w-[1020px] h-full mx-auto">
@@ -160,7 +210,7 @@ export default function Cart() {
         {/* membership box */}
         <div className="overflow-hidden h-[103px] pt-[9px] pb-[25px] border-b border-[#e6e6e6]">
           <p className="float-left w-[338px] pt-[6px] px-[30px] text-[20px] text-[#222] leading-[28px]">
-            박*준님의 멤버십 등급은 
+            {maskUserName(userInfo.userName)}님의 멤버십 등급은 
             <span className="text-[#eb6d9a] font-medium"> PINK OLIVE</span>입니다
           </p>
           <ul className="float-left overflow-hidden ml-[50px]">
@@ -173,14 +223,14 @@ export default function Cart() {
                 <span className="font-bold tracking-[-0.02em]">CJ ONE </span>포인트
               </strong>
               <span className="block text-[12px]">
-                <span className="mr-[2px] text-[18px] text-[#f27370] align-[-1px] tracking-[-0.02em] font-medium">{(1500).toLocaleString()}</span>P
+                <span className="mr-[2px] text-[18px] text-[#f27370] align-[-1px] tracking-[-0.02em] font-medium">0</span>P
               </span>
             </li>
             <li className="pt-[10px] border-l border-[#e6e6e6] text-[#333] text-[14px] float-left w-[170px] h-[68px] text-center cursor-pointer">
               <Link href="/mypage/coupon" onClick={e => handleMenuClick(e, href)}>
                 <strong className="block mb-[8px]" >할인쿠폰</strong>
                 <span className="block text-[12px]">
-                  <span className="mr-[2px] text-[18px] text-[#f27370] align-[-1px] tracking-[-0.02em] font-medium">3</span>개
+                  <span className="mr-[2px] text-[18px] text-[#f27370] align-[-1px] tracking-[-0.02em] font-medium">0</span>개
                 </span>
               </Link>
             </li>
