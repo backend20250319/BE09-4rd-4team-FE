@@ -8,20 +8,23 @@ import axios from "axios";
 const ProductTabs = ({ productId }) => {
   const [activeTab, setActiveTab] = useState("상품설명");
   const [reviews, setReviews] = useState([]);
+  const [reviewsFetched, setReviewsFetched] = useState(false); // 이미 패칭했는지 체크
 
-  // ⭐ 페이지 로드시/상품ID 변경시 바로 리뷰 패칭
+  // 리뷰탭 진입할 때만 데이터 패칭 (중복 요청 방지)
   useEffect(() => {
-    if (productId) {
+    if (activeTab === "리뷰" && !reviewsFetched && productId) {
       axios
         .get(`http://localhost:8080/api/products/${productId}/reviews`)
         .then((res) => {
           const data = res.data;
+
           if (Array.isArray(data.data)) setReviews(data.data);
           else setReviews([]);
+          setReviewsFetched(true);
         })
         .catch(() => setReviews([]));
     }
-  }, [productId]);
+  }, [activeTab, reviewsFetched, productId]);
 
   const totalReviews = reviews.length;
 
@@ -79,6 +82,7 @@ const ProductTabs = ({ productId }) => {
         )}
         {activeTab === "리뷰" && (
           <div className="p-4 text-center">
+            {/* 리뷰 배열을 ReviewDetailPage에 props로 넘겨줄 수도 있음 */}
             <ReviewDetailPage reviews={reviews} />
           </div>
         )}
