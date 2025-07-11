@@ -16,14 +16,6 @@ function ProductPage({ productId }) {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
 
-  // ✅ 더미는 fallback용만
-  const fixedThumbnailPaths = [
-    "product/thumbnail1.jpg",
-    "product/thumbnail2.jpg",
-    "product/thumbnail3.jpg",
-    "product/thumbnail4.jpg",
-  ];
-
   useEffect(() => {
     const fetchProductDetails = async () => {
       if (!productId) {
@@ -36,7 +28,6 @@ function ProductPage({ productId }) {
         setLoading(true);
         setError(null);
 
-        // ✅ 카테고리별로 필요하면 유지, 일반은 RESTful 추천
         const apiUrl = `http://localhost:8080/api/products/${productId}`;
         console.log(`✅ 상품 상세 요청: ${apiUrl}`);
 
@@ -62,6 +53,22 @@ function ProductPage({ productId }) {
 
     fetchProductDetails();
   }, [productId]);
+
+  // ✅ 안전 파싱: thumbnailImages
+  const thumbnailPaths =
+    typeof productData?.thumbnailImages === "string"
+      ? productData.thumbnailImages.split(",").map((s) => s.trim())
+      : Array.isArray(productData?.thumbnailImages)
+      ? productData.thumbnailImages
+      : [];
+
+  // ✅ 안전 파싱: descriptionImages
+  const descriptionImages =
+    typeof productData?.descriptionImages === "string"
+      ? productData.descriptionImages.split(",").map((s) => s.trim())
+      : Array.isArray(productData?.descriptionImages)
+      ? productData.descriptionImages
+      : [];
 
   if (loading) {
     return (
@@ -104,7 +111,7 @@ function ProductPage({ productId }) {
       <div className="flex flex-col gap-12 p-4 md:flex-row md:p-0">
         <ProductImage
           productData={productData}
-          fixedThumbnailPaths={fixedThumbnailPaths}
+          thumbnailPaths={thumbnailPaths}
         />
         <div className="p-4 md:w-1/2 lg:w-3/5 md:p-0">
           <ProductInfo productData={productData} />
@@ -112,7 +119,7 @@ function ProductPage({ productId }) {
         </div>
       </div>
 
-      {/* 👉 고객 리뷰 + 버튼 */}
+      {/* 👉 고객 리뷰 + SNS 공유 */}
       <div className="flex items-center justify-between px-4 py-4 mt-4 border-t border-gray-200 md:px-0">
         <div className="flex items-center">
           <span className="mr-2 text-lg font-bold">고객 리뷰</span>
@@ -178,9 +185,9 @@ function ProductPage({ productId }) {
         </div>
       </div>
 
-      {/* 👉 하단 연관/탭/최근 본 상품 */}
+      {/* 👉 하단 연관상품 + Tabs + 최근 본 상품 */}
       <RelatedProducts />
-      <ProductTabs />
+      <ProductTabs descriptionImages={descriptionImages} />
       <ViewedWithProducts />
     </div>
   );
