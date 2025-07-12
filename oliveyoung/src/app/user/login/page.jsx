@@ -4,6 +4,7 @@ import React, { useState } from 'react';
 import { useRouter } from 'next/navigation';
 import { useAuth } from '@/contexts/AuthContext';
 import axios from 'axios';
+import { useEffect } from 'react';
 
 const LoginPage = () => {
   const { login } = useAuth();
@@ -12,8 +13,23 @@ const LoginPage = () => {
   const [password, setPassword] = useState('');
   const [rememberMe, setRememberMe] = useState(false);
 
+  // 첫 마운트 시 저장된 아이디 불러오기
+  useEffect(() => {
+    const savedId = localStorage.getItem('savedUserId');
+    if (savedId) {
+      setUserId(savedId);
+      setRememberMe(true);
+    }
+  }, []);
+
   const handleLogin = async (e) => {
     e.preventDefault();
+
+    if (rememberMe) {
+      localStorage.setItem('savedUserId', userId);
+    } else {
+      localStorage.removeItem('savedUserId');
+    }
 
     try {
       const response = await axios.post('http://localhost:8080/api/auth/login', {
@@ -62,7 +78,7 @@ const LoginPage = () => {
           className="w-full px-4 py-2 border border-gray-300 rounded focus:outline-none focus:border-black"
         />
 
-        <div className="flex items-center">
+        <div className="flex items-center mt-2">
           <input
             type="checkbox"
             checked={rememberMe}

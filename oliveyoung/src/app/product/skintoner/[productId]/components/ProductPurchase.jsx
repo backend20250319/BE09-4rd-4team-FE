@@ -1,16 +1,50 @@
 "use client";
 
-import React from "react";
-import { useRouter } from "next/navigation"; // ✅ 추가
+import React, { useState } from "react";
+import { useRouter } from "next/navigation";
 import { GoQuestion } from "react-icons/go";
 import { CiCircleMinus, CiCirclePlus } from "react-icons/ci";
 import { FaRegHeart, FaGift } from "react-icons/fa";
 
 const ProductPurchase = ({ productData }) => {
-  const router = useRouter(); // ✅ 선언
+  const router = useRouter();
+
+  // 구매수량 상태
+  const [quantity, setQuantity] = useState(1);
+
+  // 수량 감소 (최소 1)
+  const handleDecrease = () => {
+    if (quantity > 1) {
+      setQuantity(quantity - 1);
+    }
+  };
+
+  // 수량 증가
+  const handleIncrease = () => {
+    setQuantity(quantity + 1);
+  };
+
+  // 직접 입력 핸들러
+  const handleQuantityChange = (e) => {
+    const value = e.target.value.replace(/[^0-9]/g, ""); // 숫자만
+    const num = parseInt(value, 10);
+
+    if (value === "") {
+      setQuantity("");
+    } else if (!isNaN(num) && num >= 1) {
+      setQuantity(num);
+    } else {
+      setQuantity(1);
+    }
+  };
+
+  // 총금액
+  const totalAmount =
+    productData.discountedPrice * (quantity === "" ? 1 : quantity);
 
   return (
     <>
+      {/* 배송 정보 */}
       <div className="py-4">
         <span className="mb-2 text-lg font-semibold">배송정보</span>
         <GoQuestion className="inline-block mb-1 ml-1 text-base text-gray-500 cursor-pointer" />
@@ -44,49 +78,55 @@ const ProductPurchase = ({ productData }) => {
         </ul>
       </div>
 
+      {/* 결제 혜택 */}
       <div className="mb-2 border-b">
         <p className="mb-2 text-lg font-semibold">결제혜택</p>
         <ul className="text-sm text-gray-700">
           <li className="flex items-center mb-1">
-            <span>
-              THE CJ 카드 추가 10% 할인
-              <GoQuestion className="inline-block ml-1 text-base text-gray-500 align-middle cursor-pointer" />
-            </span>
+            THE CJ 카드 추가 10% 할인
+            <GoQuestion className="inline-block ml-1 text-base text-gray-500 align-middle cursor-pointer" />
           </li>
           <li className="flex items-center mb-4">
-            <span>
-              CJ ONE 포인트 최대 1% 적립 예상
-              <GoQuestion className="inline-block ml-1 text-base text-gray-500 align-middle cursor-pointer" />
-            </span>
+            CJ ONE 포인트 최대 1% 적립 예상
+            <GoQuestion className="inline-block ml-1 text-base text-gray-500 align-middle cursor-pointer" />
           </li>
         </ul>
       </div>
 
+      {/* 구매수량 */}
       <div className="flex items-center justify-between py-4 mb-4 border-b border-gray-200">
         <span className="text-lg font-semibold">구매수량</span>
         <div className="flex items-center border border-gray-300 rounded-sm">
-          <button className="flex items-center justify-center w-8 h-8 text-lg text-gray-600 rounded-l-sm hover:bg-gray-100">
+          <button
+            onClick={handleDecrease}
+            className="flex items-center justify-center w-8 h-8 text-lg text-gray-600 rounded-l-sm hover:bg-gray-100"
+          >
             <CiCircleMinus className="w-5 h-5" />
           </button>
           <input
             type="text"
-            value="1"
-            readOnly
+            value={quantity}
+            onChange={handleQuantityChange}
             className="w-12 h-8 text-sm text-center border-l border-r border-gray-300"
           />
-          <button className="flex items-center justify-center w-8 h-8 text-lg text-gray-600 rounded-r-sm hover:bg-gray-100">
+          <button
+            onClick={handleIncrease}
+            className="flex items-center justify-center w-8 h-8 text-lg text-gray-600 rounded-r-sm hover:bg-gray-100"
+          >
             <CiCirclePlus className="w-5 h-5" />
           </button>
         </div>
       </div>
 
+      {/* 총금액 */}
       <div className="flex items-center justify-between py-4 mb-6 border-b-2 border-[#e02020]">
         <span className="text-lg font-bold text-[#e02020]">상품금액 합계</span>
         <span className="text-xl font-bold text-red-500">
-          {productData.discountedPrice.toLocaleString()}원
+          {totalAmount.toLocaleString()}원
         </span>
       </div>
 
+      {/* 기타 옵션 */}
       <div className="flex items-center mb-4 text-sm">
         <input
           type="checkbox"
@@ -99,10 +139,11 @@ const ProductPurchase = ({ productData }) => {
         </label>
       </div>
 
+      {/* 구매 버튼들 */}
       <div className="flex mb-8 space-x-2">
         <button
           className="flex-1 py-3 text-lg border border-[#f27370] text-[#f27370] hover:bg-white"
-          onClick={() => router.push("/order/cart")} // ✅ 이동!
+          onClick={() => router.push("/order/cart")}
         >
           장바구니
         </button>

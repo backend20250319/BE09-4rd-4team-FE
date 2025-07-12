@@ -1,19 +1,19 @@
-"use client";
+'use client';
 
-import { useEffect, useState } from "react";
-import CustomerSupportSection from "./main/CustomerSupportSection";
-import MainBanner from "./main/MainBanner";
-import ProductCarouselSlider from "./main/ProductCarouselSlider";
-import ProductRecommendationSection from "./main/RecommendationSection";
-import { getImageUrl } from "@/utils/image";
+import { useEffect, useState } from 'react';
+import CustomerSupportSection from './main/CustomerSupportSection';
+import MainBanner from './main/MainBanner';
+import ProductCarouselSlider from './main/ProductCarouselSlider';
+import ProductRecommendationSection from './main/RecommendationSection';
+import { getImageUrl } from '@/utils/image';
 
 // 변환 함수: API 데이터 → UI 형태로 변환
 const convertProduct = (p) => ({
   image: getImageUrl(p.imageUrl),
-  title: p.productName || p.title || p.name,           // <- API 컬럼명에 맞춤
+  title: p.productName || p.title || p.name, // <- API 컬럼명에 맞춤
   originalPrice: p.originalPrice,
   discountPrice: p.discountedPrice || p.discountPrice, // <- 둘 다 체크
-  labels: p.badgeNames || p.labels || p.badge || [],   // <- 핵심! (badgeNames 기준)
+  labels: p.badgeNames || p.labels || p.badge || [], // <- 핵심! (badgeNames 기준)
 });
 
 export default function Home() {
@@ -23,8 +23,8 @@ export default function Home() {
   useEffect(() => {
     const fetchProducts = async () => {
       try {
-        const res = await fetch("http://localhost:8080/api/products");
-        if (!res.ok) throw new Error("상품 조회 실패");
+        const res = await fetch('http://localhost:8080/api/products');
+        if (!res.ok) throw new Error('상품 조회 실패');
         const result = await res.json();
         // ✅ 여기서 변환
         const converted = result.map(convertProduct);

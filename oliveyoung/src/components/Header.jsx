@@ -125,13 +125,20 @@ function Header(props) {
               </li>
               <li
                 className="text-xs hover:cursor-pointer border-r px-[10px]"
-                onClick={() => router.push('/order/cart')}
+                onClick={() =>
+                  router.push('/order/cart')
+                } /* onClick={() => router.push('/user/login')} 으로 바꾸기*/
               >
                 장바구니
               </li>
             </>
           )}
-          <li className="text-xs hover:cursor-pointer border-r px-[10px]">주문배송</li>
+          <li
+            className="text-xs hover:cursor-pointer border-r px-[10px]"
+            onClick={() => router.push('/user/login')}
+          >
+            주문배송
+          </li>
           <li className="text-xs hover:cursor-pointer border-r px-[10px]">고객센터</li>
           <li className="text-xs hover:cursor-pointer border-r px-[10px]">올영매장</li>
           <li className="text-xs hover:cursor-pointer px-[10px]">Global</li>

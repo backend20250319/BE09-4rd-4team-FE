@@ -9,7 +9,7 @@ const ProductTabs = ({ productId, descriptionImages = [] }) => {
   const [activeTab, setActiveTab] = useState("상품설명");
   const [reviews, setReviews] = useState([]);
 
-  // ✅ 상품 ID가 바뀌면 리뷰 다시 가져오기
+  // 상품 ID가 바뀌면 리뷰 다시 가져오기
   useEffect(() => {
     if (productId) {
       axios
@@ -27,7 +27,7 @@ const ProductTabs = ({ productId, descriptionImages = [] }) => {
 
   return (
     <div>
-      {/* 👉 탭 메뉴 */}
+      {/* 탭 메뉴 */}
       <div className="flex justify-around text-lg font-semibold text-gray-700 border border-gray-200">
         {["상품설명", "구매정보", "리뷰", "Q&A"].map((tab) => (
           <button
@@ -44,7 +44,7 @@ const ProductTabs = ({ productId, descriptionImages = [] }) => {
         ))}
       </div>
 
-      {/* 👉 탭 내용 */}
+      {/* 탭 내용 */}
       <div className="mt-8">
         {activeTab === "상품설명" && (
           <ProductDescription descriptionImages={descriptionImages} />
