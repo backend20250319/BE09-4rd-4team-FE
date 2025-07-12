@@ -40,10 +40,10 @@ export default function ReviewTotal({ reviews }) {
 
   return (
     <div className="flex items-center">
-      <span className="mr-2 text-lg font-bold">고객 리뷰</span>
+      <span className="mt-2 mr-2 text-xl font-bold">고객 리뷰</span>
       <span className="flex items-center mr-2">{renderStars()}</span>
-      <span className="mr-1 text-2xl font-bold">{avgRating.toFixed(1)}</span>
-      <span className="text-xl text-gray-500">
+      <span className="mt-4 mb-2 text-2xl font-bold">{avgRating.toFixed(1)}</span>
+      <span className="mt-2 ml-1 text-xl text-gray-500">
         ({totalReviews.toLocaleString()}건)
       </span>
     </div>
