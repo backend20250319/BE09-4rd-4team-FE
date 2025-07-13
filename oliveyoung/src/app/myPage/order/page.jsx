@@ -1,14 +1,16 @@
 'use client';
 
 import React, { useEffect, useState } from "react";
+import { useRouter } from 'next/navigation';
 import dayjs from "dayjs";
 import isSameOrAfter from "dayjs/plugin/isSameOrAfter";
 import isSameOrBefore from "dayjs/plugin/isSameOrBefore";
-import { orderTableData } from "./data/orderTableData";
 import { useSearchParams } from "next/navigation";
 import Image from 'next/image';
 import Link from 'next/link';
 import UserInfoBox from "../user/components/UserInfoBox";
+import { useCart } from '@/contexts/CartContext';
+import axios from 'axios';
 
 // 날짜 계산 함수
 const getPeriod = (months) => {
@@ -29,6 +31,8 @@ dayjs.extend(isSameOrBefore);
 
 export default function Order() {
 
+  const router = useRouter();
+  
   const searchParams = useSearchParams();
 
   const getParam = (key, fallback) => searchParams.get(key) || fallback;
@@ -109,24 +113,88 @@ export default function Order() {
   const startDate = dayjs(`${periodState.startYear}-${periodState.startMonth}-${periodState.startDay}`);
   const endDate = dayjs(`${periodState.endYear}-${periodState.endMonth}-${periodState.endDay}`);
 
+  const [orderList, setOrderList] = useState([]);
+
+  useEffect(() => {
+    const token = localStorage.getItem('accessToken');
+    if (!token) return;
+
+    // 사용자의 주문/배송 내역 조회
+    const fetchUserCouponInfo = async () => {
+      try {
+        const res = await axios.get('http://localhost:8080/api/orders', {
+          headers: {  
+            Authorization: `Bearer ${token}`,
+          },
+        });
+
+        const orderList = res.data;
+        setOrderList(orderList);
+
+      } catch (e) {
+        console.error('사용자 주문/배송 내역 가져오기 실패:', e);
+      }
+    };
+
+    fetchUserCouponInfo();
+  }, []);
+
   // 기간 내 주문만 필터링
-  const filteredOrders = orderTableData.filter(order => {
-    const orderDate = dayjs(order.createdAt);
-    return orderDate.isSameOrAfter(startDate) && orderDate.isSameOrBefore(endDate);
+  const filteredOrders = orderList.filter(order => {
+    const orderDateStr = dayjs(order.createdAt).format("YYYY-MM-DD");
+    const startStr = startDate.format("YYYY-MM-DD");
+    const endStr = endDate.format("YYYY-MM-DD");
+    return orderDateStr >= startStr && orderDateStr <= endStr;
   });
 
   // status 별 카운트
-  const statusList = ["주문접수", "결제완료", "배송준비중", "배송중", "배송완료"];
-  const statusCounts = statusList.reduce((acc, status) => {
-    acc[status] = filteredOrders.filter(order => order.status === status).length;
+  const statusKoreanMap = {
+    RECEIVED: "주문접수",
+    PAID: "결제완료",
+    READY: "배송준비중",
+    SHIPPING: "배송중",
+    COMPLETED: "배송완료",
+  };
+
+  const statusCounts = Object.keys(statusKoreanMap).reduce((acc, statusEN) => {
+    const statusKR = statusKoreanMap[statusEN];
+    acc[statusKR] = filteredOrders.filter(order => order.status === statusEN).length;
     return acc;
   }, {});
 
-  const handleMenuClick = (e, href) => {
-    e.preventDefault();
-    setTimeout(() => {
-      window.location.href = href;
-    }, 1000);
+  // 장바구니에 상품/수량 추가
+  const { setItemCount } = useCart();
+
+  const handleAddToCart = async (productId, quantity = 1) => {
+    const token = localStorage.getItem('accessToken');
+    if (!token) return;
+
+    try {
+      await axios.post(
+        'http://localhost:8080/api/carts/items',
+        {
+          productId,
+          quantity,
+        },
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+            'Content-Type': 'application/json',
+          },
+        }
+      );
+
+      // 새로 추가된 후 수량 재조회
+      const res = await axios.get('http://localhost:8080/api/carts/items', {
+        headers: { Authorization: `Bearer ${token}` },
+      });
+
+      setItemCount(res.data.length); // 장바구니 수량 바로 업데이트
+
+      router.push("/order/cart");
+    } catch (error) {
+      console.error('장바구니 추가 실패:', error);
+    }
   };
 
   return(
@@ -139,14 +207,15 @@ export default function Order() {
           <h2 className="float-left text-[#333333] text-[20px] leading-[30px] font-bold">주문/배송 조회</h2>
         </div>
         <ul className="overflow-hidden w-full mt-[10px] rounded-[10px] bg-[#f5f5f5]">
-          {statusList.map((status, idx) => {
-            const count = statusCounts[status] || 0;
+          {Object.values(statusKoreanMap).map((statusKR) => {
+            const count = statusCounts[statusKR] || 0;
+
             return (
               <li
-                key={status}
+                key={statusKR}
                 className={
                   "float-left relative w-1/5 h-[117px]" +
-                  (idx !== 0 ? " bg-[url('/images/mypage/order/ico_arrow11x21.png')] bg-no-repeat bg-[position:0%_50%]" : "")
+                  (statusKR !== Object.values(statusKoreanMap)[0] ? " bg-[url('/images/mypage/order/ico_arrow11x21.png')] bg-no-repeat bg-[position:0%_50%]" : "")
                 }
               >
                 <em
@@ -158,7 +227,7 @@ export default function Order() {
                   {count}
                 </em>
                 <span className="block absolute left-0 w-full text-center align-top top-[70px] text-[#666666] text-[16px] leading-[22px]">
-                  {status}
+                  {statusKR}
                 </span>
               </li>
             );
@@ -322,38 +391,40 @@ export default function Order() {
               </tr>
             </tbody>
           ) : (
-            filteredOrders.map(order => (
+            filteredOrders
+            .sort((a, b) => dayjs(b.createdAt).diff(dayjs(a.createdAt)))
+            .map(order => (
               <tbody key={order.orderId}>
                 {order.orderItems.map((item, idx) => (
                   <tr key={idx}>
                     {idx === 0 && (
                       <td rowSpan={order.orderItems.length} className="pt-[30px] pb-[30px] px-[5px] text-[#333] text-center border-t border-[#e6e6e6] text-[14px] leading-[18px]">
                         <ul>
-                        <li className="font-medium text-[#131518] list-none">{order.createdAt}</li>
+                        <li className="font-medium text-[#131518] list-none">{dayjs(order.createdAt).format("YYYY-MM-DD")}</li>
                         <li className="mt-[2px] block font-medium text-[#9bce26] leading-[1.27] break-all align-top list-none">{order.orderId}</li>
                         <li className="mt-[2px] leading-[1.27] relative overflow-hidden font-bold text-[12px] tracking-[-0.45px] h-auto p-0  text-[#b2b8be] border-b-0 cursor-pointer list-none underline">상세보기</li>
                       </ul>
                       </td> )}
                       <td className="border-t border-l border-[#e6e6e6] pl-5 pt-[30px] pb-[30px] px-[5px] text-left text-[#333333] text-[14px] leading-[18px]">
                         <div className="flex overflow-hidden relative w-full">
-                          <Link href="" className="float-left relative w-[85px] h-[85px] mr-[20px] text-center">
-                            <Image src={item.image_url} alt={item.productName} width={85} height={85} />
+                          <Link href={`/product/skintoner/${item.productId}`} className="float-left relative w-[85px] h-[85px] mr-[20px] text-center">
+                            <Image src={`/images${item.imageUrl}`} alt={item.productName} width={85} height={85} />
                           </Link>
                           <div className="float-left w-[66%] text-left">
-                            <Link href="" className="block">
-                              <span className="overflow-hidden h-[20px] text-[#777777] text-ellipsis whitespace-nowrap font-bold inline-block w-full">{item.brand}</span>
+                            <Link href={`/product/skintoner/${item.productId}`} className="block">
+                              <span className="overflow-hidden h-[20px] text-[#777777] text-ellipsis whitespace-nowrap font-bold inline-block w-full">{item.brandName}</span>
                               <span className="over-flow-hidden max-h-[36px] text-[#333333] inline-block w-full">{item.productName}</span>
                             </Link>
-                            <button type="button" className="w-[120px] h-[32px] text-[12px] leading-[18px] text-[#555] rounded-[5px] border border-[#e5e5e5] bg-white mt-[10px] text-center cursor-pointer">
+                            <button type="button" onClick={() => handleAddToCart(item.productId)} className="w-[120px] h-[32px] text-[12px] leading-[18px] text-[#555] rounded-[5px] border border-[#e5e5e5] bg-white mt-[10px] text-center cursor-pointer">
                               <span className="pl-[15px] bg-[url('/images/mypage/order/icon_my_cart2.png')] bg-[position:0%_50%] bg-no-repeat">장바구니 담기</span>
                             </button>
                           </div>
                         </div>
                       </td>
                       <td className="border-t border-l border-[#e6e6e6] pt-[30px] pb-[30px] px-[5px] text-center text-[#333333] text-[14px] leading-[18px]">{item.quantity}</td>
-                      <td className="border-t border-l border-[#e6e6e6] pt-[30px] pb-[30px] px-[5px] text-center text-[#f27370] text-[14px] font-medium leading-[18px]">{(item.quantity * item.price).toLocaleString()} <strong>원</strong></td>
+                      <td className="border-t border-l border-[#e6e6e6] pt-[30px] pb-[30px] px-[5px] text-center text-[#f27370] text-[14px] font-medium leading-[18px]">{(item.price).toLocaleString()} <strong>원</strong></td>
                       <td className="border-t border-l border-[#e6e6e6] pt-[30px] pb-[30px] px-[5px] text-center text-[#333333] text-[14px] leading-[18px]">
-                        <strong>{order.status}</strong>
+                        <strong>{statusKoreanMap[order.status] || order.status}</strong>
                         <button type="button" className="mt-[7px] text-[#666] text-center min-w-[75px] w-auto h-[32px] px-[5px] rounded-[5px] border border-[#aaa] bg-white text-[12px] cursor-pointer font-medium">배송조회</button>
                         <button type="button" className="mt-[5px] text-[#666] text-center min-w-[75px] w-auto h-[32px] px-[5px] rounded-[5px] border border-[#aaa] bg-white text-[12px] cursor-pointer font-medium">리뷰작성</button>
                       </td>
