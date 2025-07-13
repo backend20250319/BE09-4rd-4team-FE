@@ -2,10 +2,14 @@
 
 import Image from "next/image";
 import Link from "next/link";
-import React, {useState, useEffect } from "react";
+import { useRouter } from 'next/navigation';
+import React, { useState, useEffect } from "react";
 import axios from 'axios';
+import { useCart } from '@/contexts/CartContext';
 
 export default function Cart() {
+
+  const router = useRouter();
 
   const badgeColorMap = {
     "세일": "bg-[#f65c60]",
@@ -121,6 +125,11 @@ export default function Cart() {
 
   // 총합 계산
   const totalPrice = cartItems.reduce(
+   (sum, p) => sum + p.originalPrice * p.quantity,
+    0 
+  );
+
+  const totalDiscountPrice = cartItems.reduce(
     (sum, p) => sum + p.discountedPrice * p.quantity,
     0
   );
@@ -150,7 +159,7 @@ export default function Cart() {
     if (e.target.checked) {
       setCheckedIds((prev) => [...prev, cartItemId]);
     } else {
-      setCheckedIds((prev) => prev.filter((cartItemId) => cartItemId !== cartItemId));
+      setCheckedIds((prev) => prev.filter((id) => id !== cartItemId));
     }
   };
 
@@ -234,6 +243,8 @@ export default function Cart() {
   };
 
   // cartItem 삭제 핸들러
+  const { setItemCount } = useCart();
+
   const handleDeleteCartItem = async (cartItemId) => {
     const confirmDelete = window.confirm("해당 상품을 삭제 하시겠습니까?");
     if (!confirmDelete) return;
@@ -247,7 +258,9 @@ export default function Cart() {
       });
 
       // 삭제 성공 시 프론트 상태도 업데이트
-      setCartItems((prev) => prev.filter((item) => item.cartItemId !== cartItemId));
+      const updatedItems = cartItems.filter((item) => item.cartItemId !== cartItemId);
+      setCartItems(updatedItems);
+      setItemCount(updatedItems.length);
       setCheckedIds((prev) => prev.filter((id) => id !== cartItemId));
       setQuantityStates((prev) => {
         const updated = { ...prev };
@@ -281,9 +294,11 @@ export default function Cart() {
       );
 
       // 2. 삭제 성공 시 프론트 상태도 업데이트
-      setCartItems((prev) =>
-        prev.filter((item) => !checkedIds.includes(item.cartItemId))
+      const updatedItems = cartItems.filter(
+        (item) => !checkedIds.includes(item.cartItemId)
       );
+      setCartItems(updatedItems);
+      setItemCount(updatedItems.length);
       setCheckedIds((prev) => prev.filter((id) => !checkedIds.includes(id)));
       setQuantityStates((prev) => {
         const updated = { ...prev };
@@ -293,10 +308,33 @@ export default function Cart() {
 
     } catch (error) {
       console.error("선택 상품 삭제 실패:", error);
-      alert("삭제에 실패했습니다. 다시 시도해주세요.");
     }
+
+    // 새로 추가된 후 수량 재조회
+    const res = await axios.get('http://localhost:8080/api/carts/items', {
+      headers: { Authorization: `Bearer ${token}` },
+    });
+
+    setItemCount(res.data.length); // 장바구니 수량 바로 업데이트
   };
 
+  // 상품 주문 페이지로 이동
+  const handleOrder = (type) => {
+    const selectedItems =
+      type === "selected"
+        ? cartItems.filter((item) => checkedIds.includes(item.cartItemId))
+        : cartItems;
+
+    if (selectedItems.length === 0) {
+      alert("주문가능한 상품이 없습니다.");
+    }
+
+    // sessionStorage에 저장
+    sessionStorage.setItem("orderItems", JSON.stringify(selectedItems));
+
+    // 주문 페이지로 이동
+    router.push("/order/order");
+  };
 
   return(
     <div className="overflow-hidden w-full min-w-[1020px]">
@@ -490,9 +528,22 @@ export default function Cart() {
                 </td>
                 {/* 구매가 */}
                 <td className="border-b border-b-[#e6e6e6] border-l border-l-[#e6e6e6] text-center">
-                  <span className="text-[14px] text-[#e02020] font-medium">
-                    <span className="tracking-[-0.02em]">{totalPrice.toLocaleString()}</span>원
-                  </span>
+                  {totalPrice === totalDiscountPrice ? (
+                    // 할인 없는 경우
+                    <span className="text-[14px] text-[#222] font-medium">
+                      <span className="tracking-[-0.02em]">{(product.discountedPrice * product.quantity).toLocaleString()}</span>원
+                    </span>
+                  ) : (
+                    // 할인 있는 경우
+                    <>
+                      <span className="block text-[12px] text-[#b5b5b5] line-through font-medium">
+                        <span className="tracking-[-0.02em]">{(product.originalPrice * product.quantity).toLocaleString()}</span>원
+                      </span>
+                      <span className="text-[14px] text-[#e02020] font-medium">
+                        <span className="tracking-[-0.02em]">{(product.discountedPrice * product.quantity).toLocaleString()}</span>원
+                      </span>
+                    </>
+                  )}
                 </td>
                 {/* 배송정보 */}
                 <td className="border-b border-b-[#e6e6e6] border-l border-l-[#e6e6e6] text-center">
@@ -578,9 +629,9 @@ export default function Cart() {
             </div>
 
             <div className="mt-[30px] text-center ">
-              <button type="button" onClick={() => window.location.href = '/order/order'} className="w-[180px] text-[16px] h-[50px] bg-white border border-[#f27370] pt-[11px] pb-[9px] leading-[28px] text-[#f27370] rounded-[5px] text-center font-bold">
+              <button type="button" onClick={() => handleOrder("selected")} className="w-[180px] text-[16px] h-[50px] bg-white border border-[#f27370] pt-[11px] pb-[9px] leading-[28px] text-[#f27370] rounded-[5px] text-center font-bold">
                 선택주문 {selectedcartItems.length > 0 && `(${selectedcartItems.length})`}</button>
-              <button type="button" onClick={() => window.location.href = '/order/order'} className="w-[180px] ml-[7px] text-[16px] h-[50px] bg-[#f27370] pt-[11px] pb-[9px] leading-[30px] text-white rounded-[5px] text-center font-bold">전체주문</button>
+              <button type="button" onClick={() => handleOrder("all")} className="w-[180px] ml-[7px] text-[16px] h-[50px] bg-[#f27370] pt-[11px] pb-[9px] leading-[30px] text-white rounded-[5px] text-center font-bold">전체주문</button>
             </div>
 
             <div className="mt-[30px] py-[20px] border-t border-t-[#ccc]">

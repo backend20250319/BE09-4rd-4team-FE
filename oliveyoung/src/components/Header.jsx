@@ -4,6 +4,7 @@ import { useRouter } from 'next/navigation';
 import SearchModal from '../app/menu/SearchModal';
 import StoreModal from '../app/menu/StoreModal';
 import { useAuth } from '@/contexts/AuthContext';
+import { useCart } from '@/contexts/CartContext';
 import '../styles/header.css';
 import axios from 'axios';
 
@@ -55,22 +56,14 @@ function Header(props) {
 
   const handleRecentClick = () => {};
 
-  const [itemCount, setItemCount] = useState(0);
+  const { itemCount, setItemCount } = useCart();
   const { accessToken } = useAuth();
-  const [userInfo, setUserInfo] = useState({ userName: '' });
 
   useEffect(() => {
     if (!accessToken) return;
 
-    const fetchUserInfo = async () => {
+    const fetchCartItems = async () => {
       try {
-        const res = await axios.get('http://localhost:8080/api/mypage/info', {
-          headers: { Authorization: `Bearer ${accessToken}` },
-        });
-
-        const { userName } = res.data.data;
-        setUserInfo({ userName });
-
         const cartRes = await axios.get('http://localhost:8080/api/carts/items', {
           headers: { Authorization: `Bearer ${accessToken}` },
         });
@@ -82,7 +75,7 @@ function Header(props) {
       }
     };
 
-    fetchUserInfo();
+    fetchCartItems();
   }, [accessToken]);
 
   return (
@@ -135,7 +128,7 @@ function Header(props) {
           )}
           <li
             className="text-xs hover:cursor-pointer border-r px-[10px]"
-            onClick={() => router.push('/user/login')}
+            onClick={() => router.push('/mypage/order')}
           >
             주문배송
           </li>

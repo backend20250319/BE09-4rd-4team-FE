@@ -6,6 +6,7 @@ import Menu from '../app/menu/Menu';
 import '../styles/globals.css'; // 글로벌 CSS 임포트
 import { usePathname } from 'next/navigation';
 import { AuthProvider } from '@/contexts/AuthContext';
+import { CartProvider } from '@/contexts/CartContext';
 
 export default function Layout({ children }) {
   const pathName = usePathname();
@@ -23,11 +24,13 @@ export default function Layout({ children }) {
       <head />
       <body>
         <AuthProvider>
-          {/* 공통 레이아웃 구성: Header, Main Content (children), Footer */}
-          {!shouldHideLayout && <Header />}
-          {!shouldHideLayout && <Menu />}
-          <main>{children}</main> {/* 각 페이지의 내용이 여기에 들어감 */}
-          {!shouldHideLayout && <Footer />}
+          <CartProvider>
+            {/* 공통 레이아웃 구성: Header, Main Content (children), Footer */}
+            {!shouldHideLayout && <Header />}
+            {!shouldHideLayout && <Menu />}
+            <main>{children}</main> {/* 각 페이지의 내용이 여기에 들어감 */}
+            {!shouldHideLayout && <Footer />}
+          </CartProvider>
         </AuthProvider>
       </body>
     </html>
