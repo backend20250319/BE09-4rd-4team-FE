@@ -17,13 +17,14 @@ export default function AdminLogin({ onClose, onAdd }) {
                 password,
             });
 
-            const accessToken = response.data.data.accessToken; // 백엔드가 반환하는 필드 이름 확인
+            const { accessToken, refreshToken } = response.data.data; // 백엔드가 반환하는 필드 이름 확인
             if (!accessToken) {
                 setError("accessToken이 응답에 없습니다.");
                 return;
             }
 
             localStorage.setItem("accessToken", accessToken); // ✅ 토큰 저장
+            localStorage.setItem("refreshToken", refreshToken); // ✅ 리프레시 토큰도 저장
 
             onAdd(response.data); // 로그인 성공 콜백
         } catch (err) {

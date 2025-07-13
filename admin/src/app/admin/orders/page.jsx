@@ -1,5 +1,6 @@
 "use client";
-import React, { useState } from 'react';
+import React, { useState,useEffect } from 'react';
+import axios from 'axios';
 import { SearchIcon, EyeIcon, DownloadIcon } from 'lucide-react';
 
 
@@ -10,19 +11,45 @@ export default function OrdersPage() {
   const [currentPage, setCurrentPage] = useState(1);
   const [selectedOrder, setSelectedOrder] = useState(null);
   const [showDetail, setShowDetail] = useState(false);
+  const [orders, setOrders] = useState([]);
 
-  const orders = [
-    { id: 'OD-7892', customer: '김지민', date: '2023-05-12', total: '₩ 56,000', payment: '카드결제', status: '배송완료' },
-    { id: 'OD-7891', customer: '이하준', date: '2023-05-12', total: '₩ 128,000', payment: '카드결제', status: '배송중' },
-    { id: 'OD-7890', customer: '박서연', date: '2023-05-11', total: '₩ 32,500', payment: '무통장입금', status: '결제완료' },
-    { id: 'OD-7889', customer: '최준호', date: '2023-05-11', total: '₩ 77,000', payment: '카카오페이', status: '주문접수' },
-    { id: 'OD-7888', customer: '정민지', date: '2023-05-10', total: '₩ 45,000', payment: '카드결제', status: '배송완료' },
-    { id: 'OD-7887', customer: '송지원', date: '2023-05-10', total: '₩ 62,000', payment: '네이버페이', status: '배송중' },
-    { id: 'OD-7886', customer: '윤도현', date: '2023-05-09', total: '₩ 24,000', payment: '카드결제', status: '배송완료' },
-    { id: 'OD-7885', customer: '장서영', date: '2023-05-09', total: '₩ 88,000', payment: '카드결제', status: '취소요청' },
-    { id: 'OD-7884', customer: '이민준', date: '2023-05-08', total: '₩ 35,500', payment: '카드결제', status: '배송완료' },
-    { id: 'OD-7883', customer: '한소희', date: '2023-05-08', total: '₩ 146,000', payment: '무통장입금', status: '결제대기' }
-  ];
+  // const orders = [
+  //   { id: 'OD-7892', customer: '김지민', date: '2023-05-12', total: '₩ 56,000', payment: '카드결제', status: '배송완료' },
+  //   { id: 'OD-7891', customer: '이하준', date: '2023-05-12', total: '₩ 128,000', payment: '카드결제', status: '배송중' },
+  //   { id: 'OD-7890', customer: '박서연', date: '2023-05-11', total: '₩ 32,500', payment: '무통장입금', status: '결제완료' },
+  //   { id: 'OD-7889', customer: '최준호', date: '2023-05-11', total: '₩ 77,000', payment: '카카오페이', status: '주문접수' },
+  //   { id: 'OD-7888', customer: '정민지', date: '2023-05-10', total: '₩ 45,000', payment: '카드결제', status: '배송완료' },
+  //   { id: 'OD-7887', customer: '송지원', date: '2023-05-10', total: '₩ 62,000', payment: '네이버페이', status: '배송중' },
+  //   { id: 'OD-7886', customer: '윤도현', date: '2023-05-09', total: '₩ 24,000', payment: '카드결제', status: '배송완료' },
+  //   { id: 'OD-7885', customer: '장서영', date: '2023-05-09', total: '₩ 88,000', payment: '카드결제', status: '취소요청' },
+  //   { id: 'OD-7884', customer: '이민준', date: '2023-05-08', total: '₩ 35,500', payment: '카드결제', status: '배송완료' },
+  //   { id: 'OD-7883', customer: '한소희', date: '2023-05-08', total: '₩ 146,000', payment: '무통장입금', status: '결제대기' }
+  // ];
+
+  useEffect(() => {
+    const fetchOrders = async () => {
+      try {
+        const token = localStorage.getItem('accessToken');
+        if (!token) {
+          console.error('❌ accessToken이 없습니다. 로그인 상태를 확인하세요.');
+          return;
+        }
+
+        const response = await axios.get('http://localhost:8080/api/admin/orders', {
+          headers: {
+            Authorization: `Bearer ${token}`, // 토큰을 헤더에 포함
+          },
+        });
+
+        setOrders(response.data);
+      } catch (error) {
+        console.error('❌ 주문 목록 불러오기 실패:', error);
+      }
+    };
+
+    fetchOrders();
+  }, []);
+
 
   // 필터링된 주문 목록
   const filteredOrders = orders.filter((order) => {
