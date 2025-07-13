@@ -5,6 +5,8 @@ import { useRouter } from "next/navigation";
 import { GoQuestion } from "react-icons/go";
 import { CiCircleMinus, CiCirclePlus } from "react-icons/ci";
 import { FaRegHeart, FaGift } from "react-icons/fa";
+import { useCart } from '@/contexts/CartContext';
+import axios from 'axios';
 
 const ProductPurchase = ({ productData }) => {
   const router = useRouter();
@@ -41,6 +43,44 @@ const ProductPurchase = ({ productData }) => {
   // 총금액
   const totalAmount =
     productData.discountedPrice * (quantity === "" ? 1 : quantity);
+
+  // 장바구니 팝업
+  const [showCartPopup, setShowCartPopup] = useState(false);
+
+  // 장바구니에 상품/수량 추가
+  const { setItemCount } = useCart();
+  const productId = productData.productId;
+
+  const handleAddToCart = async () => {
+    const token = localStorage.getItem('accessToken');
+    if (!token) return;
+
+    try {
+      await axios.post(
+        'http://localhost:8080/api/carts/items',
+        {
+          productId,
+          quantity,
+        },
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+            'Content-Type': 'application/json',
+          },
+        }
+      );
+
+      // 새로 추가된 후 수량 재조회
+      const res = await axios.get('http://localhost:8080/api/carts/items', {
+        headers: { Authorization: `Bearer ${token}` },
+      });
+
+      setItemCount(res.data.length); // 장바구니 수량 바로 업데이트
+      setShowCartPopup(true); // 팝업 띄우기
+    } catch (error) {
+      console.error('장바구니 추가 실패:', error);
+    }
+  };
 
   return (
     <>
@@ -143,7 +183,7 @@ const ProductPurchase = ({ productData }) => {
       <div className="flex mb-8 space-x-2">
         <button
           className="flex-1 py-3 text-lg border border-[#f27370] text-[#f27370] hover:bg-white"
-          onClick={() => router.push("/order/cart")}
+          onClick={handleAddToCart}
         >
           장바구니
         </button>
@@ -157,6 +197,36 @@ const ProductPurchase = ({ productData }) => {
           <FaRegHeart className="w-6 h-6 text-gray-600" />
         </button>
       </div>
+
+      {showCartPopup && (
+        <>
+        <div className="fixed inset-0 z-[998] bg-black/50"></div>
+        <div className="z-[999] block absolute left-1/2 -ml-[245px] top-[834px] w-[490px] bg-white rounded-[5px]">
+          <div className="w-[534px] -mt-[365px] -ml-[268px] absolute z-[11] left-1/2 bg-white rounded-[5px]">
+            <div className="px-[30px] pb-[30px]">
+              <h1 className="pt-[30px] pb-[15px] border-b-[2px] border-b-[#000] text-[#000] text-[24px] leading-[30px] font-bold">선택완료</h1>
+              <div className="pt-[35px] px-[25px] pb-[20px]">
+                <span className="pt-[10px] pb-[20px]">
+                  <p className="pt-[10px] pb-[20px] text-center text-[16px] text-[#999] font-bold">
+                  장바구니에 추가되었습니다.
+                  </p>
+                </span>
+              </div>
+              <div className="pt-[20px] text-center">
+                <button type="button" onClick={() => setShowCartPopup(false)} 
+                className="mx-[2px] inline-block w-[130px] h-[40px] leading-[38px] text-[12px] text-[#9bce26] font-bold rounded-[2px] border border-[#9bce26] bg-white">
+                  쇼핑계속하기
+                </button>
+                <button type="button" onClick={() => router.push("/order/cart")} 
+                className="mx-[2px] inline-block w-[130px] h-[40px] leading-[38px] text-[12px] bg-[#9bce26] font-bold rounded-[2px] text-white">
+                  장바구니 확인
+                </button>
+              </div>
+            </div>
+          </div>
+        </div> 
+        </> 
+      )}
     </>
   );
 };

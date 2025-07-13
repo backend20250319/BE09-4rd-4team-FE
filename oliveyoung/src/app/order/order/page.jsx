@@ -1,17 +1,107 @@
 'use client';
 
-import cartTableData from "../cart/data/cartTableData"
-import userTableData from "./data/userTableData";
 import React, { useState, useEffect } from "react";
+import { useRouter } from 'next/navigation';
 import Image from "next/image";
+import axios from 'axios';
 
 export default function Order() {
 
-  const user = userTableData.find(u => u.id === 1);
-  const [name, setName] = useState(user.name);
-  const [phonePart1, setPhonePart1] = useState(user.phone.split('-')[0]);
-  const [phonePart2, setPhonePart2] = useState(user.phone.split('-')[1]);
-  const [phonePart3, setPhonePart3] = useState(user.phone.split('-')[2]);
+  const router = useRouter();
+
+  const badgeColorMap = {
+    "세일": "bg-[#f65c60]",
+    "쿠폰": "bg-[#9bce26]",
+    "증정": "bg-[#6fcff7]",
+    "오늘드림": "bg-[#f374b7]",
+  };
+
+  const [userInfo, setUserInfo] = useState({
+    userName : '',
+    phone : ''
+  });
+
+  const [isExisting, setIsExisting] = useState(false);
+  const [addressList, setAddressList] = useState([]);
+  const [selectedAddress, setSelectedAddress] = useState(''); 
+  const [detailAddress, setDetailAddress] = useState('');
+  
+  useEffect(() => {
+    const token = localStorage.getItem('accessToken');
+    if (!token) return; 
+
+    const userInfo = async () => {
+      try {
+        const res = await axios.get('http://localhost:8080/api/mypage/info', {
+          headers: {  
+            Authorization: `Bearer ${token}`,
+          },
+        });
+
+        const userInfo = res.data.data;
+        setUserInfo(userInfo);
+
+      } catch (e) {
+        console.error('사용자 정보 가져오기 실패:', e);
+      }
+    };
+
+    const fetchAddressInfo = async () => {
+      try {
+        // userName, phone, address 추출
+        const res = await axios.get('http://localhost:8080/api/mypage/address', {
+          headers: {  
+            Authorization: `Bearer ${token}`,
+          },
+        });
+
+        const addressList = res.data.data;
+        setAddressList(addressList);
+        setIsExisting(addressList.length > 0);
+
+        const defaultAddress = addressList.find((addr) => addr.isDefault) || addressList[0];
+        if (defaultAddress) {
+          setSelectedAddress(defaultAddress);
+          setDetailAddress(defaultAddress.detailAddress);
+        }
+
+      } catch (e) {
+        console.error('사용자 주소 정보 가져오기 실패:', e);
+      }
+    };
+
+    userInfo();
+    fetchAddressInfo();
+  }, []);
+
+  const [name, setName] = useState('');
+  const [phonePart1, setPhonePart1] = useState('');
+  const [phonePart2, setPhonePart2] = useState('');
+  const [phonePart3, setPhonePart3] = useState('');
+
+  const [originalName, setOriginalName] = useState('');
+  const [originalPhonePart1, setOriginalPhonePart1] = useState('');
+  const [originalPhonePart2, setOriginalPhonePart2] = useState('');
+  const [originalPhonePart3, setOriginalPhonePart3] = useState('');
+
+  // selectedAddress가 변경되었을 때 name, phone 분할 세팅 + detailAddress 세팅
+  useEffect(() => {
+    if (selectedAddress.recipientName) {
+      setName(selectedAddress.recipientName);
+    }
+
+    if (selectedAddress.phone) {
+      const phoneParts = selectedAddress.phone.split('-');
+      setPhonePart1(phoneParts[0] || '');
+      setPhonePart2(phoneParts[1] || '');
+      setPhonePart3(phoneParts[2] || '');
+    }
+
+    if (selectedAddress.detailAddress) {
+      setDetailAddress(selectedAddress.detailAddress);
+    }
+  }, [selectedAddress]);
+
   const [isCopyChecked, setIsCopyChecked] = useState(false);
 
   const handleCopyToDivp = (e) => {
@@ -19,18 +109,60 @@ export default function Order() {
     setIsCopyChecked(checked);
 
     if (checked) {
-      setName(user.name);
-      setPhonePart1(user.phone.split('-')[0]);
-      setPhonePart2(user.phone.split('-')[1]);
-      setPhonePart3(user.phone.split('-')[2]);
+      // 백업해두기
+      setOriginalName(name);
+      setOriginalPhonePart1(phonePart1);
+      setOriginalPhonePart2(phonePart2);
+      setOriginalPhonePart3(phonePart3);
+
+      // 사용자 정보로 복사
+      setName(userInfo.userName);
+      const phoneParts = userInfo.phone.split('-');
+      setPhonePart1(phoneParts[0]);
+      setPhonePart2(phoneParts[1]);
+      setPhonePart3(phoneParts[2]);
+    } else {
+      // 백업해둔 값으로 복원
+      setName(originalName);
+      setPhonePart1(originalPhonePart1);
+      setPhonePart2(originalPhonePart2);
+      setPhonePart3(originalPhonePart3);
     }
   };
+
+  const [orderItems, setOrderItems] = useState([]);
+
+  useEffect(() => {
+    // 페이지 로드 시 sessionStorage에서 가져오기
+    const stored = sessionStorage.getItem("orderItems");
+    if (stored) {
+      try {
+        const parsed = JSON.parse(stored);
+        setOrderItems(parsed);
+      } catch (err) {
+        console.error("주문 항목 파싱 오류:", err);
+      }
+    }
+  }, []);
+
+  // 총합 계산
+  const totalPrice = orderItems.reduce(
+   (sum, p) => sum + p.originalPrice * p.quantity,
+    0 
+  );
+
+  const totalDiscountPrice = orderItems.reduce(
+    (sum, p) => sum + p.discountedPrice * p.quantity,
+    0
+  );
 
   const phoneOptions = [
     "선택", "010", "011", "016", "017", "018", "019", "02", "031", "032", "033", "041", "042", "043", "044",
     "051", "052", "053", "054", "055", "061", "062", "063", "064", "070", "080", "0130", "0303", "0502",
     "0503", "0504", "0505", "0506", "0507"
   ];
+
+  const [selectedCard, setSelectedCard] = useState("카드를 선택해주세요");
 
   const cardOptions = [
     "카드를 선택해주세요", "KB카드", "하나(외한)카드", "삼성카드", "신한카드", "롯데카드", "BC카드", "현대카드", "NH카드",
@@ -43,13 +175,9 @@ export default function Order() {
 
   // 선택된 출입방법을 state로 관리
   const [doorType, setDoorType] = useState("password");
-
-  const [products] = useState(cartTableData);
-
-  const totalPrice = products.reduce(
-    (sum, p) => sum + p.price * p.quantity,
-    0
-  );
+  const [doorPassword, setDoorPassword] = useState('');
+  const [doorGuard, setDoorGuard] = useState('');
+  const [doorEtc, setDoorEtc] = useState('');
 
   const KAKAO_REST_API_KEY = process.env.NEXT_PUBLIC_KAKAO_API_KEY;
 
@@ -58,11 +186,11 @@ export default function Order() {
 
   useEffect(() => {
     async function fetchJibun() {
-      if (!user.address) return;
+      if (!selectedAddress) return;
 
       // Step1: 도로명주소 → 좌표 변환
       const res1 = await fetch(
-        `https://dapi.kakao.com/v2/local/search/address.json?query=${encodeURIComponent(user.address)}`,
+        `https://dapi.kakao.com/v2/local/search/address.json?query=${encodeURIComponent(selectedAddress.streetAddress)}`,
         {
           headers: {
             Authorization: `KakaoAK ${KAKAO_REST_API_KEY}`,
@@ -103,7 +231,46 @@ export default function Order() {
       }
     }
     fetchJibun();
-  }, [user.address]);
+  }, [selectedAddress.streetAddress]);
+
+  const [agreeAll, setAgreeAll] = useState(false);
+
+  const handlePayment = () => {
+
+    // 배송지 정보 확인
+    if (!name.trim() || phonePart1 === "선택" || !phonePart2.trim() || !phonePart3.trim()) {
+      alert("배송지 상세 주소를 입력하세요.");
+      return;
+    }
+
+    //  배송 요청상황 확인
+    if (doorType === "password" && !doorPassword.trim()) {
+      alert("공동현관 비밀번호를 입력하세요.");
+      return;
+    }
+    if (doorType === "guard" && !doorGuard.trim()) {
+      alert("경비실 호출 방법을 입력하세요.");
+      return;
+    }
+    if (doorType === "etc" && !doorEtc.trim()) {
+      alert("기타 상세 내용을 입력하세요.");
+      return;
+    }
+
+    // 결제수단 확인
+    if (selectedCard === "카드를 선택해주세요") {
+      alert("결제하실 카드를 선택해주세요.");
+      return;
+    }
+
+    if (!agreeAll) {
+      alert("주문 상품정보 및 결제대행 서비스 이용약관에 동의해주세요.");
+      return;
+    }
+
+    alert("정상적으로 결제가 완료되었습니다.");
+    router.push("/mypage");
+  };
 
   return(
     <div className="overflow-hidden w-full min-w-[1020px]">
@@ -133,38 +300,55 @@ export default function Order() {
           <div className="flex items-center w-full max-w-[1020px] mx-auto mt-[40px] mb-[12px]">
             <h2 className="text-[#333] text-[20px] font-medium flex-1">배송지정보</h2>
             <span className="text-[12px] text-[#888] whitespace-nowrap leading-[20px] flex items-center">
-              <input id="setBaseDiv" type="checkbox" checked={true} readOnly className="w-[12px] h-[12px] mr-[5px] align-middle cursor-pointer"/>
+              <input id="setBaseDiv" type="checkbox" checked={false} readOnly className="w-[12px] h-[12px] mr-[5px] align-middle cursor-pointer"/>
               <label htmlFor="setBaseDiv"  className="text-[#333] text-[12px] cursor-pointer">기본 배송지 설정</label>
             </span>
           </div>
 
           {/* 배송지 정보 */}
-          <table className="w-full ">
+          {isExisting && (
+            <table className="w-full ">
             <tbody className="text-[#666] text-[14px] leading-[20px] tracking-[-0.04em] [word-spacing:-1px]">
               {/* 배송지 선택 */}
               <tr>
                 <th className="border-t-[2px] border-t-[#d6d6d6] bg-[#f4f4f4] pl-[18px] py-[15px] text-left text-[#222] border-b border-b-[#e6e6e6]">배송지선택</th>
                 <td className="border-t-[2px] border-t-[#d6d6d6] border-b border-b-[#e6e6e6] pl-[36px] pr-[20px] py-[15px] text-[14px] text-[#222] leading-[28px]">
                   <span className="inline-block leading-[20px] text-[12px] text-[#222] whitespace-nowrap">
-                    <input type="radio" id="divpExist1" className="w-[12px] h-[12px] mt-[-2px] mr-[7px] align-middle text-[#888]" checked={true} readOnly />
+                    <input type="radio" id="divpExist1" className="w-[12px] h-[12px] mt-[-2px] mr-[7px] align-middle text-[#888]" checked={isExisting} onChange={() => setIsExisting(true)} />
                     <label htmlFor="divpExist1" className="text-[#333] cursor-pointer">기존 배송지</label>
                   </span>
                   <span className="inline-block leading-[20px] ml-[20px] text-[12px] text-[#222] whitespace-nowrap">
-                    <input type="radio" id="divpExist2" className="w-[12px] h-[12px] mt-[-2px] mr-[7px] align-middle text-[#888]" checked={false} readOnly />
+                    <input type="radio" id="divpExist2" className="w-[12px] h-[12px] mt-[-2px] mr-[7px] align-middle text-[#888]" checked={!isExisting} onChange={() => setIsExisting(false)} />
                     <label htmlFor="divpExist2" className="text-[#333] cursor-pointer">신규 배송지</label>
                   </span>
-                  <div>
-                    <select className="w-[200px] bg-white h-[28px] pr-[5px] text-[12px] border border-[#d0d0d0] rounded-[5px] leading-[18px] text-[#333]">
-                      <option>플레이데이터</option>
-                    </select>
-                  </div>
+                    <div>
+                      <select value={selectedAddress?.addressName || ''} 
+                      onChange={(e) => {
+                        const selectedName = e.target.value;
+                        const found = addressList.find((addr) => addr.addressName === selectedName);
+                        if (found) {
+                          setSelectedAddress(found);
+                        }
+                      }}
+                      className="w-[200px] bg-white h-[28px] pr-[5px] text-[12px] border border-[#d0d0d0] rounded-[5px] leading-[18px] text-[#333]">
+                        {addressList.map((addr) => (
+                          <option key={addr.addressId} value={addr.addressName}>
+                            {addr.addressName}
+                          </option>
+                        ))}
+                      </select>
+                    </div>
                 </td>
               </tr>
 
               {/* 베송지명 */}
               <tr className="table-row">
-                <th className="bg-[#f4f4f4] pl-[18px] py-[15px] text-left text-[#222] border-b border-b-[#e6e6e6]">배송지명</th>
-                <td className="pl-[36px] py-[15px] px-[20px] border-b border-b-[#e6e6e6] text-[14px] text-[#222] leading-[28px]">플레이데이터</td>
+                <th className="bg-[#f4f4f4] pl-[18px] py-[15px] text-left text-[#222] border-b border-b-[#e6e6e6]">
+                  배송지명
+                </th>
+                  <td className="pl-[36px] py-[15px] px-[20px] border-b border-b-[#e6e6e6] text-[14px] text-[#222] leading-[28px]">
+                    {selectedAddress.addressName}
+                  </td>
               </tr>
 
               {/* 받는분 */}
@@ -230,11 +414,117 @@ export default function Order() {
                   <div className="w-[500px] min-h-[28px] my-[6px] py-[5px] px-[10px] border border-[#ccc] bg-[#f8f8f8] rounded-[5px] text-[12px] leading-[20px]">
                     <p>
                       <span>도로명</span> :
-                      <span>{user.address}</span>
+                      <span>{selectedAddress.streetAddress}</span>
                     </p>
                     <p className="text-[#888]">
                       <span className="mr-[-11px] tracking-[11px]">지번</span> :
                       <span>{jibunAddress}</span>
+                    </p>
+                  </div>
+                  <input type="text" className="w-[500px] h-[28px] px-[10px] text-[12px] text-[#333] bg-white leading-[20px] border border-[#d0d0d0] tracking-[0.5px] rounded-[5px]" 
+                  value={detailAddress} onChange={e => setDetailAddress(e.target.value)}/>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+          )}
+
+          {!isExisting && (
+            <table className="w-full ">
+            <tbody className="text-[#666] text-[14px] leading-[20px] tracking-[-0.04em] [word-spacing:-1px]">
+              {/* 배송지 선택 */}
+              <tr>
+                <th className="border-t-[2px] border-t-[#d6d6d6] bg-[#f4f4f4] pl-[18px] py-[15px] text-left text-[#222] border-b border-b-[#e6e6e6]">배송지선택</th>
+                <td className="border-t-[2px] border-t-[#d6d6d6] border-b border-b-[#e6e6e6] pl-[36px] pr-[20px] py-[15px] text-[14px] text-[#222] leading-[28px]">
+                  <span className="inline-block leading-[20px] text-[12px] text-[#222] whitespace-nowrap">
+                    <input type="radio" id="divpExist1" className="w-[12px] h-[12px] mt-[-2px] mr-[7px] align-middle text-[#888]" checked={isExisting} onChange={() => setIsExisting(true)} />
+                    <label htmlFor="divpExist1" className="text-[#333] cursor-pointer">기존 배송지</label>
+                  </span>
+                  <span className="inline-block leading-[20px] ml-[20px] text-[12px] text-[#222] whitespace-nowrap">
+                    <input type="radio" id="divpExist2" className="w-[12px] h-[12px] mt-[-2px] mr-[7px] align-middle text-[#888]" checked={!isExisting} onChange={() => setIsExisting(false)} />
+                    <label htmlFor="divpExist2" className="text-[#333] cursor-pointer">신규 배송지</label>
+                  </span>
+                </td>
+              </tr>
+
+              {/* 베송지명 */}
+              <tr className="table-row">
+                <th className="bg-[#f4f4f4] pl-[18px] py-[15px] text-left text-[#222] border-b border-b-[#e6e6e6]">
+                  배송지명
+                </th>
+                  <td className="pl-[36px] py-[15px] px-[20px] border-b border-b-[#e6e6e6] text-[14px] text-[#222] leading-[28px] bg-[url('/images/order/order/ico_star6x5.png')] bg-[position:20px_25px] bg-no-repeat">
+                  <input className="w-[200px] h-[28px] px-[10px] text-[12px] text-[#333] bg-white leading-[20px] border border-[#d0d0d0] rounded-[5px]" />
+                </td>  
+              </tr>
+
+              {/* 받는분 */}
+              <tr className="table-row">
+                <th className="bg-[#f4f4f4] pl-[18px] py-[15px] text-left text-[#222] border-b border-b-[#e6e6e6]">받는분</th>
+                <td className="pl-[36px] py-[15px] px-[20px] border-b border-b-[#e6e6e6] text-[14px] text-[#222] leading-[28px] bg-[url('/images/order/order/ico_star6x5.png')] bg-[position:20px_25px] bg-no-repeat">
+                  <input className="w-[200px] h-[28px] px-[10px] text-[12px] text-[#333] bg-white leading-[20px] border border-[#d0d0d0] rounded-[5px]" />
+                  <span className="inline-block leading-[20px] ml-[20px] text-[12px] whitespace-nowrap relative">
+                    <input type="checkbox" id="copyToDivp" checked={false} readOnly
+                      className="w-[12px] h-[12px] mt-[-2px] mr-[5px] align-middle" />
+                    <label htmlFor="copyToDivp" className="text-[#333] cursor-pointer">주문자정보와 동일</label>
+                  </span>
+                </td>  
+              </tr>
+
+              {/* 연락처 */}
+              <tr className="table-row">
+                <th className="pt-[15px] px-[20px] pb-[5px] bg-[#f4f4f4] text-left text-[#222]">연락처1</th>
+                <td className="pl-[36px] pt-[15px] pb-[5px] px-[20px] text-[14px] text-[#222] leading-[28px] bg-[url('/images/order/order/ico_star6x5.png')] bg-[position:20px_25px] bg-no-repeat">
+                  <select className="w-[90px] bg-white h-[28px] pl-[5px] text-[12px] border border-[#d0d0d0] rounded-[5px] leading-[18px] text-[#333]">
+                    {phoneOptions.map(option => (
+                      <option key={option} value={option}>
+                        {option}
+                      </option>
+                    ))}
+                  </select> - 
+                  <input type="text"
+                    className="ml-[1px] w-[90px] h-[28px] px-[10px] text-[12px] text-[#333] bg-white leading-[20px] border border-[#d0d0d0] tracking-[-0.04em] rounded-[5px]" />
+                  -
+                  <input type="text"
+                    className="ml-[1px] w-[90px] h-[28px] px-[10px] text-[12px] text-[#333] bg-white leading-[20px] border border-[#d0d0d0] tracking-[-0.04em] rounded-[5px]" />
+                  <span className="mt-[5px] text-[14px] text-[#222] leading-[28px]">
+                    <span className="text-[#777] text-[12px] font-normal inline-block leading-[20px] ml-[20px] whitespace-nowrap relative text-center cursor-pointer">
+                      <p className="w-[18px] h-[18px] bg-[url('/images/order/order/icon_01.png')] bg-no-repeat mr-[5px] mb-[3px] inline-block align-middle" />
+                      안심번호 서비스 안내
+                      <p className="w-[4px] h-[5px] bg-[url('/images/order/order/icon_02.png')] bg-no-repeat ml-[5px] mb-[3px] inline-block align-middle" />
+                    </span>
+                  </span>
+                </td>
+              </tr>
+              <tr className="table-row">
+                <th className="pt-[5px] px-[20px] pb-[10px] border-b border-b-[#e6e6e6] bg-[#f4f4f4] text-left text-[#222]">연락처2</th>
+                <td className="pl-[36px] pt-[5px] pb-[10px] px-[20px] border-b border-b-[#e6e6e6] text-[14px] text-[#222] leading-[28px]">
+                  <select className="w-[90px] bg-white h-[28px] pl-[5px] text-[12px] border border-[#d0d0d0] rounded-[5px] leading-[18px] text-[#333]">
+                    {phoneOptions.map(option => (
+                      <option key={option} value={option}>
+                        {option}
+                      </option>
+                    ))}
+                  </select> - 
+                  <input type="text" className="ml-[1px] w-[90px] h-[28px] px-[10px] text-[12px] text-[#333] bg-white leading-[20px] border border-[#d0d0d0] tracking-[-0.04em] rounded-[5px]" />
+                  -
+                  <input type="text" className="ml-[1px] w-[90px] h-[28px] px-[10px] text-[12px] text-[#333] bg-white leading-[20px] border border-[#d0d0d0] tracking-[-0.04em] rounded-[5px]" />
+                </td>
+              </tr>
+
+              {/* 주소 */}
+              <tr className="table-row">
+                <th className="bg-[#f4f4f4] pl-[18px] py-[15px] text-left text-[#222] border-b border-b-[#e6e6e6]">주소</th>
+                <td className="pl-[36px] py-[15px] px-[20px] border-b border-b-[#e6e6e6] text-[14px] text-[#222] leading-[28px]">
+                  <input type="text" className="w-[90px] bg-[#f8f8f8] text-[#888] h-[28px] px-[10px] text-[12px] leading-[20px] border border-[#d0d0d0] rounded-[5px]" readOnly />
+                  <button type="button" className="w-[100px] border border-[#9bce26] text-[#9bce26] bg-white h-[28px] px-[5px] text-[12px] leading-[28px] rounded-[5px] font-bold ml-[2px]">우편번호 찾기</button>
+                  <div className="w-[500px] min-h-[28px] my-[6px] py-[5px] px-[10px] border border-[#ccc] bg-[#f8f8f8] rounded-[5px] text-[12px] leading-[20px]">
+                    <p>
+                      <span>도로명</span> :
+                      <span></span>
+                    </p>
+                    <p className="text-[#888]">
+                      <span className="mr-[-11px] tracking-[11px]">지번</span> :
+                      <span></span>
                     </p>
                   </div>
                   <input type="text" className="w-[500px] h-[28px] px-[10px] text-[12px] text-[#333] bg-white leading-[20px] border border-[#d0d0d0] tracking-[0.5px] rounded-[5px]"/>
@@ -242,6 +532,7 @@ export default function Order() {
               </tr>
             </tbody>
           </table>
+          )}
 
         {/* 배송 요청사항 */}
         <div>
@@ -291,7 +582,8 @@ export default function Order() {
                   <tr>
                     <th className="pt-[20px] align-top bg-[#f4f4f4] pl-[18px] py-[15px] text-left text-[#222] border-b border-b-[#e6e6e6]">공동현관 비밀번호</th>
                     <td className="pl-[36px] py-[15px] px-[20px] border-b border-b-[#e6e6e6] text-[14px] text-[#222] leading-[28px] bg-[url('/images/order/order/ico_star6x5.png')] bg-[position:20px_25px] bg-no-repeat">
-                      <input type="text" id="doorType" className="w-[500px] h-[28px] text-[12px] text-[#333] bg-white leading-[20px] border border-[#d0d0d0] tracking-[0.5px] align-top" />
+                      <input type="text" id="doorType" className="w-[500px] h-[28px] px-[10px] text-[12px] text-[#333] bg-white leading-[20px] border border-[#d0d0d0] tracking-[0.5px] rounded-[5px] align-top"
+                      value={doorPassword} onChange={(e) => setDoorPassword(e.target.value)} />
                       <p className="mt-[6px] text-[11px] leading-[13px]">
                         상품이 반송되지 않도록 <span className="text-[#ff5753] text-[11px] leading-[13px]">공동현관 정보</span>를 꼭 확인해주세요!
                       </p>
@@ -302,7 +594,8 @@ export default function Order() {
                   <tr>
                     <th className="pt-[20px] align-top bg-[#f4f4f4] pl-[18px] py-[15px] text-left text-[#222] border-b border-b-[#e6e6e6]">경비실 호출 방법</th>
                     <td className="pl-[36px] py-[15px] px-[20px] border-b border-b-[#e6e6e6] text-[14px] text-[#222] leading-[28px] bg-[url('/images/order/order/ico_star6x5.png')] bg-[position:20px_25px] bg-no-repeat">
-                      <input type="text" id="doorType" className="w-[500px] h-[28px] text-[12px] text-[#333] bg-white leading-[20px] border border-[#d0d0d0] tracking-[0.5px] align-top" />
+                      <input type="text" id="doorType" className="w-[500px] h-[28px] px-[10px] text-[12px] text-[#333] bg-white leading-[20px] border border-[#d0d0d0] tracking-[0.5px] rounded-[5px] align-top"
+                      value={doorGuard} onChange={(e) => setDoorGuard(e.target.value)} />
                     </td>
                   </tr>
                 )}
@@ -310,7 +603,8 @@ export default function Order() {
                   <tr>
                     <th className="pt-[20px] align-top bg-[#f4f4f4] pl-[18px] py-[15px] text-left text-[#222] border-b border-b-[#e6e6e6]">기타 상세 내용</th>
                     <td className="pl-[36px] py-[15px] px-[20px] border-b border-b-[#e6e6e6] text-[14px] text-[#222] leading-[28px] bg-[url('/images/order/order/ico_star6x5.png')] bg-[position:20px_25px] bg-no-repeat">
-                      <input type="text" id="doorType" className="w-[500px] h-[28px] text-[12px] text-[#333] bg-white leading-[20px] border border-[#d0d0d0] tracking-[0.5px] align-top" />
+                      <input type="text" id="doorType" className="w-[500px] h-[28px] px-[10px] text-[12px] text-[#333] bg-white leading-[20px] border border-[#d0d0d0] tracking-[0.5px] rounded-[5px] align-top"
+                      value={doorEtc} onChange={(e) => setDoorEtc(e.target.value)} />
                     </td>
                   </tr>
                 )}
@@ -345,18 +639,31 @@ export default function Order() {
             </tr>
           </thead>
           <tbody>
-            {products.map((product) => (
-              <tr key={product.id}>
+            {orderItems.map((item) => (
+              <tr key={item.cartItemId}>
                 {/* 상품 정보 */}
                 <td className="border-b border-b-[#e6e6e6]">
                   <div className="relative w-[700px] h-[145px] pt-[30px] pr-[30px] pb-[30px] pl-[40px] flex items-center">
                     <div className="h-[85px] w-[85px] mr-[40px]">
-                      <Image width={85} height={85} src={product.image} alt={product.brand} />
+                      <Image width={85} height={85} src={`/images${item.imageUrl}`} alt={item.brandName} />
                     </div>
                     <div className="flex-1">
-                      <span className="block mb-1 text-[#777] font-bold text-[14px]">{product.brand}</span>
-                      <p className="text-sm leading-[18px] text-black">{product.name}</p>
-                      <p className="w-[60px] h-[18px] bg-[#f374b7] text-white rounded-[9px] leading-[17px] text-[12px] text-center mt-2">오늘드림</p>
+                      <span className="block mb-1 text-[#777] font-bold text-[14px]">{item.brandName}</span>
+                      <p className="text-sm leading-[18px] text-black">{item.productName}</p>
+                      {item.badges?.length > 0 && (
+                        <div className="flex items-center mt-1 flex-wrap">
+                          {item.badges.map((badgeText, index) => {
+                            const bgColorClass = badgeColorMap[badgeText];
+                            return (
+                              <span
+                                key={index}
+                                className={`px-2 py-0.5 text-white text-xs rounded-[9px] ${bgColorClass}`}>
+                                {badgeText}
+                              </span>
+                            );
+                          })}
+                        </div>
+                      )}
                     </div>
                   </div>
                 </td>
@@ -364,18 +671,31 @@ export default function Order() {
                 {/* 판매가 */}
                 <td className="border-b border-b-[#e6e6e6] border-l border-l-[#e6e6e6] text-center">
                   <span className="text-[14px] text-[#222] font-medium">
-                    <span className="tracking-[-0.02em]">{product.price.toLocaleString()}</span>원
+                    <span className="tracking-[-0.02em]">{item.originalPrice.toLocaleString()}</span>원
                   </span>
                 </td>
 
                 {/* 수량 */}
-                <td className="border-b border-b-[#e6e6e6] border-l border-l-[#e6e6e6] text-center">{product.quantity}</td>
+                <td className="border-b border-b-[#e6e6e6] border-l border-l-[#e6e6e6] text-center">{item.quantity}</td>
 
                 {/* 구매가 */}
                 <td className="border-b border-b-[#e6e6e6] border-l border-l-[#e6e6e6] text-center">
-                  <span className="text-[14px] text-[#e02020] font-medium">
-                    <span className="tracking-[-0.02em]">{(product.price * product.quantity).toLocaleString()}</span>원
-                  </span>
+                  {totalPrice === totalDiscountPrice ? (
+                    // 할인 없는 경우
+                    <span className="text-[14px] text-[#222] font-medium">
+                      <span className="tracking-[-0.02em]">{(item.discountedPrice * item.quantity).toLocaleString()}</span>원
+                    </span>
+                  ) : (
+                    // 할인 있는 경우
+                    <>
+                      <span className="block text-[12px] text-[#b5b5b5] line-through font-medium">
+                        <span className="tracking-[-0.02em]">{(item.originalPrice * item.quantity).toLocaleString()}</span>원
+                      </span>
+                      <span className="text-[14px] text-[#e02020] font-medium">
+                        <span className="tracking-[-0.02em]">{(item.discountedPrice * item.quantity).toLocaleString()}</span>원
+                      </span>
+                    </>
+                  )}
                 </td>
               </tr>
             ))}
@@ -483,7 +803,8 @@ export default function Order() {
                     <tr>
                       <th className="bg-[#f4f4f4] py-[15px] pl-[18px] text-left text-[14px] text-[#222] border-t border-t-[#e6e6e6] border-b border-b-[#e6e6e6]">카드종류</th>
                       <td className="py-[15px] px-[20px] border-t border-t-[#e6e6e6] border-b border-b-[#e6e6e6] text-[14px] text-[#222] leading-[28px]">
-                        <select className="w-[200px] bg-white h-[28px] pl-[5px] text-[12px] border border-[#d0d0d0] rounded-[5px] leading-[18px] text-[#333] align-top">
+                        <select className="w-[200px] bg-white h-[28px] pl-[5px] text-[12px] border border-[#d0d0d0] rounded-[5px] leading-[18px] text-[#333] align-top"
+                        value={selectedCard} onChange={(e) => setSelectedCard(e.target.value)}>
                           {cardOptions.map((option, index) => (
                             <option key={index} value={option}>{option}</option>
                           ))}
@@ -520,7 +841,7 @@ export default function Order() {
               <li className="overflow-hidden px-[20px] leading-[32px] text-[#222]">
                 <span className="float-left w-[140px]">총 상품 금액</span>
                 <span className="float-right font-bold">
-                  <span className="mr-[1px] tracking-[-0.02em] font-medium">{(totalPrice).toLocaleString()}</span>원
+                  <span className="mr-[1px] tracking-[-0.02em] font-medium">{(totalDiscountPrice).toLocaleString()}</span>원
                 </span>
               </li>
               <li className="overflow-hidden px-[20px] leading-[32px] text-[#222]">
@@ -549,11 +870,11 @@ export default function Order() {
               <li className="border-t border-t-[#888] mt-[10px] px-[20px] pt-[20px] pb-[10px] overflow-hidden leading-[32px] text-[#222]">
                 <span className="w-[100px] text-[16px] font-bold float-left">최종 결제금액</span>
                 <span className="float-right font-bold text-[#ff2828] text-[16px]">
-                  <span className="text-[24px] align-[-2px] mr-[2px] tracking-[-0.02em] font-medium">{(totalPrice).toLocaleString()}</span>원
+                  <span className="text-[24px] align-[-2px] mr-[2px] tracking-[-0.02em] font-medium">{(totalDiscountPrice).toLocaleString()}</span>원
                 </span>
               </li>
               <li className="overflow-hidden px-[20px] leading-[32px] text-[#222]">
-                <button type="button" className="w-full py-[17px] pt-[17px] pb-[15px] my-[10px] rounded-[5px] text-[18px] text-white bg-[#f27370] leading-[18px] font-bold text-center">
+                <button type="button" onClick={handlePayment} className="w-full py-[17px] pt-[17px] pb-[15px] my-[10px] rounded-[5px] text-[18px] text-white bg-[#f27370] leading-[18px] font-bold text-center">
                   결제하기
                 </button>
               </li>
@@ -561,7 +882,7 @@ export default function Order() {
             
             <div className="mt-[12px] pr-[10px] pl-[18px]">
               <p>
-                <input type="checkbox" id="savePayMethod" className="float-left w-[12px] h-[12px] mt-[3px] align-top" />
+                <input type="checkbox" id="savePayMethod" className="float-left w-[12px] h-[12px] mt-[3px] align-top" checked={false} readOnly />
                 <label htmlFor="savePayMethod" className="text-[#333] block ml-[17px] text-[14px] leading-[20px] cursor-pointer">
                   지금 설정을 다음 주문에도 사용하겠습니다. <br /> (빠른 모드)
                 </label>
@@ -571,7 +892,7 @@ export default function Order() {
             <div className="mt-[20px] border border-[#e6e6e6] bg-[#f6f6f6]">
               <div className="relative w-full p-[20px] text-[14px] text-[#222]">
                 <p className="mb-[15px]">주문 상품정보 및 결제대행 서비스 이용약관에 모두 동의하십니까?</p>
-                <input type="checkbox" id="agreeAll" className="w-[12px] h-[12px] mr-[5px] align-middle"/> 
+                <input type="checkbox" id="agreeAll" className="w-[12px] h-[12px] mr-[5px] align-middle" checked={agreeAll} onChange={(e) => setAgreeAll(e.target.checked)}/> 
                 <label htmlFor="agreeAll" className="font-bold cursor-pointer">모두 동의</label>
                 <button type="button" className="absolute right-[20px] bottom-[20px] w-[26px] h-[16px] bg-[url('/images/order/order/ico_arrow26x16.png')] bg-no-repeat"/>
 						  </div>

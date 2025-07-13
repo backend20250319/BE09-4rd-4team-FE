@@ -1,10 +1,12 @@
 'use client';
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useCallback } from 'react';
 import { useRouter } from 'next/navigation';
 import SearchModal from '../app/menu/SearchModal';
 import StoreModal from '../app/menu/StoreModal';
 import { useAuth } from '@/contexts/AuthContext';
+import { useCart } from '@/contexts/CartContext';
 import '../styles/header.css';
+import axios from 'axios';
 
 function Header(props) {
   const router = useRouter();
@@ -54,6 +56,28 @@ function Header(props) {
 
   const handleRecentClick = () => {};
 
+  const { itemCount, setItemCount } = useCart();
+  const { accessToken } = useAuth();
+
+  useEffect(() => {
+    if (!accessToken) return;
+
+    const fetchCartItems = async () => {
+      try {
+        const cartRes = await axios.get('http://localhost:8080/api/carts/items', {
+          headers: { Authorization: `Bearer ${accessToken}` },
+        });
+
+        const cartItems = Array.isArray(cartRes.data) ? cartRes.data : [];
+        setItemCount(cartItems.length);
+      } catch (e) {
+        console.error('유저 정보 가져오기 실패:', e);
+      }
+    };
+
+    fetchCartItems();
+  }, [accessToken]);
+
   return (
     <div className="flex flex-row justify-center">
       <div className="">
@@ -75,7 +99,7 @@ function Header(props) {
                 onClick={() => router.push('/order/cart')}
               >
                 장바구니
-                <span className="text-xs text-[#f27370] font-bold hover:cursor-pointer">(0)</span>
+                <span className="text-xs text-[#f27370] font-bold hover:cursor-pointer">({itemCount})</span>
               </li>
             </>
           ) : (
@@ -104,7 +128,7 @@ function Header(props) {
           )}
           <li
             className="text-xs hover:cursor-pointer border-r px-[10px]"
-            onClick={() => router.push('/user/login')}
+            onClick={() => router.push('/mypage/order')}
           >
             주문배송
           </li>
