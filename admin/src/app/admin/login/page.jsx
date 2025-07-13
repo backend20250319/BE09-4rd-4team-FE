@@ -36,7 +36,7 @@ export default function AdminLogin() {
                 password: formData.password,
             })
 
-            const accessToken = response.data.data.accessToken
+            const { accessToken, refreshToken } = response.data.data
             if (!accessToken) {
                 setError("accessToken이 응답에 없습니다.")
                 setIsLoading(false)
@@ -44,6 +44,7 @@ export default function AdminLogin() {
             }
 
             localStorage.setItem("accessToken", accessToken)
+            localStorage.setItem("refreshToken", refreshToken)
             router.push("/admin/dashboard")
         } catch (err) {
             console.error("로그인 오류", err)
