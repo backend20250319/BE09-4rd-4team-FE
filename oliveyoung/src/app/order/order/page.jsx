@@ -789,7 +789,7 @@ export default function Order() {
         <div className="overflow-hidden w-[1020px]">
           <div className="float-left w-[700px]">
             <h2 className="inline-block w-auto mt-[40px] mx-auto mb-[12px] text-[#333] text-[20px] font-medium">쿠폰할인정보</h2>
-            <button type="button" className="relative ml-[10px] -top-[2px] w-[96px] h-[28px] text-[14px] rounded-[4px] text-[#454c53] border border-[0.5px] border-[#b2b8be] inline-block text-center leading-[27px]">보유쿠폰</button>
+            <button type="button" className="relative ml-[10px] -top-[2px] w-[96px] h-[28px] text-[14px] rounded-[4px] text-[#454c53] border-[0.5px] border-[#b2b8be] inline-block text-center leading-[27px]">보유쿠폰</button>
             <table className="w-full">
               <colgroup>
                 <col className="w-[170px]" />
