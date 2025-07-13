@@ -1,17 +1,50 @@
 'use client';
 
-import Image from "next/image";
 import Link from "next/link";
-import { couponTableData } from "./data/couponTableData";
+import React, { useState, useEffect } from 'react';
 import UserInfoBox from "../user/components/UserInfoBox";
+import axios from 'axios';
 
 export default function Coupon() {
 
-    const handleMenuClick = (e, href) => {
+  const handleMenuClick = (e, href) => {
     e.preventDefault();
     setTimeout(() => {
       window.location.href = href;
     }, 1000);
+  };
+
+  const [couponList, setCouponList] = useState([]);
+
+  useEffect(() => {
+    const token = localStorage.getItem('accessToken');
+    if (!token) return;
+
+    const fetchUserCouponInfo = async () => {
+      try {
+        const res = await axios.get('http://localhost:8080/api/user/coupons', {
+          headers: {  
+            Authorization: `Bearer ${token}`,
+          },
+        });
+
+        const couponList = res.data;
+        setCouponList(couponList);
+
+      } catch (e) {
+        console.error('사용자 쿠폰 정보 가져오기 실패:', e);
+      }
+    };
+
+    fetchUserCouponInfo();
+  }, []);
+
+  const formatDate = (dateTime) => {
+    const date = new Date(dateTime);
+    const yyyy = date.getFullYear();
+    const mm = String(date.getMonth() + 1).padStart(2, '0');
+    const dd = String(date.getDate()).padStart(2, '0');
+    return `${yyyy}.${mm}.${dd}`;
   };
 
   return(
@@ -59,34 +92,51 @@ export default function Coupon() {
               <th className="pt-[11px] pb-[10px] bg-[#fafafa] text-[#666] text-[14px] leading-[18px]">사용기간</th>
             </tr>
           </thead>
-          <tbody>
-            {couponTableData.map((coupon) => (
-              <tr key={coupon.id}>
-                <td className="px-[5px] py-[30px] text-[#333] text-center border-t border-t-[#e6e6e6] text-[14px] leading-[18px]">
-                  <span
-                    className="inline-block w-[104px] h-[55px] pr-[18px] pt-[17px] text-[#222] leading-[22px] align-top indent-0 text-[18px] font-bold"
-                    style={{
-                      backgroundImage: `url('${coupon.bgImage}')`,
-                      backgroundRepeat: "no-repeat",
-                      backgroundPosition: "0 0",
-                      backgroundSize: "104px auto",
-                    }}
-                  >
-                    {coupon.amount}
-                    <em className="inline-block text-[17px] not-italic align-[1px]">{coupon.unit}</em>
-                  </span>
-                  <br />
-                </td>
-                <td className="pl-[20px] text-left px-[5px] py-[30px] text-[#333] text-[14px] leading-[18px] border-t border-t-[#e6e6e6]">{coupon.name}</td>
-                <td className="px-[5px] py-[30px] text-[#888] text-center border-t border-t-[#e6e6e6] text-[14px] leading-[18px]">
-                  <span>{coupon.minOrder}</span>원 이상
-                </td>
-                <td className="px-[5px] py-[30px] text-[#888] text-center border-t border-t-[#e6e6e6] text-[14px] leading-[18px]">
-                  {coupon.period.split("~")[0].trim()} <br />~{coupon.period.split("~")[1].trim()}
+          {couponList.length > 0 && (
+            <tbody>
+              {couponList
+                .filter(coupon => coupon.used === false)
+                .map((coupon) => (
+                  <tr key={coupon.userCouponId}>
+                    <td className="px-[5px] py-[30px] text-[#333] text-center border-t border-t-[#e6e6e6] text-[14px] leading-[18px]">
+                      <span
+                        className="inline-block w-[104px] h-[55px] pr-[18px] pt-[17px] text-[#222] leading-[22px] align-top indent-0 text-[18px] font-bold"
+                        style={{
+                          backgroundImage: coupon.couponName.toLowerCase().includes("summer15")
+                            ? `url('/images/mypage/coupon/bg_coupon_today_208.png')`
+                            : `url('/images/mypage/coupon/bg_coupon_104.png')`,
+                          backgroundRepeat: "no-repeat",
+                          backgroundPosition: "0 0",
+                          backgroundSize: "104px auto",
+                        }}
+                      >
+                        {coupon.discount}
+                        <em className="inline-block text-[17px] not-italic align-[1px]">%</em>
+                      </span>
+                      <br />
+                    </td>
+                    <td className="pl-[20px] text-left px-[5px] py-[30px] text-[#333] text-[14px] leading-[18px] border-t border-t-[#e6e6e6] font-medium">
+                      {coupon.couponName}
+                    </td>
+                    <td className="px-[5px] py-[30px] text-[#888] text-center border-t border-t-[#e6e6e6] text-[14px] leading-[18px]">
+                      <span>10,000</span>원 이상
+                    </td>
+                    <td className="px-[5px] py-[30px] text-[#888] text-center border-t border-t-[#e6e6e6] text-[14px] leading-[18px]">
+                      {`${formatDate(coupon.createdAt)} ~ ${formatDate(coupon.validUntil)}`}
+                    </td>
+                  </tr>
+              ))}
+            </tbody>
+          )}
+          {!(couponList.length > 0) && (
+            <tbody>
+              <tr>
+                <td colSpan={4} className="h-[295px] pt-[130px] border-b border-b-[#e6e6e6] text-center text-[#888] text-[16px] bg-[url('/images/mypage/order/ico_nodata104x104.png')] bg-[position:50%_80px] bg-no-repeat">
+                  다운받은 쿠폰이 없습니다.
                 </td>
               </tr>
-            ))}
-          </tbody>
+            </tbody>
+          )}
         </table>
         <div className="pt-[15px]">
           <h2 className="hidden pt-[25px] text-[#333] text-[14px] leading-[18px]">이용안내</h2>

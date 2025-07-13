@@ -2,12 +2,14 @@
 
 import React, { useState, useEffect } from "react";
 import { useRouter } from 'next/navigation';
+import { useCart } from '@/contexts/CartContext';
 import Image from "next/image";
 import axios from 'axios';
 
 export default function Order() {
 
   const router = useRouter();
+  const { setItemCount } = useCart();
 
   const badgeColorMap = {
     "세일": "bg-[#f65c60]",
@@ -25,6 +27,16 @@ export default function Order() {
   const [addressList, setAddressList] = useState([]);
   const [selectedAddress, setSelectedAddress] = useState(''); 
   const [detailAddress, setDetailAddress] = useState('');
+
+  const [couponList, setCouponList] = useState([]);
+  const [selectedCoupon, setSelectedCoupon] = useState(null);
+  const [discountAmount, setDiscountAmount] = useState(0);
+
+  const calculateDiscount = (coupon, totalPrice) => {
+    if (!coupon) return 0;
+
+    return Math.floor((totalDiscountPrice * coupon.discount) / 100);
+  };
   
   useEffect(() => {
     const token = localStorage.getItem('accessToken');
@@ -70,8 +82,25 @@ export default function Order() {
       }
     };
 
+    const fetchUserCouponInfo = async () => {
+      try {
+        const res = await axios.get('http://localhost:8080/api/user/coupons', {
+          headers: {  
+            Authorization: `Bearer ${token}`,
+          },
+        });
+
+        const couponList = res.data;
+        setCouponList(couponList);
+
+      } catch (e) {
+        console.error('사용자 주소 정보 가져오기 실패:', e);
+      }
+    };
+
     userInfo();
     fetchAddressInfo();
+    fetchUserCouponInfo();
   }, []);
 
   const [name, setName] = useState('');
@@ -268,8 +297,63 @@ export default function Order() {
       return;
     }
 
-    alert("정상적으로 결제가 완료되었습니다.");
-    router.push("/mypage");
+    const token = localStorage.getItem('accessToken');
+    if (!token) return;
+
+    // 주문 요청 정보 구성
+    const requestData = {
+      addressId: selectedAddress.addressId, 
+      cartItemIds: orderItems.map((item) => item.cartItemId),
+      discount: selectedCoupon?.discount ?? 0
+    }
+
+    // const fetchCreateOrder = async () => {
+    //   try {
+    //     await axios.post("http://localhost:8080/api/orders", requestData,
+    //     {
+    //       headers: {
+    //         Authorization: `Bearer ${token}`,
+    //       },
+    //     }
+    //   );
+
+    //   // 장바구니 수량 업데이트
+    //   const res = await axios.get('http://localhost:8080/api/carts/items', {
+    //     headers: { Authorization: `Bearer ${token}` },
+    //   });
+
+    //   setItemCount(res.data.length);
+
+    //   alert("정상적으로 결제가 완료되었습니다.");
+    //   router.push("/mypage");
+
+    //   } catch (e) {
+    //     console.error('주문 생성 실패:', e);
+    //   }
+    // };
+
+    // 쿠폰 사용 여부 (false -> true)로 변경
+    const fetchChangeCoupon = async () => {
+      if (!selectedCoupon) return;
+
+      try {
+        await axios.put("http://localhost:8080/api/user/coupons",
+          {
+            couponId: selectedCoupon.userCouponId
+          },
+          {
+            headers: {
+              Authorization: `Bearer ${token}`,
+            },
+          }
+        );
+      } catch (e) {
+        console.error('쿠폰 사용 여부 변경 실패:', e);
+      }
+    };
+    
+    //fetchCreateOrder();
+    fetchChangeCoupon();
   };
 
   return(
@@ -720,7 +804,7 @@ export default function Order() {
                       <input type="radio" id="manualDiscount" checked={true} readOnly className="w-[12px] h-[12px] mt-[-2px] mr-[7px] align-middle text-[#888]" />
                       <label htmlFor="autoDiscount" className="mr-[40px] cursor-pointer">혜택 직접 선택하기</label>
                       <p className="text-[#f27370] text-[16px] absolute top-1/2 right-[20px] -mt-[10px] h-[20px] leading-[20px]">
-                        <span className="mr-[1px] ml-[3px] tracking-[-0.02em] font-medium">0</span>원
+                        <span className="mr-[1px] ml-[3px] tracking-[-0.02em] font-medium">{discountAmount}</span>원
                       </p>
                     </div>
                   </td>
@@ -740,12 +824,27 @@ export default function Order() {
                   <th className="bg-[#f4f4f4] pl-[18px] py-[15px] text-left text-[14px] text-[#222] border-b border-b-[#e6e6e6]">주문별 할인</th>
                   <td className="border-b border-b-[#e6e6e6] p-0 text-[14px] text-[#222] leading-[28px]">
                     <div className="relative w-full py-[15px] px-[20px]">
-                      <select className="w-[300px] bg-white h-[28px] pl-[5px] text-[12px] mt-[5px] border border-[#d0d0d0] rounded-[5px] leading-[18px] align-top">
+                      <select className="w-[300px] bg-white h-[28px] pl-[5px] text-[12px] mt-[5px] border border-[#d0d0d0] rounded-[5px] leading-[18px] align-top"
+                       onChange={(e) => {
+                        const selectedName = e.target.value;
+
+                        if (selectedName === "적용안함") {
+                          setSelectedCoupon(null);
+                          setDiscountAmount(0);
+                          return;
+                        }
+
+                        const selected = couponList.find(coupon => coupon.couponName === selectedName);
+                        setSelectedCoupon(selected);
+                        setDiscountAmount(calculateDiscount(selected, totalPrice));
+                      }}>
                         <option>적용안함</option>
-                        <option>[7월 PINK] 4만원 이상 2천원 할인</option>
+                        {couponList && couponList.map((coupon, index) => (
+                          <option key={index} value={coupon.couponName}>{coupon.couponName}</option>
+                        ))}
                       </select>
                       <p className="text-[#f27370] text-[14px] absolute top-1/2 right-[20px] -mt-[10px] h-[20px] leading-[20px]">
-                        <span className="mr-[1px] ml-[3px] tracking-[-0.02em] font-medium">0</span>원
+                        <span className="mr-[1px] ml-[3px] tracking-[-0.02em] font-medium">{discountAmount}</span>원
                       </p>
                     </div>
                   </td>
@@ -847,7 +946,7 @@ export default function Order() {
               <li className="overflow-hidden px-[20px] leading-[32px] text-[#222]">
                 <span className="float-left w-[140px]">쿠폰할인금액</span>
                 <span className="float-right font-bold text-[#f27370]">
-                  <span className="mr-[1px] tracking-[-0.02em] font-medium">0</span>원
+                  <span className="mr-[1px] tracking-[-0.02em] font-medium">{discountAmount}</span>원
                 </span>
               </li>
               <li className="border-t border-b border-[#e6e6e6] my-[10px] px-[20px] py-[10px] overflow-hidden leading-[32px] text-[#222]">
@@ -870,7 +969,7 @@ export default function Order() {
               <li className="border-t border-t-[#888] mt-[10px] px-[20px] pt-[20px] pb-[10px] overflow-hidden leading-[32px] text-[#222]">
                 <span className="w-[100px] text-[16px] font-bold float-left">최종 결제금액</span>
                 <span className="float-right font-bold text-[#ff2828] text-[16px]">
-                  <span className="text-[24px] align-[-2px] mr-[2px] tracking-[-0.02em] font-medium">{(totalDiscountPrice).toLocaleString()}</span>원
+                  <span className="text-[24px] align-[-2px] mr-[2px] tracking-[-0.02em] font-medium">{(totalDiscountPrice - discountAmount).toLocaleString()}</span>원
                 </span>
               </li>
               <li className="overflow-hidden px-[20px] leading-[32px] text-[#222]">

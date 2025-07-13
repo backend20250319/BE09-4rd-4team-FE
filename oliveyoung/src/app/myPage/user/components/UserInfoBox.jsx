@@ -10,6 +10,8 @@ export default function UserInfoBox() {
     userName: ''
   });
 
+  const [userCouponList, setUserCouponList] = useState([]);
+
   useEffect(() => {
     const token = localStorage.getItem('accessToken');
     if (!token) return;
@@ -28,6 +30,24 @@ export default function UserInfoBox() {
       }
     };
 
+    // 사용자가 보유한 쿠폰 조회
+    const fetchUserCouponInfo = async () => {
+      try {
+        const res = await axios.get('http://localhost:8080/api/user/coupons', {
+          headers: {  
+            Authorization: `Bearer ${token}`,
+          },
+        });
+
+        const userCouponList = res.data;
+        setUserCouponList(userCouponList);
+
+      } catch (e) {
+        console.error('사용자 쿠폰 정보 가져오기 실패:', e);
+      }
+    };
+
+    fetchUserCouponInfo();
     fetchUserInfo();
   }, []);
 
@@ -83,7 +103,8 @@ export default function UserInfoBox() {
           <li className="float-left w-1/3 text-center">
             <span className="text-[13px] font-bold text-[#555]">쿠폰</span>
             <p className="inline-block pl-[15px] text-[18px] text-[#f27370] tracking-[-1.16px] font-medium cursor-pointer">
-              0
+
+              {userCouponList.filter(coupon => coupon.used === false).length}
               <em className="inline-block pl-[5px] text-[13px] font-bold text-[#555555] not-italic">
                 개
               </em>
