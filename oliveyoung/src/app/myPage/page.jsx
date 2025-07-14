@@ -1,13 +1,12 @@
 'use client';
 
-import { orderTableData } from "./order/data/orderTableData";
 import dayjs from "dayjs";
 import isSameOrAfter from "dayjs/plugin/isSameOrAfter";
 import isSameOrBefore from "dayjs/plugin/isSameOrBefore";
-import React, { useState } from "react";
-import Image from "next/image";
+import React, { useState, useEffect } from "react";
 import Link from "next/link";
 import UserInfoBox from "./user/components/UserInfoBox";
+import axios from 'axios';
 
 // 날짜 계산 함수
 const getPeriod = (months) => {
@@ -42,25 +41,54 @@ export default function MyPageHome() {
   const startDate = dayjs(`${periodState.startYear}-${periodState.startMonth}-${periodState.startDay}`);
   const endDate = dayjs(`${periodState.endYear}-${periodState.endMonth}-${periodState.endDay}`);
 
+  const [orderList, setOrderList] = useState([]);
+
+  useEffect(() => {
+    const token = localStorage.getItem('accessToken');
+    if (!token) return;
+
+    // 사용자의 주문/배송 내역 조회
+    const fetchUserCouponInfo = async () => {
+      try {
+        const res = await axios.get('http://localhost:8080/api/orders', {
+          headers: {  
+            Authorization: `Bearer ${token}`,
+          },
+        });
+
+        const orderList = res.data;
+        setOrderList(orderList);
+
+      } catch (e) {
+        console.error('사용자 주문/배송 내역 가져오기 실패:', e);
+      }
+    };
+
+    fetchUserCouponInfo();
+  }, []);
+
   // 기간 내 주문만 필터링
-  const filteredOrders = orderTableData.filter(order => {
-    const orderDate = dayjs(order.createdAt);
-    return orderDate.isSameOrAfter(startDate) && orderDate.isSameOrBefore(endDate);
+  const filteredOrders = orderList.filter(order => {
+    const orderDateStr = dayjs(order.createdAt).format("YYYY-MM-DD");
+    const startStr = startDate.format("YYYY-MM-DD");
+    const endStr = endDate.format("YYYY-MM-DD");
+    return orderDateStr >= startStr && orderDateStr <= endStr;
   });
 
   // status 별 카운트
-  const statusList = ["주문접수", "결제완료", "배송준비중", "배송중", "배송완료"];
-  const statusCounts = statusList.reduce((acc, status) => {
-    acc[status] = filteredOrders.filter(order => order.status === status).length;
+  const statusKoreanMap = {
+    RECEIVED: "주문접수",
+    PAID: "결제완료",
+    READY: "배송준비중",
+    SHIPPING: "배송중",
+    COMPLETED: "배송완료",
+  };
+
+  const statusCounts = Object.keys(statusKoreanMap).reduce((acc, statusEN) => {
+    const statusKR = statusKoreanMap[statusEN];
+    acc[statusKR] = filteredOrders.filter(order => order.status === statusEN).length;
     return acc;
   }, {});
-
-  const handleMenuClick = (e, href) => {
-    e.preventDefault();
-    setTimeout(() => {
-      window.location.href = href;
-    }, 1000);
-  };
 
   return (
     <div>
@@ -75,14 +103,15 @@ export default function MyPageHome() {
           <Link href="/mypage/order" className="absolute top-[5px] right-[0px] font-normal pr-[15px] text-[#666] text-[14px] leading-[20px] align-top cursor-pointer bg-[url('/images/mypage/home/ico_arrow7x10.png')] bg-no-repeat bg-[position:100%_50%]">더보기</Link>
         </div>
         <ul className="overflow-hidden w-full mt-[10px] rounded-[10px] bg-[#f5f5f5]">
-          {statusList.map((status, idx) => {
-            const count = statusCounts[status] || 0;
+          {Object.values(statusKoreanMap).map((statusKR) => {
+            const count = statusCounts[statusKR] || 0;
+
             return (
               <li
-                key={status}
+                key={statusKR}
                 className={
                   "float-left relative w-1/5 h-[117px]" +
-                  (idx !== 0 ? " bg-[url('/images/mypage/order/ico_arrow11x21.png')] bg-no-repeat bg-[position:0%_50%]" : "")
+                  (statusKR !== Object.values(statusKoreanMap)[0] ? " bg-[url('/images/mypage/order/ico_arrow11x21.png')] bg-no-repeat bg-[position:0%_50%]" : "")
                 }
               >
                 <em
@@ -94,7 +123,7 @@ export default function MyPageHome() {
                   {count}
                 </em>
                 <span className="block absolute left-0 w-full text-center align-top top-[70px] text-[#666666] text-[16px] leading-[22px]">
-                  {status}
+                  {statusKR}
                 </span>
               </li>
             );
