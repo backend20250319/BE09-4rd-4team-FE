@@ -3,6 +3,7 @@
 import React, { useState } from 'react';
 import { useRouter } from 'next/navigation';
 import axios from '@/api/axiosInstance';
+import { useAuth } from '@/contexts/AuthContext';
 
 export default function ModifyPasswordPage() {
   const { accessToken } = useAuth();
@@ -73,10 +74,13 @@ export default function ModifyPasswordPage() {
         },
       );
 
-      setServerMessage(response.data.message || '비밀번호가 성공적으로 변경되었습니다.');
-      setCurrentPwd('');
-      setNewPwd('');
-      setNewPwdCheck('');
+      if (response.status === 200) {
+        alert('비밀번호가 성공적으로 변경되었습니다.');
+        router.push('/');
+      } else {
+        // 서버에서 실패 메시지가 왔을 경우
+        setServerMessage(response.data.message || '비밀번호 변경에 실패했습니다.');
+      }
     } catch (err) {
       if (err.response?.data?.message) {
         setServerMessage(err.response.data.message);
@@ -105,22 +109,22 @@ export default function ModifyPasswordPage() {
             className="w-full border border-gray-300 rounded px-3 py-2"
           />
         </div>
-
         {/* 새 비밀번호 */}
         <div>
           <label className="block font-semibold mb-1">새 비밀번호</label>
           <input
             type="password"
             value={newPwd}
-            onChange={(e) => setNewPwd(e.target.value)}
+            onChange={handlePasswordChange}
             placeholder="새 비밀번호를 입력해주세요."
             className="w-full border border-gray-300 rounded px-3 py-2"
           />
-          <p className={`text-sm mt-1 ${isPasswordValid ? 'text-green-600' : 'text-red-600'}`}>
-            {passwordValidationMessage}
-          </p>
+          {newPwd && (
+            <p className={`text-sm mt-1 ${isPasswordValid ? 'text-green-600' : 'text-red-600'}`}>
+              {passwordValidationMessage}
+            </p>
+          )}
         </div>
-
         {/* 새 비밀번호 확인 */}
         <div>
           <label className="block font-semibold mb-1">새 비밀번호 확인</label>
@@ -131,8 +135,10 @@ export default function ModifyPasswordPage() {
             placeholder="새 비밀번호를 재입력해주세요."
             className="w-full border border-gray-300 rounded px-3 py-2"
           />
+          {newPwdCheck && newPwd !== newPwdCheck && (
+            <p className="text-sm text-red-600 mt-1">새 비밀번호가 서로 일치하지 않습니다.</p>
+          )}
         </div>
-
         {/* 유의사항 */}
         <div className="bg-gray-50 p-4 text-sm text-gray-600 leading-relaxed">
           <p className="font-bold mb-2">비밀번호 변경 시 유의사항</p>
@@ -141,10 +147,8 @@ export default function ModifyPasswordPage() {
             <li>동일문자를 4번 이상 사용할 수 없습니다.</li>
           </ul>
         </div>
-
         {/* 메시지 */}
         {serverMessage && <p className="text-center text-sm text-red-500">{serverMessage}</p>}
-
         {/* 버튼 */}
         <div className="flex justify-center space-x-4 mt-6">
           <button

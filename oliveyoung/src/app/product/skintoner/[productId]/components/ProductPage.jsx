@@ -63,7 +63,6 @@ function ProductPage({ productId }) {
   if (loading) {
     return (
       <div className="flex items-center justify-center h-screen">
-        <p>📦 상품 정보를 불러오는 중...</p>
       </div>
     );
   }
@@ -79,7 +78,6 @@ function ProductPage({ productId }) {
   if (!productData) {
     return (
       <div className="flex items-center justify-center h-screen">
-        <p>❌ 상품 정보를 찾을 수 없습니다.</p>
       </div>
     );
   }

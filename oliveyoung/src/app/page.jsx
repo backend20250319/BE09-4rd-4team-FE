@@ -46,7 +46,7 @@ export default function Home() {
   if (!products.length) return <div>상품이 없습니다.</div>;
 
   return (
-    <div className="container mx-auto px-4">
+    <div className="container px-4 mx-auto">
       <MainBanner />
       <ProductRecommendationSection
         leftTitle="요즘 주목 받는 상품"

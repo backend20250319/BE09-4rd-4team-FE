@@ -4,29 +4,29 @@ import React from "react";
 import Slider from "react-slick";
 import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
+import { getImageUrl } from "@/utils/image"; // ⭐ getImageUrl 함수 임포트 ⭐
 
-// 2개씩 묶어서 가로로
 const categories = [
   [
     {
-      img: "/images/product/skintonerbanner1.jpg",
+      img: "product/skintonerbanner1.jpg", // 이 경로들을 파일 서버의 상대 경로로 가정합니다.
       title: "넘버즈인X지냐\n파우더 론칭 기획",
       desc: "1번 스킨케어링 파우더 론칭 특가",
     },
     {
-      img: "/images/product/skintonerbanner2.jpg",
+      img: "product/skintonerbanner2.jpg",
       title: "세럼 강자 토리든\nNEW & BEST",
       desc: "추가 할인에 더한 풍성한 증정까지!",
     },
   ],
   [
     {
-      img: "/images/product/skintonerbanner3.jpg",
+      img: "product/skintonerbanner3.jpg",
       title: "여름 피부, 남자는\n올인원으로 쿨하게",
       desc: "햇빛따위 쿨하게 이겨버리는 알파 올인원",
     },
     {
-      img: "/images/product/skintonerbanner4.jpg",
+      img: "product/skintonerbanner4.jpg",
       title: "예민한 피부를 위한\n트러블 진정 솔루션",
       desc: "외부자극에 지친 피부를 위한 진정 솔루션",
     },
@@ -87,7 +87,7 @@ function SkinTonerBanner() {
                 style={{ minWidth: 0 }}
               >
                 <img
-                  src={item.img}
+                  src={getImageUrl(item.img)} // ⭐ 여기에 getImageUrl 적용 ⭐
                   alt={item.title}
                   className="object-cover w-full h-full"
                   draggable={false}
