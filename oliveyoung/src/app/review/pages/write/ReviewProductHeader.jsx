@@ -1,13 +1,21 @@
+// ReviewProductHeader.jsx
+import { getImageUrl } from "@/utils/image";
+
 export default function ReviewProductHeader({ data }) {
-  // 📌 [나중에 백엔드에서 넘겨받은 product 데이터 사용]
-  const { image, brand, title } = data;
+  if (!data) return null;
+  const { brandName, productName, imageUrl } = data;
+  const imgSrc = getImageUrl(imageUrl);
 
   return (
-    <div className="flex items-center gap-4 border-b pb-4">
-      <img src={image} alt={title} className="w-[60px] h-[60px] object-cover rounded" />
+    <div className="flex items-center gap-4 mb-3">
+      <img
+        src={imgSrc}
+        alt={brandName}
+        className="w-[70px] h-[70px] object-cover rounded border"
+      />
       <div>
-        <p className="font-semibold">{brand}</p>
-        <p className="text-sm text-gray-600">{title}</p>
+        <div className="text-xs text-gray-500">{brandName}</div>
+        <div className="text-sm font-semibold mt-1">{productName}</div>
       </div>
     </div>
   );

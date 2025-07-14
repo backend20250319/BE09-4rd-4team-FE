@@ -1,8 +1,4 @@
-import { useState } from "react";
-
-export default function ReviewSkinTypeSection() {
-  const [selected, setSelected] = useState("");
-
+export default function ReviewSkinTypeSection({ value, onChange }) {
   const options = ["건성", "복합성", "지성"];
 
   return (
@@ -17,19 +13,18 @@ export default function ReviewSkinTypeSection() {
             <input
               type="radio"
               name="skinType"
-              checked={selected === opt}
-              onChange={() => setSelected(opt)}
+              checked={value === opt}
+              onChange={() => onChange(opt)}
               className="hidden"
             />
             {/* 커스텀 라디오 */}
             <span
               className={`relative w-8 h-8 flex items-center justify-center rounded-full
-                border-2 gray-400
-                ${selected === opt ? "bg-[#0CC7B8] border-[#0CC7B8]" : "bg-white border-gray-400"}
+                border-2 ${value === opt ? "bg-[#0CC7B8] border-[#0CC7B8]" : "bg-white border-gray-400"}
               `}
             >
               {/* 체크 표시: 선택 시만 보여짐 */}
-              {selected === opt && (
+              {value === opt && (
                 <svg
                   className="absolute w-5 h-5 text-white pointer-events-none"
                   xmlns="http://www.w3.org/2000/svg"
@@ -42,10 +37,9 @@ export default function ReviewSkinTypeSection() {
                 </svg>
               )}
             </span>
-
             <span
               className={`text-sm font-semibold ${
-                selected === opt ? "text-[#0CC7B8]" : "text-gray-700"
+                value === opt ? "text-[#0CC7B8]" : "text-gray-700"
               }`}
             >
               {opt}에 좋아요

@@ -1,8 +1,5 @@
-import { useState } from "react";
-
-export default function ReviewCleansingSection() {
-  const [cleansing, setCleansing] = useState("");
-
+// ReviewCleansingSection.jsx
+export default function ReviewCleansingSection({ value, onChange }) {
   const options = ["아주 만족해요", "보통이에요", "다소 아쉬워요"];
 
   return (
@@ -17,17 +14,17 @@ export default function ReviewCleansingSection() {
             <input
               type="radio"
               name="cleansing"
-              checked={cleansing === opt}
-              onChange={() => setCleansing(opt)}
+              checked={value === opt}
+              onChange={() => onChange(opt)}
               className="hidden"
             />
             {/* 커스텀 라디오 */}
             <span
               className={`relative w-8 h-8 flex items-center justify-center rounded-full
-                border-2 ${cleansing === opt ? "bg-[#0CC7B8] border-[#0CC7B8]" : "bg-white border-gray-400"}
+                border-2 ${value === opt ? "bg-[#0CC7B8] border-[#0CC7B8]" : "bg-white border-gray-400"}
               `}
             >
-              {cleansing === opt && (
+              {value === opt && (
                 <svg
                   className="absolute w-5 h-5 text-white pointer-events-none"
                   xmlns="http://www.w3.org/2000/svg"
@@ -42,7 +39,7 @@ export default function ReviewCleansingSection() {
             </span>
             <span
               className={`text-sm font-semibold ${
-                cleansing === opt ? "text-[#0CC7B8]" : "text-gray-700"
+                value === opt ? "text-[#0CC7B8]" : "text-gray-700"
               }`}
             >
               {opt}
