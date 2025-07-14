@@ -1,8 +1,8 @@
 import React, { useState } from 'react';
-import axios from 'axios';
+import axios from '@/api/axiosInstance';
 import { useEffect } from 'react';
 
-const RegistrationForm = ({ setStep }) => {
+const RegistrationForm = ({ setStep, setUserName }) => {
   // 폼 데이터를 담을 상태 (state)
   const [formData, setFormData] = useState({
     userName: '', // 이름
@@ -174,6 +174,7 @@ const RegistrationForm = ({ setStep }) => {
         if (response.status === 201) {
           console.log('회원가입 성공:', response.data);
           alert('회원가입이 완료되었습니다!');
+          setUserName(formData.userName);
           setStep(3); // 가입 완료 화면으로 전환
         } else {
           alert(`회원가입 실패: ${response.data.message || '알 수 없는 오류'}`);
