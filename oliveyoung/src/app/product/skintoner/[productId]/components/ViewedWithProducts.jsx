@@ -16,7 +16,7 @@ const ViewedWithProducts = () => {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
 
-  // ✅ 전체 상품 가져오고 랜덤 12개 추출
+  // 전체 상품 가져오고 랜덤 12개 추출
   useEffect(() => {
     const fetchRelatedProducts = async () => {
       setLoading(true);
@@ -24,7 +24,6 @@ const ViewedWithProducts = () => {
 
       try {
         const apiUrl = "http://localhost:8080/api/products";
-        console.log(`연관 상품(전체조회) 가져오기: ${apiUrl}`);
 
         const response = await axios.get(apiUrl);
 
@@ -33,7 +32,7 @@ const ViewedWithProducts = () => {
           Array.isArray(response.data) &&
           response.data.length > 0
         ) {
-          // ✅ shuffle → 랜덤 12개
+          // shuffle → 랜덤 12개
           const shuffled = [...response.data].sort(() => Math.random() - 0.5);
           const sliced = shuffled.slice(0, 12);
 
@@ -46,7 +45,6 @@ const ViewedWithProducts = () => {
             badge: item.badgeNames,
           }));
           setProducts(transformedProducts);
-          console.log("연관 상품 로드 성공!", transformedProducts);
         } else {
           console.warn("API 응답이 비어있음");
           setProducts([]);
@@ -123,7 +121,6 @@ const ViewedWithProducts = () => {
     return (
       <div className="relative px-4 mt-12 md:px-0">
         <div className="flex items-center justify-center h-48 text-gray-600">
-          <p>연관 상품을 불러오는 중...</p>
         </div>
       </div>
     );
