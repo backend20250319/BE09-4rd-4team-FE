@@ -5,9 +5,13 @@ import { useRouter } from 'next/navigation';
 import { useCart } from '@/contexts/CartContext';
 import Image from 'next/image';
 import axios from 'axios';
+import { getImageUrl } from "@/utils/image";
 
 export default function Order() {
   const router = useRouter();
+  const imageUrl = getImageUrl("/order");
+  const imageUrlDF = getImageUrl("");
+
   const { setItemCount } = useCart();
 
   const badgeColorMap = {
@@ -87,7 +91,7 @@ export default function Order() {
           },
         });
 
-        const couponList = res.data.filter((coupon) => coupon.used === true);
+        const couponList = res.data.filter((coupon) => coupon.used === false);
         setCouponList(couponList);
       } catch (e) {
         console.error('사용자 주소 정보 가져오기 실패:', e);
@@ -400,18 +404,21 @@ export default function Order() {
       <div className="w-[1020px] h-full mx-auto">
         <div className="overflow-hidden h-[140px] rounded-[5px]">
           {/* title box */}
-          <div className="absolute w-full h-[140px] left-1/2 -translate-x-1/2 bg-[url('/images/order/cart/bg_order_top.png')] bg-no-repeat bg-center bg-[#ffeeda]" />
+          <div className="absolute w-full h-[140px] left-1/2 -translate-x-1/2 bg-no-repeat bg-center bg-[#ffeeda]"
+          style={{ backgroundImage: `url('${imageUrl}/cart/bg_order_top.png')` }} />
           <h1 className="float-left pt-[37px] pb-0 pr-0 text-[40px] text-black leading-[40px] relative font-bold">
             주문/결제
           </h1>
           <ul className="float-right relative">
-            <li className="text-[#8b8176] float-left h-[120px] px-[30px] pl-[20px] leading-[120px] text-center text-[24px] whitespace-nowrap bg-[url('/images/order/cart/bg_step.png')] bg-[position:100%_50%] bg-no-repeat">
+            <li className="text-[#8b8176] float-left h-[120px] px-[30px] pl-[20px] leading-[120px] text-center text-[24px] whitespace-nowrap bg-[position:100%_50%] bg-no-repeat"
+            style={{ backgroundImage: `url('${imageUrl}/cart/bg_step.png')` }}>
               <span className="text-[#8b8176] inline-block mr-[5px] text-[20px] align-top tracking-[-0.02em] font-medium">
                 01
               </span>
               장바구니
             </li>
-            <li className="float-left h-[120px] px-[30px] pl-[20px] leading-[120px] text-center text-[24px] text-[#000] whitespace-nowrap bg-[url('/images/order/cart/bg_step_on.png')] bg-[position:100%_50%] bg-no-repeat">
+            <li className="float-left h-[120px] px-[30px] pl-[20px] leading-[120px] text-center text-[24px] text-[#000] whitespace-nowrap bg-[position:100%_50%] bg-no-repeat"
+            style={{ backgroundImage: `url('${imageUrl}/cart/bg_step_on.png')` }}>
               <span className="inline-block mr-[5px] text-[20px] text-[#333] align-top tracking-[-0.02em] font-medium">
                 02
               </span>
@@ -424,7 +431,8 @@ export default function Order() {
               주문완료
             </li>
           </ul>
-          <div className="absolute block w-[1020px] h-[20px] mt-[110px] bg-[url('/images/order/cart/bg_line.gif')] bg-no-repeat bg-[length:auto] bg-[position:50%_10px] bg-white" />
+          <div className="absolute block w-[1020px] h-[20px] mt-[110px] bg-no-repeat bg-[length:auto] bg-[position:50%_10px] bg-white" 
+          style={{ backgroundImage: `url('${imageUrl}/cart/bg_line.gif')` }} />
         </div>
 
         <form>
@@ -445,7 +453,6 @@ export default function Order() {
           </div>
 
           {/* 배송지 정보 */}
-          {isExisting && (
             <table className="w-full ">
               <tbody className="text-[#666] text-[14px] leading-[20px] tracking-[-0.04em] [word-spacing:-1px]">
                 {/* 배송지 선택 */}
@@ -459,8 +466,8 @@ export default function Order() {
                         type="radio"
                         id="divpExist1"
                         className="w-[12px] h-[12px] mt-[-2px] mr-[7px] align-middle text-[#888]"
-                        checked={isExisting}
-                        onChange={() => setIsExisting(true)}
+                        checked={true}
+                        readOnly
                       />
                       <label htmlFor="divpExist1" className="text-[#333] cursor-pointer">
                         기존 배송지
@@ -471,8 +478,8 @@ export default function Order() {
                         type="radio"
                         id="divpExist2"
                         className="w-[12px] h-[12px] mt-[-2px] mr-[7px] align-middle text-[#888]"
-                        checked={!isExisting}
-                        onChange={() => setIsExisting(false)}
+                        checked={false}
+                        readOnly
                       />
                       <label htmlFor="divpExist2" className="text-[#333] cursor-pointer">
                         신규 배송지
@@ -517,7 +524,8 @@ export default function Order() {
                   <th className="bg-[#f4f4f4] pl-[18px] py-[15px] text-left text-[#222] border-b border-b-[#e6e6e6]">
                     받는분
                   </th>
-                  <td className="pl-[36px] py-[15px] px-[20px] border-b border-b-[#e6e6e6] text-[14px] text-[#222] leading-[28px] bg-[url('/images/order/order/ico_star6x5.png')] bg-[position:20px_25px] bg-no-repeat">
+                  <td className="pl-[36px] py-[15px] px-[20px] border-b border-b-[#e6e6e6] text-[14px] text-[#222] leading-[28px] bg-[position:20px_25px] bg-no-repeat"
+                  style={{ backgroundImage: `url('${imageUrl}/order/ico_star6x5.png')` }}>
                     <input
                       className="w-[200px] h-[28px] px-[10px] text-[12px] text-[#333] bg-white leading-[20px] border border-[#d0d0d0] rounded-[5px]"
                       value={name}
@@ -543,7 +551,8 @@ export default function Order() {
                   <th className="pt-[15px] px-[20px] pb-[5px] bg-[#f4f4f4] text-left text-[#222]">
                     연락처1
                   </th>
-                  <td className="pl-[36px] pt-[15px] pb-[5px] px-[20px] text-[14px] text-[#222] leading-[28px] bg-[url('/images/order/order/ico_star6x5.png')] bg-[position:20px_25px] bg-no-repeat">
+                  <td className="pl-[36px] pt-[15px] pb-[5px] px-[20px] text-[14px] text-[#222] leading-[28px] bg-[position:20px_25px] bg-no-repeat"
+                  style={{ backgroundImage: `url('${imageUrl}/order/ico_star6x5.png')` }}>
                     <select
                       value={phonePart1}
                       onChange={(e) => setPhonePart1(e.target.value)}
@@ -571,9 +580,11 @@ export default function Order() {
                     />
                     <span className="mt-[5px] text-[14px] text-[#222] leading-[28px]">
                       <span className="text-[#777] text-[12px] font-normal inline-block leading-[20px] ml-[20px] whitespace-nowrap relative text-center cursor-pointer">
-                        <p className="w-[18px] h-[18px] bg-[url('/images/order/order/icon_01.png')] bg-no-repeat mr-[5px] mb-[3px] inline-block align-middle" />
+                        <p className="w-[18px] h-[18px] bg-no-repeat mr-[5px] mb-[3px] inline-block align-middle"
+                        style={{ backgroundImage: `url('${imageUrl}/order/icon_01.png')` }} />
                         안심번호 서비스 안내
-                        <p className="w-[4px] h-[5px] bg-[url('/images/order/order/icon_02.png')] bg-no-repeat ml-[5px] mb-[3px] inline-block align-middle" />
+                        <p className="w-[4px] h-[5px] bg-no-repeat ml-[5px] mb-[3px] inline-block align-middle" 
+                        style={{ backgroundImage: `url('${imageUrl}/order/icon_02.png')` }} />
                       </span>
                     </span>
                   </td>
@@ -640,168 +651,6 @@ export default function Order() {
                 </tr>
               </tbody>
             </table>
-          )}
-
-          {!isExisting && (
-            <table className="w-full ">
-              <tbody className="text-[#666] text-[14px] leading-[20px] tracking-[-0.04em] [word-spacing:-1px]">
-                {/* 배송지 선택 */}
-                <tr>
-                  <th className="border-t-[2px] border-t-[#d6d6d6] bg-[#f4f4f4] pl-[18px] py-[15px] text-left text-[#222] border-b border-b-[#e6e6e6]">
-                    배송지선택
-                  </th>
-                  <td className="border-t-[2px] border-t-[#d6d6d6] border-b border-b-[#e6e6e6] pl-[36px] pr-[20px] py-[15px] text-[14px] text-[#222] leading-[28px]">
-                    <span className="inline-block leading-[20px] text-[12px] text-[#222] whitespace-nowrap">
-                      <input
-                        type="radio"
-                        id="divpExist1"
-                        className="w-[12px] h-[12px] mt-[-2px] mr-[7px] align-middle text-[#888]"
-                        checked={isExisting}
-                        onChange={() => setIsExisting(true)}
-                      />
-                      <label htmlFor="divpExist1" className="text-[#333] cursor-pointer">
-                        기존 배송지
-                      </label>
-                    </span>
-                    <span className="inline-block leading-[20px] ml-[20px] text-[12px] text-[#222] whitespace-nowrap">
-                      <input
-                        type="radio"
-                        id="divpExist2"
-                        className="w-[12px] h-[12px] mt-[-2px] mr-[7px] align-middle text-[#888]"
-                        checked={!isExisting}
-                        onChange={() => setIsExisting(false)}
-                      />
-                      <label htmlFor="divpExist2" className="text-[#333] cursor-pointer">
-                        신규 배송지
-                      </label>
-                    </span>
-                  </td>
-                </tr>
-
-                {/* 베송지명 */}
-                <tr className="table-row">
-                  <th className="bg-[#f4f4f4] pl-[18px] py-[15px] text-left text-[#222] border-b border-b-[#e6e6e6]">
-                    배송지명
-                  </th>
-                  <td className="pl-[36px] py-[15px] px-[20px] border-b border-b-[#e6e6e6] text-[14px] text-[#222] leading-[28px] bg-[url('/images/order/order/ico_star6x5.png')] bg-[position:20px_25px] bg-no-repeat">
-                    <input className="w-[200px] h-[28px] px-[10px] text-[12px] text-[#333] bg-white leading-[20px] border border-[#d0d0d0] rounded-[5px]" />
-                  </td>
-                </tr>
-
-                {/* 받는분 */}
-                <tr className="table-row">
-                  <th className="bg-[#f4f4f4] pl-[18px] py-[15px] text-left text-[#222] border-b border-b-[#e6e6e6]">
-                    받는분
-                  </th>
-                  <td className="pl-[36px] py-[15px] px-[20px] border-b border-b-[#e6e6e6] text-[14px] text-[#222] leading-[28px] bg-[url('/images/order/order/ico_star6x5.png')] bg-[position:20px_25px] bg-no-repeat">
-                    <input className="w-[200px] h-[28px] px-[10px] text-[12px] text-[#333] bg-white leading-[20px] border border-[#d0d0d0] rounded-[5px]" />
-                    <span className="inline-block leading-[20px] ml-[20px] text-[12px] whitespace-nowrap relative">
-                      <input
-                        type="checkbox"
-                        id="copyToDivp"
-                        checked={false}
-                        readOnly
-                        className="w-[12px] h-[12px] mt-[-2px] mr-[5px] align-middle"
-                      />
-                      <label htmlFor="copyToDivp" className="text-[#333] cursor-pointer">
-                        주문자정보와 동일
-                      </label>
-                    </span>
-                  </td>
-                </tr>
-
-                {/* 연락처 */}
-                <tr className="table-row">
-                  <th className="pt-[15px] px-[20px] pb-[5px] bg-[#f4f4f4] text-left text-[#222]">
-                    연락처1
-                  </th>
-                  <td className="pl-[36px] pt-[15px] pb-[5px] px-[20px] text-[14px] text-[#222] leading-[28px] bg-[url('/images/order/order/ico_star6x5.png')] bg-[position:20px_25px] bg-no-repeat">
-                    <select className="w-[90px] bg-white h-[28px] pl-[5px] text-[12px] border border-[#d0d0d0] rounded-[5px] leading-[18px] text-[#333]">
-                      {phoneOptions.map((option) => (
-                        <option key={option} value={option}>
-                          {option}
-                        </option>
-                      ))}
-                    </select>{' '}
-                    -
-                    <input
-                      type="text"
-                      className="ml-[1px] w-[90px] h-[28px] px-[10px] text-[12px] text-[#333] bg-white leading-[20px] border border-[#d0d0d0] tracking-[-0.04em] rounded-[5px]"
-                    />
-                    -
-                    <input
-                      type="text"
-                      className="ml-[1px] w-[90px] h-[28px] px-[10px] text-[12px] text-[#333] bg-white leading-[20px] border border-[#d0d0d0] tracking-[-0.04em] rounded-[5px]"
-                    />
-                    <span className="mt-[5px] text-[14px] text-[#222] leading-[28px]">
-                      <span className="text-[#777] text-[12px] font-normal inline-block leading-[20px] ml-[20px] whitespace-nowrap relative text-center cursor-pointer">
-                        <p className="w-[18px] h-[18px] bg-[url('/images/order/order/icon_01.png')] bg-no-repeat mr-[5px] mb-[3px] inline-block align-middle" />
-                        안심번호 서비스 안내
-                        <p className="w-[4px] h-[5px] bg-[url('/images/order/order/icon_02.png')] bg-no-repeat ml-[5px] mb-[3px] inline-block align-middle" />
-                      </span>
-                    </span>
-                  </td>
-                </tr>
-                <tr className="table-row">
-                  <th className="pt-[5px] px-[20px] pb-[10px] border-b border-b-[#e6e6e6] bg-[#f4f4f4] text-left text-[#222]">
-                    연락처2
-                  </th>
-                  <td className="pl-[36px] pt-[5px] pb-[10px] px-[20px] border-b border-b-[#e6e6e6] text-[14px] text-[#222] leading-[28px]">
-                    <select className="w-[90px] bg-white h-[28px] pl-[5px] text-[12px] border border-[#d0d0d0] rounded-[5px] leading-[18px] text-[#333]">
-                      {phoneOptions.map((option) => (
-                        <option key={option} value={option}>
-                          {option}
-                        </option>
-                      ))}
-                    </select>{' '}
-                    -
-                    <input
-                      type="text"
-                      className="ml-[1px] w-[90px] h-[28px] px-[10px] text-[12px] text-[#333] bg-white leading-[20px] border border-[#d0d0d0] tracking-[-0.04em] rounded-[5px]"
-                    />
-                    -
-                    <input
-                      type="text"
-                      className="ml-[1px] w-[90px] h-[28px] px-[10px] text-[12px] text-[#333] bg-white leading-[20px] border border-[#d0d0d0] tracking-[-0.04em] rounded-[5px]"
-                    />
-                  </td>
-                </tr>
-
-                {/* 주소 */}
-                <tr className="table-row">
-                  <th className="bg-[#f4f4f4] pl-[18px] py-[15px] text-left text-[#222] border-b border-b-[#e6e6e6]">
-                    주소
-                  </th>
-                  <td className="pl-[36px] py-[15px] px-[20px] border-b border-b-[#e6e6e6] text-[14px] text-[#222] leading-[28px]">
-                    <input
-                      type="text"
-                      className="w-[90px] bg-[#f8f8f8] text-[#888] h-[28px] px-[10px] text-[12px] leading-[20px] border border-[#d0d0d0] rounded-[5px]"
-                      readOnly
-                    />
-                    <button
-                      type="button"
-                      className="w-[100px] border border-[#9bce26] text-[#9bce26] bg-white h-[28px] px-[5px] text-[12px] leading-[28px] rounded-[5px] font-bold ml-[2px]"
-                    >
-                      우편번호 찾기
-                    </button>
-                    <div className="w-[500px] min-h-[28px] my-[6px] py-[5px] px-[10px] border border-[#ccc] bg-[#f8f8f8] rounded-[5px] text-[12px] leading-[20px]">
-                      <p>
-                        <span>도로명</span> :<span></span>
-                      </p>
-                      <p className="text-[#888]">
-                        <span className="mr-[-11px] tracking-[11px]">지번</span> :<span></span>
-                      </p>
-                    </div>
-                    <input
-                      type="text"
-                      className="w-[500px] h-[28px] px-[10px] text-[12px] text-[#333] bg-white leading-[20px] border border-[#d0d0d0] tracking-[0.5px] rounded-[5px]"
-                    />
-                  </td>
-                </tr>
-              </tbody>
-            </table>
-          )}
-
           {/* 배송 요청사항 */}
           <div>
             <div className="relative w-full">
@@ -832,7 +681,8 @@ export default function Order() {
                     <th className="bg-[#f4f4f4] pl-[18px] py-[15px] text-left text-[#222] border-b border-b-[#e6e6e6]">
                       공동현관 출입방법
                     </th>
-                    <td className="pl-[36px] py-[15px] px-[20px] border-b border-b-[#e6e6e6] text-[14px] text-[#222] leading-[28px] bg-[url('/images/order/order/ico_star6x5.png')] bg-[position:20px_25px] bg-no-repeat">
+                    <td className="pl-[36px] py-[15px] px-[20px] border-b border-b-[#e6e6e6] text-[14px] text-[#222] leading-[28px] bg-[position:20px_25px] bg-no-repeat"
+                    style={{ backgroundImage: `url('${imageUrl}/order/ico_star6x5.png')` }}>
                       <span className="inline-block leading-[20px] text-[12px] whitespace-nowrap relative ">
                         <input
                           type="radio"
@@ -893,7 +743,8 @@ export default function Order() {
                       <th className="pt-[20px] align-top bg-[#f4f4f4] pl-[18px] py-[15px] text-left text-[#222] border-b border-b-[#e6e6e6]">
                         공동현관 비밀번호
                       </th>
-                      <td className="pl-[36px] py-[15px] px-[20px] border-b border-b-[#e6e6e6] text-[14px] text-[#222] leading-[28px] bg-[url('/images/order/order/ico_star6x5.png')] bg-[position:20px_25px] bg-no-repeat">
+                      <td className="pl-[36px] py-[15px] px-[20px] border-b border-b-[#e6e6e6] text-[14px] text-[#222] leading-[28px] bg-[position:20px_25px] bg-no-repeat"
+                      style={{ backgroundImage: `url('${imageUrl}/order/ico_star6x5.png')` }}>
                         <input
                           type="text"
                           id="doorType"
@@ -916,7 +767,8 @@ export default function Order() {
                       <th className="pt-[20px] align-top bg-[#f4f4f4] pl-[18px] py-[15px] text-left text-[#222] border-b border-b-[#e6e6e6]">
                         경비실 호출 방법
                       </th>
-                      <td className="pl-[36px] py-[15px] px-[20px] border-b border-b-[#e6e6e6] text-[14px] text-[#222] leading-[28px] bg-[url('/images/order/order/ico_star6x5.png')] bg-[position:20px_25px] bg-no-repeat">
+                      <td className="pl-[36px] py-[15px] px-[20px] border-b border-b-[#e6e6e6] text-[14px] text-[#222] leading-[28px] bg-[position:20px_25px] bg-no-repeat"
+                      style={{ backgroundImage: `url('${imageUrl}/order/ico_star6x5.png')` }}>
                         <input
                           type="text"
                           id="doorType"
@@ -932,7 +784,8 @@ export default function Order() {
                       <th className="pt-[20px] align-top bg-[#f4f4f4] pl-[18px] py-[15px] text-left text-[#222] border-b border-b-[#e6e6e6]">
                         기타 상세 내용
                       </th>
-                      <td className="pl-[36px] py-[15px] px-[20px] border-b border-b-[#e6e6e6] text-[14px] text-[#222] leading-[28px] bg-[url('/images/order/order/ico_star6x5.png')] bg-[position:20px_25px] bg-no-repeat">
+                      <td className="pl-[36px] py-[15px] px-[20px] border-b border-b-[#e6e6e6] text-[14px] text-[#222] leading-[28px] bg-[position:20px_25px] bg-no-repeat"
+                      style={{ backgroundImage: `url('${imageUrl}/order/ico_star6x5.png')` }}>
                         <input
                           type="text"
                           id="doorType"
@@ -995,7 +848,7 @@ export default function Order() {
                         <Image
                           width={85}
                           height={85}
-                          src={`/images${item.imageUrl}`}
+                          src={`${imageUrlDF}${item.imageUrl}`}
                           alt={item.brandName}
                         />
                       </div>
@@ -1325,7 +1178,8 @@ export default function Order() {
                           className="py-[15px] px-[20px] border-b border-b-[#e6e6e6] text-[14px] text-[#222] leading-[28px]"
                         >
                           <ul>
-                            <li className="pl-[7px] text-[12px] leading-[18px] bg-[url('/images/mypage/coupon/bar_2x2.gif')] bg-no-repeat bg-[position:0_7px]">
+                            <li className="pl-[7px] text-[12px] leading-[18px] bg-no-repeat bg-[position:0_7px]"
+                            style={{ backgroundImage: `url('${imageUrlDF}/mypage/coupon/bar_2x2.gif')` }}>
                               <span className="text-[#757d86]">
                                 선불카드 상품의 경우 카드사 정책으로 결제완료 후 부분취소가
                                 불가합니다. 취소/반품 시 유의해주세요.
@@ -1439,7 +1293,8 @@ export default function Order() {
                   </label>
                   <button
                     type="button"
-                    className="absolute right-[20px] bottom-[20px] w-[26px] h-[16px] bg-[url('/images/order/order/ico_arrow26x16.png')] bg-no-repeat"
+                    className="absolute right-[20px] bottom-[20px] w-[26px] h-[16px] bg-no-repeat"
+                    style={{ backgroundImage: `url('${imageUrl}/order/ico_arrow26x16.png')` }}
                   />
                 </div>
               </div>

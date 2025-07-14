@@ -4,8 +4,12 @@ import Link from 'next/link';
 import React, { useState, useEffect } from 'react';
 import UserInfoBox from '../user/components/UserInfoBox';
 import axios from '@/api/axiosInstance';
+import { getImageUrl } from "@/utils/image";
 
 export default function Coupon() {
+
+  const imageUrl = getImageUrl("/mypage");
+
   const handleMenuClick = (e, href) => {
     e.preventDefault();
     setTimeout(() => {
@@ -64,7 +68,8 @@ export default function Coupon() {
             <Link
               href="/order/coupon"
               onClick={(e) => handleMenuClick(e, href)}
-              className="float-right w-[130px] h-[30px] mt-[5px] pt-[6px] pl-[13px] rounded-[4px] bg-[#ebebeb] bg-[url('/images/mypage/coupon/arrow_12_21_02.png')] bg-no-repeat bg-[length:7px_11px] bg-[position:113px_50%] text-[#202020] text-left text-[14px] leading-[20px]"
+              className="float-right w-[130px] h-[30px] mt-[5px] pt-[6px] pl-[13px] rounded-[4px] bg-[#ebebeb] bg-no-repeat bg-[length:7px_11px] bg-[position:113px_50%] text-[#202020] text-left text-[14px] leading-[20px]"
+              style={{ backgroundImage: `url('${imageUrl}/coupon/arrow_12_21_02.png')` }}
             >
               쿠폰 존 바로가기
             </Link>
@@ -77,7 +82,8 @@ export default function Coupon() {
             </p>
             <Link
               href=""
-              className="float-right w-[130px] h-[30px] mt-[5px] pt-[6px] pl-[13px] rounded-[4px] bg-[#ebebeb] bg-[url('/images/mypage/coupon/arrow_12_21_02.png')] bg-no-repeat bg-[length:7px_11px] bg-[position:113px_50%] text-[#202020] text-left text-[14px] leading-[20px]"
+              className="float-right w-[130px] h-[30px] mt-[5px] pt-[6px] pl-[13px] rounded-[4px] bg-[#ebebeb] bg-no-repeat bg-[length:7px_11px] bg-[position:113px_50%] text-[#202020] text-left text-[14px] leading-[20px]"
+              style={{ backgroundImage: `url('${imageUrl}/coupon/arrow_12_21_02.png')` }}
             >
               쿠폰 등록하기
             </Link>
@@ -88,7 +94,8 @@ export default function Coupon() {
           <div className="overflow-hidden relative w-full">
             <button
               type="button"
-              className="float-right w-auto my-[18px] mb-[6px] pr-[19px] bg-[url('/images/mypage/coupon/ico_coupon14x14.png')] bg-no-repeat bg-[position:99%_50%] text-[#888] text-[12px] leading-[18px] text-center font-medium cursor-pointer"
+              className="float-right w-auto my-[18px] mb-[6px] pr-[19px] bg-no-repeat bg-[position:99%_50%] text-[#888] text-[12px] leading-[18px] text-center font-medium cursor-pointer"
+              style={{ backgroundImage: `url('${imageUrl}/coupon/ico_coupon14x14.png')` }}
             >
               쿠폰안내
             </button>
@@ -129,8 +136,8 @@ export default function Coupon() {
                         className="inline-block w-[104px] h-[55px] pr-[18px] pt-[17px] text-[#222] leading-[22px] align-top indent-0 text-[18px] font-bold"
                         style={{
                           backgroundImage: coupon.couponName.toLowerCase().includes('summer15')
-                            ? `url('/images/mypage/coupon/bg_coupon_today_208.png')`
-                            : `url('/images/mypage/coupon/bg_coupon_104.png')`,
+                            ? `url('${imageUrl}/coupon/bg_coupon_today_208.png')`
+                            : `url('${imageUrl}/coupon/bg_coupon_104.png')`,
                           backgroundRepeat: 'no-repeat',
                           backgroundPosition: '0 0',
                           backgroundSize: '104px auto',
@@ -159,7 +166,8 @@ export default function Coupon() {
               <tr>
                 <td
                   colSpan={4}
-                  className="h-[295px] pt-[130px] border-b border-b-[#e6e6e6] text-center text-[#888] text-[16px] bg-[url('/images/mypage/order/ico_nodata104x104.png')] bg-[position:50%_80px] bg-no-repeat"
+                  className="h-[295px] pt-[130px] border-b border-b-[#e6e6e6] text-center text-[#888] text-[16px] bg-[position:50%_80px] bg-no-repeat"
+                  style={{ backgroundImage: `url('${imageUrl}/order/ico_nodata104x104.png')` }}
                 >
                   다운받은 쿠폰이 없습니다.
                 </td>
@@ -170,14 +178,17 @@ export default function Coupon() {
         <div className="pt-[15px]">
           <h2 className="hidden pt-[25px] text-[#333] text-[14px] leading-[18px]">이용안내</h2>
           <ul className="w-full">
-            <li className="mt-[6px] pl-[8px] bg-[url('/images/mypage/coupon/bar_2x2.gif')] bg-no-repeat bg-[position:0_7px] text-[#888] text-[12px] leading-[18px]">
+            <li className="mt-[6px] pl-[8px] bg-no-repeat bg-[position:0_7px] text-[#888] text-[12px] leading-[18px]"
+            style={{ backgroundImage: `url('${imageUrl}/coupon/bar_2x2.gif')` }}>
               발급받으신 CJ ONE 쿠폰을 올리브영몰(온라인)에서 사용하시는 경우 다운로드 후 주문/결제
               시 적용하실 수 있습니다.
             </li>
-            <li className="mt-[6px] pl-[8px] bg-[url('/images/mypage/coupon/bar_2x2.gif')] bg-no-repeat bg-[position:0_7px] text-[#888] text-[12px] leading-[18px]">
+            <li className="mt-[6px] pl-[8px] bg-no-repeat bg-[position:0_7px] text-[#888] text-[12px] leading-[18px]"
+            style={{ backgroundImage: `url('${imageUrl}/coupon/bar_2x2.gif')` }}>
               사용 기간이 만료되거나 사용한 쿠폰은 보유 목록에서 자동으로 삭제됩니다.
             </li>
-            <li className="mt-[6px] pl-[8px] bg-[url('/images/mypage/coupon/bar_2x2.gif')] bg-no-repeat bg-[position:0_7px] text-[#888] text-[12px] leading-[18px]">
+            <li className="mt-[6px] pl-[8px] bg-no-repeat bg-[position:0_7px] text-[#888] text-[12px] leading-[18px]"
+            style={{ backgroundImage: `url('${imageUrl}/coupon/bar_2x2.gif')` }}>
               주문/취소 시 이용기간이 남아 있는 쿠폰인 경우 재발급됩니다.
             </li>
           </ul>

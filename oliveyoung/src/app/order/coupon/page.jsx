@@ -4,9 +4,11 @@ import React, { useState, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
 import Image from 'next/image';
 import axios from '@/api/axiosInstance';
+import { getImageUrl } from "@/utils/image";
 
 export default function Coupon() {
   const router = useRouter();
+  const imageUrl = getImageUrl("/order");
 
   const [userInfo, setUserInfo] = useState('');
   const [couponList, setCouponList] = useState([]);
@@ -121,7 +123,8 @@ export default function Coupon() {
 
   return (
     <div className="overflow-hidden w-full min-w-[1020px]">
-      <div className="w-full h-[100px] bg-[url('/images/order/coupon/bg_coupon_top_191024.png')] bg-no-repeat bg-[position:50%_0] bg-[#e4f1fc]">
+      <div className="w-full h-[100px] bg-no-repeat bg-[position:50%_0] bg-[#e4f1fc]"
+      style={{ backgroundImage: `url('${imageUrl}/coupon/bg_coupon_top_191024.png')` }}>
         <h1 className="w-[1020px] mx-auto pt-[30px] text-[40px] text-black leading-[40px] relative font-bold">
           올리브 멤버스 라운지{' '}
           <span className="inline-block ml-[15px] text-[#333] text-[18px] font-medium">
@@ -141,7 +144,8 @@ export default function Coupon() {
             </button>
           </li>
           <li className="relative float-left w-1/2">
-            <div className="absolute bottom-[-5px] left-1/2 w-[12px] h-[5px] -ml-[6px] bg-[url('/images/order/cart/bg_tab_arrow.png')] bg-no-repeat" />
+            <div className="absolute bottom-[-5px] left-1/2 w-[12px] h-[5px] -ml-[6px] bg-no-repeat" 
+            style={{ backgroundImage: `url('${imageUrl}/cart/bg_tab_arrow.png')` }} />
             <button
               type="button"
               className="w-full h-[50px] bg-[#555] text-[#fff] text-[18px] leading-[16px] font-medium text-center cursor-pointer"
@@ -152,13 +156,14 @@ export default function Coupon() {
         </ul>
 
         <div className="block">
-          <div className="w-[1020px] mx-auto h-[281px] pt-[50px] bg-[url('/images/order/coupon/bg_mem_info.png')] bg-no-repeat">
+          <div className="w-[1020px] mx-auto h-[281px] pt-[50px] bg-no-repeat"
+          style={{ backgroundImage: `url('${imageUrl}/coupon/bg_mem_info.png')` }}>
             <div className="relative w-[80px] h-[80px] mx-auto">
               <span className="absolute block overflow-hidden w-[80px] h-[80px]" />
               <Image
                 width={80}
                 height={80}
-                src="/images/mypage/order/my_picture_base.jpg"
+                src={`${imageUrl}/my_picture_base.jpg`}
                 alt="프로필 이미지"
               />
             </div>
@@ -172,8 +177,10 @@ export default function Coupon() {
           </div>
         </div>
 
-        <div className="block w-[1020px] h-[100px] mt-[-1px] mx-auto bg-[url('/images/order/coupon/bg_coupon_enroll.png')] bg-no-repeat cursor-pointer">
-          <span className="inline-block align-middle text-[#6ab9d5] text-[24px] leading-[30px] ml-[86px] pt-[44px] pl-[40px] bg-[url('/images/order/coupon/ico_plus30x30.png')] bg-no-repeat bg-[position:0_42px] font-bold">
+        <div className="block w-[1020px] h-[100px] mt-[-1px] mx-auto bg-no-repeat cursor-pointer"
+        style={{ backgroundImage: `url('${imageUrl}/coupon/bg_coupon_enroll.png')` }}>
+          <span className="inline-block align-middle text-[#6ab9d5] text-[24px] leading-[30px] ml-[86px] pt-[44px] pl-[40px] bg-no-repeat bg-[position:0_42px] font-bold"
+          style={{ backgroundImage: `url('${imageUrl}/coupon/ico_plus30x30.png')` }}>
             쿠폰 등록{' '}
             <em className="inline-block align-middle text-[#888] text-[16px] not-italic ml-[20px] font-bold">
               발급 받으신 번호를 등록해주세요
@@ -182,10 +189,12 @@ export default function Coupon() {
         </div>
 
         <div className="relative w-[1020px] mx-auto">
-          <h2 className="w-[1020px] mx-auto pt-[48px] pr-0 pb-[14px] pl-[50px] text-black text-[24px] font-bold bg-[url('/images/order/coupon/ico_member.png')] bg-no-repeat leading-[30px] bg-[position:0_42px]">
+          <h2 className="w-[1020px] mx-auto pt-[48px] pr-0 pb-[14px] pl-[50px] text-black text-[24px] font-bold bg-no-repeat leading-[30px] bg-[position:0_42px]"
+          style={{ backgroundImage: `url('${imageUrl}/coupon/ico_member.png')` }}>
             올리브 멤버스 쿠폰
           </h2>
-          <span className="absolute bottom-[20px] right-0 pr-[15px] text-[16px] text-[#888] font-bold bg-[url('/images/order/coupon/ico_arrow8x14.png')] bg-no-repeat bg-[position:100%_2px] cursor-pointer">
+          <span className="absolute bottom-[20px] right-0 pr-[15px] text-[16px] text-[#888] font-bold bg-no-repeat bg-[position:100%_2px] cursor-pointer"
+          style={{ backgroundImage: `url('${imageUrl}/coupon/ico_arrow8x14.png')` }}>
             쿠폰안내
           </span>
         </div>
@@ -199,10 +208,10 @@ export default function Coupon() {
                   className="relative w-[325px] h-[172px] mx-auto pr-[55px] bg-no-repeat"
                   style={{
                     backgroundImage: issued
-                      ? `url('/images/order/coupon/bg_coupon_325_off.png')`
+                      ? `url('${imageUrl}/coupon/bg_coupon_325_off.png')`
                       : coupon.name.toLowerCase().includes('summer15')
-                      ? `url('/images/order/coupon/bg_coupon_today_325.png')`
-                      : `url('/images/order/coupon/bg_coupon_325.png')`,
+                      ? `url('${imageUrl}/coupon/bg_coupon_today_325.png')`
+                      : `url('${imageUrl}/coupon/bg_coupon_325.png')`
                   }}
                 >
                   <div className="table-cell w-[270px] h-[172px] align-middle">
@@ -219,7 +228,8 @@ export default function Coupon() {
                     </span>
                     {/* 오늘드림 뱃지 */}
                     {coupon.name.toLowerCase().includes('summer15') && (
-                      <span className="absolute top-[15px] left-[-36px] w-[72px] h-[72px] rounded-[36px] bg-[url('/images/order/coupon/txt_today.png')] bg-no-repeat bg-[length:42px_auto] bg-[position:50%_50%] bg-[#ff8bbc] text-transparent text-center">
+                      <span className="absolute top-[15px] left-[-36px] w-[72px] h-[72px] rounded-[36px] bg-no-repeat bg-[length:42px_auto] bg-[position:50%_50%] bg-[#ff8bbc] text-transparent text-center"
+                      style={{ backgroundImage: `url('${imageUrl}/coupon/txt_today.png')` }}>
                         <strong>오늘드림</strong>
                       </span>
                     )}
@@ -240,15 +250,20 @@ export default function Coupon() {
                     }
                   }}
                 >
-                  <span
-                    className={
-                      issued
-                        ? 'text-[14px] font-bold tracking-[-0.56px]'
-                        : "pr-[20px] text-[14px] font-bold text-[#292929] tracking-[-0.56px] bg-[url('/images/order/coupon/icon_dw.png')] bg-no-repeat bg-[position:100%_50%]"
-                    }
-                  >
-                    {issued ? '쿠폰 발급완료' : '쿠폰 다운로드'}
-                  </span>
+                <span
+                  className={
+                    issued
+                      ? 'text-[14px] font-bold tracking-[-0.56px]'
+                      : "pr-[20px] text-[14px] font-bold text-[#292929] tracking-[-0.56px] bg-no-repeat bg-[position:100%_50%]"
+                  }
+                  style={
+                    !issued
+                      ? { backgroundImage: `url('${imageUrl}/coupon/icon_dw.png')` }
+                      : undefined
+                  }
+                >
+                  {issued ? '쿠폰 발급완료' : '쿠폰 다운로드'}
+                </span>
                 </button>
               </li>
             );

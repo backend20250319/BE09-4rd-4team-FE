@@ -6,9 +6,12 @@ import { useRouter } from 'next/navigation';
 import React, { useState, useEffect } from 'react';
 import axios from '@/api/axiosInstance';
 import { useCart } from '@/contexts/CartContext';
+import { getImageUrl } from "@/utils/image";
 
 export default function Cart() {
   const router = useRouter();
+  const imageUrl = getImageUrl("");
+  const imageUrlOD = getImageUrl("/order/cart");
 
   const badgeColorMap = {
     세일: 'bg-[#f65c60]',
@@ -325,7 +328,8 @@ export default function Cart() {
       <div className="w-[1020px] h-full mx-auto">
         <div className="overflow-hidden h-[140px] rounded-[5px]">
           {/* title box */}
-          <div className="absolute w-full h-[140px] left-1/2 -translate-x-1/2 bg-[url('/images/order/cart/bg_order_top.png')] bg-no-repeat bg-center bg-[#ffeeda]" />
+          <div className="absolute w-full h-[140px] left-1/2 -translate-x-1/2 bg-no-repeat bg-center bg-[#ffeeda]"
+          style={{ backgroundImage: `url('${imageUrlOD}/bg_order_top.png')` }} />
           <h1 className="float-left pt-[37px] pb-0 pr-0 text-[40px] text-black leading-[40px] relative font-bold">
             장바구니
             {itemCount > 0 && (
@@ -335,13 +339,15 @@ export default function Cart() {
             )}
           </h1>
           <ul className="float-right relative">
-            <li className="text-[#000] float-left h-[120px] px-[30px] pl-[20px] leading-[120px] text-center text-[24px] whitespace-nowrap bg-[url('/images/order/cart/bg_step_on.png')] bg-[position:100%_50%] bg-no-repeat">
+            <li className="text-[#000] float-left h-[120px] px-[30px] pl-[20px] leading-[120px] text-center text-[24px] whitespace-nowrap bg-[position:100%_50%] bg-no-repeat"
+            style={{ backgroundImage: `url('${imageUrlOD}/bg_step_on.png')` }}>
               <span className="text-[#333] inline-block mr-[5px] text-[20px] align-top tracking-[-0.02em] font-medium">
                 01
               </span>
               장바구니
             </li>
-            <li className="float-left h-[120px] px-[30px] pl-[20px] leading-[120px] text-center text-[24px] text-[#8b8176] whitespace-nowrap bg-[url('/images/order/cart/bg_step.png')] bg-[position:100%_50%] bg-no-repeat">
+            <li className="float-left h-[120px] px-[30px] pl-[20px] leading-[120px] text-center text-[24px] text-[#8b8176] whitespace-nowrap bg-[position:100%_50%] bg-no-repeat"
+            style={{ backgroundImage: `url('${imageUrlOD}/bg_step.png')` }}>
               <span className="inline-block mr-[5px] text-[20px] text-[#8b8176] align-top tracking-[-0.02em] font-medium">
                 02
               </span>
@@ -354,7 +360,8 @@ export default function Cart() {
               주문완료
             </li>
           </ul>
-          <div className="absolute block w-[1020px] h-[20px] mt-[110px] bg-[url('/images/order/cart/bg_line.gif')] bg-no-repeat bg-[length:auto] bg-[position:50%_10px] bg-white" />
+          <div className="absolute block w-[1020px] h-[20px] mt-[110px] bg-no-repeat bg-[length:auto] bg-[position:50%_10px] bg-white" 
+          style={{ backgroundImage: `url('${imageUrlOD}/bg_line.gif')` }} />
         </div>
 
         {/* membership box */}
@@ -369,10 +376,11 @@ export default function Cart() {
                 width={42}
                 height={42}
                 className="inline-block text-[12px]"
-                src="/images/order/cart/icon_rating_pink_on.svg"
+                src={`${imageUrlOD}/icon_rating_pink_on.svg`}
                 alt="icon_rating_pink_on.svg"
               />
-              <span className="inline-block text-[12px] pr-[13px] font-bold mt-1 bg-[url('/images/order/cart/ico_arrow6x11.png')] bg-no-repeat bg-[position:100%_4px] cursor-pointer">
+              <span className="inline-block text-[12px] pr-[13px] font-bold mt-1 bg-no-repeat bg-[position:100%_4px] cursor-pointer"
+              style={{ backgroundImage: `url('${imageUrlOD}/ico_arrow6x11.png')` }}>
                 등급혜택
               </span>
             </li>
@@ -413,7 +421,8 @@ export default function Cart() {
         {/* 일반 배송 탭 */}
         <ul className="overflow-hidden w-[1020px] mx-auto mt-[30px] pb-[5px]">
           <li className="relative float-left w-1/2">
-            <div className="absolute bottom-[-5px] left-1/2 w-[12px] h-[5px] -ml-[6px] bg-[url('/images/order/cart/bg_tab_arrow.png')] bg-no-repeat" />
+            <div className="absolute bottom-[-5px] left-1/2 w-[12px] h-[5px] -ml-[6px] bg-no-repeat"
+            style={{ backgroundImage: `url('${imageUrlOD}/bg_tab_arrow.png')` }} />
             <button
               type="button"
               className="text-white bg-[#555] w-full h-[50px] text-[18px] font-medium leading-[24px]"
@@ -498,8 +507,8 @@ export default function Cart() {
               <tr>
                 <td
                   colSpan={7}
-                  className="h-[295px] pt-[130px] border-b border-b-[#e6e6e6] text-center text-[#888] text-[16px] bg-[url('/images/mypage/order/ico_nodata104x104.png')] bg-[position:50%_80px] bg-no-repeat"
-                >
+                  className="h-[295px] pt-[130px] border-b border-b-[#e6e6e6] text-center text-[#888] text-[16px] bg-[position:50%_80px] bg-no-repeat"
+                  style={{ backgroundImage: `url('${imageUrl}/mypage/order/ico_nodata104x104.png')` }}>
                   장바구니에 담긴 상품이 없습니다.
                 </td>
               </tr>
@@ -522,7 +531,7 @@ export default function Cart() {
                           <Image
                             width={85}
                             height={85}
-                            src={`/images${product.imageUrl}`}
+                            src={`${imageUrl}${product.imageUrl}`}
                             alt={product.brandName}
                           />
                         </Link>
@@ -688,16 +697,19 @@ export default function Cart() {
                   {selectedPrice.toLocaleString()}
                 </span>
                 원
-                <span className="inline-block mx-[5px] w-[10px] h-[10px] bg-[url('/images/order/cart/ico_sign_cal.png')] bg-[position:0_50%] bg-no-repeat text-left"></span>
+                <span className="inline-block mx-[5px] w-[10px] h-[10px] bg-[position:0_50%] bg-no-repeat text-left"
+                style={{ backgroundImage: `url('${imageUrlOD}/ico_sign_cal.png')` }}></span>
                 총 할인금액
                 <span className="mr-[1px] text-[16px] font-medium">
                   {(selectedPrice - selectedDiscountedPrice).toLocaleString()}
                 </span>
                 원
-                <span className="inline-block mx-[5px] w-[10px] h-[10px] bg-[url('/images/order/cart/ico_sign_cal.png')] bg-[position:-20px_50%] bg-no-repeat text-left"></span>
+                <span className="inline-block mx-[5px] w-[10px] h-[10px] bg-[position:-20px_50%] bg-no-repeat text-left"
+                style={{ backgroundImage: `url('${imageUrlOD}/ico_sign_cal.png')` }}></span>
                 배송비
                 <span className="mr-[1px] text-[16px] font-medium">0</span>원
-                <span className="inline-block mx-[5px] w-[10px] h-[10px] bg-[url('/images/order/cart/ico_sign_cal.png')] bg-[position:-40px_50%] bg-no-repeat text-left"></span>
+                <span className="inline-block mx-[5px] w-[10px] h-[10px] bg-[position:-40px_50%] bg-no-repeat text-left"
+                style={{ backgroundImage: `url('${imageUrlOD}/ico_sign_cal.png')` }}></span>
                 <span className="text-[14px] text-[#f27370]">
                   총 결제금액
                   <span className="ml-[9px] text-[16px] font-medium">
@@ -719,7 +731,8 @@ export default function Cart() {
                     원
                   </span>
                 </p>
-                <span className="top-1/2 left-[340px] absolute mt-[-15px] ml-[-15px] w-[30px] h-[30px] bg-[url('/images/order/cart/ico_sign_cal2.png')] bg-[position:0_0] bg-no-repeat"></span>
+                <span className="top-1/2 left-[340px] absolute mt-[-15px] ml-[-15px] w-[30px] h-[30px] bg-[position:0_0] bg-no-repeat"
+                style={{ backgroundImage: `url('${imageUrlOD}/ico_sign_cal2.png')` }}></span>
                 <p className="float-left w-[340px] h-[110px] pt-[30px] text-center text-[16px] text-[#666] border-r border-r-[#efefef]">
                   총 할인금액
                   <span className="text-[#f27370] block mt-[10px] text-center text-[16px] font-bold leading-[20px]">
@@ -729,7 +742,8 @@ export default function Cart() {
                     원
                   </span>
                 </p>
-                <span className="top-1/2 left-[680px] absolute mt-[-15px] ml-[-15px] w-[30px] h-[30px] bg-[url('/images/order/cart/ico_sign_cal2.png')] bg-[position:-30_0] bg-no-repeat"></span>
+                <span className="top-1/2 left-[680px] absolute mt-[-15px] ml-[-15px] w-[30px] h-[30px] bg-[position:-30_0] bg-no-repeat"
+                style={{ backgroundImage: `url('${imageUrlOD}/ico_sign_cal2.png')` }}></span>
                 <p className="border-l border-l-[#efefef] float-left w-[340px] h-[110px] pt-[30px] text-center text-[16px] text-[#666] border-r border-r-[#efefef] font-bold">
                   배송비
                   <span className="text-[#333] block mt-[10px] text-center text-[16px] font-bold leading-[20px]">
@@ -742,7 +756,8 @@ export default function Cart() {
               </div>
               <div className="text-[#333] h-[80px] pt-[30px] px-[30px] text-right bg-[#f6f6f6] border-t-[2px] border-t-[#d6d6d6] text-[22px] font-bold relative leading-[20px]">
                 <span className="absolute top-1/2 left-[30px] h-[30px] -mt-[11px] text-[#888] text-[14px]">
-                  <span className="inline-block w-[22px] h-[22px] mr-[7px] mb-[2px] bg-[url('/images/order/cart/ico_arrow_01.gif')] bg-no-repeat align-middle"></span>
+                  <span className="inline-block w-[22px] h-[22px] mr-[7px] mb-[2px] bg-no-repeat align-middle"
+                  style={{ backgroundImage: `url('${imageUrlOD}/ico_arrow_01.gif')` }}></span>
                   배송비는 쿠폰할인금액에 따라 변경될 수 있습니다.
                 </span>
                 총 결제예상금액

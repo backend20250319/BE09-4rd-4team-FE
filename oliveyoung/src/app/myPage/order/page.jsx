@@ -11,6 +11,7 @@ import Link from 'next/link';
 import UserInfoBox from '../user/components/UserInfoBox';
 import { useCart } from '@/contexts/CartContext';
 import axios from '@/api/axiosInstance';
+import { getImageUrl } from "@/utils/image";
 
 // 날짜 계산 함수
 const getPeriod = (months) => {
@@ -31,6 +32,8 @@ dayjs.extend(isSameOrBefore);
 
 export default function Order() {
   const router = useRouter();
+  const imageUrl = getImageUrl("/mypage");
+  const imageProd = getImageUrl("");
 
   const searchParams = useSearchParams();
 
@@ -215,11 +218,15 @@ export default function Order() {
             return (
               <li
                 key={statusKR}
-                className={
-                  'float-left relative w-1/5 h-[117px]' +
-                  (statusKR !== Object.values(statusKoreanMap)[0]
-                    ? " bg-[url('/images/mypage/order/ico_arrow11x21.png')] bg-no-repeat bg-[position:0%_50%]"
-                    : '')
+                className="float-left relative w-1/5 h-[117px]"
+                style={
+                  statusKR !== Object.values(statusKoreanMap)[0]
+                    ? {
+                        backgroundImage: `url('${imageUrl}/order/ico_arrow11x21.png')`,
+                        backgroundRepeat: 'no-repeat',
+                        backgroundPosition: '0% 50%',
+                      }
+                    : undefined
                 }
               >
                 <em
@@ -397,11 +404,13 @@ export default function Order() {
         </fieldset>
 
         <p className="pt-[10px] text-[#555555] text-[12px] leading-[18px]">
-          <span className="relative inline-block align-middle px-[10px] text-[#555555] text-[12px] leading-[18px] bg-[url('/images/mypage/coupon/bar_2x2.gif')] bg-no-repeat bg-[position:0_7px]">
+          <span className="relative inline-block align-middle px-[10px] text-[#555555] text-[12px] leading-[18px] bg-no-repeat bg-[position:0_7px]"
+          style={{ backgroundImage: `url('${imageUrl}/coupon/bar_2x2.gif')` }}>
             2017년 4월 1일 이후 내역만 조회가 가능하며, 이전의 주문내역은 CJMall 주문내역에서
             확인하실 수 있습니다.
           </span>
-          <span className="relative inline-block align-middle px-[10px] text-[#555555] text-[12px] leading-[18px] bg-[url('/images/mypage/coupon/bar_2x2.gif')] bg-no-repeat bg-[position:0_7px]">
+          <span className="relative inline-block align-middle px-[10px] text-[#555555] text-[12px] leading-[18px] bg-no-repeat bg-[position:0_7px]"
+          style={{ backgroundImage: `url('${imageUrl}/coupon/bar_2x2.gif')` }}>
             매장 구매는 CJ ONE 포인트 적립을 한 경우, 최근 1년 내역만 조회가 가능합니다. (2019년 9월
             27일 이후 내역만 조회 가능)
           </span>
@@ -455,8 +464,8 @@ export default function Order() {
               <tr>
                 <td
                   colSpan={5}
-                  className="!w-full !pt-[200px] !px-[15px] !pb-[80px] !text-[#888888] !text-[16px] !text-center !leading-[20px] bg-[url('/images/mypage/order/ico_nodata104x104.png')] bg-no-repeat"
-                  style={{ backgroundPosition: 'center 80px' }}
+                  className="!w-full !pt-[200px] !px-[15px] !pb-[80px] !text-[#888888] !text-[16px] !text-center !leading-[20px] bg-no-repeat"
+                  style={{ backgroundImage: `url('${imageUrl}/order/ico_nodata104x104.png`, backgroundPosition: 'center 80px' }}
                 >
                   기간 내 주문내역이 없습니다
                 </td>
@@ -494,7 +503,8 @@ export default function Order() {
                             className="float-left relative w-[85px] h-[85px] mr-[20px] text-center"
                           >
                             <Image
-                              src={`/images${item.imageUrl}`}
+                              src={`${imageProd}${item.imageUrl}`}
+
                               alt={item.productName}
                               width={85}
                               height={85}
@@ -514,7 +524,8 @@ export default function Order() {
                               onClick={() => handleAddToCart(item.productId)}
                               className="w-[120px] h-[32px] text-[12px] leading-[18px] text-[#555] rounded-[5px] border border-[#e5e5e5] bg-white mt-[10px] text-center cursor-pointer"
                             >
-                              <span className="pl-[15px] bg-[url('/images/mypage/order/icon_my_cart2.png')] bg-[position:0%_50%] bg-no-repeat">
+                              <span className="pl-[15px] bg-[position:0%_50%] bg-no-repeat"
+                              style={{ backgroundImage: `url('${imageUrl}/order/icon_my_cart2.png')` }}>
                                 장바구니 담기
                               </span>
                             </button>
