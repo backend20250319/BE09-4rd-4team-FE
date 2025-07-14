@@ -1,33 +1,82 @@
-"use client";
+'use client';
 
-import React, { useState } from "react";
-import { useRouter } from "next/navigation";
-import PasswordChangeSection from "../../components/PasswordChangeSection";
+import React, { useState, useEffect } from 'react';
+import { useRouter } from 'next/navigation';
+import PasswordChangeSection from '../../components/PasswordChangeSection';
+import { useAuth } from '@/contexts/AuthContext';
+import axios from '@/api/axiosInstance';
 
 export default function UserModificationPage() {
-  const [userInfo, setUserInfo] = useState({
-    id: "hong123", // ✅ 아이디 추가
-    name: "박창준",
-    gender: "남자",
-    email: "hong@test.com",
-    phone: "010-1234-5678",
-  });
+  const { accessToken } = useAuth();
 
   const router = useRouter();
+
+  const [userInfo, setUserInfo] = useState({
+    id: '',
+    name: '',
+    email: '',
+    phone: '',
+  });
+
+  useEffect(() => {
+    const fetchUserInfo = async () => {
+      try {
+        const res = await axios.get('http://localhost:8080/api/mypage/info', {
+          headers: {
+            Authorization: `Bearer ${accessToken}`,
+          },
+        });
+
+        const { userId, userName, email, phone } = res.data.data;
+        setUserInfo({
+          id: userId,
+          name: userName,
+          email,
+          phone,
+        });
+      } catch (error) {
+        console.error('회원 정보 조회 실패:', error);
+        alert('회원 정보를 불러오지 못했습니다.');
+      }
+    };
+
+    fetchUserInfo();
+  }, []);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
 
-    // ✅ TODO: 추후 API 연동
-    alert("수정된 정보 저장 (추후 API 연동)");
+    try {
+      const res = await axios.patch(
+        'http://localhost:8080/api/mypage/modifyinfo',
+        {
+          userName: userInfo.name,
+          email: userInfo.email,
+          phone: userInfo.phone,
+        },
+        {
+          headers: {
+            Authorization: `Bearer ${accessToken}`,
+          },
+        },
+      );
+
+      if (res.status === 200) {
+        alert('회원정보가 성공적으로 수정되었습니다.');
+        router.push('/');
+      } else {
+        alert(res.data.message || '회원정보 수정에 실패했습니다.');
+      }
+    } catch (err) {
+      console.error(err);
+      alert('서버 오류가 발생했습니다.');
+    }
   };
 
   return (
     <div className="max-w-[700px] mx-auto px-4 py-12">
       <h1 className="text-3xl font-bold text-center mb-2">회원정보 수정</h1>
-      <p className="text-center text-gray-500 mb-6">
-        회원님의 소중한 정보를 안전하게 관리하세요.
-      </p>
+      <p className="text-center text-gray-500 mb-6">회원님의 소중한 정보를 안전하게 관리하세요.</p>
 
       <form onSubmit={handleSubmit} className="space-y-8">
         <section>
@@ -55,36 +104,9 @@ export default function UserModificationPage() {
                   <input
                     type="text"
                     value={userInfo.name}
-                    readOnly
+                    onChange={(e) => setUserInfo({ ...userInfo, name: e.target.value })}
                     className="w-full border border-gray-300 rounded px-3 py-2 bg-gray-100"
                   />
-                </td>
-              </tr>
-
-              {/* 성별 */}
-              <tr className="border-b">
-                <th className="text-left px-4 py-2 bg-gray-50">성별</th>
-                <td className="px-4 py-2">
-                  <div className="flex space-x-4">
-                    <label>
-                      <input
-                        type="radio"
-                        name="gender"
-                        checked={userInfo.gender === "남자"}
-                        readOnly
-                      />
-                      남자
-                    </label>
-                    <label>
-                      <input
-                        type="radio"
-                        name="gender"
-                        checked={userInfo.gender === "여자"}
-                        readOnly
-                      />
-                      여자
-                    </label>
-                  </div>
                 </td>
               </tr>
 
@@ -95,7 +117,7 @@ export default function UserModificationPage() {
                   <input
                     type="email"
                     value={userInfo.email}
-                    readOnly
+                    onChange={(e) => setUserInfo({ ...userInfo, email: e.target.value })}
                     className="w-full border border-gray-300 rounded px-3 py-2 bg-gray-100"
                   />
                 </td>
@@ -108,13 +130,13 @@ export default function UserModificationPage() {
                   <input
                     type="text"
                     value={userInfo.phone}
-                    readOnly
+                    onChange={(e) => setUserInfo({ ...userInfo, phone: e.target.value })}
                     className="w-full border border-gray-300 rounded px-3 py-2 bg-gray-100"
                   />
                 </td>
               </tr>
 
-              {/* ✅ 비밀번호 변경 */}
+              {/* 비밀번호 변경 */}
               <tr>
                 <th className="text-left px-4 py-2 bg-gray-50">비밀번호</th>
                 <td className="px-4 py-2">
@@ -125,7 +147,7 @@ export default function UserModificationPage() {
           </table>
         </section>
 
-        {/* ✅ 버튼 */}
+        {/* 버튼 */}
         <div className="flex justify-center space-x-4">
           <button
             type="button"
@@ -134,10 +156,7 @@ export default function UserModificationPage() {
           >
             취소
           </button>
-          <button
-            type="submit"
-            className="px-6 py-2 bg-black text-white rounded font-bold"
-          >
+          <button type="submit" className="px-6 py-2 bg-black text-white rounded font-bold">
             저장
           </button>
         </div>
