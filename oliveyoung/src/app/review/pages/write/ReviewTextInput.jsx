@@ -1,10 +1,6 @@
-import { useState } from "react";
-
-export default function ReviewTextInput() {
-  const [text, setText] = useState("");
-
+export default function ReviewTextInput({ value, onChange }) {
   return (
-    <div className=" text-left" style={{ width: 512 }}>
+    <div className="text-left" style={{ width: 512 }}>
       {/* 박스 바깥에 라벨 */}
       <label
         htmlFor="reviewText"
@@ -17,7 +13,7 @@ export default function ReviewTextInput() {
       {/* 텍스트박스 및 안내문구 + 글자수 컨테이너 */}
       <div className="relative border rounded" style={{ width: 512, height: 230 }}>
         {/* 안내 문구 (텍스트박스 안에 겹침) */}
-        {text === "" && (
+        {value === "" && (
           <p
             className="absolute text-xs text-gray-400 whitespace-pre-line pointer-events-none select-none"
             style={{
@@ -38,8 +34,8 @@ export default function ReviewTextInput() {
         <textarea
           id="reviewText"
           rows={5}
-          value={text}
-          onChange={(e) => setText(e.target.value)}
+          value={value}
+          onChange={(e) => onChange(e.target.value)}
           placeholder=""
           className="resize-none focus:outline-blue-500 text-sm"
           style={{
@@ -67,7 +63,7 @@ export default function ReviewTextInput() {
             padding: "0 4px",
           }}
         >
-          {text.length} / 1000 글자
+          {value.length} / 1000 글자
         </p>
       </div>
     </div>
