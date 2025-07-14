@@ -19,6 +19,11 @@ export default function DeliveryRegisterForm() {
   const [postalCode, setPostalCode] = useState('');
 
   const handleSubmit = async () => {
+    if (!agreed) {
+      alert('개인정보 수집·이용에 동의해 주세요.');
+      return;
+    }
+
     const phone = `${phonePart1}-${phonePart2}-${phonePart3}`;
     try {
       await axios.post('http://localhost:8080/api/mypage/address/register', {
@@ -149,16 +154,23 @@ export default function DeliveryRegisterForm() {
                   우편번호
                 </button>
               </div>
-              <p className="text-gray-700 text-sm mb-2">
-                도로명: <br />
-                <span className="inline-block ml-2">{streetAddress}</span>
-              </p>
+              <div className="text-gray-700 text-sm mb-2 flex items-center gap-2">
+                <span className="whitespace-nowrap leading-normal">도로명 주소 :</span>
+                <input
+                  type="text"
+                  value={streetAddress}
+                  onChange={(e) => setStreetAddress(e.target.value)}
+                  className="leading-normal w-full border border-gray-300 rounded px-2 py-1  h-[26.4px] mt-1 ml-2"
+                  placeholder="도로명 주소를 입력하세요."
+                  maxLength={50}
+                />
+              </div>
               <input
                 type="text"
                 placeholder="상세주소를 입력하세요."
                 value={detailAddress}
                 onChange={(e) => setDetailAddress(e.target.value)}
-                className="w-full border border-gray-300 rounded px-2 py-1 h-[26.4px] mb-1"
+                className="w-full border border-gray-300 rounded px-2 py-1 h-[26.4px] mb-1 text-[14px]"
                 maxLength={30}
               />
             </td>
@@ -190,8 +202,12 @@ export default function DeliveryRegisterForm() {
 
         <div className="flex gap-3 mt-6 justify-center">
           <button
-            className="w-[150px] h-[50px] px-8 py-4 bg-[#9bce26] text-white rounded-[5px] text-[18px] font-bold hover:bg-[#899A00] transition-colors"
-            disabled={!agreed}
+            className={`w-[150px] h-[50px] px-8 py-4 rounded-[5px] text-[18px] font-bold transition-colors
+              ${
+                agreed
+                  ? 'bg-[#9bce26] text-white hover:bg-[#899A00]'
+                  : 'bg-gray-300 text-gray-500 cursor-not-allowed'
+              }`}
             onClick={handleSubmit}
           >
             확인
