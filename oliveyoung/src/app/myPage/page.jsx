@@ -7,6 +7,7 @@ import React, { useState, useEffect } from 'react';
 import Link from 'next/link';
 import UserInfoBox from './user/components/UserInfoBox';
 import axios from '@/api/axiosInstance';
+import { getImageUrl } from "@/utils/image";
 
 // 날짜 계산 함수
 const getPeriod = (months) => {
@@ -26,6 +27,9 @@ dayjs.extend(isSameOrAfter);
 dayjs.extend(isSameOrBefore);
 
 export default function MyPageHome() {
+
+  const imageUrl = getImageUrl("/mypage");
+
   const defaultPeriod = getPeriod(1);
 
   const [periodState, setPeriodState] = useState(() => ({
@@ -105,8 +109,8 @@ export default function MyPageHome() {
           </h2>
           <Link
             href="/mypage/order"
-            className="absolute top-[5px] right-[0px] font-normal pr-[15px] text-[#666] text-[14px] leading-[20px] align-top cursor-pointer bg-[url('/images/mypage/home/ico_arrow7x10.png')] bg-no-repeat bg-[position:100%_50%]"
-          >
+            className="absolute top-[5px] right-[0px] font-normal pr-[15px] text-[#666] text-[14px] leading-[20px] align-top cursor-pointer bg-no-repeat bg-[position:100%_50%]"
+            style={{ backgroundImage: `url('${imageUrl}/home/ico_arrow7x10.png')` }}> 
             더보기
           </Link>
         </div>
@@ -117,11 +121,15 @@ export default function MyPageHome() {
             return (
               <li
                 key={statusKR}
-                className={
-                  'float-left relative w-1/5 h-[117px]' +
-                  (statusKR !== Object.values(statusKoreanMap)[0]
-                    ? " bg-[url('/images/mypage/order/ico_arrow11x21.png')] bg-no-repeat bg-[position:0%_50%]"
-                    : '')
+                className="float-left relative w-1/5 h-[117px]"
+                style={
+                  statusKR !== Object.values(statusKoreanMap)[0]
+                    ? {
+                        backgroundImage: `url('${imageUrl}/order/ico_arrow11x21.png')`,
+                        backgroundRepeat: 'no-repeat',
+                        backgroundPosition: '0% 50%',
+                      }
+                    : undefined
                 }
               >
                 <em
@@ -142,13 +150,15 @@ export default function MyPageHome() {
 
         <div className="pt-[25px] pb-[7px] mt-[15px] overflow-hidden relative w-full border-b border-[#666]">
           <h2 className="float-left text-[#333] text-[20px] leading-[30px] font-bold">좋아요</h2>
-          <p className="absolute right-[0px] bottom-[10px] pr-[15px] text-[#666] font-normal text-[14px] leading-[20px] align-top cursor-pointer bg-[url('/images/mypage/home/ico_arrow7x10.png')] bg-no-repeat bg-[position:100%_50%]">
+          <p className="absolute right-[0px] bottom-[10px] pr-[15px] text-[#666] font-normal text-[14px] leading-[20px] align-top cursor-pointer bg-no-repeat bg-[position:100%_50%]"
+          style={{ backgroundImage: `url('${imageUrl}/home/ico_arrow7x10.png')` }}>
             더보기
           </p>
         </div>
         <div>
           <ul className="border-b border-[#ddd]">
-            <li className="w-full px-[15px] pt-[200px] pb-[80px] bg-[url('/images/mypage/order/ico_nodata104x104.png')] bg-no-repeat bg-[center_80px] text-[#888] text-[16px] text-center leading-[20px]">
+            <li className="w-full px-[15px] pt-[200px] pb-[80px] bg-no-repeat bg-[center_80px] text-[#888] text-[16px] text-center leading-[20px]"
+            style={{ backgroundImage: `url('${imageUrl}/order/ico_nodata104x104.png')` }}>
               좋아요 상품이 없습니다
             </li>
           </ul>
@@ -158,7 +168,8 @@ export default function MyPageHome() {
           <div className="w-[380px]">
             <div className="pt-[25px] overflow-hidden w-full pb-[7px] border-b border-[#666] flex items-center justify-between">
               <h2 className="text-[#333] text-[20px] leading-[30px] font-bold">1 : 1 문의내역</h2>
-              <p className="text-[#666] pr-[15px] font-normal text-[14px] leading-[20px] align-top cursor-pointer bg-[url('/images/mypage/home/ico_arrow7x10.png')] bg-no-repeat bg-[position:100%_50%]">
+              <p className="text-[#666] pr-[15px] font-normal text-[14px] leading-[20px] align-top cursor-pointer bg-no-repeat bg-[position:100%_50%]"
+              style={{ backgroundImage: `url('${imageUrl}/home/ico_arrow7x10.png')` }}>
                 더보기
               </p>
             </div>
@@ -173,7 +184,8 @@ export default function MyPageHome() {
           <div className="w-[380px]">
             <div className="pt-[25px] pb-[7px] border-b border-[#666] flex items-center justify-between">
               <h2 className="text-[#333] text-[20px] leading-[30px] font-bold">상품Q&A내역</h2>
-              <p className="text-[#666] pr-[15px] font-normal text-[14px] leading-[20px] align-top cursor-pointer bg-[url('/images/mypage/home/ico_arrow7x10.png')] bg-no-repeat bg-[position:100%_50%]">
+              <p className="text-[#666] pr-[15px] font-normal text-[14px] leading-[20px] align-top cursor-pointer bg-no-repeat bg-[position:100%_50%]"
+              style={{ backgroundImage: `url('${imageUrl}/home/ico_arrow7x10.png')` }}>
                 더보기
               </p>
             </div>

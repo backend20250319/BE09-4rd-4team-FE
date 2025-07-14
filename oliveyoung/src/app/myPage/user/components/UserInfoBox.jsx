@@ -3,8 +3,12 @@
 import Image from 'next/image';
 import React, { useState, useEffect } from 'react';
 import axios from '@/api/axiosInstance';
+import { getImageUrl } from "@/utils/image";
 
 export default function UserInfoBox() {
+
+  const imageUrl = getImageUrl("/mypage/order");
+
   const [userInfo, setUserInfo] = useState({
     userName: '',
   });
@@ -65,11 +69,12 @@ export default function UserInfoBox() {
       {/* 유저 info 박스 */}
       <div className="relative h-[51px] pt-2 pl-[30px] bg-[#eb6d9a]">
         <div className="relative float-left w-[34px] h-[34px] rounded-full overflow-hidden">
-          <span className="absolute top-0 left-0 block overflow-hidden w-[34px] h-[34px] bg-no-repeat bg-[url('/images/mypage/order/bg_grd_01.png')]"></span>
+          <span className="absolute top-0 left-0 block overflow-hidden w-[34px] h-[34px] bg-no-repeat"
+          style={{ backgroundImage: `url('${imageUrl}/bg_grd_01.png')` }}></span>
           <Image
             width={34}
             height={34}
-            src="/images/mypage/order/my_picture_base.jpg"
+            src={`${imageUrl}/my_picture_base.jpg`}
             alt="my_picture_base.jpg"
           />
         </div>
@@ -79,10 +84,12 @@ export default function UserInfoBox() {
           반갑습니다.
         </p>
         <ul className="absolute top-1/2 right-[30px] -mt-[10px]">
-          <li className="inline-block pr-[15px] text-[13px] text-white font-bold bg-[url('/images/mypage/order/ico_arrow7x10_2.png')] bg-no-repeat bg-[length:5px_10px] bg-[position:100%_50%] cursor-pointer">
+          <li className="inline-block pr-[15px] text-[13px] text-white font-bold bg-no-repeat bg-[length:5px_10px] bg-[position:100%_50%] cursor-pointer"
+            style={{ backgroundImage: `url('${imageUrl}/ico_arrow7x10_2.png')` }}>
             올리브 멤버스 라운지
           </li>
-          <li className="inline-block pr-[15px] ml-[30px] text-[13px] text-white font-bold bg-[url('/images/mypage/order/ico_arrow7x10_2.png')] bg-no-repeat bg-[length:5px_10px] bg-[position:100%_50%] cursor-pointer">
+          <li className="inline-block pr-[15px] ml-[30px] text-[13px] text-white font-bold bg-no-repeat bg-[length:5px_10px] bg-[position:100%_50%] cursor-pointer"
+            style={{ backgroundImage: `url('${imageUrl}/ico_arrow7x10_2.png')` }}>
             나의 프로필
           </li>
         </ul>
