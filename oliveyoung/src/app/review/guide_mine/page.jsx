@@ -7,13 +7,41 @@ import ReviewTabs from "../pages/guide/ReviewTabs";
 import MyPageLayout from "@/app/mypage/layout";
 import UserInfoBox from "@/app/mypage/user/components/UserInfoBox";
 import { getImageUrl } from "@/utils/image";
-import ReviewWriteLayout from "../pages/write/ReviewWriteMain";
+
+// content만 수정할 수 있는 모달
+function ReviewEditModal({ review, onClose, onSave }) {
+  const [content, setContent] = useState(review.content);
+
+  return (
+    <div className="bg-white p-8 rounded-xl w-[400px] shadow-lg flex flex-col">
+      <h3 className="text-lg font-bold mb-4">리뷰 수정</h3>
+      <textarea
+        className="w-full border rounded p-2 mb-4 resize-none"
+        value={content}
+        onChange={(e) => setContent(e.target.value)}
+        rows={5}
+        autoFocus
+      />
+      <div className="flex justify-end gap-2">
+        <button className="px-4 py-1 border rounded text-sm" onClick={onClose}>
+          취소
+        </button>
+        <button
+          className="px-4 py-1 border bg-black text-white rounded text-sm"
+          onClick={() => onSave(content)}
+        >
+          저장
+        </button>
+      </div>
+    </div>
+  );
+}
 
 export default function MyReviewsPage() {
   const [reviews, setReviews] = useState([]);
-  const [editingReview, setEditingReview] = useState(null); // 수정할 리뷰 정보
+  const [editingReview, setEditingReview] = useState(null);
 
-  // 리뷰 목록 새로고침 함수
+  // 리뷰 목록 새로고침
   const fetchReviews = async () => {
     try {
       const token = localStorage.getItem("accessToken");
@@ -57,6 +85,31 @@ export default function MyReviewsPage() {
       fetchReviews();
     } catch (error) {
       alert("삭제 실패: " + (error.response?.data?.message || error.message));
+    }
+  };
+
+  // 수정 저장 (모든 필드 PUT으로 전달)
+  const handleUpdate = async (reviewId, newContent) => {
+    try {
+      const token = localStorage.getItem("accessToken");
+      // editingReview 객체의 나머지 값들을 모두 포함하여 PUT 요청
+      await axios.put(
+        `http://localhost:8080/api/reviews/${reviewId}`,
+        {
+          ...editingReview, // 기존 리뷰 전체 필드
+          content: newContent, // content는 새 값으로 덮어쓰기
+        },
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+            "Content-Type": "application/json",
+          },
+        }
+      );
+      fetchReviews();
+      setEditingReview(null);
+    } catch (error) {
+      alert("수정 실패: " + (error.response?.data?.message || error.message));
     }
   };
 
@@ -164,14 +217,12 @@ export default function MyReviewsPage() {
               {/* 수정 모달 */}
               {editingReview && (
                 <div className="fixed inset-0 bg-black bg-opacity-40 z-50 flex justify-center items-center">
-                  <ReviewWriteLayout
-                    orderItemId={editingReview.orderItemId}
+                  <ReviewEditModal
                     review={editingReview}
-                    mode="edit"
-                    onClose={() => {
-                      handleClose();
-                      fetchReviews();
-                    }}
+                    onClose={handleClose}
+                    onSave={(newContent) =>
+                      handleUpdate(editingReview.reviewId, newContent)
+                    }
                   />
                 </div>
               )}
