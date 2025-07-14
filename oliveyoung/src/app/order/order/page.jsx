@@ -90,7 +90,7 @@ export default function Order() {
           },
         });
 
-        const couponList = res.data;
+        const couponList = res.data.filter(coupon => coupon.used === true);
         setCouponList(couponList);
 
       } catch (e) {
@@ -307,30 +307,30 @@ export default function Order() {
       discount: selectedCoupon?.discount ?? 0
     }
 
-    // const fetchCreateOrder = async () => {
-    //   try {
-    //     await axios.post("http://localhost:8080/api/orders", requestData,
-    //     {
-    //       headers: {
-    //         Authorization: `Bearer ${token}`,
-    //       },
-    //     }
-    //   );
+    const fetchCreateOrder = async () => {
+      try {
+        await axios.post("http://localhost:8080/api/orders", requestData,
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        }
+      );
 
-    //   // 장바구니 수량 업데이트
-    //   const res = await axios.get('http://localhost:8080/api/carts/items', {
-    //     headers: { Authorization: `Bearer ${token}` },
-    //   });
+      // 장바구니 수량 업데이트
+      const res = await axios.get('http://localhost:8080/api/carts/items', {
+        headers: { Authorization: `Bearer ${token}` },
+      });
 
-    //   setItemCount(res.data.length);
+      setItemCount(res.data.length);
 
-    //   alert("정상적으로 결제가 완료되었습니다.");
-    //   router.push("/mypage");
+      alert("정상적으로 결제가 완료되었습니다.");
+      router.push("/mypage");
 
-    //   } catch (e) {
-    //     console.error('주문 생성 실패:', e);
-    //   }
-    // };
+      } catch (e) {
+        console.error('주문 생성 실패:', e);
+      }
+    };
 
     // 쿠폰 사용 여부 (false -> true)로 변경
     const fetchChangeCoupon = async () => {
@@ -352,7 +352,7 @@ export default function Order() {
       }
     };
     
-    //fetchCreateOrder();
+    fetchCreateOrder();
     fetchChangeCoupon();
   };
 
