@@ -25,7 +25,7 @@ const ProductInfo = ({ productData }) => {
   return (
     <>
       {/* 브랜드명 */}
-      <p className="mb-1 text-sm text-black">{brandName} &gt;</p>
+      <p className="mb-1 text-sm text-black">&lt; {brandName} &gt;</p>
 
       {/* 상품명 */}
       <h1 className="mb-2 text-2xl font-semibold">{productName}</h1>

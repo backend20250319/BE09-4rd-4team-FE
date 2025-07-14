@@ -2,82 +2,88 @@
 
 import React, { useState } from 'react';
 import { useRouter } from 'next/navigation';
+import axios from 'axios';
 
 export default function ModifyPasswordPage() {
+  const { accessToken } = useAuth();
   const router = useRouter();
 
   const [currentPwd, setCurrentPwd] = useState('');
   const [newPwd, setNewPwd] = useState('');
   const [newPwdCheck, setNewPwdCheck] = useState('');
+  const [passwordValidationMessage, setPasswordValidationMessage] = useState('');
+  const [isPasswordValid, setIsPasswordValid] = useState(false);
+  const [serverMessage, setServerMessage] = useState('');
+
+  const PASSWORD_MESSAGES = {
+    length: '비밀번호는 8~12자여야 합니다.',
+    rule: '영문자, 숫자, 특수문자를 모두 포함해야 합니다.',
+    repeat: '동일 문자를 4번 이상 사용할 수 없습니다.',
+    valid: '사용 가능한 비밀번호입니다.',
+  };
+
+  const handlePasswordChange = (e) => {
+    const password = e.target.value;
+    setNewPwd(password);
+
+    const hasLetter = /[a-zA-Z]/.test(password);
+    const hasNumber = /[0-9]/.test(password);
+    const hasSpecial = /[!@#$%^&*(),.?":{}|<>]/.test(password);
+    const repeatedChar = /(.)\1\1\1/.test(password);
+
+    if (password.length < 8 || password.length > 12) {
+      setPasswordValidationMessage(PASSWORD_MESSAGES.length);
+      setIsPasswordValid(false);
+    } else if (!(hasLetter && hasNumber && hasSpecial)) {
+      setPasswordValidationMessage(PASSWORD_MESSAGES.rule);
+      setIsPasswordValid(false);
+    } else if (repeatedChar) {
+      setPasswordValidationMessage(PASSWORD_MESSAGES.repeat);
+      setIsPasswordValid(false);
+    } else {
+      setPasswordValidationMessage(PASSWORD_MESSAGES.valid);
+      setIsPasswordValid(true);
+    }
+  };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
 
-    // 새 비밀번호 두 개 일치 확인
+    if (!isPasswordValid) {
+      setServerMessage('비밀번호 형식이 유효하지 않습니다.');
+      return;
+    }
+
     if (newPwd !== newPwdCheck) {
-      alert('새 비밀번호와 새 비밀번호 확인의 입력값이 같지 않습니다.');
+      setServerMessage('새 비밀번호가 서로 일치하지 않습니다.');
       return;
     }
-
-    // 현재 비밀번호와 새 비밀번호가 동일한지 체크
-    if (currentPwd === newPwd && currentPwd === newPwdCheck) {
-      alert('현재 비밀번호와 동일한 비밀번호는 사용할 수 없습니다.');
-      return;
-    }
-
-    // 임시 하드코딩: 현재 비밀번호가 "1234"일 때만 통과
-    if (currentPwd !== '1234') {
-      alert('현재 비밀번호가 일치하지 않습니다.');
-      return;
-    }
-
-    // TODO: 백엔드 구현 후 아래 fetch 복구 예정
-    /*
-    const token = localStorage.getItem('accessToken');
 
     try {
-      // 현재 비밀번호 검증 API 호출
-      const verifyRes = await fetch('/api/auth/verify-password', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-          Authorization: `Bearer ${token}`,
-        },
-        body: JSON.stringify({ password: currentPwd }),
-      });
-
-      if (!verifyRes.ok) {
-        alert('현재 비밀번호가 틀립니다.');
-        return;
-      }
-
-      // 비밀번호 변경 API 호출
-      const changeRes = await fetch('/api/users/change-password', {
-        method: 'PUT',
-        headers: {
-          'Content-Type': 'application/json',
-          Authorization: `Bearer ${token}`,
-        },
-        body: JSON.stringify({
+      const response = await axios.patch(
+        'http://localhost:8080/api/mypage/modifypwd',
+        {
+          password: currentPwd,
           newPassword: newPwd,
-        }),
-      });
+        },
+        {
+          headers: {
+            Authorization: `Bearer ${accessToken}`,
+          },
+        },
+      );
 
-      if (changeRes.ok) {
-        alert('비밀번호가 성공적으로 변경되었습니다.');
-        router.push('/mypage/user/modifyactinfo');
+      setServerMessage(response.data.message || '비밀번호가 성공적으로 변경되었습니다.');
+      setCurrentPwd('');
+      setNewPwd('');
+      setNewPwdCheck('');
+    } catch (err) {
+      if (err.response?.data?.message) {
+        setServerMessage(err.response.data.message);
       } else {
-        alert('비밀번호 변경 실패');
+        setServerMessage('비밀번호 변경에 실패했습니다.');
       }
-    } catch (error) {
-      console.error('비밀번호 변경 중 오류:', error);
-      alert('서버 오류');
     }
-    */
-
-    // ✅ 현재 단계에서는 임시 성공 처리
-    alert('비밀번호가 성공적으로 변경되었습니다. (임시 하드코딩 버전)');
-    router.push('/mypage/user/modifyactinfo');
   };
 
   return (
@@ -110,6 +116,9 @@ export default function ModifyPasswordPage() {
             placeholder="새 비밀번호를 입력해주세요."
             className="w-full border border-gray-300 rounded px-3 py-2"
           />
+          <p className={`text-sm mt-1 ${isPasswordValid ? 'text-green-600' : 'text-red-600'}`}>
+            {passwordValidationMessage}
+          </p>
         </div>
 
         {/* 새 비밀번호 확인 */}
@@ -128,13 +137,13 @@ export default function ModifyPasswordPage() {
         <div className="bg-gray-50 p-4 text-sm text-gray-600 leading-relaxed">
           <p className="font-bold mb-2">비밀번호 변경 시 유의사항</p>
           <ul className="list-disc list-inside space-y-1">
-            <li>영문자, 숫자, 특수문자를 모두 조합하여 8~12자로 입력해주세요.</li>
-            <li>사용 가능한 특수 문자는 {'!"#$%&\'()*+,-./:;<=>?@[\\]^_`{|}~'} 입니다.</li>
-            <li>아이디와 4자리 이상 동일한 비밀번호는 사용 불가합니다.</li>
-            <li>연속된 문자/숫자 사용 금지.</li>
-            <li>생년월일 등 개인정보 관련 숫자 사용 금지.</li>
+            <li>영문자, 숫자, 특수문자를 모두 조합하여 8~12자리를 입력해주세요.</li>
+            <li>동일문자를 4번 이상 사용할 수 없습니다.</li>
           </ul>
         </div>
+
+        {/* 메시지 */}
+        {serverMessage && <p className="text-center text-sm text-red-500">{serverMessage}</p>}
 
         {/* 버튼 */}
         <div className="flex justify-center space-x-4 mt-6">

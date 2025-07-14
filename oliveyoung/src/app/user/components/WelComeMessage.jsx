@@ -2,14 +2,11 @@
 import { useRouter } from 'next/navigation';
 
 export default function WelcomeMessage({ userName }) {
-  const maskedName =
-    userName.length === 2 ? userName[0] + '*' : userName[0] + '*' + userName[userName.length - 1];
-
   const router = useRouter();
 
   return (
     <div className="text-center mt-10">
-      <h2 className="text-2xl font-bold text-green-600 mb-4">{maskedName}님, 환영합니다!</h2>
+      <h2 className="text-2xl font-bold text-[#9bce26] mb-4">{userName}님, 환영합니다!</h2>
       <p className="text-gray-700">이제 로그인 후 서비스를 이용하실 수 있습니다.</p>
       <br />
       <button
