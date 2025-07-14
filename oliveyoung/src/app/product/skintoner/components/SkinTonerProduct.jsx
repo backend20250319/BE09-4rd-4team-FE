@@ -186,11 +186,13 @@ function SkinTonerProduct({ selectedBrands }) {
       </div>
 
       {/* --- 상품 그리드 --- */}
+      {/* filteredProducts가 아닌 pagedProducts를 맵핑해야 합니다. */}
       <div className="grid grid-cols-4 gap-6">
         {pagedProducts.map((product, index) => (
           <React.Fragment key={product.id}>
             <div
               className="flex flex-col items-center transition bg-white rounded-lg cursor-pointer"
+              onClick={() => handleCardClick(product.id)}
               onClick={() => handleCardClick(product.id)}
             >
               {/* ✅ 상품 이미지 풀 URL 변환 */}
@@ -239,6 +241,12 @@ function SkinTonerProduct({ selectedBrands }) {
                             ? "bg-[#f374b7]"
                             : ""
                         }`}
+                        style={{ width: badgeWidth }}
+                      >
+                        {badge}
+                      </div>
+                    );
+                  })}
                         style={{ width: badgeWidth }}
                       >
                         {badge}

@@ -1,8 +1,10 @@
+// src/app/product/skintoner/components/BrandFilter.jsx
 "use client";
 
 import React, { useState, useEffect } from "react";
 import axios from "axios";
 
+// TAB_LIST는 현재 하드코딩된 상태이므로 그대로 둡니다.
 const TAB_LIST = ["전체", "스킨/토너", "", "", "", ""];
 
 export default function BrandFilter({ onBrandChange }) {
@@ -10,14 +12,18 @@ export default function BrandFilter({ onBrandChange }) {
   const [checked, setChecked] = useState([]);
   const [showAll, setShowAll] = useState(false);
 
+  // 1. brands state 추가 (API로부터 받아올 브랜드 목록)
   const [brands, setBrands] = useState([]);
+  // 2. 로딩 상태 추가 (데이터를 불러오는 중인지 표시)
   const [loadingBrands, setLoadingBrands] = useState(true);
+  // 3. 에러 상태 추가 (API 호출 실패 시)
   const [errorBrands, setErrorBrands] = useState(null);
 
+  // 4. useEffect 훅을 사용하여 컴포넌트 마운트 시 API 호출
   useEffect(() => {
     const fetchBrands = async () => {
-      setLoadingBrands(true);
-      setErrorBrands(null);
+      setLoadingBrands(true); // 데이터 로딩 시작
+      setErrorBrands(null);   // 이전 에러 메시지 초기화
 
       try {
         // 백엔드 API 엔드포인트: Postman에서 확인하신 정확한 URL을 사용한다.
@@ -38,12 +44,16 @@ export default function BrandFilter({ onBrandChange }) {
 
       } catch (error) {
         console.error("브랜드 목록을 가져오는 중 오류 발생:", error);
+        // Axios 에러 객체를 활용한 상세 에러 처리
         if (error.response) {
+            // 서버 응답이 있는 경우 (예: 4xx, 5xx 에러)
             setErrorBrands(`브랜드 목록을 가져오는 데 실패했습니다: ${error.response.status} - ${error.response.statusText}`);
             console.error("오류 응답 데이터:", error.response.data);
         } else if (error.request) {
+            // 요청은 전송되었지만 응답을 받지 못한 경우 (예: 네트워크 문제)
             setErrorBrands("네트워크 오류: 서버에 연결할 수 없습니다.");
         } else {
+            // 요청을 설정하는 중에 발생한 오류
             setErrorBrands(`요청 오류: ${error.message}`);
         }
         setBrands([]);
