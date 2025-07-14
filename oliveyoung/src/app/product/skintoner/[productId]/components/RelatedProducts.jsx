@@ -121,7 +121,6 @@ const RelatedProducts = () => {
     return (
       <div className="relative px-4 mt-12 md:px-0">
         <div className="flex items-center justify-center h-48 text-gray-600">
-          <p>연관 상품을 불러오는 중...</p>
         </div>
       </div>
     );

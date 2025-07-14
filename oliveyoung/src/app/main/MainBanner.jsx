@@ -89,7 +89,7 @@ export default function MainBanner() {
             <br />
             미백 치약
           </p>
-          <p className=" text-lg font-semibold text-left">
+          <p className="text-lg font-semibold text-left ">
             대용량 기획 할인 & 증정
           </p>
         </div>

@@ -114,7 +114,7 @@ function SkinTonerProduct({ selectedBrands }) {
   const handleCardClick = (id) => {
     router.push(`/product/skintoner/${id}`);
   };
-  
+
   if (loading) {
     return (
       <div className="container py-6 mx-auto">
@@ -144,9 +144,10 @@ function SkinTonerProduct({ selectedBrands }) {
 
       <hr className="border-t-4 border-[#e6e6e6] my-4" />
 
-      <div className="flex flex-row items-center justify-between px-2 pb-4">
+      <div className="flex flex-row items-center justify-between px-2 pb-4 flex-nowrap">
+        {" "}
         {/* 필터 버튼 */}
-        <div className="flex gap-0">
+        <div className="flex gap-0 whitespace-nowrap">
           {FILTERS.map((f, idx) => (
             <React.Fragment key={f.value}>
               <button
@@ -165,9 +166,8 @@ function SkinTonerProduct({ selectedBrands }) {
             </React.Fragment>
           ))}
         </div>
-
         {/* 보기개수 버튼 */}
-        <div className="flex items-center gap-2 border-l border-[#e6e6e6] pl-8">
+        <div className="flex-shrink-0 flex-nowrap flex items-center gap-1 border-l border-[#e6e6e6] pl-4">
           <span className="mr-1 text-xl font-semibold">VIEW</span>
           {PER_PAGE_OPTIONS.map((num) => (
             <button
@@ -186,13 +186,11 @@ function SkinTonerProduct({ selectedBrands }) {
       </div>
 
       {/* --- 상품 그리드 --- */}
-      {/* filteredProducts가 아닌 pagedProducts를 맵핑해야 합니다. */}
       <div className="grid grid-cols-4 gap-6">
         {pagedProducts.map((product, index) => (
           <React.Fragment key={product.id}>
             <div
               className="flex flex-col items-center transition bg-white rounded-lg cursor-pointer"
-              onClick={() => handleCardClick(product.id)}
               onClick={() => handleCardClick(product.id)}
             >
               {/* ✅ 상품 이미지 풀 URL 변환 */}
@@ -241,12 +239,6 @@ function SkinTonerProduct({ selectedBrands }) {
                             ? "bg-[#f374b7]"
                             : ""
                         }`}
-                        style={{ width: badgeWidth }}
-                      >
-                        {badge}
-                      </div>
-                    );
-                  })}
                         style={{ width: badgeWidth }}
                       >
                         {badge}

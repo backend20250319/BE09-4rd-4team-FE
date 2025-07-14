@@ -16,7 +16,7 @@ const ViewedWithProducts = () => {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
 
-  // ✅ 전체 상품 가져오고 랜덤 12개 추출
+  // 전체 상품 가져오고 랜덤 12개 추출
   useEffect(() => {
     const fetchRelatedProducts = async () => {
       setLoading(true);
@@ -32,7 +32,7 @@ const ViewedWithProducts = () => {
           Array.isArray(response.data) &&
           response.data.length > 0
         ) {
-          // ✅ shuffle → 랜덤 12개
+          // shuffle → 랜덤 12개
           const shuffled = [...response.data].sort(() => Math.random() - 0.5);
           const sliced = shuffled.slice(0, 12);
 
@@ -121,7 +121,6 @@ const ViewedWithProducts = () => {
     return (
       <div className="relative px-4 mt-12 md:px-0">
         <div className="flex items-center justify-center h-48 text-gray-600">
-          <p>연관 상품을 불러오는 중...</p>
         </div>
       </div>
     );
