@@ -37,10 +37,10 @@ const LoginPage = () => {
         password,
       });
 
-      const { accessToken, refreshToken, userName } = response.data.data;
+      const { accessToken, refreshToken, userName, userNo } = response.data.data;
 
       // AuthContext의 login() 사용
-      login(accessToken, refreshToken, userName); // <- 이거!
+      login(accessToken, refreshToken, userName, userNo);
 
       // 이제 상태가 바뀌므로 Header도 자동 반영됨
       router.push('/');

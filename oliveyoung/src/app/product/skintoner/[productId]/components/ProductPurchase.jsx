@@ -6,7 +6,7 @@ import { GoQuestion } from "react-icons/go";
 import { CiCircleMinus, CiCirclePlus } from "react-icons/ci";
 import { FaRegHeart, FaGift } from "react-icons/fa";
 import { useCart } from '@/contexts/CartContext';
-import axios from 'axios';
+import axios from '@/api/axiosInstance'; ;
 
 const ProductPurchase = ({ productData }) => {
   const router = useRouter();

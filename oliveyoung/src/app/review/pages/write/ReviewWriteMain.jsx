@@ -17,13 +17,19 @@ const dashedLineStyle = {
     "repeating-linear-gradient(to right, #D1D5DB 0, #D1D5DB 4px, transparent 4px, transparent 8px) 1",
 };
 
-export default function ReviewWriteLayout({ orderItemId, onClose }) {
+export default function ReviewWriteLayout({
+  orderItemId,
+  onClose,
+  review,
+  mode = "create",
+}) {
+  // review가 있을 때는 기존 값을 state 초기값으로!
   const [product, setProduct] = useState(null);
-  const [rating, setRating] = useState(0);
-  const [skinType, setSkinType] = useState("");
-  const [skinConcern, setSkinConcern] = useState("");
-  const [texture, setTexture] = useState("");
-  const [content, setContent] = useState("");
+  const [rating, setRating] = useState(review?.rating || 0);
+  const [skinType, setSkinType] = useState(review?.skinType || "");
+  const [skinConcern, setSkinConcern] = useState(review?.skinConcern || "");
+  const [texture, setTexture] = useState(review?.texture || "");
+  const [content, setContent] = useState(review?.content || "");
 
   useEffect(() => {
     const fetchProduct = async () => {
@@ -56,37 +62,67 @@ export default function ReviewWriteLayout({ orderItemId, onClose }) {
     if (orderItemId) fetchProduct();
   }, [orderItemId]);
 
-  // 리뷰 등록
+  // 등록/수정 구분
   const handleSubmit = async () => {
     const token = localStorage.getItem("accessToken");
-    if (!product) return;
-    const payload = {
-      content,
-      rating,
-      skinType,
-      skinConcern, // 세정력 (클렌징 만족도)
-      texture,     // 자극도
-    };
+    if (!product) {
+      alert("상품 정보가 없습니다.");
+      return;
+    }
+
+    const payload = { content, rating, skinType, skinConcern, texture };
+
+    // ⭐⭐⭐ 실제 서버로 보내는 값 콘솔로 확인!
+    console.log({
+      mode,
+      reviewId: review?.reviewId,
+      productId: product?.productId,
+      payload,
+      tokenShort: token?.substring(0, 10) + "...",
+    });
+
     try {
-      const res = await axios.post(
-        `http://localhost:8080/api/products/${product.productId}/reviews`,
-        payload,
-        {
-          headers: {
-            "Content-Type": "application/json",
-            ...(token && { Authorization: `Bearer ${token}` }),
-          },
-        }
-      );
-      const result = res.data;
-      if (result.success) {
-        alert("리뷰 등록 성공!");
+      if (mode === "edit" && review) {
+        // **수정 요청**
+        await axios.put(
+          `http://localhost:8080/api/reviews/${review?.reviewId}`,
+          payload,
+          {
+            headers: {
+              "Content-Type": "application/json",
+              ...(token && { Authorization: `Bearer ${token}` }),
+            },
+          }
+        );
+        alert("리뷰 수정 성공!");
         onClose();
       } else {
-        alert("등록 실패: " + (result.message || "에러 발생"));
+        // **신규 등록**
+        const res = await axios.post(
+          `http://localhost:8080/api/products/${product?.productId}/reviews`,
+          payload,
+          {
+            headers: {
+              "Content-Type": "application/json",
+              ...(token && { Authorization: `Bearer ${token}` }),
+            },
+          }
+        );
+        const result = res.data;
+        if (result.success) {
+          alert("리뷰 등록 성공!");
+          onClose();
+        } else {
+          alert("등록 실패: " + (result.message || "에러 발생"));
+        }
       }
     } catch (err) {
-      alert("서버 오류");
+      console.error("요청 오류:", err, err.response?.data);
+      if (err.response?.data?.message) {
+        alert("서버 오류: " + err.response.data.message);
+      } else {
+        alert("서버 오류");
+      }
     }
   };
 
@@ -101,7 +137,9 @@ export default function ReviewWriteLayout({ orderItemId, onClose }) {
   return (
     <div className="flex justify-center">
       <div className="w-[480px] bg-white py-[40px] px-[0px]">
-        <h2 className="text-[25px] font-bold mb-6 -mt-10">리뷰 작성</h2>
+        <h2 className="text-[25px] font-bold mb-6 -mt-10">
+          {mode === "edit" ? "리뷰 수정" : "리뷰 작성"}
+        </h2>
         <hr className="my-6" />
         <ReviewProductHeader data={product} />
         <ReviewRatingSection value={rating} onChange={setRating} />
@@ -118,7 +156,11 @@ export default function ReviewWriteLayout({ orderItemId, onClose }) {
         </div>
         <br className="my-6" />
         <div className="mx-4">
-          <ReviewWriteButtons onClose={onClose} onSubmit={handleSubmit} />
+          <ReviewWriteButtons
+            onClose={onClose}
+            onSubmit={handleSubmit}
+            label={mode === "edit" ? "수정하기" : "등록하기"}
+          />
         </div>
         {/* 안내 문구 */}
         <div

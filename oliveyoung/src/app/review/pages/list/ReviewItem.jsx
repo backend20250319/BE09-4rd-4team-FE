@@ -1,8 +1,8 @@
 import { useState } from "react";
-import ReviewWrtieMain from "../write/ReviewWriteMain"
 import { getImageUrl } from "@/utils/image";
+import ReviewWriteLayout from "../write/ReviewWriteMain";
 
-export default function ReviewItem({ data }) {
+export default function ReviewItem({ data, onReviewSuccess }) {
   const [showModal, setShowModal] = useState(false);
 
   if (!data) return null;
@@ -15,9 +15,7 @@ export default function ReviewItem({ data }) {
     price,
     orderId,
     createdAt,
-    status,
-    orderItemId,   // 여기 꼭 있어야 함
-    discountedPrice,
+    orderItemId,
   } = data;
 
   const fullImageUrl = getImageUrl(imageUrl);
@@ -35,8 +33,8 @@ export default function ReviewItem({ data }) {
           <div className="text-sm text-gray-700">
             <div className="text-xs text-gray-500">
               주문번호: {orderId} <br />
-              주문일: {createdAt ? createdAt.split("T")[0] : "-"}<br />
-              상태: {status}
+              주문일: {createdAt ? createdAt.split("T")[0] : "-"}
+              <br />
             </div>
             <div className="font-semibold mt-1">{brandName}</div>
             <div className="text-gray-600 text-sm">{productName}</div>
@@ -47,8 +45,15 @@ export default function ReviewItem({ data }) {
         </div>
         {/* 작성기한 */}
         <div className="text-sm text-gray-600 text-center">
-          {createdAt ? createdAt.split("T")[0] : "-"}
+          {createdAt
+            ? (() => {
+                const date = new Date(createdAt);
+                date.setMonth(date.getMonth() + 3);
+                return `~ ${date.toISOString().split("T")[0]}`;
+              })()
+            : "-"}
         </div>
+
         {/* 리뷰 작성 버튼 */}
         <div className="flex justify-end mr-6">
           <button
@@ -71,8 +76,15 @@ export default function ReviewItem({ data }) {
             >
               ✖️
             </button>
-            {/* 리뷰 작성 폼에 orderItemId 전달 */}
-            <ReviewWrtieMain orderItemId={orderItemId} onClose={() => setShowModal(false)} />
+            {/* ⭐ 핵심: onReviewSuccess를 전달 */}
+            <ReviewWriteLayout
+              orderItemId={orderItemId}
+              onClose={() => setShowModal(false)}
+              onReviewSuccess={() => {
+                setShowModal(false);
+                if (onReviewSuccess) onReviewSuccess(orderItemId);
+              }}
+            />
           </div>
         </div>
       )}

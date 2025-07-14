@@ -1,7 +1,7 @@
 // signup/page.jsx
 'use client';
 
-import axios from 'axios';
+import axios from '@/api/axiosInstance';
 import { useState } from 'react';
 import RegistrationForm from '../components/Register';
 import AlreadySignedUp from '../components/AlreadySignedUp';
@@ -154,7 +154,7 @@ export default function SignUpPage() {
         ) : isDuplicate === true ? (
           <AlreadySignedUp userName={maskUserName(userName)} userId={maskUserId(duplicateUserId)} />
         ) : isDuplicate === false ? (
-          <RegistrationForm setStep={setStep} />
+          <RegistrationForm setStep={setStep} setUserName={setUserName} />
         ) : (
           <>
             <p className="text-center mb-11 text-gray-600">
