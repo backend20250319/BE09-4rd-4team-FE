@@ -14,8 +14,8 @@ export default function ReviewList() {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const res = await fetch("/api/v1/order-service/carts"); // 실제 API 주소 사용
-        if (!res.ok) throw new Error("장바구니 조회 실패");
+        const res = await fetch("/api/orders"); // 실제 API 주소 사용
+        if (!res.ok) throw new Error("주문정보 조회 실패");
         const result = await res.json();
         setData(result); // result가 배열이면 이렇게
       } catch (error) {
@@ -42,7 +42,7 @@ export default function ReviewList() {
         <div className="w-[100px] h-[100px] flex items-center justify-center border-2 border-gray-300 rounded-full mb-4">
           <FaExclamation className="text-3xl text-gray-300" />
         </div>
-        <p className="text-sm">장바구니에 담긴 상품이 없습니다.</p>
+        <p className="text-sm">주문하신 상품이 없습니다.</p>
       </div>
     );
   }
