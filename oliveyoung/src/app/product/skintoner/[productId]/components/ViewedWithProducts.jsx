@@ -24,7 +24,6 @@ const ViewedWithProducts = () => {
 
       try {
         const apiUrl = "http://localhost:8080/api/products";
-        console.log(`연관 상품(전체조회) 가져오기: ${apiUrl}`);
 
         const response = await axios.get(apiUrl);
 
@@ -46,7 +45,6 @@ const ViewedWithProducts = () => {
             badge: item.badgeNames,
           }));
           setProducts(transformedProducts);
-          console.log("연관 상품 로드 성공!", transformedProducts);
         } else {
           console.warn("API 응답이 비어있음");
           setProducts([]);

@@ -4,18 +4,19 @@ import React, { useState, useRef } from 'react';
 import Slider from 'react-slick';
 import 'slick-carousel/slick/slick.css';
 import 'slick-carousel/slick/slick-theme.css';
+import { getImageUrl } from "@/utils/image"; // ⭐ getImageUrl 함수 임포트 ⭐
 
 function BannerCarousel() {
   const [currentSlide, setCurrentSlide] = useState(0);
   const [autoplay, setAutoplay] = useState(true);
   const sliderRef = useRef(null);
 
-  // 이미지 경로 절대경로로 선언
+  // 이미지 경로 상대경로로 선언 (getImageUrl이 처리할 수 있는 형태)
   const banners = [
-    '/images/product/banner1.jpg',
-    '/images/product/banner2.jpg',
-    '/images/product/banner3.jpg',
-    '/images/product/banner4.jpg',
+    'product/banner1.jpg',
+    'product/banner2.jpg',
+    'product/banner3.jpg',
+    'product/banner4.jpg',
   ];
 
   const settings = {
@@ -37,7 +38,7 @@ function BannerCarousel() {
         {banners.map((banner, index) => (
           <div key={index} className="relative">
             <img
-              src={banner}
+              src={getImageUrl(banner)} // getImageUrl 적용
               alt={`banner${index + 1}`}
               className="object-cover w-full h-auto rounded-lg"
             />
