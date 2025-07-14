@@ -2,7 +2,7 @@
 
 import React, { useState } from 'react';
 import { useRouter } from 'next/navigation';
-import axios from 'axios';
+import axios from '@/api/axiosInstance';
 
 export default function ModifyPasswordPage() {
   const { accessToken } = useAuth();

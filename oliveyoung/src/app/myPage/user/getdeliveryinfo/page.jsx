@@ -1,72 +1,16 @@
 'use client';
 
-import Image from 'next/image';
 import React from 'react';
-import TabNav from '../components/TabNav';
-import UserInfoBox from '../components/UserInfoBox';
+import TabNav from '@/app/mypage/user/components/TabNav';
+import { useRouter } from 'next/navigation';
+import UserInfoBox from '@/app/mypage/user/components/UserInfoBox';
 
 export default function GetDeliveryInfoPage() {
+  const router = useRouter();
+
   return (
     <div className="float-left w-[850px] px-[29px]">
       {/* 유저 info 박스 */}
-      {/* <div className="relative h-[51px] pt-2 pl-[30px] bg-[#eb6d9a]">
-        <div className="relative float-left w-[34px] h-[34px] rounded-full overflow-hidden">
-          <span className="absolute top-0 left-0 block overflow-hidden w-[34px] h-[34px] bg-no-repeat bg-[url('/images/mypage/order/bg_grd_01.png')]"></span>
-          <Image
-            width={34}
-            height={34}
-            src="/images/mypage/order/my_picture_base.jpg"
-            alt="my_picture_base.jpg"
-          />
-        </div>
-        <p className="float-left ml-[10px] text-[18px] leading-[34px] font-bold text-white tracking-[-1px]">
-          PINK OLIVE
-          <strong className="inline-block ml-[3px]">박*준</strong>님 반갑습니다.
-        </p>
-        <ul className="absolute top-1/2 right-[30px] -mt-[10px]">
-          <li className="inline-block pr-[15px] text-[13px] text-white font-bold bg-[url('/images/mypage/order/ico_arrow7x10_2.png')] bg-no-repeat bg-[length:5px_10px] bg-[position:100%_50%] cursor-pointer">
-            올리브 멤버스 라운지
-          </li>
-          <li className="inline-block pr-[15px] ml-[30px] text-[13px] text-white font-bold bg-[url('/images/mypage/order/ico_arrow7x10_2.png')] bg-no-repeat bg-[length:5px_10px] bg-[position:100%_50%] cursor-pointer">
-            나의 프로필
-          </li>
-        </ul>
-      </div>
-
-      <div className="py-[19px] border border-t-0 border-[#cccccc]">
-        <ul className="flex">
-          <li className="float-left w-1/3 text-center">
-            <span className="text-[13px] font-bold text-[#555]">
-              CJ ONE 포인트
-            </span>
-            <p className="inline-block pl-[15px] text-[18px] text-[#f27370] tracking-[-1.16px] font-medium cursor-pointer">
-              1,500
-              <em className="inline-block pl-[5px] text-[13px] font-bold text-[#555555] not-italic">
-                P
-              </em>
-            </p>
-          </li>
-          <li className="float-left w-1/3 text-center">
-            <span className="text-[13px] font-bold text-[#555]">쿠폰</span>
-            <p className="inline-block pl-[15px] text-[18px] text-[#f27370] tracking-[-1.16px] font-medium cursor-pointer">
-              5
-              <em className="inline-block pl-[5px] text-[13px] font-bold text-[#555555] not-italic">
-                개
-              </em>
-            </p>
-          </li>
-          <li className="float-left w-1/3 text-center">
-            <span className="text-[13px] font-bold text-[#555]">예치금</span>
-            <p className="inline-block pl-[15px] text-[18px] text-[#f27370] tracking-[-1.16px] font-medium cursor-pointer">
-              0
-              <em className="inline-block pl-[5px] text-[13px] font-bold text-[#555555] not-italic">
-                원
-              </em>
-            </p>
-          </li>
-        </ul>
-      </div> */}
-
       <UserInfoBox />
 
       {/* 배송지 내용 */}
@@ -151,7 +95,10 @@ export default function GetDeliveryInfoPage() {
 
       {/* 배송지 등록 버튼 */}
       <div className="text-center mt-6">
-        <button className="w-[150px] h-[50px] px-6 py-2 bg-[#9bce26] text-white font-bold rounded-[5px] text-[18px]">
+        <button
+          className="w-[150px] h-[50px] px-6 py-2 bg-[#9bce26] text-white font-bold rounded-[5px] text-[18px]"
+          onClick={() => router.push('/mypage/user/getdeliveryinfo/deliveryregister')}
+        >
           배송지 등록
         </button>
       </div>
