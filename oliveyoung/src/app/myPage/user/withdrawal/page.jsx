@@ -50,8 +50,6 @@ export default function AccountWithdrawalPage() {
         </div>
       )}
       {step === 2 && <ConfirmPasswordForm onSuccess={() => setStep(3)} />}
-
-      {step === 3 && <WithdrawalSuccessMessage />}
     </div>
   );
 }

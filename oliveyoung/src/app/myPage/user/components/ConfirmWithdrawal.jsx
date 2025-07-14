@@ -9,7 +9,7 @@ export default function ConfirmPasswordForm() {
   const [password, setPassword] = useState('');
   const router = useRouter();
   const { accessToken } = useAuth();
-  const { logout } = useAuth();
+  const { logoutSilently } = useAuth();
 
   const handleWithdrawal = async (e) => {
     e.preventDefault();
@@ -27,7 +27,7 @@ export default function ConfirmPasswordForm() {
       });
 
       if (response.status === 200) {
-        logout(); // logout 자체에 홈으로 돌아가는 기능이 있어서 자꾸 홈으로 돌아감
+        logoutSilently();
         router.push('/mypage/user/withdrawal/withdrawalsuccess');
       } else {
         alert('탈퇴 실패: ' + (response.data.message || '알 수 없는 오류'));

@@ -1,7 +1,5 @@
 "use client";
-
-import axios from 'axios';
-import React, { useState,  useEffect  } from 'react';
+import React, { useState } from 'react';
 import { SearchIcon, EyeIcon, DownloadIcon } from 'lucide-react';
 
 
@@ -12,9 +10,8 @@ export default function OrdersPage() {
   const [currentPage, setCurrentPage] = useState(1);
   const [selectedOrder, setSelectedOrder] = useState(null);
   const [showDetail, setShowDetail] = useState(false);
-  const [orders, setOrders] = useState([]);
 
-  /*const orders = [
+  const orders = [
     { id: 'OD-7892', customer: '김지민', date: '2023-05-12', total: '₩ 56,000', payment: '카드결제', status: '배송완료' },
     { id: 'OD-7891', customer: '이하준', date: '2023-05-12', total: '₩ 128,000', payment: '카드결제', status: '배송중' },
     { id: 'OD-7890', customer: '박서연', date: '2023-05-11', total: '₩ 32,500', payment: '무통장입금', status: '결제완료' },
@@ -25,23 +22,7 @@ export default function OrdersPage() {
     { id: 'OD-7885', customer: '장서영', date: '2023-05-09', total: '₩ 88,000', payment: '카드결제', status: '취소요청' },
     { id: 'OD-7884', customer: '이민준', date: '2023-05-08', total: '₩ 35,500', payment: '카드결제', status: '배송완료' },
     { id: 'OD-7883', customer: '한소희', date: '2023-05-08', total: '₩ 146,000', payment: '무통장입금', status: '결제대기' }
-  ];*/
-
-
-  useEffect(() => {
-    const fetchOrders = async () => {
-      try {
-        const response = await axios.get('http://localhost:8080/api/orders');
-        setOrders(response.data);
-      } catch (error) {
-        console.error("❌ 주문 목록을 불러오는 데 실패했습니다:", error);
-      }
-    };
-
-    fetchOrders();
-  }, []);
-
-
+  ];
 
   // 필터링된 주문 목록
   const filteredOrders = orders.filter((order) => {
@@ -74,7 +55,7 @@ const handlePageChange = (page) => {
     const blob = new Blob([csvContent], { type: 'text/csv;charset=utf-8' });
     const url = window.URL.createObjectURL(blob);
     const link = document.createElement('a');
-    link.hrefgi = url;
+    link.href = url;
     link.setAttribute('download', '올리브영_주문목록.csv');
     document.body.appendChild(link);
     link.click();

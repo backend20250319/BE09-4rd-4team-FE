@@ -9,7 +9,6 @@ __turbopack_context__.s({
     "default": (()=>OrdersPage)
 });
 var __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__ = __turbopack_context__.i("[project]/node_modules/next/dist/server/route-modules/app-page/vendored/ssr/react-jsx-dev-runtime.js [app-ssr] (ecmascript)");
-var __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$axios$2f$lib$2f$axios$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__ = __turbopack_context__.i("[project]/node_modules/axios/lib/axios.js [app-ssr] (ecmascript)");
 var __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__ = __turbopack_context__.i("[project]/node_modules/next/dist/server/route-modules/app-page/vendored/ssr/react.js [app-ssr] (ecmascript)");
 var __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$lucide$2d$react$2f$dist$2f$esm$2f$icons$2f$search$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__$3c$export__default__as__SearchIcon$3e$__ = __turbopack_context__.i("[project]/node_modules/lucide-react/dist/esm/icons/search.js [app-ssr] (ecmascript) <export default as SearchIcon>");
 var __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$lucide$2d$react$2f$dist$2f$esm$2f$icons$2f$eye$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__$3c$export__default__as__EyeIcon$3e$__ = __turbopack_context__.i("[project]/node_modules/lucide-react/dist/esm/icons/eye.js [app-ssr] (ecmascript) <export default as EyeIcon>");
@@ -26,29 +25,88 @@ function OrdersPage() {
     const [currentPage, setCurrentPage] = (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["useState"])(1);
     const [selectedOrder, setSelectedOrder] = (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["useState"])(null);
     const [showDetail, setShowDetail] = (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["useState"])(false);
-    const [orders, setOrders] = (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["useState"])([]);
-    /*const orders = [
-    { id: 'OD-7892', customer: '김지민', date: '2023-05-12', total: '₩ 56,000', payment: '카드결제', status: '배송완료' },
-    { id: 'OD-7891', customer: '이하준', date: '2023-05-12', total: '₩ 128,000', payment: '카드결제', status: '배송중' },
-    { id: 'OD-7890', customer: '박서연', date: '2023-05-11', total: '₩ 32,500', payment: '무통장입금', status: '결제완료' },
-    { id: 'OD-7889', customer: '최준호', date: '2023-05-11', total: '₩ 77,000', payment: '카카오페이', status: '주문접수' },
-    { id: 'OD-7888', customer: '정민지', date: '2023-05-10', total: '₩ 45,000', payment: '카드결제', status: '배송완료' },
-    { id: 'OD-7887', customer: '송지원', date: '2023-05-10', total: '₩ 62,000', payment: '네이버페이', status: '배송중' },
-    { id: 'OD-7886', customer: '윤도현', date: '2023-05-09', total: '₩ 24,000', payment: '카드결제', status: '배송완료' },
-    { id: 'OD-7885', customer: '장서영', date: '2023-05-09', total: '₩ 88,000', payment: '카드결제', status: '취소요청' },
-    { id: 'OD-7884', customer: '이민준', date: '2023-05-08', total: '₩ 35,500', payment: '카드결제', status: '배송완료' },
-    { id: 'OD-7883', customer: '한소희', date: '2023-05-08', total: '₩ 146,000', payment: '무통장입금', status: '결제대기' }
-  ];*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["useEffect"])(()=>{
-        const fetchOrders = async ()=>{
-            try {
-                const response = await __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$axios$2f$lib$2f$axios$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["default"].get('http://localhost:8080/api/orders');
-                setOrders(response.data);
-            } catch (error) {
-                console.error("❌ 주문 목록을 불러오는 데 실패했습니다:", error);
-            }
-        };
-        fetchOrders();
-    }, []);
+    const orders = [
+        {
+            id: 'OD-7892',
+            customer: '김지민',
+            date: '2023-05-12',
+            total: '₩ 56,000',
+            payment: '카드결제',
+            status: '배송완료'
+        },
+        {
+            id: 'OD-7891',
+            customer: '이하준',
+            date: '2023-05-12',
+            total: '₩ 128,000',
+            payment: '카드결제',
+            status: '배송중'
+        },
+        {
+            id: 'OD-7890',
+            customer: '박서연',
+            date: '2023-05-11',
+            total: '₩ 32,500',
+            payment: '무통장입금',
+            status: '결제완료'
+        },
+        {
+            id: 'OD-7889',
+            customer: '최준호',
+            date: '2023-05-11',
+            total: '₩ 77,000',
+            payment: '카카오페이',
+            status: '주문접수'
+        },
+        {
+            id: 'OD-7888',
+            customer: '정민지',
+            date: '2023-05-10',
+            total: '₩ 45,000',
+            payment: '카드결제',
+            status: '배송완료'
+        },
+        {
+            id: 'OD-7887',
+            customer: '송지원',
+            date: '2023-05-10',
+            total: '₩ 62,000',
+            payment: '네이버페이',
+            status: '배송중'
+        },
+        {
+            id: 'OD-7886',
+            customer: '윤도현',
+            date: '2023-05-09',
+            total: '₩ 24,000',
+            payment: '카드결제',
+            status: '배송완료'
+        },
+        {
+            id: 'OD-7885',
+            customer: '장서영',
+            date: '2023-05-09',
+            total: '₩ 88,000',
+            payment: '카드결제',
+            status: '취소요청'
+        },
+        {
+            id: 'OD-7884',
+            customer: '이민준',
+            date: '2023-05-08',
+            total: '₩ 35,500',
+            payment: '카드결제',
+            status: '배송완료'
+        },
+        {
+            id: 'OD-7883',
+            customer: '한소희',
+            date: '2023-05-08',
+            total: '₩ 146,000',
+            payment: '무통장입금',
+            status: '결제대기'
+        }
+    ];
     // 필터링된 주문 목록
     const filteredOrders = orders.filter((order)=>{
         const matchesSearch = order.id.includes(searchTerm) || order.customer.includes(searchTerm);
@@ -93,7 +151,7 @@ function OrdersPage() {
         });
         const url = window.URL.createObjectURL(blob);
         const link = document.createElement('a');
-        link.hrefgi = url;
+        link.href = url;
         link.setAttribute('download', '올리브영_주문목록.csv');
         document.body.appendChild(link);
         link.click();
@@ -111,7 +169,7 @@ function OrdersPage() {
                         children: "주문 관리"
                     }, void 0, false, {
                         fileName: "[project]/src/app/admin/orders/page.jsx",
-                        lineNumber: 88,
+                        lineNumber: 70,
                         columnNumber: 9
                     }, this),
                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("button", {
@@ -123,20 +181,20 @@ function OrdersPage() {
                                 className: "mr-1"
                             }, void 0, false, {
                                 fileName: "[project]/src/app/admin/orders/page.jsx",
-                                lineNumber: 90,
+                                lineNumber: 72,
                                 columnNumber: 11
                             }, this),
                             "엑셀 다운로드"
                         ]
                     }, void 0, true, {
                         fileName: "[project]/src/app/admin/orders/page.jsx",
-                        lineNumber: 89,
+                        lineNumber: 71,
                         columnNumber: 9
                     }, this)
                 ]
             }, void 0, true, {
                 fileName: "[project]/src/app/admin/orders/page.jsx",
-                lineNumber: 87,
+                lineNumber: 69,
                 columnNumber: 7
             }, this),
             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -158,7 +216,7 @@ function OrdersPage() {
                                             onChange: (e)=>setSearchTerm(e.target.value)
                                         }, void 0, false, {
                                             fileName: "[project]/src/app/admin/orders/page.jsx",
-                                            lineNumber: 98,
+                                            lineNumber: 80,
                                             columnNumber: 15
                                         }, this),
                                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$lucide$2d$react$2f$dist$2f$esm$2f$icons$2f$search$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__$3c$export__default__as__SearchIcon$3e$__["SearchIcon"], {
@@ -166,13 +224,13 @@ function OrdersPage() {
                                             className: "absolute left-3 top-2.5 text-gray-400"
                                         }, void 0, false, {
                                             fileName: "[project]/src/app/admin/orders/page.jsx",
-                                            lineNumber: 105,
+                                            lineNumber: 87,
                                             columnNumber: 15
                                         }, this)
                                     ]
                                 }, void 0, true, {
                                     fileName: "[project]/src/app/admin/orders/page.jsx",
-                                    lineNumber: 97,
+                                    lineNumber: 79,
                                     columnNumber: 13
                                 }, this),
                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -185,14 +243,14 @@ function OrdersPage() {
                                                     className: "mr-1"
                                                 }, void 0, false, {
                                                     fileName: "[project]/src/app/admin/orders/page.jsx",
-                                                    lineNumber: 109,
+                                                    lineNumber: 91,
                                                     columnNumber: 17
                                                 }, this),
                                                 "필터"
                                             ]
                                         }, void 0, true, {
                                             fileName: "[project]/src/app/admin/orders/page.jsx",
-                                            lineNumber: 108,
+                                            lineNumber: 90,
                                             columnNumber: 15
                                         }, this),
                                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("select", {
@@ -205,7 +263,7 @@ function OrdersPage() {
                                                     children: "결제방법"
                                                 }, void 0, false, {
                                                     fileName: "[project]/src/app/admin/orders/page.jsx",
-                                                    lineNumber: 113,
+                                                    lineNumber: 95,
                                                     columnNumber: 17
                                                 }, this),
                                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("option", {
@@ -213,7 +271,7 @@ function OrdersPage() {
                                                     children: "카드결제"
                                                 }, void 0, false, {
                                                     fileName: "[project]/src/app/admin/orders/page.jsx",
-                                                    lineNumber: 114,
+                                                    lineNumber: 96,
                                                     columnNumber: 17
                                                 }, this),
                                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("option", {
@@ -221,7 +279,7 @@ function OrdersPage() {
                                                     children: "무통장입금"
                                                 }, void 0, false, {
                                                     fileName: "[project]/src/app/admin/orders/page.jsx",
-                                                    lineNumber: 115,
+                                                    lineNumber: 97,
                                                     columnNumber: 17
                                                 }, this),
                                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("option", {
@@ -229,7 +287,7 @@ function OrdersPage() {
                                                     children: "카카오페이"
                                                 }, void 0, false, {
                                                     fileName: "[project]/src/app/admin/orders/page.jsx",
-                                                    lineNumber: 116,
+                                                    lineNumber: 98,
                                                     columnNumber: 17
                                                 }, this),
                                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("option", {
@@ -237,13 +295,13 @@ function OrdersPage() {
                                                     children: "네이버페이"
                                                 }, void 0, false, {
                                                     fileName: "[project]/src/app/admin/orders/page.jsx",
-                                                    lineNumber: 117,
+                                                    lineNumber: 99,
                                                     columnNumber: 17
                                                 }, this)
                                             ]
                                         }, void 0, true, {
                                             fileName: "[project]/src/app/admin/orders/page.jsx",
-                                            lineNumber: 112,
+                                            lineNumber: 94,
                                             columnNumber: 15
                                         }, this),
                                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("select", {
@@ -256,7 +314,7 @@ function OrdersPage() {
                                                     children: "주문상태"
                                                 }, void 0, false, {
                                                     fileName: "[project]/src/app/admin/orders/page.jsx",
-                                                    lineNumber: 120,
+                                                    lineNumber: 102,
                                                     columnNumber: 17
                                                 }, this),
                                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("option", {
@@ -264,7 +322,7 @@ function OrdersPage() {
                                                     children: "결제대기"
                                                 }, void 0, false, {
                                                     fileName: "[project]/src/app/admin/orders/page.jsx",
-                                                    lineNumber: 121,
+                                                    lineNumber: 103,
                                                     columnNumber: 17
                                                 }, this),
                                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("option", {
@@ -272,7 +330,7 @@ function OrdersPage() {
                                                     children: "결제완료"
                                                 }, void 0, false, {
                                                     fileName: "[project]/src/app/admin/orders/page.jsx",
-                                                    lineNumber: 122,
+                                                    lineNumber: 104,
                                                     columnNumber: 17
                                                 }, this),
                                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("option", {
@@ -280,7 +338,7 @@ function OrdersPage() {
                                                     children: "주문접수"
                                                 }, void 0, false, {
                                                     fileName: "[project]/src/app/admin/orders/page.jsx",
-                                                    lineNumber: 123,
+                                                    lineNumber: 105,
                                                     columnNumber: 17
                                                 }, this),
                                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("option", {
@@ -288,7 +346,7 @@ function OrdersPage() {
                                                     children: "배송중"
                                                 }, void 0, false, {
                                                     fileName: "[project]/src/app/admin/orders/page.jsx",
-                                                    lineNumber: 124,
+                                                    lineNumber: 106,
                                                     columnNumber: 17
                                                 }, this),
                                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("option", {
@@ -296,7 +354,7 @@ function OrdersPage() {
                                                     children: "배송완료"
                                                 }, void 0, false, {
                                                     fileName: "[project]/src/app/admin/orders/page.jsx",
-                                                    lineNumber: 125,
+                                                    lineNumber: 107,
                                                     columnNumber: 17
                                                 }, this),
                                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("option", {
@@ -304,30 +362,30 @@ function OrdersPage() {
                                                     children: "취소요청"
                                                 }, void 0, false, {
                                                     fileName: "[project]/src/app/admin/orders/page.jsx",
-                                                    lineNumber: 126,
+                                                    lineNumber: 108,
                                                     columnNumber: 17
                                                 }, this)
                                             ]
                                         }, void 0, true, {
                                             fileName: "[project]/src/app/admin/orders/page.jsx",
-                                            lineNumber: 119,
+                                            lineNumber: 101,
                                             columnNumber: 15
                                         }, this)
                                     ]
                                 }, void 0, true, {
                                     fileName: "[project]/src/app/admin/orders/page.jsx",
-                                    lineNumber: 107,
+                                    lineNumber: 89,
                                     columnNumber: 13
                                 }, this)
                             ]
                         }, void 0, true, {
                             fileName: "[project]/src/app/admin/orders/page.jsx",
-                            lineNumber: 96,
+                            lineNumber: 78,
                             columnNumber: 11
                         }, this)
                     }, void 0, false, {
                         fileName: "[project]/src/app/admin/orders/page.jsx",
-                        lineNumber: 95,
+                        lineNumber: 77,
                         columnNumber: 9
                     }, this),
                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -344,7 +402,7 @@ function OrdersPage() {
                                                 children: "주문번호"
                                             }, void 0, false, {
                                                 fileName: "[project]/src/app/admin/orders/page.jsx",
-                                                lineNumber: 135,
+                                                lineNumber: 117,
                                                 columnNumber: 17
                                             }, this),
                                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("th", {
@@ -352,7 +410,7 @@ function OrdersPage() {
                                                 children: "고객명"
                                             }, void 0, false, {
                                                 fileName: "[project]/src/app/admin/orders/page.jsx",
-                                                lineNumber: 136,
+                                                lineNumber: 118,
                                                 columnNumber: 17
                                             }, this),
                                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("th", {
@@ -360,7 +418,7 @@ function OrdersPage() {
                                                 children: "주문일자"
                                             }, void 0, false, {
                                                 fileName: "[project]/src/app/admin/orders/page.jsx",
-                                                lineNumber: 137,
+                                                lineNumber: 119,
                                                 columnNumber: 17
                                             }, this),
                                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("th", {
@@ -368,7 +426,7 @@ function OrdersPage() {
                                                 children: "주문금액"
                                             }, void 0, false, {
                                                 fileName: "[project]/src/app/admin/orders/page.jsx",
-                                                lineNumber: 138,
+                                                lineNumber: 120,
                                                 columnNumber: 17
                                             }, this),
                                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("th", {
@@ -376,7 +434,7 @@ function OrdersPage() {
                                                 children: "결제방법"
                                             }, void 0, false, {
                                                 fileName: "[project]/src/app/admin/orders/page.jsx",
-                                                lineNumber: 139,
+                                                lineNumber: 121,
                                                 columnNumber: 17
                                             }, this),
                                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("th", {
@@ -384,7 +442,7 @@ function OrdersPage() {
                                                 children: "주문상태"
                                             }, void 0, false, {
                                                 fileName: "[project]/src/app/admin/orders/page.jsx",
-                                                lineNumber: 140,
+                                                lineNumber: 122,
                                                 columnNumber: 17
                                             }, this),
                                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("th", {
@@ -392,18 +450,18 @@ function OrdersPage() {
                                                 children: "상세보기"
                                             }, void 0, false, {
                                                 fileName: "[project]/src/app/admin/orders/page.jsx",
-                                                lineNumber: 141,
+                                                lineNumber: 123,
                                                 columnNumber: 17
                                             }, this)
                                         ]
                                     }, void 0, true, {
                                         fileName: "[project]/src/app/admin/orders/page.jsx",
-                                        lineNumber: 134,
+                                        lineNumber: 116,
                                         columnNumber: 15
                                     }, this)
                                 }, void 0, false, {
                                     fileName: "[project]/src/app/admin/orders/page.jsx",
-                                    lineNumber: 133,
+                                    lineNumber: 115,
                                     columnNumber: 13
                                 }, this),
                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("tbody", {
@@ -416,7 +474,7 @@ function OrdersPage() {
                                                     children: order.id
                                                 }, void 0, false, {
                                                     fileName: "[project]/src/app/admin/orders/page.jsx",
-                                                    lineNumber: 147,
+                                                    lineNumber: 129,
                                                     columnNumber: 19
                                                 }, this),
                                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("td", {
@@ -424,7 +482,7 @@ function OrdersPage() {
                                                     children: order.customer
                                                 }, void 0, false, {
                                                     fileName: "[project]/src/app/admin/orders/page.jsx",
-                                                    lineNumber: 148,
+                                                    lineNumber: 130,
                                                     columnNumber: 19
                                                 }, this),
                                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("td", {
@@ -432,7 +490,7 @@ function OrdersPage() {
                                                     children: order.date
                                                 }, void 0, false, {
                                                     fileName: "[project]/src/app/admin/orders/page.jsx",
-                                                    lineNumber: 149,
+                                                    lineNumber: 131,
                                                     columnNumber: 19
                                                 }, this),
                                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("td", {
@@ -440,7 +498,7 @@ function OrdersPage() {
                                                     children: order.total
                                                 }, void 0, false, {
                                                     fileName: "[project]/src/app/admin/orders/page.jsx",
-                                                    lineNumber: 150,
+                                                    lineNumber: 132,
                                                     columnNumber: 19
                                                 }, this),
                                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("td", {
@@ -448,7 +506,7 @@ function OrdersPage() {
                                                     children: order.payment
                                                 }, void 0, false, {
                                                     fileName: "[project]/src/app/admin/orders/page.jsx",
-                                                    lineNumber: 151,
+                                                    lineNumber: 133,
                                                     columnNumber: 19
                                                 }, this),
                                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("td", {
@@ -461,12 +519,12 @@ function OrdersPage() {
                                                         children: order.status
                                                     }, void 0, false, {
                                                         fileName: "[project]/src/app/admin/orders/page.jsx",
-                                                        lineNumber: 153,
+                                                        lineNumber: 135,
                                                         columnNumber: 21
                                                     }, this)
                                                 }, void 0, false, {
                                                     fileName: "[project]/src/app/admin/orders/page.jsx",
-                                                    lineNumber: 152,
+                                                    lineNumber: 134,
                                                     columnNumber: 19
                                                 }, this),
                                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("td", {
@@ -481,39 +539,39 @@ function OrdersPage() {
                                                             size: 18
                                                         }, void 0, false, {
                                                             fileName: "[project]/src/app/admin/orders/page.jsx",
-                                                            lineNumber: 168,
+                                                            lineNumber: 150,
                                                             columnNumber: 23
                                                         }, this)
                                                     }, void 0, false, {
                                                         fileName: "[project]/src/app/admin/orders/page.jsx",
-                                                        lineNumber: 164,
+                                                        lineNumber: 146,
                                                         columnNumber: 21
                                                     }, this)
                                                 }, void 0, false, {
                                                     fileName: "[project]/src/app/admin/orders/page.jsx",
-                                                    lineNumber: 163,
+                                                    lineNumber: 145,
                                                     columnNumber: 19
                                                 }, this)
                                             ]
                                         }, order.id, true, {
                                             fileName: "[project]/src/app/admin/orders/page.jsx",
-                                            lineNumber: 146,
+                                            lineNumber: 128,
                                             columnNumber: 17
                                         }, this))
                                 }, void 0, false, {
                                     fileName: "[project]/src/app/admin/orders/page.jsx",
-                                    lineNumber: 144,
+                                    lineNumber: 126,
                                     columnNumber: 14
                                 }, this)
                             ]
                         }, void 0, true, {
                             fileName: "[project]/src/app/admin/orders/page.jsx",
-                            lineNumber: 132,
+                            lineNumber: 114,
                             columnNumber: 11
                         }, this)
                     }, void 0, false, {
                         fileName: "[project]/src/app/admin/orders/page.jsx",
-                        lineNumber: 131,
+                        lineNumber: 113,
                         columnNumber: 9
                     }, this),
                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -528,7 +586,7 @@ function OrdersPage() {
                                         children: filteredOrders.length
                                     }, void 0, false, {
                                         fileName: "[project]/src/app/admin/orders/page.jsx",
-                                        lineNumber: 179,
+                                        lineNumber: 161,
                                         columnNumber: 15
                                     }, this),
                                     "개 주문 중",
@@ -538,7 +596,7 @@ function OrdersPage() {
                                         children: (currentPage - 1) * itemsPerPage + 1
                                     }, void 0, false, {
                                         fileName: "[project]/src/app/admin/orders/page.jsx",
-                                        lineNumber: 180,
+                                        lineNumber: 162,
                                         columnNumber: 13
                                     }, this),
                                     "-",
@@ -547,7 +605,7 @@ function OrdersPage() {
                                         children: Math.min(currentPage * itemsPerPage, filteredOrders.length)
                                     }, void 0, false, {
                                         fileName: "[project]/src/app/admin/orders/page.jsx",
-                                        lineNumber: 181,
+                                        lineNumber: 163,
                                         columnNumber: 13
                                     }, this),
                                     ' ',
@@ -555,7 +613,7 @@ function OrdersPage() {
                                 ]
                             }, void 0, true, {
                                 fileName: "[project]/src/app/admin/orders/page.jsx",
-                                lineNumber: 178,
+                                lineNumber: 160,
                                 columnNumber: 11
                             }, this),
                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -568,7 +626,7 @@ function OrdersPage() {
                                         children: "이전"
                                     }, void 0, false, {
                                         fileName: "[project]/src/app/admin/orders/page.jsx",
-                                        lineNumber: 187,
+                                        lineNumber: 169,
                                         columnNumber: 13
                                     }, this),
                                     Array.from({
@@ -579,7 +637,7 @@ function OrdersPage() {
                                             children: i + 1
                                         }, i, false, {
                                             fileName: "[project]/src/app/admin/orders/page.jsx",
-                                            lineNumber: 196,
+                                            lineNumber: 178,
                                             columnNumber: 15
                                         }, this)),
                                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("button", {
@@ -589,19 +647,19 @@ function OrdersPage() {
                                         children: "다음"
                                     }, void 0, false, {
                                         fileName: "[project]/src/app/admin/orders/page.jsx",
-                                        lineNumber: 209,
+                                        lineNumber: 191,
                                         columnNumber: 13
                                     }, this)
                                 ]
                             }, void 0, true, {
                                 fileName: "[project]/src/app/admin/orders/page.jsx",
-                                lineNumber: 186,
+                                lineNumber: 168,
                                 columnNumber: 11
                             }, this)
                         ]
                     }, void 0, true, {
                         fileName: "[project]/src/app/admin/orders/page.jsx",
-                        lineNumber: 177,
+                        lineNumber: 159,
                         columnNumber: 8
                     }, this),
                     showDetail && selectedOrder && /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -614,7 +672,7 @@ function OrdersPage() {
                                     children: "주문 상세"
                                 }, void 0, false, {
                                     fileName: "[project]/src/app/admin/orders/page.jsx",
-                                    lineNumber: 224,
+                                    lineNumber: 206,
                                     columnNumber: 15
                                 }, this),
                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("p", {
@@ -623,7 +681,7 @@ function OrdersPage() {
                                             children: "주문번호:"
                                         }, void 0, false, {
                                             fileName: "[project]/src/app/admin/orders/page.jsx",
-                                            lineNumber: 225,
+                                            lineNumber: 207,
                                             columnNumber: 18
                                         }, this),
                                         " ",
@@ -631,7 +689,7 @@ function OrdersPage() {
                                     ]
                                 }, void 0, true, {
                                     fileName: "[project]/src/app/admin/orders/page.jsx",
-                                    lineNumber: 225,
+                                    lineNumber: 207,
                                     columnNumber: 15
                                 }, this),
                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("p", {
@@ -640,7 +698,7 @@ function OrdersPage() {
                                             children: "고객명:"
                                         }, void 0, false, {
                                             fileName: "[project]/src/app/admin/orders/page.jsx",
-                                            lineNumber: 226,
+                                            lineNumber: 208,
                                             columnNumber: 18
                                         }, this),
                                         " ",
@@ -648,7 +706,7 @@ function OrdersPage() {
                                     ]
                                 }, void 0, true, {
                                     fileName: "[project]/src/app/admin/orders/page.jsx",
-                                    lineNumber: 226,
+                                    lineNumber: 208,
                                     columnNumber: 15
                                 }, this),
                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("p", {
@@ -657,7 +715,7 @@ function OrdersPage() {
                                             children: "주문일자:"
                                         }, void 0, false, {
                                             fileName: "[project]/src/app/admin/orders/page.jsx",
-                                            lineNumber: 227,
+                                            lineNumber: 209,
                                             columnNumber: 18
                                         }, this),
                                         " ",
@@ -665,7 +723,7 @@ function OrdersPage() {
                                     ]
                                 }, void 0, true, {
                                     fileName: "[project]/src/app/admin/orders/page.jsx",
-                                    lineNumber: 227,
+                                    lineNumber: 209,
                                     columnNumber: 15
                                 }, this),
                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("p", {
@@ -674,7 +732,7 @@ function OrdersPage() {
                                             children: "주문금액:"
                                         }, void 0, false, {
                                             fileName: "[project]/src/app/admin/orders/page.jsx",
-                                            lineNumber: 228,
+                                            lineNumber: 210,
                                             columnNumber: 18
                                         }, this),
                                         " ",
@@ -682,7 +740,7 @@ function OrdersPage() {
                                     ]
                                 }, void 0, true, {
                                     fileName: "[project]/src/app/admin/orders/page.jsx",
-                                    lineNumber: 228,
+                                    lineNumber: 210,
                                     columnNumber: 15
                                 }, this),
                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("p", {
@@ -691,7 +749,7 @@ function OrdersPage() {
                                             children: "결제방법:"
                                         }, void 0, false, {
                                             fileName: "[project]/src/app/admin/orders/page.jsx",
-                                            lineNumber: 229,
+                                            lineNumber: 211,
                                             columnNumber: 18
                                         }, this),
                                         " ",
@@ -699,7 +757,7 @@ function OrdersPage() {
                                     ]
                                 }, void 0, true, {
                                     fileName: "[project]/src/app/admin/orders/page.jsx",
-                                    lineNumber: 229,
+                                    lineNumber: 211,
                                     columnNumber: 15
                                 }, this),
                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("p", {
@@ -708,7 +766,7 @@ function OrdersPage() {
                                             children: "주문상태:"
                                         }, void 0, false, {
                                             fileName: "[project]/src/app/admin/orders/page.jsx",
-                                            lineNumber: 230,
+                                            lineNumber: 212,
                                             columnNumber: 18
                                         }, this),
                                         " ",
@@ -716,7 +774,7 @@ function OrdersPage() {
                                     ]
                                 }, void 0, true, {
                                     fileName: "[project]/src/app/admin/orders/page.jsx",
-                                    lineNumber: 230,
+                                    lineNumber: 212,
                                     columnNumber: 15
                                 }, this),
                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -727,35 +785,35 @@ function OrdersPage() {
                                         children: "닫기"
                                     }, void 0, false, {
                                         fileName: "[project]/src/app/admin/orders/page.jsx",
-                                        lineNumber: 232,
+                                        lineNumber: 214,
                                         columnNumber: 17
                                     }, this)
                                 }, void 0, false, {
                                     fileName: "[project]/src/app/admin/orders/page.jsx",
-                                    lineNumber: 231,
+                                    lineNumber: 213,
                                     columnNumber: 15
                                 }, this)
                             ]
                         }, void 0, true, {
                             fileName: "[project]/src/app/admin/orders/page.jsx",
-                            lineNumber: 223,
+                            lineNumber: 205,
                             columnNumber: 13
                         }, this)
                     }, void 0, false, {
                         fileName: "[project]/src/app/admin/orders/page.jsx",
-                        lineNumber: 222,
+                        lineNumber: 204,
                         columnNumber: 11
                     }, this)
                 ]
             }, void 0, true, {
                 fileName: "[project]/src/app/admin/orders/page.jsx",
-                lineNumber: 94,
+                lineNumber: 76,
                 columnNumber: 7
             }, this)
         ]
     }, void 0, true, {
         fileName: "[project]/src/app/admin/orders/page.jsx",
-        lineNumber: 86,
+        lineNumber: 68,
         columnNumber: 5
     }, this);
 }

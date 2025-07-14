@@ -1,9 +1,47 @@
 'use client';
 
 import Image from 'next/image';
-import React from 'react';
+import React, { useState, useEffect } from 'react';
+import axios from 'axios';
 
 export default function UserInfoBox() {
+  
+  const [userInfo, setUserInfo] = useState({
+    userName: ''
+  });
+
+  useEffect(() => {
+    const token = localStorage.getItem('accessToken');
+    if (!token) return;
+
+    const fetchUserInfo = async () => {
+      try {
+        const res = await axios.get('http://localhost:8080/api/mypage/info', {
+          headers: {  
+            Authorization: `Bearer ${token}`,
+          },
+        });
+        const { userName } = res.data.data;
+        setUserInfo({ userName });
+      } catch (e) {
+        console.error('유저 정보 가져오기 실패:', e);
+      }
+    };
+
+    fetchUserInfo();
+  }, []);
+
+  // 이름 마스킹 함수
+  const maskUserName = (name) => {
+    if (!name || name.length < 2) return name;
+
+    if (name.length === 2) {
+      return name[0] + '*';
+    }
+
+    return name[0] + '*'.repeat(name.length - 2) + name[name.length - 1];
+  };
+
   return (
     <>
       {/* 유저 info 박스 */}
@@ -19,7 +57,7 @@ export default function UserInfoBox() {
         </div>
         <p className="float-left ml-[10px] text-[18px] leading-[34px] font-bold text-white tracking-[-1px]">
           PINK OLIVE
-          <strong className="inline-block ml-[3px]">박*준</strong>님 반갑습니다.
+          <strong className="inline-block ml-[3px]">{maskUserName(userInfo.userName)}</strong>님 반갑습니다.
         </p>
         <ul className="absolute top-1/2 right-[30px] -mt-[10px]">
           <li className="inline-block pr-[15px] text-[13px] text-white font-bold bg-[url('/images/mypage/order/ico_arrow7x10_2.png')] bg-no-repeat bg-[length:5px_10px] bg-[position:100%_50%] cursor-pointer">
@@ -36,7 +74,7 @@ export default function UserInfoBox() {
           <li className="float-left w-1/3 text-center">
             <span className="text-[13px] font-bold text-[#555]">CJ ONE 포인트</span>
             <p className="inline-block pl-[15px] text-[18px] text-[#f27370] tracking-[-1.16px] font-medium cursor-pointer">
-              1,500
+              0
               <em className="inline-block pl-[5px] text-[13px] font-bold text-[#555555] not-italic">
                 P
               </em>
@@ -45,7 +83,7 @@ export default function UserInfoBox() {
           <li className="float-left w-1/3 text-center">
             <span className="text-[13px] font-bold text-[#555]">쿠폰</span>
             <p className="inline-block pl-[15px] text-[18px] text-[#f27370] tracking-[-1.16px] font-medium cursor-pointer">
-              5
+              0
               <em className="inline-block pl-[5px] text-[13px] font-bold text-[#555555] not-italic">
                 개
               </em>
