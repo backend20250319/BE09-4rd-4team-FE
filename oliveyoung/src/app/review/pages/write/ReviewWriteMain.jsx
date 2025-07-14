@@ -20,6 +20,7 @@ const dashedLineStyle = {
 export default function ReviewWriteLayout({
   orderItemId,
   onClose,
+  onReviewSuccess, // ⭐️ 반드시 props로 받기
   review,
   mode = "create",
 }) {
@@ -31,6 +32,7 @@ export default function ReviewWriteLayout({
   const [texture, setTexture] = useState(review?.texture || "");
   const [content, setContent] = useState(review?.content || "");
 
+  // 상품 정보 불러오기
   useEffect(() => {
     const fetchProduct = async () => {
       try {
@@ -38,7 +40,7 @@ export default function ReviewWriteLayout({
         const res = await axios.get("http://localhost:8080/api/orders", {
           headers: { ...(token && { Authorization: `Bearer ${token}` }) },
         });
-        // flatten orders
+        // 주문 전체 펼치기
         const orders = res.data;
         const flatItems = Array.isArray(orders)
           ? orders.flatMap((order) =>
@@ -72,15 +74,6 @@ export default function ReviewWriteLayout({
 
     const payload = { content, rating, skinType, skinConcern, texture };
 
-    // ⭐⭐⭐ 실제 서버로 보내는 값 콘솔로 확인!
-    console.log({
-      mode,
-      reviewId: review?.reviewId,
-      productId: product?.productId,
-      payload,
-      tokenShort: token?.substring(0, 10) + "...",
-    });
-
     try {
       if (mode === "edit" && review) {
         // **수정 요청**
@@ -111,18 +104,14 @@ export default function ReviewWriteLayout({
         const result = res.data;
         if (result.success) {
           alert("리뷰 등록 성공!");
+          if (onReviewSuccess) onReviewSuccess(product.orderItemId); // ⭐️ 반드시 호출
           onClose();
         } else {
           alert("등록 실패: " + (result.message || "에러 발생"));
         }
       }
     } catch (err) {
-      console.error("요청 오류:", err, err.response?.data);
-      if (err.response?.data?.message) {
-        alert("서버 오류: " + err.response.data.message);
-      } else {
-        alert("서버 오류");
-      }
+      alert("서버 오류: " + (err.response?.data?.message || "에러 발생"));
     }
   };
 

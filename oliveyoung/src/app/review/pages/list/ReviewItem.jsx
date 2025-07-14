@@ -53,7 +53,6 @@ export default function ReviewItem({ data, onReviewSuccess }) {
               })()
             : "-"}
         </div>
-
         {/* 리뷰 작성 버튼 */}
         <div className="flex justify-end mr-6">
           <button
@@ -76,7 +75,7 @@ export default function ReviewItem({ data, onReviewSuccess }) {
             >
               ✖️
             </button>
-            {/* ⭐ 핵심: onReviewSuccess를 전달 */}
+            {/* 리뷰 작성 폼: onReviewSuccess 반드시 전달! */}
             <ReviewWriteLayout
               orderItemId={orderItemId}
               onClose={() => setShowModal(false)}

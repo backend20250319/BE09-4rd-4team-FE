@@ -6,7 +6,7 @@ import { FaExclamation } from "react-icons/fa";
 const ITEMS_PER_PAGE = 10;
 
 export default function ReviewList() {
-  const [items, setItems] = useState([]); // 리뷰 가능한 주문상품 목록
+  const [items, setItems] = useState([]);
   const [currentPage, setCurrentPage] = useState(1);
   const [loading, setLoading] = useState(true);
 
@@ -17,10 +17,10 @@ export default function ReviewList() {
         const res = await axios.get("http://localhost:8080/api/orders", {
           headers: { Authorization: `Bearer ${token}` },
         });
-        // 주문 내역을 펼쳐서 리뷰가능 orderItems만 뽑기
+        // 주문 내역 펼쳐서 '리뷰 안 쓴' orderItems만 추출
         const flatOrderItems = res.data.flatMap((order) =>
           order.orderItems
-            .filter((oi) => !oi.hasReview) // hasReview는 백엔드에서 내려줘야 함!
+            .filter((oi) => !oi.hasReview) // hasReview 필드는 예시, 실제 구조에 맞게!
             .map((oi) => ({
               ...oi,
               orderId: order.orderId,
@@ -38,7 +38,7 @@ export default function ReviewList() {
     fetchData();
   }, []);
 
-  // ⭐ 리뷰 작성 성공시 목록에서 제거!
+  // ⭐ 리뷰 등록 성공시 목록에서 제거!
   const handleReviewSuccess = (orderItemId) => {
     setItems((prev) => prev.filter((item) => item.orderItemId !== orderItemId));
     // (선택) 페이지네이션 보정
@@ -65,9 +65,9 @@ export default function ReviewList() {
   return (
     <div className="mt-6">
       {/* 헤더 */}
-      <div className="grid grid-cols-[1fr_120px_120px] gap-4 px-1 py-3 border-y border-gray-300 text-sm text-gray-700 font-semibold bg-gray-50">
+      <div className="grid grid-cols-[1fr_150px_120px] gap-4 px-1 py-3 border-y border-gray-300 text-sm text-gray-700 font-semibold bg-gray-50">
         <div className="text-center">상품</div>
-        <div className="text-center">작성기간</div>
+        <div className="text-center">작성기한</div>
         <div className="text-center">리뷰작성</div>
       </div>
       <div className="space-y-0">
