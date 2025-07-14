@@ -6,7 +6,7 @@ import StoreModal from '../app/menu/StoreModal';
 import { useAuth } from '@/contexts/AuthContext';
 import { useCart } from '@/contexts/CartContext';
 import '../styles/header.css';
-import axios from 'axios';
+import axios from '@/api/axiosInstance';
 
 function Header(props) {
   const router = useRouter();
@@ -99,7 +99,9 @@ function Header(props) {
                 onClick={() => router.push('/order/cart')}
               >
                 장바구니
-                <span className="text-xs text-[#f27370] font-bold hover:cursor-pointer">({itemCount})</span>
+                <span className="text-xs text-[#f27370] font-bold hover:cursor-pointer">
+                  ({itemCount})
+                </span>
               </li>
             </>
           ) : (

@@ -2,7 +2,7 @@
 
 import { useState, useEffect } from 'react';
 import { FaExclamation } from 'react-icons/fa';
-import axios from 'axios';
+import axios from '@/api/axiosInstance'; ;
 import ReviewTabs from '../pages/guide/ReviewTabs'; // 경로는 프로젝트에 맞게 수정
 import MyPageLayout from '@/app/mypage/layout';
 import UserInfoBox from '@/app/mypage/user/components/UserInfoBox';

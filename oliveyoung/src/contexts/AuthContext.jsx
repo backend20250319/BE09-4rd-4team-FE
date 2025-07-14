@@ -1,42 +1,52 @@
 'use client';
 import { createContext, useContext, useState, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
+import axios from '@/api/axiosInstance';
 
 const AuthContext = createContext();
 
 export function AuthProvider({ children }) {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
   const [userName, setUserName] = useState('');
+  const [userNo, setUserNo] = useState('');
   const router = useRouter();
   const [isLoggingOut, setIsLoggingOut] = useState(false);
   const [accessToken, setAccessToken] = useState('');
 
+  const instance = axios.create({
+    baseURL: 'http://localhost:8080/api/auth/refresh',
+  });
+
   // 앱 시작 시 localStorage 값으로 초기화
   const [hydrated, setHydrated] = useState(false);
 
-  // 1️⃣ CSR 환경 여부 플래그
+  // CSR 환경 여부 플래그
   useEffect(() => {
     setHydrated(true);
   }, []);
 
-  // 2️⃣ localStorage는 CSR 이후에 접근
+  // localStorage는 CSR 이후에 접근
   useEffect(() => {
     if (typeof window !== 'undefined') {
       const token = localStorage.getItem('accessToken');
       const name = localStorage.getItem('userName');
+      const number = localStorage.getItem('userNo');
       setIsLoggedIn(!!token);
       setAccessToken(token || '');
       setUserName(name || '');
+      setUserNo(number || '');
     }
   }, []);
 
-  const login = (accessToken, refreshToken, userName) => {
+  const login = (accessToken, refreshToken, userName, userNo) => {
     localStorage.setItem('accessToken', accessToken);
     localStorage.setItem('refreshToken', refreshToken);
     localStorage.setItem('userName', userName);
+    localStorage.setItem('userNo', userNo);
     setAccessToken(accessToken);
     setIsLoggedIn(true);
     setUserName(userName);
+    setUserNo(userNo);
   };
 
   const logout = () => {
@@ -47,11 +57,13 @@ export function AuthProvider({ children }) {
       localStorage.removeItem('accessToken');
       localStorage.removeItem('refreshToken');
       localStorage.removeItem('userName');
+      localStorage.removeItem('userNo');
 
       // 상태 업데이트
       setIsLoggedIn(false);
       setUserName('');
       setAccessToken('');
+      setUserNo('');
 
       setIsLoggingOut(false); // 로딩 끝
 
@@ -67,11 +79,13 @@ export function AuthProvider({ children }) {
       localStorage.removeItem('accessToken');
       localStorage.removeItem('refreshToken');
       localStorage.removeItem('userName');
+      localStorage.removeItem('userNo');
 
       // 상태 업데이트
       setIsLoggedIn(false);
       setUserName('');
       setAccessToken('');
+      setUserNo('');
 
       setIsLoggingOut(false); // 로딩 끝
     }, 500);
@@ -85,8 +99,10 @@ export function AuthProvider({ children }) {
         isLoggedIn,
         userName,
         accessToken,
+        userNo,
         setIsLoggedIn,
         setUserName,
+        setUserNo,
         login,
         logout,
         logoutSilently,
