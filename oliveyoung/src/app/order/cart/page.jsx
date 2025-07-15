@@ -229,7 +229,7 @@ export default function Cart() {
       return name[0] + '*';
     }
 
-    return name[0] + '*'.repeat(name.length - 2) + name[name.length - 1];
+    return name[0] + '*' + name[name.length - 1];
   };
 
   // cartItem 삭제 핸들러
