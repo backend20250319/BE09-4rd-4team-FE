@@ -10,6 +10,11 @@ export default function GetDeliveryInfoPage() {
   const router = useRouter();
   const [addresses, setAddresses] = useState([]);
 
+  const maskPhone = (phone) => {
+    const parts = phone.split('-');
+    return `${parts[0]}-${parts[1]}-****`;
+  };
+
   const fetchAddresses = async () => {
     try {
       const res = await axios.get('http://localhost:8080/api/mypage/address');
@@ -57,16 +62,7 @@ export default function GetDeliveryInfoPage() {
   };
 
   useEffect(() => {
-    const fetchDeliveryList = async () => {
-      try {
-        const response = await axios.get('http://localhost:8080/api/mypage/address');
-        setAddresses(response.data.data);
-      } catch (error) {
-        console.error('배송지 목록을 불러오지 못했습니다.', error);
-      }
-    };
-
-    fetchDeliveryList();
+    fetchAddresses();
   }, []);
 
   return (
@@ -106,69 +102,92 @@ export default function GetDeliveryInfoPage() {
           </tr>
         </thead>
         <tbody>
-          {addresses.map((item, index) => (
-            <tr key={index} className="h-[232px] text-[14px] border-b border-gray-200">
-              {/* 배송지명 */}
-              <td className="text-center">{item.addressName}</td>
-
-              {/* 받는사람 */}
-              <td className="text-center">{item.recipientName}</td>
-
-              {/* 주소 */}
-              <td className="pl-[20px] pr-[5px] py-[30px]">
-                <div className="flex items-center gap-2 mb-1">
-                  {item.default && (
-                    <strong className="text-white bg-[#9bce26] text-[11px] px-2 py-1 rounded">
-                      기본 배송지
-                    </strong>
-                  )}
-                  <span className="text-[#f27370] text-[11px] flex">
-                    <i className="icon_delivery mr-1" /> 오늘드림
-                  </span>
-                </div>
-                <p>
-                  <span className="font-semibold">도로명 :</span> {item.streetAddress}
-                </p>
-                <p className="text-gray-500 text-[12px] mt-1">
-                  <span className="font-semibold">상세주소 :</span> {item.detailAddress}
-                </p>
-                <div className="mt-2 border-t-2 p-2 rounded text-[12px]">
-                  <strong>공동현관 출입방법</strong>
-                  <p className="mt-1 text-gray-700">자유출입가능</p>
-                </div>
-              </td>
-
-              {/* 연락처 */}
-              <td className="text-center">{item.phone}</td>
-
-              {/* 관리 */}
-              <td className="text-center">
-                {item.default ? (
-                  <button className="border px-2 py-1 text-[12px] rounded">수정</button>
-                ) : (
-                  <div className="flex flex-col items-center space-y-2">
-                    <button
-                      onClick={() => handleSetDefault(item.addressId)}
-                      className="border border-gray-300 w-[104px] h-[26px] text-[12px] rounded hover:bg-gray-100"
-                    >
-                      기본 배송지 설정
-                    </button>
-                    <div className="flex gap-[6px]">
-                      <button
-                        onClick={() => handleDelete(item.addressId)}
-                        className="border border-gray-300 w-[48px] h-[26.4px] px-[10px] text-[12px] rounded hover:bg-gray-100"
-                      >
-                        삭제
-                      </button>
-                      <button className="border border-gray-300 w-[48px] h-[26.4px] px-[10px] text-[12px] rounded hover:bg-gray-100">
-                        수정
-                      </button>
-                    </div>
-                  </div>
-                )}
+          {addresses.length === 0 ? (
+            <tr>
+              <td
+                colSpan={5} // 헤더에 5개 칼럼이 있으므로 5로 설정
+                className="
+          text-center
+          text-[16px]
+          text-[#888]
+          leading-[20px]
+          border-t
+          border-[#e6e6e6]
+          px-[15px]
+          pt-[200px]
+          pb-[80px]
+          bg-no-repeat
+          bg-[position:center_80px]
+          bg-[url('https://static.oliveyoung.co.kr/pc-static-root/image/comm/ico_nodata104x104.png')]"
+              >
+                등록된 배송지가 없습니다.
               </td>
             </tr>
-          ))}
+          ) : (
+            addresses.map((item, index) => (
+              <tr key={index} className="h-[232px] text-[14px] border-b border-gray-200">
+                {/* 배송지명 */}
+                <td className="text-center">{item.addressName}</td>
+
+                {/* 받는사람 */}
+                <td className="text-center">{item.recipientName}</td>
+
+                {/* 주소 */}
+                <td className="pl-[20px] pr-[5px] py-[30px]">
+                  <div className="flex items-center gap-2 mb-1">
+                    {item.default && (
+                      <strong className="text-white bg-[#9bce26] text-[11px] px-2 py-1 rounded">
+                        기본 배송지
+                      </strong>
+                    )}
+                    <span className="text-[#f27370] text-[11px] flex">
+                      <i className="icon_delivery mr-1" /> 오늘드림
+                    </span>
+                  </div>
+                  <p>
+                    <span className="font-semibold">도로명 :</span> {item.streetAddress}
+                  </p>
+                  <p className="text-gray-500 text-[12px] mt-1">
+                    <span className="font-semibold">상세주소 :</span> {item.detailAddress}
+                  </p>
+                  <div className="mt-2 border-t-2 p-2 rounded text-[12px]">
+                    <strong>공동현관 출입방법</strong>
+                    <p className="mt-1 text-gray-700">자유출입가능</p>
+                  </div>
+                </td>
+
+                {/* 연락처 */}
+                <td className="text-center">{maskPhone(item.phone)}</td>
+
+                {/* 관리 */}
+                <td className="text-center">
+                  {item.default ? (
+                    <button className="border px-2 py-1 text-[12px] rounded">수정</button>
+                  ) : (
+                    <div className="flex flex-col items-center space-y-2">
+                      <button
+                        onClick={() => handleSetDefault(item.addressId)}
+                        className="border border-gray-300 w-[104px] h-[26px] text-[12px] rounded hover:bg-gray-100"
+                      >
+                        기본 배송지 설정
+                      </button>
+                      <div className="flex gap-[6px]">
+                        <button
+                          onClick={() => handleDelete(item.addressId)}
+                          className="border border-gray-300 w-[48px] h-[26.4px] px-[10px] text-[12px] rounded hover:bg-gray-100"
+                        >
+                          삭제
+                        </button>
+                        <button className="border border-gray-300 w-[48px] h-[26.4px] px-[10px] text-[12px] rounded hover:bg-gray-100">
+                          수정
+                        </button>
+                      </div>
+                    </div>
+                  )}
+                </td>
+              </tr>
+            ))
+          )}
         </tbody>
       </table>
 
