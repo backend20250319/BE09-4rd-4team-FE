@@ -1,5 +1,3 @@
-import { useState } from "react";
-
 const StarIcon = ({ filled }) => (
   <svg
     xmlns="http://www.w3.org/2000/svg"
@@ -15,16 +13,18 @@ const StarIcon = ({ filled }) => (
   </svg>
 );
 
-export default function ReviewRatingSection() {
-  const [rating, setRating] = useState(0);
-
+export default function ReviewRatingSection({ value, onChange }) {
   return (
     <div className="flex items-center gap-12">
       <p className="font-medium whitespace-nowrap">상품은 어떠셨나요?</p>
       <div className="flex gap-1">
         {[1, 2, 3, 4, 5].map((i) => (
-          <span key={i} onClick={() => setRating(i)} className="cursor-pointer">
-            <StarIcon filled={rating >= i} />
+          <span
+            key={i}
+            onClick={() => onChange(i)}
+            className="cursor-pointer"
+          >
+            <StarIcon filled={value >= i} />
           </span>
         ))}
       </div>
