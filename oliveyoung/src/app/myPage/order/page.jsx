@@ -591,13 +591,14 @@ export default function Order() {
                         >
                           배송조회
                         </button>
-                        <button
+                        {item.hasReview === false && <button
                           type="button"
                           className="mt-[5px] text-[#666] text-center min-w-[75px] w-auto h-[32px] px-[5px] rounded-[5px] border border-[#aaa] bg-white text-[12px] cursor-pointer font-medium"
                           onClick={() => (window.location.href = "/review")}
                         >
                           리뷰작성
                         </button>
+                        }
                       </td>
                     </tr>
                   ))}

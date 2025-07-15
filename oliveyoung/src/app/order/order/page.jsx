@@ -94,7 +94,7 @@ export default function Order() {
           },
         });
 
-        const couponList = res.data.filter((coupon) => coupon.used === true);
+        const couponList = res.data.filter((coupon) => coupon.used === false);
         setCouponList(couponList);
       } catch (e) {
         console.error('사용자 주소 정보 가져오기 실패:', e);
@@ -355,9 +355,13 @@ export default function Order() {
 
   const [agreeAll, setAgreeAll] = useState(false);
   
-  const handlePayment = () => {
+  const handlePayment = async () => {
     // 배송지 정보 확인
-    if (!name.trim() || phonePart1 === '선택' || !phonePart2.trim() || !phonePart3.trim()) {
+    if (isExisting && (!name.trim() || phonePart1 === '선택' || !phonePart2.trim() || !phonePart3.trim())) {
+      alert('배송지 상세 주소를 입력하세요.');
+      return;
+    }
+    if (!isExisting && (!recipientName.trim() || phone1 === '선택' || !phone2.trim() || !phone3.trim())) {
       alert('배송지 상세 주소를 입력하세요.');
       return;
     }
@@ -397,56 +401,9 @@ export default function Order() {
       discount: selectedCoupon?.discount ?? 0,
     };
 
-    const fetchCreateOrder = async () => {
-      try {
-        await axios.post('http://localhost:8080/api/orders', requestData, {
-          headers: {
-            Authorization: `Bearer ${token}`,
-          },
-        });
-
-        // 장바구니 수량 업데이트
-        const res = await axios.get('http://localhost:8080/api/carts/items', {
-          headers: { Authorization: `Bearer ${token}` },
-        });
-
-        setItemCount(res.data.length);
-
-        alert('정상적으로 결제가 완료되었습니다.');
-        router.push('/mypage');
-      } catch (e) {
-        console.error('주문 생성 실패:', e);
-      }
-    };
-
-    // 쿠폰 사용 여부 (false -> true)로 변경
-    const fetchChangeCoupon = async () => {
-      if (!selectedCoupon) return;
-
-      try {
-        await axios.put(
-          'http://localhost:8080/api/user/coupons',
-          {
-            couponId: selectedCoupon.userCouponId,
-          },
-          {
-            headers: {
-              Authorization: `Bearer ${token}`,
-            },
-          },
-        );
-      } catch (e) {
-        console.error('쿠폰 사용 여부 변경 실패:', e);
-      }
-    };
-
-    // 새로운 배송지 추가
-    const addNewAddress = async () => {
-      if(isExisting) return;
-      
-      try {
-        const token = localStorage.getItem('accessToken');
-
+    try {
+      // 1. 신규 배송지일 경우 먼저 저장
+      if (!isExisting) {
         await axios.post(
           'http://localhost:8080/api/mypage/address/register',
           {
@@ -463,16 +420,51 @@ export default function Order() {
             },
           }
         );
-
         alert('배송지가 추가되었습니다.');
-      } catch (error) {
-        alert('배송지 추가에 실패했습니다.');
       }
-    };
 
-    addNewAddress();
-    fetchCreateOrder();
-    fetchChangeCoupon();
+      // 2. 주문 생성
+      await axios.post(
+        'http://localhost:8080/api/orders',
+        {
+          addressId: selectedAddress.addressId,
+          cartItemIds: orderItems.map((item) => item.cartItemId),
+          discount: selectedCoupon?.discount ?? 0,
+        },
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        }
+      );
+
+      // 3. 쿠폰 사용 여부 변경
+      if (selectedCoupon) {
+        await axios.put(
+          'http://localhost:8080/api/user/coupons',
+          {
+            couponId: selectedCoupon.userCouponId,
+          },
+          {
+            headers: {
+              Authorization: `Bearer ${token}`,
+            },
+          }
+        );
+      }
+
+      // 4. 장바구니 수량 업데이트
+      const res = await axios.get('http://localhost:8080/api/carts/items', {
+        headers: { Authorization: `Bearer ${token}` },
+      });
+
+
+      setItemCount(res.data.length);
+      alert('정상적으로 결제가 완료되었습니다.');
+      router.push('/mypage');
+      } catch (e) {
+      alert('주문 처리 중 문제가 발생했습니다.');
+    }
   };
 
   if (isExisting && isNone === true) {
@@ -649,6 +641,8 @@ export default function Order() {
                     -
                     <input
                       type="text"
+                      inputMode="numeric"
+                      maxLength={4}
                       value={phonePart2}
                       onChange={(e) => setPhonePart2(e.target.value)}
                       className="ml-[1px] w-[90px] h-[28px] px-[10px] text-[12px] text-[#333] bg-white leading-[20px] border border-[#d0d0d0] tracking-[-0.04em] rounded-[5px]"
@@ -656,6 +650,8 @@ export default function Order() {
                     -
                     <input
                       type="text"
+                      inputMode="numeric"
+                      maxLength={4}
                       value={phonePart3}
                       onChange={(e) => setPhonePart3(e.target.value)}
                       className="ml-[1px] w-[90px] h-[28px] px-[10px] text-[12px] text-[#333] bg-white leading-[20px] border border-[#d0d0d0] tracking-[-0.04em] rounded-[5px]"
@@ -687,11 +683,15 @@ export default function Order() {
                     <input
                       type="text"
                       className="ml-[1px] w-[90px] h-[28px] px-[10px] text-[12px] text-[#333] bg-white leading-[20px] border border-[#d0d0d0] tracking-[-0.04em] rounded-[5px]"
+                      inputMode="numeric"
+                      maxLength={4}
                     />
                     -
                     <input
                       type="text"
                       className="ml-[1px] w-[90px] h-[28px] px-[10px] text-[12px] text-[#333] bg-white leading-[20px] border border-[#d0d0d0] tracking-[-0.04em] rounded-[5px]"
+                      inputMode="numeric"
+                      maxLength={4}
                     />
                   </td>
                 </tr>
@@ -830,6 +830,8 @@ export default function Order() {
                     <input
                       type="text"
                       value={phone2}
+                      inputMode="numeric"
+                      maxLength={4}
                       onChange={(e) => setPhone2(e.target.value)}
                       className="ml-[1px] w-[90px] h-[28px] px-[10px] text-[12px] text-[#333] bg-white leading-[20px] border border-[#d0d0d0] tracking-[-0.04em] rounded-[5px]"
                     />
@@ -837,6 +839,8 @@ export default function Order() {
                     <input
                       type="text"
                       value={phone3}
+                      inputMode="numeric"
+                      maxLength={4}
                       onChange={(e) => setPhone3(e.target.value)}
                       className="ml-[1px] w-[90px] h-[28px] px-[10px] text-[12px] text-[#333] bg-white leading-[20px] border border-[#d0d0d0] tracking-[-0.04em] rounded-[5px]"
                     />
@@ -867,11 +871,15 @@ export default function Order() {
                     <input
                       type="text"
                       className="ml-[1px] w-[90px] h-[28px] px-[10px] text-[12px] text-[#333] bg-white leading-[20px] border border-[#d0d0d0] tracking-[-0.04em] rounded-[5px]"
+                      inputMode="numeric"
+                      maxLength={4}
                     />
                     -
                     <input
                       type="text"
                       className="ml-[1px] w-[90px] h-[28px] px-[10px] text-[12px] text-[#333] bg-white leading-[20px] border border-[#d0d0d0] tracking-[-0.04em] rounded-[5px]"
+                      inputMode="numeric"
+                      maxLength={4}
                     />
                   </td>
                 </tr>

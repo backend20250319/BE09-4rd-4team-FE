@@ -5,6 +5,7 @@ import { useRouter } from 'next/navigation';
 import { useAuth } from '@/contexts/AuthContext';
 import axios from 'axios';
 import { useEffect } from 'react';
+import HelpSection from '../components/HelpSection';
 
 const LoginPage = () => {
   const { login } = useAuth();
@@ -95,6 +96,17 @@ const LoginPage = () => {
           로그인
         </button>
       </form>
+      <button
+        onClick={() => router.push('/user/login/kakaotalklogin')}
+        className="mt-2 w-full bg-[#ffe812] text-[#131518] py-2 rounded transition duration-200 flex items-center justify-center gap-2"
+      >
+        <img
+          src="https://static.oliveyoung.co.kr/pc-static-root/image/login/icon-kakao.svg"
+          alt="카카오 아이콘"
+          className="w-5 h-5"
+        />
+        카카오로 로그인
+      </button>
 
       <div className="mt-4 flex justify-center space-x-4 text-sm text-gray-600">
         <a href="#" className="hover:underline">

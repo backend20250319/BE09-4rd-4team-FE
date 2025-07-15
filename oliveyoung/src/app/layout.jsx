@@ -13,9 +13,11 @@ export default function Layout({ children }) {
 
   const isSignUpPage = pathName.startsWith("/user/signup");
   const isModifyAccount =
-    pathName.startsWith("/mypage/user/modifyactinfo/modifyactdetailed") ||
-    pathName.startsWith("/mypage/user/modifyactinfo/modifypwd") ||
-    pathName.startsWith("/mypage/user/modifyactinfo/minfodification");
+
+    pathName.startsWith('/mypage/user/modifyactinfo/modifyactdetailed') ||
+    pathName.startsWith('/mypage/user/modifyactinfo/modifypwd') ||
+    pathName.startsWith('/mypage/user/modifyactinfo/minfodification') ||
+    pathName.startsWith('/user/login/kakaotalk');
 
   const shouldHideLayout = isSignUpPage || isModifyAccount;
 

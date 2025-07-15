@@ -9,6 +9,7 @@ import { getImageUrl } from "@/utils/image";
 export default function Coupon() {
   const router = useRouter();
   const imageUrl = getImageUrl("/order");
+  const imageUrlMP = getImageUrl("/mypage");
 
   const [userInfo, setUserInfo] = useState('');
   const [couponList, setCouponList] = useState([]);
@@ -163,7 +164,7 @@ export default function Coupon() {
               <Image
                 width={80}
                 height={80}
-                src={`${imageUrl}/my_picture_base.jpg`}
+                src={`${imageUrlMP}/order/my_picture_base.jpg`}
                 alt="프로필 이미지"
               />
             </div>

@@ -4,10 +4,12 @@ import axios from '@/api/axiosInstance';
 import React from 'react';
 import TabNav from '../../components/TabNav';
 import { useState } from 'react';
+import { useRouter } from 'next/navigation';
+import { useEffect } from 'react';
 import UserInfoBox from '../../components/UserInfoBox';
 
 export default function DeliveryRegisterForm() {
-  const [isDefault, setIsDefault] = useState(false);
+  const [isDefault, setIsDefault] = useState(true);
   const [agreed, setAgreed] = useState(false);
   const [addressName, setAddressName] = useState('');
   const [recipientName, setRecipientName] = useState('');
@@ -17,6 +19,28 @@ export default function DeliveryRegisterForm() {
   const [streetAddress, setStreetAddress] = useState('');
   const [detailAddress, setDetailAddress] = useState('');
   const [postalCode, setPostalCode] = useState('');
+  const [hasAnyAddress, setHasAnyAddress] = useState(false);
+  const router = useRouter();
+
+  useEffect(() => {
+    const fetchAddresses = async () => {
+      try {
+        const res = await axios.get('http://localhost:8080/api/mypage/address');
+        const addresses = res.data.data;
+        if (addresses.length === 0) {
+          setIsDefault(true); // 첫 배송지는 기본 배송지로 자동 설정
+          setHasAnyAddress(false); // 0개임
+        } else {
+          setIsDefault(false);
+          setHasAnyAddress(true); // 하나 이상 있음
+        }
+      } catch (err) {
+        console.error('배송지 목록 조회 실패:', err);
+      }
+    };
+
+    fetchAddresses();
+  }, []);
 
   const handleSubmit = async () => {
     if (!agreed) {
@@ -25,16 +49,18 @@ export default function DeliveryRegisterForm() {
     }
 
     const phone = `${phonePart1}-${phonePart2}-${phonePart3}`;
+    const payload = {
+      addressName,
+      recipientName,
+      phone,
+      streetAddress,
+      detailAddress,
+      isDefault: hasAnyAddress ? isDefault : true, // 여기 주목!!
+    };
     try {
-      await axios.post('http://localhost:8080/api/mypage/address/register', {
-        addressName,
-        recipientName,
-        phone,
-        streetAddress,
-        detailAddress,
-        isDefault,
-      });
+      await axios.post('http://localhost:8080/api/mypage/address/register', payload);
       alert('배송지가 등록되었습니다.');
+      router.push('/mypage/user/getdeliveryinfo');
     } catch (error) {
       console.error(error);
       alert('등록에 실패했습니다.');
@@ -70,7 +96,8 @@ export default function DeliveryRegisterForm() {
               />
               <input
                 type="checkbox"
-                checked={isDefault}
+                checked={hasAnyAddress ? isDefault : true}
+                disabled={!hasAnyAddress} // 배송지가 없으면 비활성화
                 onChange={(e) => setIsDefault(e.target.checked)}
                 className="ml-[17px] mr-[6px] w-[13px] h-[13px] align-middle"
               />
@@ -108,7 +135,40 @@ export default function DeliveryRegisterForm() {
                   className="w-[90px] h-[26.4px] px-[10px] border-[0.8px] border-gray-300 rounded text-sm"
                 >
                   <option value="">선택</option>
-                  {['010', '011', '016', '017', '018', '019'].map((num) => (
+                  {[
+                    '010',
+                    '011',
+                    '016',
+                    '017',
+                    '018',
+                    '019',
+                    '022',
+                    '031',
+                    '032',
+                    '033',
+                    '041',
+                    '042',
+                    '043',
+                    '044',
+                    '051',
+                    '052',
+                    '053',
+                    '054',
+                    '055',
+                    '061',
+                    '062',
+                    '063',
+                    '064',
+                    '070',
+                    '080',
+                    '0100',
+                    '0502',
+                    '0503',
+                    '0504',
+                    '0505',
+                    '0506',
+                    '0507',
+                  ].map((num) => (
                     <option key={num} value={num}>
                       {num}
                     </option>
@@ -149,7 +209,6 @@ export default function DeliveryRegisterForm() {
                 <button
                   type="button"
                   className="border border-[#9bce26] text-[#9bce26] h-[26.4px] px-[10px] rounded text-sm"
-                  onClick={() => alert('카카오 API 연동 필요')}
                 >
                   우편번호
                 </button>
