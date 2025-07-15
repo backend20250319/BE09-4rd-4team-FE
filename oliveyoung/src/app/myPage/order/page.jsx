@@ -1,29 +1,29 @@
-'use client';
+"use client";
 
-import React, { useEffect, useState } from 'react';
-import { useRouter } from 'next/navigation';
-import dayjs from 'dayjs';
-import isSameOrAfter from 'dayjs/plugin/isSameOrAfter';
-import isSameOrBefore from 'dayjs/plugin/isSameOrBefore';
-import { useSearchParams } from 'next/navigation';
-import Image from 'next/image';
-import Link from 'next/link';
-import UserInfoBox from '../user/components/UserInfoBox';
-import { useCart } from '@/contexts/CartContext';
-import axios from '@/api/axiosInstance';
+import React, { useEffect, useState } from "react";
+import { useRouter } from "next/navigation";
+import dayjs from "dayjs";
+import isSameOrAfter from "dayjs/plugin/isSameOrAfter";
+import isSameOrBefore from "dayjs/plugin/isSameOrBefore";
+import { useSearchParams } from "next/navigation";
+import Image from "next/image";
+import Link from "next/link";
+import UserInfoBox from "../user/components/UserInfoBox";
+import { useCart } from "@/contexts/CartContext";
+import axios from "@/api/axiosInstance";
 import { getImageUrl } from "@/utils/image";
 
 // 날짜 계산 함수
 const getPeriod = (months) => {
   const end = dayjs();
-  const start = end.subtract(months, 'month');
+  const start = end.subtract(months, "month");
   return {
     startYear: start.year(),
-    startMonth: start.format('MM'),
-    startDay: start.format('DD'),
+    startMonth: start.format("MM"),
+    startDay: start.format("DD"),
     endYear: end.year(),
-    endMonth: end.format('MM'),
-    endDay: end.format('DD'),
+    endMonth: end.format("MM"),
+    endDay: end.format("DD"),
   };
 };
 
@@ -38,18 +38,18 @@ export default function Order() {
   const searchParams = useSearchParams();
 
   const getParam = (key, fallback) => searchParams.get(key) || fallback;
-  const periodParam = searchParams.get('period');
+  const periodParam = searchParams.get("period");
   const months = periodParam ? Number(periodParam) : 1;
   const defaultPeriod = getPeriod(1);
 
   const [selectedMonths, setSelectedMonths] = useState(months);
   const [periodState, setPeriodState] = useState(() => ({
-    startYear: getParam('startYear', defaultPeriod.startYear),
-    startMonth: getParam('startMonth', defaultPeriod.startMonth),
-    startDay: getParam('startDay', defaultPeriod.startDay),
-    endYear: getParam('endYear', defaultPeriod.endYear),
-    endMonth: getParam('endMonth', defaultPeriod.endMonth),
-    endDay: getParam('endDay', defaultPeriod.endDay),
+    startYear: getParam("startYear", defaultPeriod.startYear),
+    startMonth: getParam("startMonth", defaultPeriod.startMonth),
+    startDay: getParam("startDay", defaultPeriod.startDay),
+    endYear: getParam("endYear", defaultPeriod.endYear),
+    endMonth: getParam("endMonth", defaultPeriod.endMonth),
+    endDay: getParam("endDay", defaultPeriod.endDay),
   }));
   const [tempPeriodState, setTempPeriodState] = useState(periodState);
   const [loading, setLoading] = useState(false);
@@ -57,12 +57,12 @@ export default function Order() {
   // URL 파라미터가 바뀔 때 상태 동기화
   useEffect(() => {
     setPeriodState({
-      startYear: getParam('startYear', defaultPeriod.startYear),
-      startMonth: getParam('startMonth', defaultPeriod.startMonth),
-      startDay: getParam('startDay', defaultPeriod.startDay),
-      endYear: getParam('endYear', defaultPeriod.endYear),
-      endMonth: getParam('endMonth', defaultPeriod.endMonth),
-      endDay: getParam('endDay', defaultPeriod.endDay),
+      startYear: getParam("startYear", defaultPeriod.startYear),
+      startMonth: getParam("startMonth", defaultPeriod.startMonth),
+      startDay: getParam("startDay", defaultPeriod.startDay),
+      endYear: getParam("endYear", defaultPeriod.endYear),
+      endMonth: getParam("endMonth", defaultPeriod.endMonth),
+      endDay: getParam("endDay", defaultPeriod.endDay),
     });
   }, [searchParams, months]);
 
@@ -78,13 +78,13 @@ export default function Order() {
       setLoading(true);
       setTimeout(() => {
         const params = new URLSearchParams();
-        params.set('period', months);
-        params.set('startYear', newPeriod.startYear);
-        params.set('startMonth', newPeriod.startMonth);
-        params.set('startDay', newPeriod.startDay);
-        params.set('endYear', newPeriod.endYear);
-        params.set('endMonth', newPeriod.endMonth);
-        params.set('endDay', newPeriod.endDay);
+        params.set("period", months);
+        params.set("startYear", newPeriod.startYear);
+        params.set("startMonth", newPeriod.startMonth);
+        params.set("startDay", newPeriod.startDay);
+        params.set("endYear", newPeriod.endYear);
+        params.set("endMonth", newPeriod.endMonth);
+        params.set("endDay", newPeriod.endDay);
 
         window.location.href = `/mypage/order?${params.toString()}`;
       }, 300);
@@ -98,13 +98,13 @@ export default function Order() {
 
       // URL 파라미터에 period와 기간 정보 모두 세팅
       const params = new URLSearchParams();
-      params.set('period', null);
-      params.set('startYear', tempPeriodState.startYear);
-      params.set('startMonth', tempPeriodState.startMonth);
-      params.set('startDay', tempPeriodState.startDay);
-      params.set('endYear', tempPeriodState.endYear);
-      params.set('endMonth', tempPeriodState.endMonth);
-      params.set('endDay', tempPeriodState.endDay);
+      params.set("period", null);
+      params.set("startYear", tempPeriodState.startYear);
+      params.set("startMonth", tempPeriodState.startMonth);
+      params.set("startDay", tempPeriodState.startDay);
+      params.set("endYear", tempPeriodState.endYear);
+      params.set("endMonth", tempPeriodState.endMonth);
+      params.set("endDay", tempPeriodState.endDay);
 
       setTimeout(() => {
         window.location.href = `/mypage/order?${params.toString()}`;
@@ -113,20 +113,22 @@ export default function Order() {
   };
 
   const startDate = dayjs(
-    `${periodState.startYear}-${periodState.startMonth}-${periodState.startDay}`,
+    `${periodState.startYear}-${periodState.startMonth}-${periodState.startDay}`
   );
-  const endDate = dayjs(`${periodState.endYear}-${periodState.endMonth}-${periodState.endDay}`);
+  const endDate = dayjs(
+    `${periodState.endYear}-${periodState.endMonth}-${periodState.endDay}`
+  );
 
   const [orderList, setOrderList] = useState([]);
 
   useEffect(() => {
-    const token = localStorage.getItem('accessToken');
+    const token = localStorage.getItem("accessToken");
     if (!token) return;
 
     // 사용자의 주문/배송 내역 조회
     const fetchUserCouponInfo = async () => {
       try {
-        const res = await axios.get('http://localhost:8080/api/orders', {
+        const res = await axios.get("http://localhost:8080/api/orders", {
           headers: {
             Authorization: `Bearer ${token}`,
           },
@@ -135,7 +137,7 @@ export default function Order() {
         const orderList = res.data;
         setOrderList(orderList);
       } catch (e) {
-        console.error('사용자 주문/배송 내역 가져오기 실패:', e);
+        console.error("사용자 주문/배송 내역 가져오기 실패:", e);
       }
     };
 
@@ -144,24 +146,26 @@ export default function Order() {
 
   // 기간 내 주문만 필터링
   const filteredOrders = orderList.filter((order) => {
-    const orderDateStr = dayjs(order.createdAt).format('YYYY-MM-DD');
-    const startStr = startDate.format('YYYY-MM-DD');
-    const endStr = endDate.format('YYYY-MM-DD');
+    const orderDateStr = dayjs(order.createdAt).format("YYYY-MM-DD");
+    const startStr = startDate.format("YYYY-MM-DD");
+    const endStr = endDate.format("YYYY-MM-DD");
     return orderDateStr >= startStr && orderDateStr <= endStr;
   });
 
   // status 별 카운트
   const statusKoreanMap = {
-    RECEIVED: '주문접수',
-    PAID: '결제완료',
-    READY: '배송준비중',
-    SHIPPING: '배송중',
-    COMPLETED: '배송완료',
+    RECEIVED: "주문접수",
+    PAID: "결제완료",
+    READY: "배송준비중",
+    SHIPPING: "배송중",
+    COMPLETED: "배송완료",
   };
 
   const statusCounts = Object.keys(statusKoreanMap).reduce((acc, statusEN) => {
     const statusKR = statusKoreanMap[statusEN];
-    acc[statusKR] = filteredOrders.filter((order) => order.status === statusEN).length;
+    acc[statusKR] = filteredOrders.filter(
+      (order) => order.status === statusEN
+    ).length;
     return acc;
   }, {});
 
@@ -169,12 +173,12 @@ export default function Order() {
   const { setItemCount } = useCart();
 
   const handleAddToCart = async (productId, quantity = 1) => {
-    const token = localStorage.getItem('accessToken');
+    const token = localStorage.getItem("accessToken");
     if (!token) return;
 
     try {
       await axios.post(
-        'http://localhost:8080/api/carts/items',
+        "http://localhost:8080/api/carts/items",
         {
           productId,
           quantity,
@@ -182,21 +186,21 @@ export default function Order() {
         {
           headers: {
             Authorization: `Bearer ${token}`,
-            'Content-Type': 'application/json',
+            "Content-Type": "application/json",
           },
-        },
+        }
       );
 
       // 새로 추가된 후 수량 재조회
-      const res = await axios.get('http://localhost:8080/api/carts/items', {
+      const res = await axios.get("http://localhost:8080/api/carts/items", {
         headers: { Authorization: `Bearer ${token}` },
       });
 
       setItemCount(res.data.length); // 장바구니 수량 바로 업데이트
 
-      router.push('/order/cart');
+      router.push("/order/cart");
     } catch (error) {
-      console.error('장바구니 추가 실패:', error);
+      console.error("장바구니 추가 실패:", error);
     }
   };
 
@@ -223,16 +227,16 @@ export default function Order() {
                   statusKR !== Object.values(statusKoreanMap)[0]
                     ? {
                         backgroundImage: `url('${imageUrl}/order/ico_arrow11x21.png')`,
-                        backgroundRepeat: 'no-repeat',
-                        backgroundPosition: '0% 50%',
+                        backgroundRepeat: "no-repeat",
+                        backgroundPosition: "0% 50%",
                       }
                     : undefined
                 }
               >
                 <em
                   className={
-                    'block absolute left-0 w-full text-center align-top top-[25px] not-italic text-[40px] leading-[50px] font-medium ' +
-                    (count !== 0 ? 'text-[#9bce26]' : 'text-[#888888]')
+                    "block absolute left-0 w-full text-center align-top top-[25px] not-italic text-[40px] leading-[50px] font-medium " +
+                    (count !== 0 ? "text-[#9bce26]" : "text-[#888888]")
                   }
                 >
                   {count}
@@ -278,7 +282,9 @@ export default function Order() {
               {[1, 3, 6, 12].map((months) => (
                 <li
                   key={months}
-                  className={`float-left w-auto h-[28px]${months !== 1 ? ' ml-[4px]' : ''}`}
+                  className={`float-left w-auto h-[28px]${
+                    months !== 1 ? " ml-[4px]" : ""
+                  }`}
                 >
                   <button
                     type="button"
@@ -286,8 +292,8 @@ export default function Order() {
                     className={
                       `w-full h-[28px] px-[15px] border rounded-[5px] text-[12px] font-normal text-center shadow-none cursor-pointer ` +
                       (selectedMonths === months
-                        ? 'border-[#555555] bg-[#555555] text-white'
-                        : 'border-[#e5e5e5] bg-white text-[#222222]')
+                        ? "border-[#555555] bg-[#555555] text-white"
+                        : "border-[#e5e5e5] bg-white text-[#222222]")
                     }
                     disabled={selectedMonths === null}
                   >
@@ -302,7 +308,12 @@ export default function Order() {
               <select
                 className="w-[76px] h-[28px] pr-0 text-[#222222] text-[12px] leading-[16px] align-middle pl-[8px] border border-[#d0d0d0] rounded-[5px]"
                 value={tempPeriodState.startYear}
-                onChange={(e) => setTempPeriodState((p) => ({ ...p, startYear: e.target.value }))}
+                onChange={(e) =>
+                  setTempPeriodState((p) => ({
+                    ...p,
+                    startYear: e.target.value,
+                  }))
+                }
               >
                 {Array.from({ length: 14 }, (_, i) => 2012 + i).map((year) => (
                   <option key={year} value={year}>
@@ -317,10 +328,15 @@ export default function Order() {
               <select
                 className="w-[60px] h-[28px] pr-0 text-[#222222] text-[12px] leading-[16px] align-middle pl-[8px] border border-[#d0d0d0] rounded-[5px]"
                 value={tempPeriodState.startMonth}
-                onChange={(e) => setTempPeriodState((p) => ({ ...p, startMonth: e.target.value }))}
+                onChange={(e) =>
+                  setTempPeriodState((p) => ({
+                    ...p,
+                    startMonth: e.target.value,
+                  }))
+                }
               >
                 {Array.from({ length: 12 }, (_, i) => i + 1).map((month) => (
-                  <option key={month} value={month.toString().padStart(2, '0')}>
+                  <option key={month} value={month.toString().padStart(2, "0")}>
                     {month}
                   </option>
                 ))}
@@ -332,10 +348,15 @@ export default function Order() {
               <select
                 className="w-[60px] h-[28px] pr-0 text-[#222222] text-[12px] leading-[16px] align-middle pl-[8px] border border-[#d0d0d0] rounded-[5px]"
                 value={tempPeriodState.startDay}
-                onChange={(e) => setTempPeriodState((p) => ({ ...p, startDay: e.target.value }))}
+                onChange={(e) =>
+                  setTempPeriodState((p) => ({
+                    ...p,
+                    startDay: e.target.value,
+                  }))
+                }
               >
                 {Array.from({ length: 31 }, (_, i) => i + 1).map((day) => (
-                  <option key={day} value={day.toString().padStart(2, '0')}>
+                  <option key={day} value={day.toString().padStart(2, "0")}>
                     {day}
                   </option>
                 ))}
@@ -350,7 +371,9 @@ export default function Order() {
               <select
                 className="w-[76px] h-[28px] pr-0 text-[#222222] text-[12px] leading-[16px] align-middle pl-[8px] border border-[#d0d0d0] rounded-[5px]"
                 value={tempPeriodState.endYear}
-                onChange={(e) => setTempPeriodState((p) => ({ ...p, endYear: e.target.value }))}
+                onChange={(e) =>
+                  setTempPeriodState((p) => ({ ...p, endYear: e.target.value }))
+                }
               >
                 {Array.from({ length: 14 }, (_, i) => 2012 + i).map((year) => (
                   <option key={year} value={year}>
@@ -365,10 +388,15 @@ export default function Order() {
               <select
                 className="w-[60px] h-[28px] pr-0 text-[#222222] text-[12px] leading-[16px] align-middle pl-[8px] border border-[#d0d0d0] rounded-[5px]"
                 value={tempPeriodState.endMonth}
-                onChange={(e) => setTempPeriodState((p) => ({ ...p, endMonth: e.target.value }))}
+                onChange={(e) =>
+                  setTempPeriodState((p) => ({
+                    ...p,
+                    endMonth: e.target.value,
+                  }))
+                }
               >
                 {Array.from({ length: 12 }, (_, i) => i + 1).map((month) => (
-                  <option key={month} value={month.toString().padStart(2, '0')}>
+                  <option key={month} value={month.toString().padStart(2, "0")}>
                     {month}
                   </option>
                 ))}
@@ -380,10 +408,12 @@ export default function Order() {
               <select
                 className="w-[60px] h-[28px] pr-0 text-[#222222] text-[12px] leading-[16px] align-middle pl-[8px] border border-[#d0d0d0] rounded-[5px]"
                 value={tempPeriodState.endDay}
-                onChange={(e) => setTempPeriodState((p) => ({ ...p, endDay: e.target.value }))}
+                onChange={(e) =>
+                  setTempPeriodState((p) => ({ ...p, endDay: e.target.value }))
+                }
               >
                 {Array.from({ length: 31 }, (_, i) => i + 1).map((day) => (
-                  <option key={day} value={day.toString().padStart(2, '0')}>
+                  <option key={day} value={day.toString().padStart(2, "0")}>
                     {day}
                   </option>
                 ))}
@@ -404,15 +434,19 @@ export default function Order() {
         </fieldset>
 
         <p className="pt-[10px] text-[#555555] text-[12px] leading-[18px]">
-          <span className="relative inline-block align-middle px-[10px] text-[#555555] text-[12px] leading-[18px] bg-no-repeat bg-[position:0_7px]"
-          style={{ backgroundImage: `url('${imageUrl}/coupon/bar_2x2.gif')` }}>
-            2017년 4월 1일 이후 내역만 조회가 가능하며, 이전의 주문내역은 CJMall 주문내역에서
-            확인하실 수 있습니다.
+          <span
+            className="relative inline-block align-middle px-[10px] text-[#555555] text-[12px] leading-[18px] bg-no-repeat bg-[position:0_7px]"
+            style={{ backgroundImage: `url('${imageUrl}/coupon/bar_2x2.gif')` }}
+          >
+            2017년 4월 1일 이후 내역만 조회가 가능하며, 이전의 주문내역은 CJMall
+            주문내역에서 확인하실 수 있습니다.
           </span>
-          <span className="relative inline-block align-middle px-[10px] text-[#555555] text-[12px] leading-[18px] bg-no-repeat bg-[position:0_7px]"
-          style={{ backgroundImage: `url('${imageUrl}/coupon/bar_2x2.gif')` }}>
-            매장 구매는 CJ ONE 포인트 적립을 한 경우, 최근 1년 내역만 조회가 가능합니다. (2019년 9월
-            27일 이후 내역만 조회 가능)
+          <span
+            className="relative inline-block align-middle px-[10px] text-[#555555] text-[12px] leading-[18px] bg-no-repeat bg-[position:0_7px]"
+            style={{ backgroundImage: `url('${imageUrl}/coupon/bar_2x2.gif')` }}
+          >
+            매장 구매는 CJ ONE 포인트 적립을 한 경우, 최근 1년 내역만 조회가
+            가능합니다. (2019년 9월 27일 이후 내역만 조회 가능)
           </span>
         </p>
 
@@ -465,7 +499,10 @@ export default function Order() {
                 <td
                   colSpan={5}
                   className="!w-full !pt-[200px] !px-[15px] !pb-[80px] !text-[#888888] !text-[16px] !text-center !leading-[20px] bg-no-repeat"
-                  style={{ backgroundImage: `url('${imageUrl}/order/ico_nodata104x104.png`, backgroundPosition: 'center 80px' }}
+                  style={{
+                    backgroundImage: `url('${imageUrl}/order/ico_nodata104x104.png`,
+                    backgroundPosition: "center 80px",
+                  }}
                 >
                   기간 내 주문내역이 없습니다
                 </td>
@@ -485,7 +522,7 @@ export default function Order() {
                         >
                           <ul>
                             <li className="font-medium text-[#131518] list-none">
-                              {dayjs(order.createdAt).format('YYYY-MM-DD')}
+                              {dayjs(order.createdAt).format("YYYY-MM-DD")}
                             </li>
                             <li className="mt-[2px] block font-medium text-[#9bce26] leading-[1.27] break-all align-top list-none">
                               {order.orderId}
@@ -504,14 +541,16 @@ export default function Order() {
                           >
                             <Image
                               src={`${imageProd}${item.imageUrl}`}
-
                               alt={item.productName}
                               width={85}
                               height={85}
                             />
                           </Link>
                           <div className="float-left w-[66%] text-left">
-                            <Link href={`/product/skintoner/${item.productId}`} className="block">
+                            <Link
+                              href={`/product/skintoner/${item.productId}`}
+                              className="block"
+                            >
                               <span className="overflow-hidden h-[20px] text-[#777777] text-ellipsis whitespace-nowrap font-bold inline-block w-full">
                                 {item.brandName}
                               </span>
@@ -524,8 +563,12 @@ export default function Order() {
                               onClick={() => handleAddToCart(item.productId)}
                               className="w-[120px] h-[32px] text-[12px] leading-[18px] text-[#555] rounded-[5px] border border-[#e5e5e5] bg-white mt-[10px] text-center cursor-pointer"
                             >
-                              <span className="pl-[15px] bg-[position:0%_50%] bg-no-repeat"
-                              style={{ backgroundImage: `url('${imageUrl}/order/icon_my_cart2.png')` }}>
+                              <span
+                                className="pl-[15px] bg-[position:0%_50%] bg-no-repeat"
+                                style={{
+                                  backgroundImage: `url('${imageUrl}/order/icon_my_cart2.png')`,
+                                }}
+                              >
                                 장바구니 담기
                               </span>
                             </button>
@@ -539,7 +582,9 @@ export default function Order() {
                         {item.price.toLocaleString()} <strong>원</strong>
                       </td>
                       <td className="border-t border-l border-[#e6e6e6] pt-[30px] pb-[30px] px-[5px] text-center text-[#333333] text-[14px] leading-[18px]">
-                        <strong>{statusKoreanMap[order.status] || order.status}</strong>
+                        <strong>
+                          {statusKoreanMap[order.status] || order.status}
+                        </strong>
                         <button
                           type="button"
                           className="mt-[7px] text-[#666] text-center min-w-[75px] w-auto h-[32px] px-[5px] rounded-[5px] border border-[#aaa] bg-white text-[12px] cursor-pointer font-medium"
@@ -549,6 +594,7 @@ export default function Order() {
                         <button
                           type="button"
                           className="mt-[5px] text-[#666] text-center min-w-[75px] w-auto h-[32px] px-[5px] rounded-[5px] border border-[#aaa] bg-white text-[12px] cursor-pointer font-medium"
+                          onClick={() => (window.location.href = "/review")}
                         >
                           리뷰작성
                         </button>
