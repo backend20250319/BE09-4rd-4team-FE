@@ -15,7 +15,12 @@ function RatingStars({ rating }) {
         if (roundedRating >= i + 1) {
           // 꽉 찬 별
           return (
-            <svg key={i} className="w-[20px] h-[20px] text-red-400" fill="currentColor" viewBox="0 0 24 24">
+            <svg
+              key={i}
+              className="w-[20px] h-[20px] text-red-400"
+              fill="currentColor"
+              viewBox="0 0 24 24"
+            >
               <path d="M12 2l3.09 6.26L22 9.27l-5 4.87L18.18 22 12 18.56 5.82 22 7 14.14l-5-4.87L8.91 8.26z" />
             </svg>
           );
@@ -38,7 +43,12 @@ function RatingStars({ rating }) {
         } else {
           // 빈 별
           return (
-            <svg key={i} className="w-[20px] h-[20px] text-gray-300" fill="currentColor" viewBox="0 0 24 24">
+            <svg
+              key={i}
+              className="w-[20px] h-[20px] text-gray-300"
+              fill="currentColor"
+              viewBox="0 0 24 24"
+            >
               <path d="M12 2l3.09 6.26L22 9.27l-5 4.87L18.18 22 12 18.56 5.82 22 7 14.14l-5-4.87L8.91 8.26z" />
             </svg>
           );
@@ -66,9 +76,26 @@ export default function ReviewItem({ review }) {
       {/* 좌측: 사용자 정보 */}
       <div className="w-[200px] flex flex-col items-center text-center text-xs text-gray-500 px-4">
         <div className="w-[60px] h-[60px] bg-gray-200 rounded-full mb-2" />
-        <div className="text-black font-bold text-sm">{review.user}</div>
-        <div className="mt-1 text-[12px] text-gray-400">
-          복합성 · 미백 · 블랙헤드
+        <div className="text-black font-bold text-sm">
+          {review.userName
+            ? review.userName.replace(
+                /^(.)(.*)(.)$/,
+                (_, a, b, c) => a + "*" + c
+              )
+            : ""}
+        </div>
+
+        <div className="mt-1 flex flex-col gap-2 items-center">
+          {[review.skinType, review.skinConcern, review.texture].map(
+            (item, idx) => (
+              <div
+                key={idx}
+                className="bg-lime-100 text-black px-3 py-1 rounded-full font-semibold text-[12px] w-fit"
+              >
+                {item}
+              </div>
+            )
+          )}
         </div>
       </div>
 
@@ -91,7 +118,9 @@ export default function ReviewItem({ review }) {
         </div>
 
         {/* 리뷰 본문 */}
-        <div className="text-gray-800 mt-5 mb-5 text-left">{review.content}</div>
+        <div className="text-gray-800 mt-5 mb-5 text-left">
+          {review.content}
+        </div>
 
         {/* 이미지 */}
         {review.images?.length > 0 && (

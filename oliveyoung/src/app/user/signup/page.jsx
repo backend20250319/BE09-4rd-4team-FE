@@ -83,7 +83,12 @@ export default function SignUpPage() {
       return { isDuplicate: isDuplicate, userId: duplicateUserId };
     } catch (error) {
       console.error('중복 확인 실패:', error);
-      alert('서버 오류가 발생했습니다.');
+      const backendMessage = error.response?.data?.message;
+      if (backendMessage) {
+        alert(backendMessage); // 백엔드에서 보낸 에러 메시지를 alert로 띄우기
+      } else {
+        alert('서버 오류가 발생했습니다.');
+      }
       throw error; // 필요 시 다시 throw
     }
   };
@@ -92,22 +97,22 @@ export default function SignUpPage() {
     <div className="min-h-screen flex flex-col items-center bg-white">
       {/* <SignUpHeader /> // 헤더 컴포넌트가 있다면 여기에 배치 */}
 
-      <div className="max-w-4xl w-full mx-auto py-10 px-4 md:px-8">
+      <div className="max-w-4xl w-full justify-center py-10 px-4 md:px-8">
         <h1 className="text-center text-4xl md:text-5xl font-cj mb-6 mt-8">회원가입</h1>{' '}
         {/* 폰트 크기 조정 */}
         {/* 1단계 진행 바 (이미지 참고하여 스텝 표시) */}
-        <div className="flex justify-center items-center my-10">
+        <div className="flex justify-center items-center my-10 mr-5">
           <div className="flex flex-col items-center mx-4">
             <div
               className={`w-10 h-10 rounded-full flex items-center justify-center font-bold ${
-                step === 1 ? 'bg-orange-500 text-white' : 'border-2 border-gray-300 text-gray-500'
+                step === 1 ? 'bg-orange-400 text-white' : 'border-2 border-gray-300 text-gray-500'
               }`}
             >
               1
             </div>
             <p
               className={`mt-2 text-sm ${
-                step === 1 ? 'text-orange-500 font-semibold' : 'text-gray-500'
+                step === 1 ? 'text-orange-400 font-semibold' : 'text-gray-500'
               }`}
             >
               회원가입 여부
@@ -117,14 +122,14 @@ export default function SignUpPage() {
           <div className="flex flex-col items-center mx-4 text-gray-500">
             <div
               className={`w-10 h-10 rounded-full flex items-center justify-center font-bold ${
-                step === 2 ? 'bg-orange-500 text-white' : 'border-2 border-gray-300 text-gray-500'
+                step === 2 ? 'bg-orange-400 text-white' : 'border-2 border-gray-300 text-gray-500'
               }`}
             >
               2
             </div>
             <p
               className={`mt-2 text-sm ${
-                step === 2 ? 'text-orange-500 font-semibold' : 'text-gray-500'
+                step === 2 ? 'text-orange-400 font-semibold' : 'text-gray-500'
               }`}
             >
               회원정보 입력
