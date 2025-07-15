@@ -34,7 +34,7 @@ const ProductTabs = ({ productId, descriptionImages = [] }) => {
             key={tab}
             className={`${
               activeTab === tab ? "bg-gray-100 border-b-2 border-black" : "hover:bg-gray-50"
-            } flex-1 py-2 text-center ${tab !== "상품설명" ? "border-l border-gray-200" : ""}`}
+            } flex-1 py-2 text-center ${tab !== "상품설명" ? "" : ""}`}
             onClick={() => setActiveTab(tab)}
           >
             {tab}

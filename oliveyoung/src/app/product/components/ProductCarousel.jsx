@@ -6,7 +6,7 @@ import { getImageUrl } from "@/utils/image"; // getImageUrl 함수 임포트
 function ProductCarousel() {
   const products = [
     {
-      img: "product/skincare1.jpg", // 이 경로들을 파일 서버의 상대 경로로 가정합니다.
+      img: "product/skincare1.jpg", 
       name: "[대용량150ml] 웰라쥬 리얼 히알루로닉 블루 100 앰플 75ml 1+1 기획",
       originalPrice: "46,000원",
       discountedPrice: "29,900",
@@ -158,7 +158,6 @@ function ProductCarousel() {
             key={index}
             className="flex flex-col items-center transition-shadow bg-white rounded-lg cursor-pointer"
           >
-            {/* ⭐ 여기에 getImageUrl 적용 ⭐ */}
             <img
               src={getImageUrl(product.img)} 
               alt={product.name}
@@ -168,7 +167,7 @@ function ProductCarousel() {
             {/* <p className="text-lg font-bold text-center text-red-500">{product.price}</p> */} 
             
             {/* 상품명 2줄로 제한하고 말줄임 처리 */}
-            <p className="font-semibold text-center ext-lg line-clamp-2">
+            <p className="text-sm font-semibold text-center line-clamp-2">
               {product.name}
             </p>
             {/* 상품 상세 설명: product.description은 현재 products 배열에 정의되어 있지 않습니다. */}
@@ -186,7 +185,7 @@ function ProductCarousel() {
                 {/* 문자열에서 숫자만 추출하여 toLocaleString 적용 */}
                 {parseInt(product.originalPrice.replace(/[^0-9]/g, '')).toLocaleString('ko-KR')}원
               </p>
-              <p className="text-xl text-[#e02020] font-semibold">
+              <p className="text-lg text-[#e02020] font-semibold">
                 {/* 문자열에서 숫자만 추출하여 toLocaleString 적용 */}
                 {parseInt(product.discountedPrice.replace(/[^0-9]/g, '')).toLocaleString('ko-KR')}원
               </p>
@@ -244,7 +243,7 @@ function ProductCarousel() {
                 return (
                   <div
                     key={badgeIdx}
-                    className={`h-[20px] rounded-[9px] text-[#fff] text-xs justify-center leading-[7px] flex items-center mr-1 mb-1 ${bgColorClass}`} // mr-1 mb-1 추가하여 뱃지 간 간격 주기
+                    className={`h-[20px] rounded-[9px] text-[#fff] text-xs justify-center leading-[7px] flex items-center mb-1 ${bgColorClass}`}
                     style={{ width: badgeWidth }}
                   >
                     {badge}

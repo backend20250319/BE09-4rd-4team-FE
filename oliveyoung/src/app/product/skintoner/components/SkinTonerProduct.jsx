@@ -209,7 +209,7 @@ function SkinTonerProduct({ selectedBrands }) {
               </p>
 
               <div className="mb-1 w-[215px] flex flex-row items-center justify-center gap-x-2">
-                <p className="text-sm line-through font-semibold text-[#a9a9a9]">
+                <p className="text-md line-through font-semibold text-[#a9a9a9]">
                   {product.originalPrice.toLocaleString("ko-KR")}원
                 </p>
                 <p className="text-xl text-[#e02020] font-semibold">

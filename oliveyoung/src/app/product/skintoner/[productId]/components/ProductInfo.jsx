@@ -72,7 +72,7 @@ const ProductInfo = ({ productData }) => {
             return (
               <span
                 key={index}
-                className={`px-2 py-0.5 text-white text-xs rounded-[9px] mr-1 ${bgColorClass}`}
+                className={`px-2 py-0.5 text-white text-xs rounded-[9px] ${bgColorClass}`}
               >
                 {badgeText}
               </span>
