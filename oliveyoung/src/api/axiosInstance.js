@@ -37,7 +37,7 @@ instance.interceptors.response.use(
         return new Promise((resolve) => {
           addRefreshSubscriber((token) => {
             originalRequest.headers.Authorization = `Bearer ${token}`;
-            resolve(axios(originalRequest));
+            resolve(instance(originalRequest));
           });
         });
       }
