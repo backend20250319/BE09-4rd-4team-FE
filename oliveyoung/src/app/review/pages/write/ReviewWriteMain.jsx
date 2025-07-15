@@ -198,7 +198,7 @@ export default function ReviewWriteLayout({
   }
 
   return (
-    <div className="w-full max-w-[600px] mx-auto bg-white py-10 px-8 ">
+    <div className="w-full max-w-[600px] mx-auto bg-white py-10 px-1 ">
       {/* X 버튼 - showCloseButton이 true일 때만 보임 */}
       {showCloseButton && (
         <button
@@ -230,7 +230,7 @@ export default function ReviewWriteLayout({
       <ReviewPointNotice />
       <br className="my-6" />
       <div className="-mx-1">
-        <ReviewTextInput value={content} onChange={setContent} />
+      <ReviewTextInput value={content} onChange={setContent} />
       </div>
       <br className="my-6" />
 
