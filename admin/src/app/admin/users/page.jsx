@@ -100,7 +100,7 @@ export default function UsersPage() {
   return (
     <div className="space-y-6">
       <div className="flex items-center justify-between">
-        <h1 className="text-2xl font-bold text-gray-800">관리자 회원 관리</h1>
+        <h1 className="text-2xl font-bold text-gray-800">관리자 관리</h1>
         <button className="bg-[#9BCC47] text-white px-4 py-2 rounded-md flex items-center" onClick={()=> setShowModal(true)}>
           <UserPlusIcon size={16} className="mr-1" />
           신규 관리자 등록

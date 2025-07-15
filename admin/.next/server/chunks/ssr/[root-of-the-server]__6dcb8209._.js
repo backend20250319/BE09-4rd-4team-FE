@@ -260,11 +260,7 @@ var __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$lucide$2d$re
 ;
 ;
 function CouponsPage() {
-    /*const [coupons, setCoupons] = useState([
-    { id: 1, name: 'WELCOME10', discount: 10, validUntil: '2025-12-31' },
-    { id: 2, name: 'SPRING20', discount: 20, validUntil: '2025-06-30' },
-    { id: 3, name: 'SUMMER15', discount: 15, validUntil: '2025-08-31' },
-  ]);*/ // 날짜 포맷 함수 추가
+    // 날짜 포맷 함수 추가
     const formatDate = (datetime)=>{
         return new Date(datetime).toISOString().split('T')[0]; // "2025-07-11"
     };
@@ -322,7 +318,7 @@ function CouponsPage() {
                         children: "쿠폰 관리"
                     }, void 0, false, {
                         fileName: "[project]/src/app/admin/coupons/page.jsx",
-                        lineNumber: 82,
+                        lineNumber: 78,
                         columnNumber: 9
                     }, this),
                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("button", {
@@ -334,20 +330,20 @@ function CouponsPage() {
                                 className: "mr-1"
                             }, void 0, false, {
                                 fileName: "[project]/src/app/admin/coupons/page.jsx",
-                                lineNumber: 87,
+                                lineNumber: 83,
                                 columnNumber: 11
                             }, this),
                             "쿠폰 등록"
                         ]
                     }, void 0, true, {
                         fileName: "[project]/src/app/admin/coupons/page.jsx",
-                        lineNumber: 83,
+                        lineNumber: 79,
                         columnNumber: 9
                     }, this)
                 ]
             }, void 0, true, {
                 fileName: "[project]/src/app/admin/coupons/page.jsx",
-                lineNumber: 81,
+                lineNumber: 77,
                 columnNumber: 7
             }, this),
             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -364,7 +360,7 @@ function CouponsPage() {
                                         children: "쿠폰명"
                                     }, void 0, false, {
                                         fileName: "[project]/src/app/admin/coupons/page.jsx",
-                                        lineNumber: 96,
+                                        lineNumber: 92,
                                         columnNumber: 15
                                     }, this),
                                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("th", {
@@ -372,7 +368,7 @@ function CouponsPage() {
                                         children: "할인율(%)"
                                     }, void 0, false, {
                                         fileName: "[project]/src/app/admin/coupons/page.jsx",
-                                        lineNumber: 97,
+                                        lineNumber: 93,
                                         columnNumber: 15
                                     }, this),
                                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("th", {
@@ -380,7 +376,7 @@ function CouponsPage() {
                                         children: "유효기간"
                                     }, void 0, false, {
                                         fileName: "[project]/src/app/admin/coupons/page.jsx",
-                                        lineNumber: 98,
+                                        lineNumber: 94,
                                         columnNumber: 15
                                     }, this),
                                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("th", {
@@ -388,18 +384,18 @@ function CouponsPage() {
                                         children: "관리"
                                     }, void 0, false, {
                                         fileName: "[project]/src/app/admin/coupons/page.jsx",
-                                        lineNumber: 99,
+                                        lineNumber: 95,
                                         columnNumber: 15
                                     }, this)
                                 ]
                             }, void 0, true, {
                                 fileName: "[project]/src/app/admin/coupons/page.jsx",
-                                lineNumber: 95,
+                                lineNumber: 91,
                                 columnNumber: 13
                             }, this)
                         }, void 0, false, {
                             fileName: "[project]/src/app/admin/coupons/page.jsx",
-                            lineNumber: 94,
+                            lineNumber: 90,
                             columnNumber: 11
                         }, this),
                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("tbody", {
@@ -411,7 +407,7 @@ function CouponsPage() {
                                             children: c.name
                                         }, void 0, false, {
                                             fileName: "[project]/src/app/admin/coupons/page.jsx",
-                                            lineNumber: 105,
+                                            lineNumber: 101,
                                             columnNumber: 17
                                         }, this),
                                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("td", {
@@ -419,7 +415,7 @@ function CouponsPage() {
                                             children: c.discount
                                         }, void 0, false, {
                                             fileName: "[project]/src/app/admin/coupons/page.jsx",
-                                            lineNumber: 106,
+                                            lineNumber: 102,
                                             columnNumber: 17
                                         }, this),
                                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("td", {
@@ -427,7 +423,7 @@ function CouponsPage() {
                                             children: formatDate(c.validUntil)
                                         }, void 0, false, {
                                             fileName: "[project]/src/app/admin/coupons/page.jsx",
-                                            lineNumber: 107,
+                                            lineNumber: 103,
                                             columnNumber: 17
                                         }, this),
                                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("td", {
@@ -439,39 +435,39 @@ function CouponsPage() {
                                                     size: 18
                                                 }, void 0, false, {
                                                     fileName: "[project]/src/app/admin/coupons/page.jsx",
-                                                    lineNumber: 113,
+                                                    lineNumber: 109,
                                                     columnNumber: 21
                                                 }, this)
                                             }, void 0, false, {
                                                 fileName: "[project]/src/app/admin/coupons/page.jsx",
-                                                lineNumber: 109,
+                                                lineNumber: 105,
                                                 columnNumber: 17
                                             }, this)
                                         }, void 0, false, {
                                             fileName: "[project]/src/app/admin/coupons/page.jsx",
-                                            lineNumber: 108,
+                                            lineNumber: 104,
                                             columnNumber: 17
                                         }, this)
                                     ]
                                 }, c.id, true, {
                                     fileName: "[project]/src/app/admin/coupons/page.jsx",
-                                    lineNumber: 104,
+                                    lineNumber: 100,
                                     columnNumber: 15
                                 }, this))
                         }, void 0, false, {
                             fileName: "[project]/src/app/admin/coupons/page.jsx",
-                            lineNumber: 102,
+                            lineNumber: 98,
                             columnNumber: 11
                         }, this)
                     ]
                 }, void 0, true, {
                     fileName: "[project]/src/app/admin/coupons/page.jsx",
-                    lineNumber: 93,
+                    lineNumber: 89,
                     columnNumber: 9
                 }, this)
             }, void 0, false, {
                 fileName: "[project]/src/app/admin/coupons/page.jsx",
-                lineNumber: 92,
+                lineNumber: 88,
                 columnNumber: 7
             }, this),
             showModal && /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$src$2f$components$2f$NewCouponModal$2e$jsx__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["default"], {
@@ -479,13 +475,13 @@ function CouponsPage() {
                 onClose: ()=>setShowModal(false)
             }, void 0, false, {
                 fileName: "[project]/src/app/admin/coupons/page.jsx",
-                lineNumber: 123,
+                lineNumber: 119,
                 columnNumber: 9
             }, this)
         ]
     }, void 0, true, {
         fileName: "[project]/src/app/admin/coupons/page.jsx",
-        lineNumber: 80,
+        lineNumber: 76,
         columnNumber: 5
     }, this);
 }
