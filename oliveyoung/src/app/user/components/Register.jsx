@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import axios from '@/api/axiosInstance';
 import { useEffect } from 'react';
+import * as axiosRaw from 'axios';
 
 const RegistrationForm = ({ setStep, setUserName }) => {
   // 폼 데이터를 담을 상태 (state)
@@ -165,14 +166,11 @@ const RegistrationForm = ({ setStep, setUserName }) => {
         // receiveMarketingSMS: formData.receiveMarketingSMS,
       };
 
-      console.log('제출할 데이터:', dataToSend);
-
       // --- 이 부분에서 백엔드 API ---
       try {
         const response = await axios.post('http://localhost:8080/api/user/signup', dataToSend);
 
         if (response.status === 201) {
-          console.log('회원가입 성공:', response.data);
           alert('회원가입이 완료되었습니다!');
           setUserName(formData.userName);
           setStep(3); // 가입 완료 화면으로 전환
@@ -181,7 +179,7 @@ const RegistrationForm = ({ setStep, setUserName }) => {
         }
       } catch (error) {
         // 빨간 콘솔 에러 없애고, 사용자 alert만
-        if (axios.isAxiosError(error)) {
+        if (axiosRaw.isAxiosError(error)) {
           const message = error.response?.data?.message || '알 수 없는 오류입니다.';
           alert(`회원가입 실패: ${message}`);
         } else {
@@ -211,17 +209,19 @@ const RegistrationForm = ({ setStep, setUserName }) => {
   // };
 
   return (
-    <div className="min-h-screen bg-gray-100 flex flex-col items-center">
+    <div className="min-h-screen flex flex-col justify-center items-center">
       {/* 메인 콘텐츠 영역 */}
-      <div className="bg-white p-8 rounded-lg w-full max-w-4xl my-8">
-        <h1 className="text-2xl font-bold text-gray-800 mb-6 text-center">회원가입</h1>
+      <div className="bg-white p-3 rounded-lg w-full max-w-4xl my-8 justify-center">
+        <h1 className="text-2xl font-bold text-gray-800 mb-6 text-center justify-center">
+          회원가입
+        </h1>
 
         {/* 진행 단계 */}
-        <p className="text-sm text-gray-600 mb-6 text-center">
+        <p className="text-sm text-gray-600 mb-6 text-center mx-auto">
           라이프스타일 멤버십 CJ ONE! 영화, 쇼핑, 외식 등 다양한 서비스를 즐겁게 카드로 즐기세요~
         </p>
 
-        <form onSubmit={handleSubmit}>
+        <form onSubmit={handleSubmit} className="justify-center mx-auto">
           {/* 기본 정보 섹션 */}
           <div className="mb-8 border-t pt-6">
             <h2 className="text-xl font-bold text-gray-800 mb-4 flex items-center">
@@ -474,7 +474,7 @@ const RegistrationForm = ({ setStep, setUserName }) => {
                   value={formData.phonePart2}
                   onChange={handleChange}
                   maxLength="4"
-                  className="border border-gray-300 p-2 rounded-md flex-1 focus:outline-none focus:ring-1 focus:ring-[#ADFF2F]"
+                  className="border border-gray-300 p-2 w-[35px] rounded-md flex-1 focus:outline-none focus:ring-1 focus:ring-[#ADFF2F]"
                 />
                 <span className="self-center">-</span>
                 <input
@@ -483,12 +483,9 @@ const RegistrationForm = ({ setStep, setUserName }) => {
                   value={formData.phonePart3}
                   onChange={handleChange}
                   maxLength="4"
-                  className="border border-gray-300 p-2 rounded-md flex-1 focus:outline-none focus:ring-1 focus:ring-[#ADFF2F]"
+                  className="border border-gray-300 p-2 w-[35px] rounded-md flex-1 focus:outline-none focus:ring-1 focus:ring-[#ADFF2F]"
                 />
               </div>
-              {errors.phone && (
-                <p className="text-red-500 text-xs col-start-2 col-span-2 mt-1">{errors.phone}</p>
-              )}
               <div className="col-start-2 col-span-2 text-sm text-gray-600 mt-1">
                 <p>CJ ONE 포인트 사용, 이벤트 참여 및 경품 배송 등에 활용됩니다.</p>
               </div>
@@ -505,7 +502,7 @@ const RegistrationForm = ({ setStep, setUserName }) => {
                   name="emailLocal"
                   value={formData.emailLocal}
                   onChange={handleChange}
-                  className="border border-gray-300 p-2 rounded-md flex-1 focus:outline-none focus:ring-1 focus:ring-[#ADFF2F]"
+                  className="border border-gray-300 p-2 w-[35px] rounded-md flex-1 focus:outline-none focus:ring-1 focus:ring-[#ADFF2F]"
                 />
                 <span className="self-center">@</span>
                 <input
@@ -513,7 +510,7 @@ const RegistrationForm = ({ setStep, setUserName }) => {
                   name="emailDomain"
                   value={formData.emailDomain}
                   onChange={handleChange}
-                  className="border border-gray-300 p-2 rounded-md flex-1 focus:outline-none focus:ring-1 focus:ring-[#ADFF2F]"
+                  className="border border-gray-300 p-2 w-[35px] rounded-md flex-1 focus:outline-none focus:ring-1 focus:ring-[#ADFF2F]"
                 />
                 <select
                   name="emailDomainSelect"
@@ -529,9 +526,6 @@ const RegistrationForm = ({ setStep, setUserName }) => {
                   <option value="nate.com">nate.com</option>
                 </select>
               </div>
-              {errors.email && (
-                <p className="text-red-500 text-xs col-start-2 col-span-2 mt-1">{errors.email}</p>
-              )}
             </div>
           </div>
           {/* 선택 정보 섹션 */}

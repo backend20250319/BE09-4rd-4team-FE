@@ -120,7 +120,7 @@ function Header(props) {
               </li>
               <li
                 className="text-xs hover:cursor-pointer border-r px-[10px]"
-                onClick={() => router.push('/order/cart')}
+                onClick={() => router.push('/user/login')}
               >
                 장바구니
               </li>
@@ -128,7 +128,7 @@ function Header(props) {
           )}
           <li
             className="text-xs hover:cursor-pointer border-r px-[10px]"
-            onClick={() => router.push('/mypage/order')}
+            onClick={() => router.push('/user/login')}
           >
             주문배송
           </li>
