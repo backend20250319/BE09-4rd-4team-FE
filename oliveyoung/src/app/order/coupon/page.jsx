@@ -79,7 +79,7 @@ export default function Coupon() {
       return name[0] + '*';
     }
 
-    return name[0] + '*'.repeat(name.length - 2) + name[name.length - 1];
+    return name[0] + '*' + name[name.length - 1];
   };
 
   // 유효 기간이 지나지 않은 쿠폰 필터 작업
