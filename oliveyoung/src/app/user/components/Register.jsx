@@ -440,6 +440,32 @@ const RegistrationForm = ({ setStep, setUserName }) => {
                   <option value="017">017</option>
                   <option value="018">018</option>
                   <option value="019">019</option>
+                  <option value="022">022</option>
+                  <option value="031">031</option>
+                  <option value="032">032</option>
+                  <option value="033">033</option>
+                  <option value="041">041</option>
+                  <option value="042">042</option>
+                  <option value="043">043</option>
+                  <option value="044">044</option>
+                  <option value="051">051</option>
+                  <option value="052">052</option>
+                  <option value="053">053</option>
+                  <option value="054">054</option>
+                  <option value="055">055</option>
+                  <option value="061">061</option>
+                  <option value="062">062</option>
+                  <option value="063">063</option>
+                  <option value="064">064</option>
+                  <option value="070">070</option>
+                  <option value="080">080</option>
+                  <option value="0100">0100</option>
+                  <option value="0502">0502</option>
+                  <option value="0503">0503</option>
+                  <option value="0504">0504</option>
+                  <option value="0505">0505</option>
+                  <option value="0506">0506</option>
+                  <option value="0507">0507</option>
                 </select>
                 <span className="self-center">-</span>
                 <input

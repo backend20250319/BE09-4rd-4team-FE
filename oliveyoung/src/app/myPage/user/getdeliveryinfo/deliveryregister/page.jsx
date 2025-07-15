@@ -71,7 +71,7 @@ export default function DeliveryRegisterForm() {
               <input
                 type="checkbox"
                 checked={isDefault}
-                onChange={(e) => setIsDefault(e.target.checked)}
+                readOnly
                 className="ml-[17px] mr-[6px] w-[13px] h-[13px] align-middle"
               />
               <label className="text-[12px] font-normal align-middle text-[#666]">
@@ -108,7 +108,40 @@ export default function DeliveryRegisterForm() {
                   className="w-[90px] h-[26.4px] px-[10px] border-[0.8px] border-gray-300 rounded text-sm"
                 >
                   <option value="">선택</option>
-                  {['010', '011', '016', '017', '018', '019'].map((num) => (
+                  {[
+                    '010',
+                    '011',
+                    '016',
+                    '017',
+                    '018',
+                    '019',
+                    '022',
+                    '031',
+                    '032',
+                    '033',
+                    '041',
+                    '042',
+                    '043',
+                    '044',
+                    '051',
+                    '052',
+                    '053',
+                    '054',
+                    '055',
+                    '061',
+                    '062',
+                    '063',
+                    '064',
+                    '070',
+                    '080',
+                    '0100',
+                    '0502',
+                    '0503',
+                    '0504',
+                    '0505',
+                    '0506',
+                    '0507',
+                  ].map((num) => (
                     <option key={num} value={num}>
                       {num}
                     </option>
