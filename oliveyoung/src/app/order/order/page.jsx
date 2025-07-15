@@ -29,11 +29,13 @@ export default function Order() {
   const [isExisting, setIsExisting] = useState(false);
   const [addressList, setAddressList] = useState([]);
   const [selectedAddress, setSelectedAddress] = useState('');
-  const [detailAddress, setDetailAddress] = useState('');
+  const [specAddress, setSpecAddress] = useState('');
 
   const [couponList, setCouponList] = useState([]);
   const [selectedCoupon, setSelectedCoupon] = useState(null);
   const [discountAmount, setDiscountAmount] = useState(0);
+
+  const[isNone, setIsNone] = useState(false);
 
   const calculateDiscount = (coupon, totalPrice) => {
     if (!coupon) return 0;
@@ -72,11 +74,12 @@ export default function Order() {
         const addressList = res.data.data;
         setAddressList(addressList);
         setIsExisting(addressList.length > 0);
+        if(addressList.length === 0) setIsNone(true);
 
         const defaultAddress = addressList.find((addr) => addr.isDefault) || addressList[0];
         if (defaultAddress) {
           setSelectedAddress(defaultAddress);
-          setDetailAddress(defaultAddress.detailAddress);
+          setSpecAddress(defaultAddress.detailAddress);
         }
       } catch (e) {
         console.error('사용자 주소 정보 가져오기 실패:', e);
@@ -91,7 +94,7 @@ export default function Order() {
           },
         });
 
-        const couponList = res.data.filter((coupon) => coupon.used === false);
+        const couponList = res.data.filter((coupon) => coupon.used === true);
         setCouponList(couponList);
       } catch (e) {
         console.error('사용자 주소 정보 가져오기 실패:', e);
@@ -112,6 +115,10 @@ export default function Order() {
   const [originalPhonePart1, setOriginalPhonePart1] = useState('');
   const [originalPhonePart2, setOriginalPhonePart2] = useState('');
   const [originalPhonePart3, setOriginalPhonePart3] = useState('');
+  const [originalName2, setOriginalName2] = useState('');
+  const [originalPhonePart2_1, setOriginalPhonePart2_1] = useState('');
+  const [originalPhonePart2_2, setOriginalPhonePart2_2] = useState('');
+  const [originalPhonePart2_3, setOriginalPhonePart2_3] = useState('');
 
   // selectedAddress가 변경되었을 때 name, phone 분할 세팅 + detailAddress 세팅
   useEffect(() => {
@@ -127,11 +134,12 @@ export default function Order() {
     }
 
     if (selectedAddress.detailAddress) {
-      setDetailAddress(selectedAddress.detailAddress);
+      setSpecAddress(selectedAddress.detailAddress);
     }
   }, [selectedAddress]);
 
   const [isCopyChecked, setIsCopyChecked] = useState(false);
+  const [isCopyChecked2, setIsCopyChecked2] = useState(false);
 
   const handleCopyToDivp = (e) => {
     const checked = e.target.checked;
@@ -156,6 +164,32 @@ export default function Order() {
       setPhonePart1(originalPhonePart1);
       setPhonePart2(originalPhonePart2);
       setPhonePart3(originalPhonePart3);
+    }
+  };
+
+  const handleCopyToNewDivp = (e) => {
+    const checked = e.target.checked;
+    setIsCopyChecked2(checked);
+
+    if (checked) {
+      // 백업해두기
+      setOriginalName2(recipientName);
+      setOriginalPhonePart2_1(phone1);
+      setOriginalPhonePart2_2(phone2);
+      setOriginalPhonePart2_3(phone3);
+
+      // 사용자 정보로 복사
+      setRecipientName(userInfo.userName);
+      const phoneParts = userInfo.phone.split('-');
+      setPhone1(phoneParts[0]);
+      setPhone2(phoneParts[1]);
+      setPhone3(phoneParts[2]);
+    } else {
+      // 백업해둔 값으로 복원
+      setRecipientName(originalName2);
+      setPhone1(originalPhonePart2_1);
+      setPhone2(originalPhonePart2_2);
+      setPhone3(originalPhonePart2_3);
     }
   };
 
@@ -308,8 +342,19 @@ export default function Order() {
     fetchJibun();
   }, [selectedAddress.streetAddress]);
 
-  const [agreeAll, setAgreeAll] = useState(false);
+  // 신규 배송지 추가 핸들러
+  const [addressName, setAddressName] = useState('');
+  const [recipientName, setRecipientName] = useState('');
+  const [phone1, setPhone1] = useState('');
+  const [phone2, setPhone2] = useState('');
+  const [phone3, setPhone3] = useState('');
+  const fullPhone = `${phone1}-${phone2}-${phone3}`;
+  const [streetAddress, setStreetAddress] = useState('');
+  const [detailAddress, setDetailAddress] = useState('');
+  const [isDefault, setIsDefault] = useState(false);
 
+  const [agreeAll, setAgreeAll] = useState(false);
+  
   const handlePayment = () => {
     // 배송지 정보 확인
     if (!name.trim() || phonePart1 === '선택' || !phonePart2.trim() || !phonePart3.trim()) {
@@ -395,9 +440,45 @@ export default function Order() {
       }
     };
 
+    // 새로운 배송지 추가
+    const addNewAddress = async () => {
+      if(isExisting) return;
+      
+      try {
+        const token = localStorage.getItem('accessToken');
+
+        await axios.post(
+          'http://localhost:8080/api/mypage/address/register',
+          {
+            addressName,
+            recipientName,
+            phone: fullPhone,
+            streetAddress,
+            detailAddress,
+            isDefault,
+          },
+          {
+            headers: {
+              Authorization: `Bearer ${token}`,
+            },
+          }
+        );
+
+        alert('배송지가 추가되었습니다.');
+      } catch (error) {
+        alert('배송지 추가에 실패했습니다.');
+      }
+    };
+
+    addNewAddress();
     fetchCreateOrder();
     fetchChangeCoupon();
   };
+
+  if (isExisting && isNone === true) {
+    setIsExisting(false);
+    alert("등록된 배송지가 없습니다.");
+  }
 
   return (
     <div className="overflow-hidden w-full min-w-[1020px]">
@@ -453,6 +534,7 @@ export default function Order() {
           </div>
 
           {/* 배송지 정보 */}
+          {(isExisting && !isNone) && (
             <table className="w-full ">
               <tbody className="text-[#666] text-[14px] leading-[20px] tracking-[-0.04em] [word-spacing:-1px]">
                 {/* 배송지 선택 */}
@@ -466,8 +548,8 @@ export default function Order() {
                         type="radio"
                         id="divpExist1"
                         className="w-[12px] h-[12px] mt-[-2px] mr-[7px] align-middle text-[#888]"
-                        checked={true}
-                        readOnly
+                        checked={isExisting}
+                        onChange={() => setIsExisting(true)}
                       />
                       <label htmlFor="divpExist1" className="text-[#333] cursor-pointer">
                         기존 배송지
@@ -478,8 +560,8 @@ export default function Order() {
                         type="radio"
                         id="divpExist2"
                         className="w-[12px] h-[12px] mt-[-2px] mr-[7px] align-middle text-[#888]"
-                        checked={false}
-                        readOnly
+                        checked={!isExisting}
+                        onChange={() => setIsExisting(false)}
                       />
                       <label htmlFor="divpExist2" className="text-[#333] cursor-pointer">
                         신규 배송지
@@ -644,13 +726,175 @@ export default function Order() {
                     <input
                       type="text"
                       className="w-[500px] h-[28px] px-[10px] text-[12px] text-[#333] bg-white leading-[20px] border border-[#d0d0d0] tracking-[0.5px] rounded-[5px]"
-                      value={detailAddress}
-                      onChange={(e) => setDetailAddress(e.target.value)}
+                      value={specAddress}
+                      onChange={(e) => setSpecAddress(e.target.value)}
                     />
                   </td>
                 </tr>
               </tbody>
             </table>
+          )}
+
+          {!isExisting && (
+            <table className="w-full ">
+              <tbody className="text-[#666] text-[14px] leading-[20px] tracking-[-0.04em] [word-spacing:-1px]">
+                {/* 배송지 선택 */}
+                <tr>
+                  <th className="border-t-[2px] border-t-[#d6d6d6] bg-[#f4f4f4] pl-[18px] py-[15px] text-left text-[#222] border-b border-b-[#e6e6e6]">
+                    배송지선택
+                  </th>
+                  <td className="border-t-[2px] border-t-[#d6d6d6] border-b border-b-[#e6e6e6] pl-[36px] pr-[20px] py-[15px] text-[14px] text-[#222] leading-[28px]">
+                    <span className="inline-block leading-[20px] text-[12px] text-[#222] whitespace-nowrap">
+                      <input
+                        type="radio"
+                        id="divpExist1"
+                        className="w-[12px] h-[12px] mt-[-2px] mr-[7px] align-middle text-[#888]"
+                        checked={isExisting}
+                        onChange={() => setIsExisting(true)}
+                      />
+                      <label htmlFor="divpExist1" className="text-[#333] cursor-pointer">
+                        기존 배송지
+                      </label>
+                    </span>
+                    <span className="inline-block leading-[20px] ml-[20px] text-[12px] text-[#222] whitespace-nowrap">
+                      <input
+                        type="radio"
+                        id="divpExist2"
+                        className="w-[12px] h-[12px] mt-[-2px] mr-[7px] align-middle text-[#888]"
+                        checked={!isExisting}
+                        onChange={() => setIsExisting(false)}
+                      />
+                      <label htmlFor="divpExist2" className="text-[#333] cursor-pointer">
+                        신규 배송지
+                      </label>
+                    </span>
+                  </td>
+                </tr>
+
+                {/* 베송지명 */}
+                <tr className="table-row">
+                  <th className="bg-[#f4f4f4] pl-[18px] py-[15px] text-left text-[#222] border-b border-b-[#e6e6e6]">
+                    배송지명
+                  </th>
+                  <td className="pl-[36px] py-[15px] px-[20px] border-b border-b-[#e6e6e6] text-[14px] text-[#222] leading-[28px] bg-[position:20px_25px] bg-no-repeat"
+                  style={{ backgroundImage: `url('${imageUrl}/order/ico_star6x5.png')` }}>
+                    <input value={addressName} onChange={(e) => setAddressName(e.target.value)}
+                    className="w-[200px] h-[28px] px-[10px] text-[12px] text-[#333] bg-white leading-[20px] border border-[#d0d0d0] rounded-[5px]" />
+                  </td>
+                </tr>
+
+                {/* 받는분 */}
+                <tr className="table-row">
+                  <th className="bg-[#f4f4f4] pl-[18px] py-[15px] text-left text-[#222] border-b border-b-[#e6e6e6]">
+                    받는분
+                  </th>
+                  <td className="pl-[36px] py-[15px] px-[20px] border-b border-b-[#e6e6e6] text-[14px] text-[#222] leading-[28px] bg-[position:20px_25px] bg-no-repeat"
+                  style={{ backgroundImage: `url('${imageUrl}/order/ico_star6x5.png')` }}>
+                    <input className="w-[200px] h-[28px] px-[10px] text-[12px] text-[#333] bg-white leading-[20px] border border-[#d0d0d0] rounded-[5px]"
+                    value={recipientName}
+                    onChange={(e) => setRecipientName(e.target.value)} />
+                    <span className="inline-block leading-[20px] ml-[20px] text-[12px] whitespace-nowrap relative">
+                      <input
+                        type="checkbox"
+                        id="copyToDivp"
+                        checked={isCopyChecked2}
+                        onChange={handleCopyToNewDivp}
+                        className="w-[12px] h-[12px] mt-[-2px] mr-[5px] align-middle"
+                      />
+                      <label htmlFor="copyToDivp" className="text-[#333] cursor-pointer">
+                        주문자정보와 동일
+                      </label>
+                    </span>
+                  </td>
+                </tr>
+
+                {/* 연락처 */}
+                <tr className="table-row">
+                  <th className="pt-[15px] px-[20px] pb-[5px] bg-[#f4f4f4] text-left text-[#222]">
+                    연락처1
+                  </th>
+                  <td className="pl-[36px] pt-[15px] pb-[5px] px-[20px] text-[14px] text-[#222] leading-[28px] bg-[position:20px_25px] bg-no-repeat"
+                  style={{ backgroundImage: `url('${imageUrl}/order/ico_star6x5.png')` }}>
+                    <select
+                      value={phone1}
+                      onChange={(e) => setPhone1(e.target.value)}
+                      className="w-[90px] bg-white h-[28px] pl-[5px] text-[12px] border border-[#d0d0d0] rounded-[5px] leading-[18px] text-[#333]"
+                    >
+                      {phoneOptions.map((option) => (
+                        <option key={option} value={option}>
+                          {option}
+                        </option>
+                      ))}
+                    </select>{' '}
+                    -
+                    <input
+                      type="text"
+                      value={phone2}
+                      onChange={(e) => setPhone2(e.target.value)}
+                      className="ml-[1px] w-[90px] h-[28px] px-[10px] text-[12px] text-[#333] bg-white leading-[20px] border border-[#d0d0d0] tracking-[-0.04em] rounded-[5px]"
+                    />
+                    -
+                    <input
+                      type="text"
+                      value={phone3}
+                      onChange={(e) => setPhone3(e.target.value)}
+                      className="ml-[1px] w-[90px] h-[28px] px-[10px] text-[12px] text-[#333] bg-white leading-[20px] border border-[#d0d0d0] tracking-[-0.04em] rounded-[5px]"
+                    />
+                    <span className="mt-[5px] text-[14px] text-[#222] leading-[28px]">
+                      <span className="text-[#777] text-[12px] font-normal inline-block leading-[20px] ml-[20px] whitespace-nowrap relative text-center cursor-pointer">
+                        <p className="w-[18px] h-[18px] bg-no-repeat mr-[5px] mb-[3px] inline-block align-middle" 
+                        style={{ backgroundImage: `url('${imageUrl}/order/icon_01.png')` }} />
+                        안심번호 서비스 안내
+                        <p className="w-[4px] h-[5px] bg-no-repeat ml-[5px] mb-[3px] inline-block align-middle"
+                        style={{ backgroundImage: `url('${imageUrl}/order/icon_02.png')` }} />
+                      </span>
+                    </span>
+                  </td>
+                </tr>
+                <tr className="table-row">
+                  <th className="pt-[5px] px-[20px] pb-[10px] border-b border-b-[#e6e6e6] bg-[#f4f4f4] text-left text-[#222]">
+                    연락처2
+                  </th>
+                  <td className="pl-[36px] pt-[5px] pb-[10px] px-[20px] border-b border-b-[#e6e6e6] text-[14px] text-[#222] leading-[28px]">
+                    <select className="w-[90px] bg-white h-[28px] pl-[5px] text-[12px] border border-[#d0d0d0] rounded-[5px] leading-[18px] text-[#333]">
+                      {phoneOptions.map((option) => (
+                        <option key={option} value={option}>
+                          {option}
+                        </option>
+                      ))}
+                    </select>{' '}
+                    -
+                    <input
+                      type="text"
+                      className="ml-[1px] w-[90px] h-[28px] px-[10px] text-[12px] text-[#333] bg-white leading-[20px] border border-[#d0d0d0] tracking-[-0.04em] rounded-[5px]"
+                    />
+                    -
+                    <input
+                      type="text"
+                      className="ml-[1px] w-[90px] h-[28px] px-[10px] text-[12px] text-[#333] bg-white leading-[20px] border border-[#d0d0d0] tracking-[-0.04em] rounded-[5px]"
+                    />
+                  </td>
+                </tr>
+
+                {/* 주소 */}
+                <tr className="table-row">
+                  <th className="bg-[#f4f4f4] pl-[18px] py-[15px] text-left text-[#222] border-b border-b-[#e6e6e6]">
+                    주소
+                  </th>
+                  <td className="pl-[36px] py-[15px] px-[20px] border-b border-b-[#e6e6e6] text-[14px] text-[#222] leading-[28px]">
+                    <div>
+                      <input type="text" placeholder="도로명 주소를 입력해주세요" value={streetAddress} onChange={(e) => setStreetAddress(e.target.value)}
+                      className="w-[500px] min-h-[28px] my-[6px] py-[5px] px-[10px] border border-[#ccc] bg-white rounded-[5px] text-[12px] leading-[20px]" />
+                    </div>
+                    <input type="text" placeholder="자세한 주소를 입력해주세요" value={detailAddress} onChange={(e) => setDetailAddress(e.target.value)}
+                      className="w-[500px] h-[28px] px-[10px] text-[12px] text-[#333] bg-white leading-[20px] border border-[#d0d0d0] tracking-[0.5px] rounded-[5px]"
+                    />
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+          )}
+
           {/* 배송 요청사항 */}
           <div>
             <div className="relative w-full">

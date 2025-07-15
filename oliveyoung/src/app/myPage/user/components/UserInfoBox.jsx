@@ -61,7 +61,7 @@ export default function UserInfoBox() {
       return name[0] + '*';
     }
 
-    return name[0] + '*'.repeat(name.length - 2) + name[name.length - 1];
+    return name[0] + '*' + name[name.length - 1];
   };
 
   return (
