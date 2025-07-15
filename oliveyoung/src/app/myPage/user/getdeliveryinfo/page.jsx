@@ -8,7 +8,36 @@ import axios from '@/api/axiosInstance';
 
 export default function GetDeliveryInfoPage() {
   const router = useRouter();
-  const [deliveryList, setDeliveryList] = useState([]);
+  const [addresses, setAddresses] = useState([]);
+
+  const fetchAddresses = async () => {
+    try {
+      const res = await axios.get('http://localhost:8080/api/mypage/address');
+      const originalList = res.data.data;
+
+      // 기본 배송지를 맨 앞으로 정렬
+      const sorted = [...originalList].sort((a, b) => {
+        if (a.default === b.default) return 0;
+        return a.default ? -1 : 1;
+      });
+
+      setAddresses(sorted);
+    } catch (error) {
+      console.error('배송지 목록 불러오기 실패:', error);
+    }
+  };
+
+  const handleSetDefault = async (addressId) => {
+    try {
+      const res = await axios.patch(
+        `http://localhost:8080/api/mypage/address/default/${addressId}`,
+      );
+      alert('기본 배송지로 설정되었습니다');
+      await fetchAddresses();
+    } catch (error) {
+      console.error('기본 배송지 설정 실패:', error);
+    }
+  };
 
   const handleDelete = async (addressId) => {
     const confirmed = window.confirm('선택한 배송지를 삭제하시겠습니까?');
@@ -20,7 +49,7 @@ export default function GetDeliveryInfoPage() {
 
       // 삭제 후 목록 다시 불러오기
       const response = await axios.get('http://localhost:8080/api/mypage/address');
-      setDeliveryList(response.data.data);
+      setAddresses(response.data.data);
     } catch (error) {
       console.error('배송지 삭제 실패:', error);
       alert('배송지 삭제에 실패했습니다.');
@@ -31,7 +60,7 @@ export default function GetDeliveryInfoPage() {
     const fetchDeliveryList = async () => {
       try {
         const response = await axios.get('http://localhost:8080/api/mypage/address');
-        setDeliveryList(response.data.data);
+        setAddresses(response.data.data);
       } catch (error) {
         console.error('배송지 목록을 불러오지 못했습니다.', error);
       }
@@ -77,7 +106,7 @@ export default function GetDeliveryInfoPage() {
           </tr>
         </thead>
         <tbody>
-          {deliveryList.map((item, index) => (
+          {addresses.map((item, index) => (
             <tr key={index} className="h-[232px] text-[14px] border-b border-gray-200">
               {/* 배송지명 */}
               <td className="text-center">{item.addressName}</td>
@@ -118,7 +147,10 @@ export default function GetDeliveryInfoPage() {
                   <button className="border px-2 py-1 text-[12px] rounded">수정</button>
                 ) : (
                   <div className="flex flex-col items-center space-y-2">
-                    <button className="border border-gray-300 w-[104px] h-[26px] text-[12px] rounded hover:bg-gray-100">
+                    <button
+                      onClick={() => handleSetDefault(item.addressId)}
+                      className="border border-gray-300 w-[104px] h-[26px] text-[12px] rounded hover:bg-gray-100"
+                    >
                       기본 배송지 설정
                     </button>
                     <div className="flex gap-[6px]">

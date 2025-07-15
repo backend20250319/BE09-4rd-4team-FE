@@ -60,7 +60,7 @@ instance.interceptors.response.use(
         isRefreshing = false;
 
         originalRequest.headers.Authorization = `Bearer ${newAccessToken}`;
-        return axios(originalRequest);
+        return instance(originalRequest);
       } catch (refreshError) {
         isRefreshing = false;
         localStorage.removeItem('accessToken');
