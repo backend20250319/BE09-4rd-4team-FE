@@ -47,9 +47,7 @@ export default function DashboardPage() {
           }),
         ]);
 
-        console.log("✅ ordersRes.data:", ordersRes.data);
-        console.log("✅ productsRes.data:", productsRes.data);
-        // ✅ 통계 처리
+
         const statsObj = statsRes.data;
         const statsWithIcons = [
           { title: '총 매출', value: `₩ ${statsObj.totalSalesAmount.toLocaleString()}`, change: '+12.5%', type: 'sales', icon: getIconByType('sales') },
