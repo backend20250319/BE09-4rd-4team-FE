@@ -127,7 +127,6 @@ function DashboardPage() {
                             }
                         ];
                         setStats(statsWithIcons);
-                        // ✅ 📌 이 부분에 넣으세요!
                         if (ordersRes.data.length > 0) {
                             const formattedOrders = ordersRes.data.map({
                                 "DashboardPage.useEffect.fetchDashboardData.formattedOrders": (order)=>({

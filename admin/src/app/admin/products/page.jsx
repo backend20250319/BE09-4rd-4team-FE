@@ -31,12 +31,8 @@ const [products, setProducts] = useState([]);
           brand: p.brandName,
           category: p.categoryName,
           stock: p.stock,
-          price: `₩ ${p.discountedPrice.toLocaleString()}`,
-          status: p.stock === 0
-              ? '품절'
-              : p.stock <= 10
-                  ? '품절임박'
-                  : '판매중',
+          price: `₩ ${p.discountedPrice ? p.discountedPrice.toLocaleString() : '0'}`,
+          status: p.state,
           createdAt: p.createdAt
         }));
         setProducts(mappedData);
@@ -87,12 +83,14 @@ const handleAddProduct = async (newProduct) => {
       },
       body: JSON.stringify({
         productName: newProduct.name,
-        brandId :newProduct.brandId,
+        brandId: newProduct.brandId,
         categoryName: newProduct.category,
-        stock: newProduct.stock,
-        originalPrice: parseInt(newProduct.price.replace(/[^0-9]g/, ''), 10),
+        stock: Number(newProduct.stock),
+        originalPrice: Number(newProduct.price.replace(/[^0-9]/g, '')),
+        discountedPrice: Number(newProduct.discountedPrice) || 0,
         imageUrl: 'https://example.com/image.jpg',
-        state: newProduct.state,
+        description: newProduct.description ?? '',
+        state: newProduct.status,
       }),
     });
 
@@ -105,13 +103,12 @@ const handleAddProduct = async (newProduct) => {
     const mappedData = data.map(p => ({
       id: p.productId,
       imageUrl: p.imageUrl,
-      brand: p.brand,
       name: p.productName,
+      brand: p.brandName,   // <-- 동일
       category: p.categoryName,
       stock: p.stock,
-      price: `W ${p.discountedPrice.toLocaleString()}`,
-      state: p.stock === 0 ? '품절'
-          : p.stock <= 10 ? '품절임박' : '판매중',
+      price: `₩ ${p.discountedPrice ? p.discountedPrice.toLocaleString() : '0'}`,
+      status: p.state,
       createdAt: p.createdAt
     }));
     setProducts(mappedData);

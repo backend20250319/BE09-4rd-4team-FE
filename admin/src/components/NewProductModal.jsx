@@ -17,16 +17,19 @@ export default function NewProductModal({ onClose, onAdd }) {
   useEffect(() => {
     const fetchBrands = async () => {
       try {
-        const res = await axios.get("/admin/products");
-        setBrandList(res.data); // ✅ [{ id, name }, ...] 형태
+        const res = await axios.get("http://localhost:8080/admin/brands");
+        setBrandList(res.data); // brand_id, brand_name
       } catch (error) {
         console.error("❌ 브랜드 불러오기 실패:", error);
-        setBrandList([]); // 오류 시에도 빈 배열로 안전 처리
+        setBrandList([]);
       }
     };
-
     fetchBrands();
   }, []);
+
+
+
+
 
   const handleSubmit = (e) => {
     e.preventDefault();
@@ -61,10 +64,12 @@ export default function NewProductModal({ onClose, onAdd }) {
               required
           >
             <option value="">브랜드 선택</option>
-            {brandList.map((brand) => (
-                <option key={brand.id} value={brand.id}>
-                  {brand.name}
-                </option>
+            {brandList
+                .filter(brand => brand && brand.brand_id !== undefined)
+                .map(brand => (
+                    <option key={brand.brand_id} value={brand.brand_id}>
+                      {brand.brand_name}
+                    </option>
             ))}
           </select>
           <input

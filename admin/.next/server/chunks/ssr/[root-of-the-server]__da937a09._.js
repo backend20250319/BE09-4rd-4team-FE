@@ -128,11 +128,11 @@ function NewProductModal({ onClose, onAdd }) {
     (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["useEffect"])(()=>{
         const fetchBrands = async ()=>{
             try {
-                const res = await __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$axios$2f$lib$2f$axios$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["default"].get("/admin/products");
-                setBrandList(res.data); // ✅ [{ id, name }, ...] 형태
+                const res = await __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$axios$2f$lib$2f$axios$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["default"].get("http://localhost:8080/admin/brands");
+                setBrandList(res.data); // brand_id, brand_name
             } catch (error) {
                 console.error("❌ 브랜드 불러오기 실패:", error);
-                setBrandList([]); // 오류 시에도 빈 배열로 안전 처리
+                setBrandList([]);
             }
         };
         fetchBrands();
@@ -158,7 +158,7 @@ function NewProductModal({ onClose, onAdd }) {
                     children: "상품 등록"
                 }, void 0, false, {
                     fileName: "[project]/src/components/NewProductModal.jsx",
-                    lineNumber: 47,
+                    lineNumber: 50,
                     columnNumber: 9
                 }, this),
                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("form", {
@@ -174,7 +174,7 @@ function NewProductModal({ onClose, onAdd }) {
                             required: true
                         }, void 0, false, {
                             fileName: "[project]/src/components/NewProductModal.jsx",
-                            lineNumber: 49,
+                            lineNumber: 52,
                             columnNumber: 11
                         }, this),
                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("select", {
@@ -188,21 +188,21 @@ function NewProductModal({ onClose, onAdd }) {
                                     children: "브랜드 선택"
                                 }, void 0, false, {
                                     fileName: "[project]/src/components/NewProductModal.jsx",
-                                    lineNumber: 63,
+                                    lineNumber: 66,
                                     columnNumber: 13
                                 }, this),
-                                brandList.map((brand)=>/*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("option", {
-                                        value: brand.id,
-                                        children: brand.name
-                                    }, brand.id, false, {
+                                brandList.filter((brand)=>brand && brand.brand_id !== undefined).map((brand)=>/*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("option", {
+                                        value: brand.brand_id,
+                                        children: brand.brand_name
+                                    }, brand.brand_id, false, {
                                         fileName: "[project]/src/components/NewProductModal.jsx",
-                                        lineNumber: 65,
-                                        columnNumber: 17
+                                        lineNumber: 70,
+                                        columnNumber: 21
                                     }, this))
                             ]
                         }, void 0, true, {
                             fileName: "[project]/src/components/NewProductModal.jsx",
-                            lineNumber: 57,
+                            lineNumber: 60,
                             columnNumber: 11
                         }, this),
                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("input", {
@@ -214,7 +214,7 @@ function NewProductModal({ onClose, onAdd }) {
                             required: true
                         }, void 0, false, {
                             fileName: "[project]/src/components/NewProductModal.jsx",
-                            lineNumber: 70,
+                            lineNumber: 75,
                             columnNumber: 11
                         }, this),
                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("input", {
@@ -226,7 +226,7 @@ function NewProductModal({ onClose, onAdd }) {
                             required: true
                         }, void 0, false, {
                             fileName: "[project]/src/components/NewProductModal.jsx",
-                            lineNumber: 78,
+                            lineNumber: 83,
                             columnNumber: 11
                         }, this),
                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("input", {
@@ -238,7 +238,7 @@ function NewProductModal({ onClose, onAdd }) {
                             required: true
                         }, void 0, false, {
                             fileName: "[project]/src/components/NewProductModal.jsx",
-                            lineNumber: 86,
+                            lineNumber: 91,
                             columnNumber: 11
                         }, this),
                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("select", {
@@ -252,7 +252,7 @@ function NewProductModal({ onClose, onAdd }) {
                                     children: "상태"
                                 }, void 0, false, {
                                     fileName: "[project]/src/components/NewProductModal.jsx",
-                                    lineNumber: 100,
+                                    lineNumber: 105,
                                     columnNumber: 13
                                 }, this),
                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("option", {
@@ -260,7 +260,7 @@ function NewProductModal({ onClose, onAdd }) {
                                     children: "판매중"
                                 }, void 0, false, {
                                     fileName: "[project]/src/components/NewProductModal.jsx",
-                                    lineNumber: 101,
+                                    lineNumber: 106,
                                     columnNumber: 13
                                 }, this),
                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("option", {
@@ -268,7 +268,7 @@ function NewProductModal({ onClose, onAdd }) {
                                     children: "품절임박"
                                 }, void 0, false, {
                                     fileName: "[project]/src/components/NewProductModal.jsx",
-                                    lineNumber: 102,
+                                    lineNumber: 107,
                                     columnNumber: 13
                                 }, this),
                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("option", {
@@ -276,13 +276,13 @@ function NewProductModal({ onClose, onAdd }) {
                                     children: "품절"
                                 }, void 0, false, {
                                     fileName: "[project]/src/components/NewProductModal.jsx",
-                                    lineNumber: 103,
+                                    lineNumber: 108,
                                     columnNumber: 13
                                 }, this)
                             ]
                         }, void 0, true, {
                             fileName: "[project]/src/components/NewProductModal.jsx",
-                            lineNumber: 94,
+                            lineNumber: 99,
                             columnNumber: 11
                         }, this),
                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -295,7 +295,7 @@ function NewProductModal({ onClose, onAdd }) {
                                     children: "취소"
                                 }, void 0, false, {
                                     fileName: "[project]/src/components/NewProductModal.jsx",
-                                    lineNumber: 106,
+                                    lineNumber: 111,
                                     columnNumber: 13
                                 }, this),
                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("button", {
@@ -304,30 +304,30 @@ function NewProductModal({ onClose, onAdd }) {
                                     children: "등록"
                                 }, void 0, false, {
                                     fileName: "[project]/src/components/NewProductModal.jsx",
-                                    lineNumber: 113,
+                                    lineNumber: 118,
                                     columnNumber: 13
                                 }, this)
                             ]
                         }, void 0, true, {
                             fileName: "[project]/src/components/NewProductModal.jsx",
-                            lineNumber: 105,
+                            lineNumber: 110,
                             columnNumber: 11
                         }, this)
                     ]
                 }, void 0, true, {
                     fileName: "[project]/src/components/NewProductModal.jsx",
-                    lineNumber: 48,
+                    lineNumber: 51,
                     columnNumber: 9
                 }, this)
             ]
         }, void 0, true, {
             fileName: "[project]/src/components/NewProductModal.jsx",
-            lineNumber: 46,
+            lineNumber: 49,
             columnNumber: 7
         }, this)
     }, void 0, false, {
         fileName: "[project]/src/components/NewProductModal.jsx",
-        lineNumber: 45,
+        lineNumber: 48,
         columnNumber: 5
     }, this);
 }
@@ -392,8 +392,8 @@ function ProductsPage() {
                         brand: p.brandName,
                         category: p.categoryName,
                         stock: p.stock,
-                        price: `₩ ${p.discountedPrice.toLocaleString()}`,
-                        status: p.stock === 0 ? '품절' : p.stock <= 10 ? '품절임박' : '판매중',
+                        price: `₩ ${p.discountedPrice ? p.discountedPrice.toLocaleString() : '0'}`,
+                        status: p.state,
                         createdAt: p.createdAt
                     }));
                 setProducts(mappedData);
@@ -436,10 +436,12 @@ function ProductsPage() {
                     productName: newProduct.name,
                     brandId: newProduct.brandId,
                     categoryName: newProduct.category,
-                    stock: newProduct.stock,
-                    originalPrice: parseInt(newProduct.price.replace(/[^0-9]g/, ''), 10),
+                    stock: Number(newProduct.stock),
+                    originalPrice: Number(newProduct.price.replace(/[^0-9]/g, '')),
+                    discountedPrice: Number(newProduct.discountedPrice) || 0,
                     imageUrl: 'https://example.com/image.jpg',
-                    state: newProduct.state
+                    description: newProduct.description ?? '',
+                    state: newProduct.status
                 })
             });
             if (!response.ok) {
@@ -450,12 +452,12 @@ function ProductsPage() {
             const mappedData = data.map((p)=>({
                     id: p.productId,
                     imageUrl: p.imageUrl,
-                    brand: p.brand,
                     name: p.productName,
+                    brand: p.brandName,
                     category: p.categoryName,
                     stock: p.stock,
-                    price: `W ${p.discountedPrice.toLocaleString()}`,
-                    state: p.stock === 0 ? '품절' : p.stock <= 10 ? '품절임박' : '판매중',
+                    price: `₩ ${p.discountedPrice ? p.discountedPrice.toLocaleString() : '0'}`,
+                    status: p.state,
                     createdAt: p.createdAt
                 }));
             setProducts(mappedData);
@@ -515,7 +517,7 @@ function ProductsPage() {
                         children: "상품 관리"
                     }, void 0, false, {
                         fileName: "[project]/src/app/admin/products/page.jsx",
-                        lineNumber: 144,
+                        lineNumber: 141,
                         columnNumber: 9
                     }, this),
                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -530,14 +532,14 @@ function ProductsPage() {
                                         className: "mr-1"
                                     }, void 0, false, {
                                         fileName: "[project]/src/app/admin/products/page.jsx",
-                                        lineNumber: 148,
+                                        lineNumber: 145,
                                         columnNumber: 13
                                     }, this),
                                     "엑셀 다운로드"
                                 ]
                             }, void 0, true, {
                                 fileName: "[project]/src/app/admin/products/page.jsx",
-                                lineNumber: 146,
+                                lineNumber: 143,
                                 columnNumber: 11
                             }, this),
                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("button", {
@@ -549,26 +551,26 @@ function ProductsPage() {
                                         className: "mr-1"
                                     }, void 0, false, {
                                         fileName: "[project]/src/app/admin/products/page.jsx",
-                                        lineNumber: 153,
+                                        lineNumber: 150,
                                         columnNumber: 13
                                     }, this),
                                     "상품 등록"
                                 ]
                             }, void 0, true, {
                                 fileName: "[project]/src/app/admin/products/page.jsx",
-                                lineNumber: 151,
+                                lineNumber: 148,
                                 columnNumber: 11
                             }, this)
                         ]
                     }, void 0, true, {
                         fileName: "[project]/src/app/admin/products/page.jsx",
-                        lineNumber: 145,
+                        lineNumber: 142,
                         columnNumber: 9
                     }, this)
                 ]
             }, void 0, true, {
                 fileName: "[project]/src/app/admin/products/page.jsx",
-                lineNumber: 143,
+                lineNumber: 140,
                 columnNumber: 7
             }, this),
             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -590,7 +592,7 @@ function ProductsPage() {
                                             onChange: (e)=>setSearchTerm(e.target.value)
                                         }, void 0, false, {
                                             fileName: "[project]/src/app/admin/products/page.jsx",
-                                            lineNumber: 163,
+                                            lineNumber: 160,
                                             columnNumber: 15
                                         }, this),
                                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$lucide$2d$react$2f$dist$2f$esm$2f$icons$2f$search$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__$3c$export__default__as__SearchIcon$3e$__["SearchIcon"], {
@@ -598,13 +600,13 @@ function ProductsPage() {
                                             className: "absolute left-3 top-2.5 text-gray-400"
                                         }, void 0, false, {
                                             fileName: "[project]/src/app/admin/products/page.jsx",
-                                            lineNumber: 170,
+                                            lineNumber: 167,
                                             columnNumber: 15
                                         }, this)
                                     ]
                                 }, void 0, true, {
                                     fileName: "[project]/src/app/admin/products/page.jsx",
-                                    lineNumber: 162,
+                                    lineNumber: 159,
                                     columnNumber: 13
                                 }, this),
                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -617,14 +619,14 @@ function ProductsPage() {
                                                     className: "mr-1"
                                                 }, void 0, false, {
                                                     fileName: "[project]/src/app/admin/products/page.jsx",
-                                                    lineNumber: 174,
+                                                    lineNumber: 171,
                                                     columnNumber: 17
                                                 }, this),
                                                 "필터"
                                             ]
                                         }, void 0, true, {
                                             fileName: "[project]/src/app/admin/products/page.jsx",
-                                            lineNumber: 173,
+                                            lineNumber: 170,
                                             columnNumber: 15
                                         }, this),
                                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("select", {
@@ -637,7 +639,7 @@ function ProductsPage() {
                                                     children: "카테고리"
                                                 }, void 0, false, {
                                                     fileName: "[project]/src/app/admin/products/page.jsx",
-                                                    lineNumber: 181,
+                                                    lineNumber: 178,
                                                     columnNumber: 17
                                                 }, this),
                                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("option", {
@@ -645,7 +647,7 @@ function ProductsPage() {
                                                     children: "스킨케어"
                                                 }, void 0, false, {
                                                     fileName: "[project]/src/app/admin/products/page.jsx",
-                                                    lineNumber: 182,
+                                                    lineNumber: 179,
                                                     columnNumber: 17
                                                 }, this),
                                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("option", {
@@ -653,7 +655,7 @@ function ProductsPage() {
                                                     children: "메이크업"
                                                 }, void 0, false, {
                                                     fileName: "[project]/src/app/admin/products/page.jsx",
-                                                    lineNumber: 183,
+                                                    lineNumber: 180,
                                                     columnNumber: 17
                                                 }, this),
                                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("option", {
@@ -661,7 +663,7 @@ function ProductsPage() {
                                                     children: "선케어"
                                                 }, void 0, false, {
                                                     fileName: "[project]/src/app/admin/products/page.jsx",
-                                                    lineNumber: 184,
+                                                    lineNumber: 181,
                                                     columnNumber: 17
                                                 }, this),
                                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("option", {
@@ -669,13 +671,13 @@ function ProductsPage() {
                                                     children: "클렌징"
                                                 }, void 0, false, {
                                                     fileName: "[project]/src/app/admin/products/page.jsx",
-                                                    lineNumber: 185,
+                                                    lineNumber: 182,
                                                     columnNumber: 17
                                                 }, this)
                                             ]
                                         }, void 0, true, {
                                             fileName: "[project]/src/app/admin/products/page.jsx",
-                                            lineNumber: 177,
+                                            lineNumber: 174,
                                             columnNumber: 15
                                         }, this),
                                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("select", {
@@ -688,7 +690,7 @@ function ProductsPage() {
                                                     children: "상태"
                                                 }, void 0, false, {
                                                     fileName: "[project]/src/app/admin/products/page.jsx",
-                                                    lineNumber: 191,
+                                                    lineNumber: 188,
                                                     columnNumber: 17
                                                 }, this),
                                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("option", {
@@ -696,7 +698,7 @@ function ProductsPage() {
                                                     children: "판매중"
                                                 }, void 0, false, {
                                                     fileName: "[project]/src/app/admin/products/page.jsx",
-                                                    lineNumber: 192,
+                                                    lineNumber: 189,
                                                     columnNumber: 17
                                                 }, this),
                                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("option", {
@@ -704,7 +706,7 @@ function ProductsPage() {
                                                     children: "품절임박"
                                                 }, void 0, false, {
                                                     fileName: "[project]/src/app/admin/products/page.jsx",
-                                                    lineNumber: 193,
+                                                    lineNumber: 190,
                                                     columnNumber: 17
                                                 }, this),
                                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("option", {
@@ -712,30 +714,30 @@ function ProductsPage() {
                                                     children: "품절"
                                                 }, void 0, false, {
                                                     fileName: "[project]/src/app/admin/products/page.jsx",
-                                                    lineNumber: 194,
+                                                    lineNumber: 191,
                                                     columnNumber: 17
                                                 }, this)
                                             ]
                                         }, void 0, true, {
                                             fileName: "[project]/src/app/admin/products/page.jsx",
-                                            lineNumber: 187,
+                                            lineNumber: 184,
                                             columnNumber: 15
                                         }, this)
                                     ]
                                 }, void 0, true, {
                                     fileName: "[project]/src/app/admin/products/page.jsx",
-                                    lineNumber: 172,
+                                    lineNumber: 169,
                                     columnNumber: 13
                                 }, this)
                             ]
                         }, void 0, true, {
                             fileName: "[project]/src/app/admin/products/page.jsx",
-                            lineNumber: 161,
+                            lineNumber: 158,
                             columnNumber: 11
                         }, this)
                     }, void 0, false, {
                         fileName: "[project]/src/app/admin/products/page.jsx",
-                        lineNumber: 160,
+                        lineNumber: 157,
                         columnNumber: 9
                     }, this),
                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -752,7 +754,7 @@ function ProductsPage() {
                                                 children: "상품이미지"
                                             }, void 0, false, {
                                                 fileName: "[project]/src/app/admin/products/page.jsx",
-                                                lineNumber: 204,
+                                                lineNumber: 201,
                                                 columnNumber: 15
                                             }, this),
                                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("th", {
@@ -760,7 +762,7 @@ function ProductsPage() {
                                                 children: "상품명"
                                             }, void 0, false, {
                                                 fileName: "[project]/src/app/admin/products/page.jsx",
-                                                lineNumber: 205,
+                                                lineNumber: 202,
                                                 columnNumber: 15
                                             }, this),
                                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("th", {
@@ -768,7 +770,7 @@ function ProductsPage() {
                                                 children: "브랜드"
                                             }, void 0, false, {
                                                 fileName: "[project]/src/app/admin/products/page.jsx",
-                                                lineNumber: 206,
+                                                lineNumber: 203,
                                                 columnNumber: 15
                                             }, this),
                                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("th", {
@@ -776,7 +778,7 @@ function ProductsPage() {
                                                 children: "카테고리"
                                             }, void 0, false, {
                                                 fileName: "[project]/src/app/admin/products/page.jsx",
-                                                lineNumber: 207,
+                                                lineNumber: 204,
                                                 columnNumber: 15
                                             }, this),
                                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("th", {
@@ -784,7 +786,7 @@ function ProductsPage() {
                                                 children: "가격"
                                             }, void 0, false, {
                                                 fileName: "[project]/src/app/admin/products/page.jsx",
-                                                lineNumber: 208,
+                                                lineNumber: 205,
                                                 columnNumber: 15
                                             }, this),
                                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("th", {
@@ -792,7 +794,7 @@ function ProductsPage() {
                                                 children: "상태"
                                             }, void 0, false, {
                                                 fileName: "[project]/src/app/admin/products/page.jsx",
-                                                lineNumber: 209,
+                                                lineNumber: 206,
                                                 columnNumber: 15
                                             }, this),
                                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("th", {
@@ -800,7 +802,7 @@ function ProductsPage() {
                                                 children: "상품수량"
                                             }, void 0, false, {
                                                 fileName: "[project]/src/app/admin/products/page.jsx",
-                                                lineNumber: 210,
+                                                lineNumber: 207,
                                                 columnNumber: 15
                                             }, this),
                                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("th", {
@@ -808,7 +810,7 @@ function ProductsPage() {
                                                 children: "상품등록일"
                                             }, void 0, false, {
                                                 fileName: "[project]/src/app/admin/products/page.jsx",
-                                                lineNumber: 211,
+                                                lineNumber: 208,
                                                 columnNumber: 15
                                             }, this),
                                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("th", {
@@ -816,18 +818,18 @@ function ProductsPage() {
                                                 children: "관리"
                                             }, void 0, false, {
                                                 fileName: "[project]/src/app/admin/products/page.jsx",
-                                                lineNumber: 212,
+                                                lineNumber: 209,
                                                 columnNumber: 15
                                             }, this)
                                         ]
                                     }, void 0, true, {
                                         fileName: "[project]/src/app/admin/products/page.jsx",
-                                        lineNumber: 203,
+                                        lineNumber: 200,
                                         columnNumber: 13
                                     }, this)
                                 }, void 0, false, {
                                     fileName: "[project]/src/app/admin/products/page.jsx",
-                                    lineNumber: 202,
+                                    lineNumber: 199,
                                     columnNumber: 13
                                 }, this),
                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("tbody", {
@@ -845,17 +847,17 @@ function ProductsPage() {
                                                             className: "object-cover w-full h-full"
                                                         }, void 0, false, {
                                                             fileName: "[project]/src/app/admin/products/page.jsx",
-                                                            lineNumber: 220,
+                                                            lineNumber: 217,
                                                             columnNumber: 21
                                                         }, this)
                                                     }, void 0, false, {
                                                         fileName: "[project]/src/app/admin/products/page.jsx",
-                                                        lineNumber: 219,
+                                                        lineNumber: 216,
                                                         columnNumber: 21
                                                     }, this)
                                                 }, void 0, false, {
                                                     fileName: "[project]/src/app/admin/products/page.jsx",
-                                                    lineNumber: 218,
+                                                    lineNumber: 215,
                                                     columnNumber: 19
                                                 }, this),
                                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("td", {
@@ -863,7 +865,7 @@ function ProductsPage() {
                                                     children: product.name
                                                 }, void 0, false, {
                                                     fileName: "[project]/src/app/admin/products/page.jsx",
-                                                    lineNumber: 223,
+                                                    lineNumber: 220,
                                                     columnNumber: 19
                                                 }, this),
                                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("td", {
@@ -871,7 +873,7 @@ function ProductsPage() {
                                                     children: product.brand
                                                 }, void 0, false, {
                                                     fileName: "[project]/src/app/admin/products/page.jsx",
-                                                    lineNumber: 224,
+                                                    lineNumber: 221,
                                                     columnNumber: 19
                                                 }, this),
                                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("td", {
@@ -879,7 +881,7 @@ function ProductsPage() {
                                                     children: product.category
                                                 }, void 0, false, {
                                                     fileName: "[project]/src/app/admin/products/page.jsx",
-                                                    lineNumber: 225,
+                                                    lineNumber: 222,
                                                     columnNumber: 19
                                                 }, this),
                                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("td", {
@@ -887,7 +889,7 @@ function ProductsPage() {
                                                     children: product.price
                                                 }, void 0, false, {
                                                     fileName: "[project]/src/app/admin/products/page.jsx",
-                                                    lineNumber: 226,
+                                                    lineNumber: 223,
                                                     columnNumber: 19
                                                 }, this),
                                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("td", {
@@ -897,12 +899,12 @@ function ProductsPage() {
                                                         children: product.status
                                                     }, void 0, false, {
                                                         fileName: "[project]/src/app/admin/products/page.jsx",
-                                                        lineNumber: 228,
+                                                        lineNumber: 225,
                                                         columnNumber: 17
                                                     }, this)
                                                 }, void 0, false, {
                                                     fileName: "[project]/src/app/admin/products/page.jsx",
-                                                    lineNumber: 227,
+                                                    lineNumber: 224,
                                                     columnNumber: 19
                                                 }, this),
                                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("td", {
@@ -910,7 +912,7 @@ function ProductsPage() {
                                                     children: product.stock
                                                 }, void 0, false, {
                                                     fileName: "[project]/src/app/admin/products/page.jsx",
-                                                    lineNumber: 238,
+                                                    lineNumber: 235,
                                                     columnNumber: 19
                                                 }, this),
                                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("td", {
@@ -918,7 +920,7 @@ function ProductsPage() {
                                                     children: product.createdAt
                                                 }, void 0, false, {
                                                     fileName: "[project]/src/app/admin/products/page.jsx",
-                                                    lineNumber: 239,
+                                                    lineNumber: 236,
                                                     columnNumber: 19
                                                 }, this),
                                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("td", {
@@ -930,39 +932,39 @@ function ProductsPage() {
                                                             size: 18
                                                         }, void 0, false, {
                                                             fileName: "[project]/src/app/admin/products/page.jsx",
-                                                            lineNumber: 243,
+                                                            lineNumber: 240,
                                                             columnNumber: 23
                                                         }, this)
                                                     }, void 0, false, {
                                                         fileName: "[project]/src/app/admin/products/page.jsx",
-                                                        lineNumber: 241,
+                                                        lineNumber: 238,
                                                         columnNumber: 21
                                                     }, this)
                                                 }, void 0, false, {
                                                     fileName: "[project]/src/app/admin/products/page.jsx",
-                                                    lineNumber: 240,
+                                                    lineNumber: 237,
                                                     columnNumber: 19
                                                 }, this)
                                             ]
                                         }, product.id, true, {
                                             fileName: "[project]/src/app/admin/products/page.jsx",
-                                            lineNumber: 217,
+                                            lineNumber: 214,
                                             columnNumber: 17
                                         }, this))
                                 }, void 0, false, {
                                     fileName: "[project]/src/app/admin/products/page.jsx",
-                                    lineNumber: 215,
+                                    lineNumber: 212,
                                     columnNumber: 13
                                 }, this)
                             ]
                         }, void 0, true, {
                             fileName: "[project]/src/app/admin/products/page.jsx",
-                            lineNumber: 201,
+                            lineNumber: 198,
                             columnNumber: 11
                         }, this)
                     }, void 0, false, {
                         fileName: "[project]/src/app/admin/products/page.jsx",
-                        lineNumber: 200,
+                        lineNumber: 197,
                         columnNumber: 9
                     }, this),
                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -977,7 +979,7 @@ function ProductsPage() {
                                         children: filteredProducts.length
                                     }, void 0, false, {
                                         fileName: "[project]/src/app/admin/products/page.jsx",
-                                        lineNumber: 254,
+                                        lineNumber: 251,
                                         columnNumber: 15
                                     }, this),
                                     "개 상품 중",
@@ -987,7 +989,7 @@ function ProductsPage() {
                                         children: (currentPage - 1) * itemsPerPage + 1
                                     }, void 0, false, {
                                         fileName: "[project]/src/app/admin/products/page.jsx",
-                                        lineNumber: 255,
+                                        lineNumber: 252,
                                         columnNumber: 13
                                     }, this),
                                     "-",
@@ -996,7 +998,7 @@ function ProductsPage() {
                                         children: Math.min(currentPage * itemsPerPage, filteredProducts.length)
                                     }, void 0, false, {
                                         fileName: "[project]/src/app/admin/products/page.jsx",
-                                        lineNumber: 256,
+                                        lineNumber: 253,
                                         columnNumber: 13
                                     }, this),
                                     ' ',
@@ -1004,7 +1006,7 @@ function ProductsPage() {
                                 ]
                             }, void 0, true, {
                                 fileName: "[project]/src/app/admin/products/page.jsx",
-                                lineNumber: 253,
+                                lineNumber: 250,
                                 columnNumber: 11
                             }, this),
                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -1017,7 +1019,7 @@ function ProductsPage() {
                                         children: "이전"
                                     }, void 0, false, {
                                         fileName: "[project]/src/app/admin/products/page.jsx",
-                                        lineNumber: 262,
+                                        lineNumber: 259,
                                         columnNumber: 13
                                     }, this),
                                     Array.from({
@@ -1028,7 +1030,7 @@ function ProductsPage() {
                                             children: i + 1
                                         }, i, false, {
                                             fileName: "[project]/src/app/admin/products/page.jsx",
-                                            lineNumber: 271,
+                                            lineNumber: 268,
                                             columnNumber: 17
                                         }, this)),
                                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("button", {
@@ -1038,25 +1040,25 @@ function ProductsPage() {
                                         children: "다음"
                                     }, void 0, false, {
                                         fileName: "[project]/src/app/admin/products/page.jsx",
-                                        lineNumber: 284,
+                                        lineNumber: 281,
                                         columnNumber: 13
                                     }, this)
                                 ]
                             }, void 0, true, {
                                 fileName: "[project]/src/app/admin/products/page.jsx",
-                                lineNumber: 261,
+                                lineNumber: 258,
                                 columnNumber: 11
                             }, this)
                         ]
                     }, void 0, true, {
                         fileName: "[project]/src/app/admin/products/page.jsx",
-                        lineNumber: 252,
+                        lineNumber: 249,
                         columnNumber: 9
                     }, this)
                 ]
             }, void 0, true, {
                 fileName: "[project]/src/app/admin/products/page.jsx",
-                lineNumber: 159,
+                lineNumber: 156,
                 columnNumber: 7
             }, this),
             showModal && /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$src$2f$components$2f$NewProductModal$2e$jsx__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["default"], {
@@ -1064,13 +1066,13 @@ function ProductsPage() {
                 onClose: ()=>setShowModal(false)
             }, void 0, false, {
                 fileName: "[project]/src/app/admin/products/page.jsx",
-                lineNumber: 295,
+                lineNumber: 292,
                 columnNumber: 11
             }, this)
         ]
     }, void 0, true, {
         fileName: "[project]/src/app/admin/products/page.jsx",
-        lineNumber: 142,
+        lineNumber: 139,
         columnNumber: 5
     }, this);
 }
