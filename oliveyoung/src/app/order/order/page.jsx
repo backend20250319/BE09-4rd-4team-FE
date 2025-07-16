@@ -394,15 +394,10 @@ export default function Order() {
     const token = localStorage.getItem('accessToken');
     if (!token) return;
 
-    // 주문 요청 정보 구성
-    const requestData = {
-      addressId: selectedAddress.addressId,
-      cartItemIds: orderItems.map((item) => item.cartItemId),
-      discount: selectedCoupon?.discount ?? 0,
-    };
-
     try {
-      // 1. 신규 배송지일 경우 먼저 저장
+      let selectedShippingAddress = selectedAddress;
+
+      // 1. 신규 배송지 등록
       if (!isExisting) {
         await axios.post(
           'http://localhost:8080/api/mypage/address/register',
@@ -420,14 +415,51 @@ export default function Order() {
             },
           }
         );
+
         alert('배송지가 추가되었습니다.');
+
+        // 1-2. 배송지 목록에서 DB 반영 후 등록한 주소 찾기
+        const findNewAddress = async (tryCount = 5, delay = 1000) => {
+          for (let i = 0; i < tryCount; i++) {
+            const res = await axios.get('http://localhost:8080/api/mypage/address', {
+              headers: {
+                Authorization: `Bearer ${token}`,
+              },
+            });
+
+            const addressList = res.data.data;
+
+            const found = addressList.find(
+              (addr) =>
+                addr.addressName === addressName &&
+                addr.recipientName === recipientName &&
+                addr.phone === fullPhone &&
+                addr.streetAddress === streetAddress &&
+                addr.detailAddress === detailAddress
+            );
+
+            if (found) return found;
+
+            await new Promise((resolve) => setTimeout(resolve, delay));
+          }
+          return null;
+        };
+
+        selectedShippingAddress = await findNewAddress();
+
+        if (!selectedShippingAddress) {
+          alert('배송지 저장 후 조회하는 데 실패했습니다. 다시 시도해주세요.');
+          return;
+        }
       }
+
+      setSelectedAddress(selectedShippingAddress);
 
       // 2. 주문 생성
       await axios.post(
         'http://localhost:8080/api/orders',
         {
-          addressId: selectedAddress.addressId,
+          addressId: selectedShippingAddress.addressId,
           cartItemIds: orderItems.map((item) => item.cartItemId),
           discount: selectedCoupon?.discount ?? 0,
         },
