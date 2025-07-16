@@ -3,10 +3,10 @@
 "[project]/src/components/NewCouponModal.jsx [app-client] (ecmascript)": ((__turbopack_context__) => {
 "use strict";
 
-var { g: global, __dirname, k: __turbopack_refresh__, m: module } = __turbopack_context__;
+var { k: __turbopack_refresh__, m: module } = __turbopack_context__;
 {
 __turbopack_context__.s({
-    "default": (()=>NewCouponModal)
+    "default": ()=>NewCouponModal
 });
 var __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__ = __turbopack_context__.i("[project]/node_modules/next/dist/compiled/react/jsx-dev-runtime.js [app-client] (ecmascript)");
 var __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$index$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__ = __turbopack_context__.i("[project]/node_modules/next/dist/compiled/react/index.js [app-client] (ecmascript)");
@@ -14,7 +14,8 @@ var __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist
 var _s = __turbopack_context__.k.signature();
 "use client";
 ;
-function NewCouponModal({ onAdd, onClose }) {
+function NewCouponModal(param) {
+    let { onAdd, onClose } = param;
     _s();
     const [name, setName] = (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$index$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["useState"])('');
     const [discount, setDiscount] = (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$index$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["useState"])('');
@@ -26,7 +27,7 @@ function NewCouponModal({ onAdd, onClose }) {
             return;
         }
         try {
-            const validUntilISO = `${validUntil}T00:00:00`; // 💥 중요: LocalDateTime 형식으로 맞추기
+            const validUntilISO = "".concat(validUntil, "T00:00:00"); // 💥 중요: LocalDateTime 형식으로 맞추기
             const couponData = {
                 name,
                 discount: Number(discount),
@@ -147,10 +148,10 @@ if (typeof globalThis.$RefreshHelpers$ === 'object' && globalThis.$RefreshHelper
 "[project]/src/app/admin/coupons/page.jsx [app-client] (ecmascript)": ((__turbopack_context__) => {
 "use strict";
 
-var { g: global, __dirname, k: __turbopack_refresh__, m: module } = __turbopack_context__;
+var { k: __turbopack_refresh__, m: module } = __turbopack_context__;
 {
 __turbopack_context__.s({
-    "default": (()=>CouponsPage)
+    "default": ()=>CouponsPage
 });
 var __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__ = __turbopack_context__.i("[project]/node_modules/next/dist/compiled/react/jsx-dev-runtime.js [app-client] (ecmascript)");
 var __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$index$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__ = __turbopack_context__.i("[project]/node_modules/next/dist/compiled/react/index.js [app-client] (ecmascript)");
@@ -178,7 +179,7 @@ function CouponsPage() {
             const token = localStorage.getItem("accessToken");
             const response = await __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$axios$2f$lib$2f$axios$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["default"].get('http://localhost:8080/api/admin/coupons', {
                 headers: {
-                    Authorization: `Bearer ${token}`,
+                    Authorization: "Bearer ".concat(token),
                     "Content-Type": "application/json"
                 }
             });
@@ -198,7 +199,7 @@ function CouponsPage() {
             const token = localStorage.getItem('accessToken');
             await __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$axios$2f$lib$2f$axios$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["default"].post('http://localhost:8080/api/admin/coupons', couponData, {
                 headers: {
-                    Authorization: `Bearer ${token}`,
+                    Authorization: "Bearer ".concat(token),
                     'Content-Type': 'application/json'
                 }
             });
@@ -210,7 +211,7 @@ function CouponsPage() {
     };
     const handleDelete = async (id)=>{
         try {
-            await __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$axios$2f$lib$2f$axios$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["default"].delete(`/api/coupons/${id}`);
+            await __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$axios$2f$lib$2f$axios$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["default"].delete("/api/coupons/".concat(id));
             fetchCoupons(); // 삭제 후 목록 갱신
         } catch (error) {
             console.error('❌ 쿠폰 삭제 실패:', error);
