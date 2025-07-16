@@ -3,8 +3,8 @@
 
 import { useEffect, useState } from "react";
 import { useRouter, usePathname } from "next/navigation";
-import Sidebar from "@/components/Sidebar";
-import Header from "@/components/Header";
+import Sidebar from "../../components/Sidebar";
+import Header from "../../components/Header";
 import "../../styles/globals.css";
 
 export default function AdminLayout({ children }) {

@@ -3,10 +3,10 @@
 "[project]/src/app/admin/login/page.jsx [app-client] (ecmascript)": ((__turbopack_context__) => {
 "use strict";
 
-var { g: global, __dirname, k: __turbopack_refresh__, m: module } = __turbopack_context__;
+var { k: __turbopack_refresh__, m: module } = __turbopack_context__;
 {
 __turbopack_context__.s({
-    "default": (()=>AdminLogin)
+    "default": ()=>AdminLogin
 });
 var __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__ = __turbopack_context__.i("[project]/node_modules/next/dist/compiled/react/jsx-dev-runtime.js [app-client] (ecmascript)");
 var __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$index$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__ = __turbopack_context__.i("[project]/node_modules/next/dist/compiled/react/index.js [app-client] (ecmascript)");
@@ -64,8 +64,9 @@ function AdminLogin() {
             localStorage.setItem("refreshToken", refreshToken);
             router.push("/admin/dashboard");
         } catch (err) {
+            var _err_response;
             console.error("로그인 오류", err);
-            if (err.response?.status === 401) {
+            if (((_err_response = err.response) === null || _err_response === void 0 ? void 0 : _err_response.status) === 401) {
                 setError("아이디 또는 비밀번호가 잘못되었습니다.");
             } else {
                 setError("서버 오류가 발생했습니다.");

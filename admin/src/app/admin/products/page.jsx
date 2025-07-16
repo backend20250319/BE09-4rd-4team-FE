@@ -2,7 +2,9 @@
 
 import React, {useEffect, useState} from 'react';
 import { PlusIcon, SearchIcon, TrashIcon, DownloadIcon } from 'lucide-react';
-import NewProductModal from '../../../components/NewProductModal'; // 위치 확인 필수
+import NewProductModal from '../../../components/NewProductModal';
+import {getImageUrl} from "../utils/image";
+
 
 
 export default function ProductsPage() {
@@ -12,6 +14,7 @@ const [categoryFilter, setCategoryFilter] = useState('');
 const [statusFilter, setStatusFilter] = useState('');
 const [currentPage, setCurrentPage] = useState(1);
 const [products, setProducts] = useState([]);
+
 
   useEffect(() => {
     const fetchProducts = async () => {
@@ -198,7 +201,7 @@ return (
           <table className="w-full">
             <thead>
             <tr className="text-xs font-light tracking-wider text-left text-gray-500 uppercase bg-gray-50">
-              <th className="px-6 py-3">상품이미지</th>
+              <th className="items-center text-[12px] px-[40px]">상품이미지</th>
               <th className="px-6 py-3">상품명</th>
               <th className="px-6 py-3">브랜드</th>
               <th className="px-6 py-3">카테고리</th>
@@ -209,11 +212,13 @@ return (
               <th className="px-6 py-3">관리</th>
             </tr>
             </thead>
-            <tbody className="divide-y divide-gray-200 text-sm font-normal">
+            <tbody className="divide-y divide-gray-200  text-sm font-normal">
             {paginatedProducts.map(product => (
                 <tr key={product.id} className="whitespace-nowrap">
                   <td className="px-6 py-4">
-                    <img src={product.imageUrl} alt="상품" className="w-16 h-16 object-cover rounded"/>
+                    <div className="w-24 h-16 flex items-center justify-center bg-white rounded overflow-hidden border border-gray-200">
+                    <img src={getImageUrl(product.imageUrl)} alt="상품" className="object-cover w-full h-full"/>
+                    </div>
                   </td>
                   <td className="px-6 py-4">{product.name}</td>
                   <td className="px-6 py-4">{product.brand}</td>
