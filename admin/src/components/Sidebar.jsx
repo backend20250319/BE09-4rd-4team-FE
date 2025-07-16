@@ -20,7 +20,7 @@ export default function Sidebar() {
   { to: '/admin/products', label: '상품 관리', icon: <PackageIcon size={20} /> },
   { to: '/admin/orders', label: '주문 관리', icon: <ShoppingCartIcon size={20} /> },
   { to: '/admin/coupons', label: '쿠폰 관리', icon: <TicketIcon size={20} /> },
-  { to: '/admin/users', label: '회원 관리', icon: <UsersIcon size={20} /> },
+  { to: '/admin/users', label: '관리자 관리', icon: <UsersIcon size={20} /> },
   { to: '/admin/settings', label: '설정', icon: <SettingsIcon size={20} /> },
 ];
   return (
