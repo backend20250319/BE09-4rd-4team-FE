@@ -1,33 +1,46 @@
 'use client';
-import React from 'react';
+import React, {useState, useEffect} from 'react';
 import { useRouter } from 'next/navigation';
 import { PackageIcon, ShoppingCartIcon, UsersIcon, TrendingUpIcon } from 'lucide-react';
 
 export default function DashboardPage() {
   const router = useRouter();
+  const [stats, setStats] = useState([]);
+  const [recentOrders, setRecentOrders] = useState([]);
+  const [topProducts, setProducts] = useState([]);
 
-const stats = [
+/*const stats = [
     { title: '총 매출', value: '₩ 24,389,000', change: '+12.5%', icon: <TrendingUpIcon size={24} className="text-green-500" /> },
     { title: '총 주문', value: '1,284', change: '+8.2%', icon: <ShoppingCartIcon size={24} className="text-blue-500" /> },
     { title: '총 상품', value: '3,467', change: '+3.1%', icon: <PackageIcon size={24} className="text-purple-500" /> },
     { title: '총 회원', value: '12,456', change: '+5.7%', icon: <UsersIcon size={24} className="text-orange-500" /> }
-  ];
+  ];*/
 
-  const recentOrders = [
+ /* const recentOrders = [
     { id: 'OD-7892', customer: '김지민', date: '2023-05-12', amount: '₩ 56,000', status: '배송완료' },
     { id: 'OD-7891', customer: '이하준', date: '2023-05-12', amount: '₩ 128,000', status: '배송중' },
     { id: 'OD-7890', customer: '박서연', date: '2023-05-11', amount: '₩ 32,500', status: '결제완료' },
     { id: 'OD-7889', customer: '최준호', date: '2023-05-11', amount: '₩ 77,000', status: '주문접수' },
     { id: 'OD-7888', customer: '정민지', date: '2023-05-10', amount: '₩ 45,000', status: '배송완료' }
-  ];
+  ];*/
 
-  const topProducts = [
+/*  const topProducts = [
     { id: 1, name: '아이오페 UV 쉴드', sales: '1,234개', amount: '₩ 3,702,000' },
     { id: 2, name: '이니스프리 그린티 세럼', sales: '987개', amount: '₩ 2,961,000' },
     { id: 3, name: '라네즈 워터 슬리핑 마스크', sales: '876개', amount: '₩ 2,628,000' },
     { id: 4, name: '에뛰드 드로잉 아이브로우', sales: '765개', amount: '₩ 1,147,500' },
     { id: 5, name: '미샤 타임 레볼루션 에센스', sales: '654개', amount: '₩ 1,962,000' }
-  ];
+  ];*/
+
+  useEffect(() => {
+    setStats([
+      { title: '총 매출', value: '₩ 24,389,000', change: '+12.5%', icon: <TrendingUpIcon size={24} className="text-green-500" /> },
+      { title: '총 주문', value: '1,284', change: '+8.2%', icon: <ShoppingCartIcon size={24} className="text-blue-500" /> },
+      { title: '총 상품', value: '3,467', change: '+3.1%', icon: <PackageIcon size={24} className="text-purple-500" /> },
+      { title: '총 회원', value: '12,456', change: '+5.7%', icon: <UsersIcon size={24} className="text-orange-500" /> }
+    ]);
+  }, []);
+
 
   return (
     <div className="space-y-6">

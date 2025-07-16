@@ -13,12 +13,10 @@ export default function AdminLogin() {
     const [error, setError] = useState("")
     const [isLoading, setIsLoading] = useState(false)
 
+    // Removed auto-login functionality
     useEffect(() => {
-        const accessToken = localStorage.getItem("accessToken")
-        if (accessToken) {
-            router.push("/admin/dashboard")
-        }
-    }, [router])
+        // Auto-login has been disabled
+    }, [])
 
     const handleChange = (e) => {
         const { name, value } = e.target

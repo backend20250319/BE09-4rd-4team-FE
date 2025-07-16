@@ -1,5 +1,6 @@
 "use client";
-import React, { useState } from 'react';
+import React, { useState,useEffect } from 'react';
+import axios from "axios";
 
 
 
@@ -8,7 +9,24 @@ export default function NewProductModal({ onClose, onAdd }) {
   const [category, setCategory] = useState('');
   const [stock, setStock] = useState('');
   const [price, setPrice] = useState('');
+  const [brandId, setBrandId] = useState('');
   const [status, setStatus] = useState('');
+  const [brandList, setBrandList] = useState([]);
+
+
+  useEffect(() => {
+    const fetchBrands = async () => {
+      try {
+        const res = await axios.get("/admin/products");
+        setBrandList(res.data); // ✅ [{ id, name }, ...] 형태
+      } catch (error) {
+        console.error("❌ 브랜드 불러오기 실패:", error);
+        setBrandList([]); // 오류 시에도 빈 배열로 안전 처리
+      }
+    };
+
+    fetchBrands();
+  }, []);
 
   const handleSubmit = (e) => {
     e.preventDefault();
@@ -18,7 +36,9 @@ export default function NewProductModal({ onClose, onAdd }) {
       stock: Number(stock),
       price: `₩ ${price.replace(/[^0-9]/g, '').replace(/\B(?=(\d{3})+(?!\d))/g, ',')}`,
       status,
+      brandId: Number(brandId),
     });
+
   };
 
   return (
@@ -34,6 +54,19 @@ export default function NewProductModal({ onClose, onAdd }) {
             className="w-full p-2 border rounded"
             required
           />
+          <select
+              value={brandId}
+              onChange={e => setBrandId(e.target.value)}
+              className="w-full p-2 border rounded"
+              required
+          >
+            <option value="">브랜드 선택</option>
+            {brandList.map((brand) => (
+                <option key={brand.id} value={brand.id}>
+                  {brand.name}
+                </option>
+            ))}
+          </select>
           <input
             value={category}
             onChange={e => setCategory(e.target.value)}
@@ -46,7 +79,7 @@ export default function NewProductModal({ onClose, onAdd }) {
             value={stock}
             onChange={e => setStock(e.target.value)}
             type="number"
-            placeholder="재고 수량"
+            placeholder="상품 수량"
             className="w-full p-2 border rounded"
             required
           />

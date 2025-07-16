@@ -8,11 +8,7 @@ import { PlusIcon, TrashIcon } from 'lucide-react';
 
 
 export default function CouponsPage() {
-  /*const [coupons, setCoupons] = useState([
-    { id: 1, name: 'WELCOME10', discount: 10, validUntil: '2025-12-31' },
-    { id: 2, name: 'SPRING20', discount: 20, validUntil: '2025-06-30' },
-    { id: 3, name: 'SUMMER15', discount: 15, validUntil: '2025-08-31' },
-  ]);*/
+
 // 날짜 포맷 함수 추가
   const formatDate = (datetime) => {
     return new Date(datetime).toISOString().split('T')[0]; // "2025-07-11"
