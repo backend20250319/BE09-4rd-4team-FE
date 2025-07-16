@@ -1,5 +1,5 @@
 'use client';
-import { useState, useEffect, useCallback } from 'react';
+import { useState, useEffect, useCallback, useRef } from 'react';
 import { useRouter } from 'next/navigation';
 import SearchModal from '../app/menu/SearchModal';
 import StoreModal from '../app/menu/StoreModal';
@@ -7,6 +7,7 @@ import { useAuth } from '@/contexts/AuthContext';
 import { useCart } from '@/contexts/CartContext';
 import '../styles/header.css';
 import axios from '@/api/axiosInstance';
+import { getImageUrl } from '@/utils/image';
 
 function Header(props) {
   const router = useRouter();
@@ -59,6 +60,8 @@ function Header(props) {
   const { itemCount, setItemCount } = useCart();
   const { accessToken } = useAuth();
 
+  const headerContainerRef = useRef(null); 
+
   useEffect(() => {
     if (!accessToken) return;
 
@@ -76,10 +79,22 @@ function Header(props) {
     };
 
     fetchCartItems();
-  }, [accessToken]);
+  }, [accessToken, setItemCount]);
+
+  useEffect(() => {
+    if (headerContainerRef.current) {
+      const arrowImageUrl = getImageUrl("product/arrow.png");
+      headerContainerRef.current.style.setProperty('--arrow-bg-image', `url(${arrowImageUrl})`);
+    }
+  }, []); // 컴포넌트 마운트 시 한 번만 실행
+
+  // 이미지 URL을 getImageUrl로 처리하는 상수 정의 (img 태그용)
+  const logoImageUrl = getImageUrl("product/logo.png");
+  const searchIconUrl = getImageUrl("product/search.svg");
+  const dreamIconUrl = getImageUrl("product/dreamIcon.png");
 
   return (
-    <div className="flex flex-row justify-center">
+    <div className="flex flex-row justify-center" ref={headerContainerRef}>
       <div className="">
         <ul className="py-[1px] h-[30px] flex flex-row justify-end items-center text-[#333333]">
           {isLoggedIn ? (
@@ -139,7 +154,7 @@ function Header(props) {
         <div className="w-[1020px] h-[90px] flex flex-row justify-between items-center">
           <img
             className="w-[246px] h-[40px] hover:cursor-pointer"
-            src="/images/product/logo.png"
+            src={logoImageUrl}
             alt="logo"
             onClick={() => router.push('/')}
           />
@@ -151,7 +166,7 @@ function Header(props) {
               onFocus={() => setSearchClick(true)}
             />
             <div className="absolute right-[15px] top-0 bottom-0 flex items-center hover:cursor-pointer">
-              <img className="w-[20px]" src="/images/product/search.svg" alt="search" />
+              <img className="w-[20px]" src={searchIconUrl} alt="search" />
             </div>
             <SearchModal searchClick={searchClick} chart={chart} setSearchClick={setSearchClick} />
           </div>
@@ -160,20 +175,21 @@ function Header(props) {
               <p onMouseOver={handleLocationMouseOver} onMouseOut={handleLocationMouseOut}>
                 오늘드림
               </p>
-              <img src="/images/product/dreamIcon.png" alt="delivery" className="w-[22px]" />
+              <img src={dreamIconUrl} alt="delivery" className="w-[22px]" />
             </li>
             <li className="flex flex-row gap-1 items-center hover:cursor-pointer hover:underline hover:underline-offset-[5px] decoration-2 relative border-r px-[15px]">
               <p onMouseOver={handleStoreMouseOver} onMouseOut={handleStoreMouseOut}>
                 올영매장찾기
               </p>
-              <div className="w-[7px] h-[4px] bg-arrow-hover"></div>
+              <div className="w-[7px] h-[4px] bg-arrow-hover"></div> 
               <StoreModal storeHover={storeHover} />
             </li>
             <li
               className="flex flex-row gap-1 items-center hover:cursor-pointer px-[15px] relative"
               onClick={handleRecentClick}
             >
-              최근 본 상품<div className="w-[7px] h-[4px] bg-arrow-active"></div>
+              최근 본 상품
+              <div className="w-[7px] h-[4px] bg-arrow-active"></div>
             </li>
           </ul>
         </div>

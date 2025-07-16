@@ -1,7 +1,8 @@
-"use client";
+'use client';
 
 import React, { useState } from "react";
 import { useRouter } from "next/navigation";
+import { getImageUrl } from "@/utils/image"; 
 
 const CATEGORY_DATA = {
   스킨케어: [
@@ -73,14 +74,21 @@ export default function Menu() {
 
   const handleSubCategoryClick = (sub) => {
     setIsCategoryOpen(false);
+    // 실제 서브 카테고리 페이지로 이동하는 로직을 여기에 추가할 수 있습니다.
+    // 예: router.push(`/product?subcategory=${sub}`);
   };
 
   const handleCategoryClick = (category) => {
     if (category === "스킨케어") {
-      router.push("/product");
+      router.push("/product"); // 스킨케어 클릭 시 /product 페이지로 이동
       setIsCategoryOpen(false);
     }
+    // 다른 카테고리에 대한 라우팅 로직을 여기에 추가할 수 있습니다.
+    // 예: else if (category === "메이크업") { router.push("/product?category=메이크업"); }
   };
+
+  // 2. 이미지 URL을 getImageUrl로 처리하는 상수 정의
+  const categoryIconUrl = getImageUrl("product/categoryIcon.png");
 
   return (
     <div className="relative z-50">
@@ -90,7 +98,7 @@ export default function Menu() {
             onClick={() => setIsCategoryOpen(!isCategoryOpen)}
             className="w-[170px] h-[44px] border-r border-l border-gray flex items-center gap-3 pl-[27px] font-bold text-[15px] transition-colors duration-200 bg-white text-black]"
           >
-            <img src="/images/product/categoryIcon.png" alt="menu" />
+            <img src={categoryIconUrl} alt="menu" /> {/* 3. src 변경 (categoryIconUrl 변수 사용) */}
             카테고리
           </button>
 

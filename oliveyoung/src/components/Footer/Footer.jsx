@@ -1,6 +1,7 @@
 'use client';
 
 import React, { useState } from 'react';
+import { getImageUrl } from "@/utils/image";
 
 function Footer(props) {
   const [selectedOption, setSelectedOption] = useState('');
@@ -9,6 +10,8 @@ function Footer(props) {
     setSelectedOption(event.target.value);
   };
 
+    const logoImageUrl = getImageUrl("product/logo.png");
+  
   return (
     <div className="mt-[40px] flex flex-col">
       <div
@@ -47,7 +50,7 @@ function Footer(props) {
         <div className="relative w-[1020px] flex flex-row justify-between mt-[25px] pl-[236px]">
           <img
             className="absolute left-0 bottom-[50%] w-[146px] h-[24px]"
-            src="/images/product/logo.png" // 절대 경로로 수정
+            src={logoImageUrl}
             alt="logo"
           />
           <div className="flex flex-col">
