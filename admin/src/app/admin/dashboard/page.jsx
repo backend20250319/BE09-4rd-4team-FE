@@ -1,7 +1,28 @@
 'use client';
+import axios from 'axios';
 import React, {useState, useEffect} from 'react';
 import { useRouter } from 'next/navigation';
 import { PackageIcon, ShoppingCartIcon, UsersIcon, TrendingUpIcon } from 'lucide-react';
+
+
+const getIconByType = (type) => {
+  switch (type) {
+    case 'sales':
+      return <TrendingUpIcon size={24} className="text-green-500" />;
+    case 'orders':
+      return <ShoppingCartIcon size={24} className="text-blue-500" />;
+    case 'products':
+      return <PackageIcon size={24} className="text-purple-500" />;
+    case 'members':
+    case 'customers':
+      return <UsersIcon size={24} className="text-orange-500" />;
+    default:
+      return null;
+  }
+};
+
+
+
 
 export default function DashboardPage() {
   const router = useRouter();
@@ -9,37 +30,67 @@ export default function DashboardPage() {
   const [recentOrders, setRecentOrders] = useState([]);
   const [topProducts, setProducts] = useState([]);
 
-/*const stats = [
-    { title: '총 매출', value: '₩ 24,389,000', change: '+12.5%', icon: <TrendingUpIcon size={24} className="text-green-500" /> },
-    { title: '총 주문', value: '1,284', change: '+8.2%', icon: <ShoppingCartIcon size={24} className="text-blue-500" /> },
-    { title: '총 상품', value: '3,467', change: '+3.1%', icon: <PackageIcon size={24} className="text-purple-500" /> },
-    { title: '총 회원', value: '12,456', change: '+5.7%', icon: <UsersIcon size={24} className="text-orange-500" /> }
-  ];*/
-
- /* const recentOrders = [
-    { id: 'OD-7892', customer: '김지민', date: '2023-05-12', amount: '₩ 56,000', status: '배송완료' },
-    { id: 'OD-7891', customer: '이하준', date: '2023-05-12', amount: '₩ 128,000', status: '배송중' },
-    { id: 'OD-7890', customer: '박서연', date: '2023-05-11', amount: '₩ 32,500', status: '결제완료' },
-    { id: 'OD-7889', customer: '최준호', date: '2023-05-11', amount: '₩ 77,000', status: '주문접수' },
-    { id: 'OD-7888', customer: '정민지', date: '2023-05-10', amount: '₩ 45,000', status: '배송완료' }
-  ];*/
-
-/*  const topProducts = [
-    { id: 1, name: '아이오페 UV 쉴드', sales: '1,234개', amount: '₩ 3,702,000' },
-    { id: 2, name: '이니스프리 그린티 세럼', sales: '987개', amount: '₩ 2,961,000' },
-    { id: 3, name: '라네즈 워터 슬리핑 마스크', sales: '876개', amount: '₩ 2,628,000' },
-    { id: 4, name: '에뛰드 드로잉 아이브로우', sales: '765개', amount: '₩ 1,147,500' },
-    { id: 5, name: '미샤 타임 레볼루션 에센스', sales: '654개', amount: '₩ 1,962,000' }
-  ];*/
-
   useEffect(() => {
-    setStats([
-      { title: '총 매출', value: '₩ 24,389,000', change: '+12.5%', icon: <TrendingUpIcon size={24} className="text-green-500" /> },
-      { title: '총 주문', value: '1,284', change: '+8.2%', icon: <ShoppingCartIcon size={24} className="text-blue-500" /> },
-      { title: '총 상품', value: '3,467', change: '+3.1%', icon: <PackageIcon size={24} className="text-purple-500" /> },
-      { title: '총 회원', value: '12,456', change: '+5.7%', icon: <UsersIcon size={24} className="text-orange-500" /> }
-    ]);
+    const token = localStorage.getItem('accessToken');
+
+    const fetchDashboardData = async () => {
+      try {
+        const [statsRes, ordersRes, productsRes] = await Promise.all([
+          axios.get('http://localhost:8080/api/admin/dashboard/stats', {
+            headers: { Authorization: `Bearer ${token}` },
+          }),
+          axios.get('http://localhost:8080/api/admin/dashboard/recent-orders', {
+            headers: { Authorization: `Bearer ${token}` },
+          }),
+          axios.get('http://localhost:8080/api/admin/dashboard/top-products', {
+            headers: { Authorization: `Bearer ${token}` },
+          }),
+        ]);
+
+        console.log("✅ ordersRes.data:", ordersRes.data);
+        console.log("✅ productsRes.data:", productsRes.data);
+        // ✅ 통계 처리
+        const statsObj = statsRes.data;
+        const statsWithIcons = [
+          { title: '총 매출', value: `₩ ${statsObj.totalSalesAmount.toLocaleString()}`, change: '+12.5%', type: 'sales', icon: getIconByType('sales') },
+          { title: '총 주문', value: statsObj.totalOrderCount.toLocaleString(), change: '+8.2%', type: 'orders', icon: getIconByType('orders') },
+          { title: '총 상품', value: statsObj.totalProductCount.toLocaleString(), change: '+3.1%', type: 'products', icon: getIconByType('products') },
+          { title: '총 회원', value: statsObj.totalUserCount.toLocaleString(), change: '+5.7%', type: 'members', icon: getIconByType('members') },
+        ];
+        setStats(statsWithIcons);
+
+        // ✅ 📌 이 부분에 넣으세요!
+        if (ordersRes.data.length > 0) {
+          const formattedOrders = ordersRes.data.map(order => ({
+            id: `OD-${order.orderId}`,
+            customer: order.userName,
+            date: order.createdAt.slice(0, 10),
+            total: `₩ ${order.totalAmount.toLocaleString()}`,
+            status: order.status,
+          }));
+          setRecentOrders(formattedOrders);
+        }
+
+        if (productsRes.data.length > 0) {
+          const formattedProducts = productsRes.data.map(product => ({
+            id: product.productId,
+            name: product.productName,
+            sales: `${product.totalSales.toLocaleString()}개`,
+            amount: `₩ ${product.totalRevenue.toLocaleString()}`,
+          }));
+          setProducts(formattedProducts);
+        }
+
+      } catch (error) {
+        console.error('대시보드 데이터 불러오기 실패:', error);
+      }
+    };
+
+
+
+    fetchDashboardData();
   }, []);
+
 
 
   return (
@@ -74,7 +125,38 @@ export default function DashboardPage() {
               모든 주문 보기
             </button>
           </div>
-          {/* 테이블 렌더링 */}
+          {/* 최근 주문 테이블 렌더링 */}
+          <table className="w-full">
+            <thead>
+            <tr className="text-xs text-gray-500 uppercase bg-gray-50">
+              <th className="px-4 py-2 text-left">주문번호</th>
+              <th className="px-4 py-2 text-left">고객명</th>
+              <th className="px-4 py-2 text-left">주문일자</th>
+              <th className="px-4 py-2 text-left">금액</th>
+              <th className="px-4 py-2 text-left">상태</th>
+            </tr>
+            </thead>
+            <tbody className="divide-y divide-gray-200">
+            {recentOrders.slice(0, 5).map((order) => (
+                <tr key={order.id}>
+                  <td className="px-4 py-2 text-sm font-medium text-gray-800">{order.id}</td>
+                  <td className="px-4 py-2 text-sm text-gray-700">{order.customer}</td>
+                  <td className="px-4 py-2 text-sm text-gray-700">{order.date}</td>
+                  <td className="px-4 py-2 text-sm text-gray-700">{order.total}</td>
+                  <td className="px-4 py-2 text-sm">
+          <span className={`px-2 py-1 text-xs rounded-full ${
+              order.status === '배송완료' ? 'bg-green-100 text-green-800' :
+                  order.status === '배송중' ? 'bg-blue-100 text-blue-800' :
+                      order.status === '결제완료' ? 'bg-yellow-100 text-yellow-800' :
+                          'bg-gray-100 text-gray-800'
+          }`}>
+            {order.status}
+          </span>
+                  </td>
+                </tr>
+            ))}
+            </tbody>
+          </table>
         </div>
 
         {/* 인기 상품 */}
@@ -89,6 +171,26 @@ export default function DashboardPage() {
             </button>
           </div>
           {/* 테이블 렌더링 */}
+          <table className="w-full">
+            <thead>
+            <tr className="text-xs text-gray-500 uppercase bg-gray-50">
+              <th className="px-4 py-2 text-left">순위</th>
+              <th className="px-4 py-2 text-left">상품명</th>
+              <th className="px-4 py-2 text-left">판매수</th>
+              <th className="px-4 py-2 text-left">총 매출</th>
+            </tr>
+            </thead>
+            <tbody className="divide-y divide-gray-200">
+            {topProducts.map((product, index) => (
+                <tr key={product.id}>
+                  <td className="px-4 py-2 text-sm font-medium text-gray-800">{index + 1}</td>
+                  <td className="px-4 py-2 text-sm text-gray-700">{product.name}</td>
+                  <td className="px-4 py-2 text-sm text-gray-700">{product.sales}</td>
+                  <td className="px-4 py-2 text-sm text-gray-700">{product.amount}</td>
+                </tr>
+            ))}
+            </tbody>
+          </table>
         </div>
       </div>
     </div>

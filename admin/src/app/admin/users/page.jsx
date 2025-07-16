@@ -40,12 +40,14 @@ export default function UsersPage() {
           formData,
           {
             headers: {
-              // Authorization: `Bearer ${token}`,
+              Authorization: `Bearer ${token}`,
               'Content-Type': 'application/json',
             },
           }
       );
       alert("✅ 관리자 등록 성공!");
+      await fetchAdmins();
+      setCurrentPage(1);
     } catch (error) {
       console.error("❌ 관리자 등록 실패:", error.response?.data || error.message);
       alert("등록 실패: " + (error.response?.data?.message || '서버 오류'));
@@ -151,8 +153,6 @@ export default function UsersPage() {
               <th className="px-6 py-3">이메일</th>
               <th className="px-6 py-3">전화번호</th>
               <th className="px-6 py-3">가입일</th>
-              <th className="px-6 py-3">주문수</th>
-              <th className="px-6 py-3">상태</th>
               <th className="px-6 py-3">관리</th>
             </tr>
             </thead>
@@ -163,8 +163,6 @@ export default function UsersPage() {
                   <td className="px-6 py-4 text-gray-700">{user.email}</td>
                   <td className="px-6 py-4 text-gray-700">{user.phone}</td>
                   <td className="px-6 py-4 text-gray-700">{user.createdAt?.split("T")[0]}</td>
-                  <td className="px-6 py-4 text-gray-700">-</td>
-                  <td className="px-6 py-4 text-gray-700">-</td>
                   <td className="px-6 py-4">
                     <div className="flex space-x-2">
                       <button
@@ -174,13 +172,14 @@ export default function UsersPage() {
                             setShowDetail(true);
                           }}
                       >
-                        <EyeIcon size={18}/>
+                        <EyeIcon size={18} />
                       </button>
                     </div>
                   </td>
                 </tr>
             ))}
             </tbody>
+
           </table>
         </div>
 

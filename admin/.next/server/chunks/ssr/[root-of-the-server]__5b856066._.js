@@ -1,5 +1,109 @@
 module.exports = {
 
+"[externals]/util [external] (util, cjs)": (function(__turbopack_context__) {
+
+var { g: global, __dirname, m: module, e: exports } = __turbopack_context__;
+{
+const mod = __turbopack_context__.x("util", () => require("util"));
+
+module.exports = mod;
+}}),
+"[externals]/stream [external] (stream, cjs)": (function(__turbopack_context__) {
+
+var { g: global, __dirname, m: module, e: exports } = __turbopack_context__;
+{
+const mod = __turbopack_context__.x("stream", () => require("stream"));
+
+module.exports = mod;
+}}),
+"[externals]/path [external] (path, cjs)": (function(__turbopack_context__) {
+
+var { g: global, __dirname, m: module, e: exports } = __turbopack_context__;
+{
+const mod = __turbopack_context__.x("path", () => require("path"));
+
+module.exports = mod;
+}}),
+"[externals]/http [external] (http, cjs)": (function(__turbopack_context__) {
+
+var { g: global, __dirname, m: module, e: exports } = __turbopack_context__;
+{
+const mod = __turbopack_context__.x("http", () => require("http"));
+
+module.exports = mod;
+}}),
+"[externals]/https [external] (https, cjs)": (function(__turbopack_context__) {
+
+var { g: global, __dirname, m: module, e: exports } = __turbopack_context__;
+{
+const mod = __turbopack_context__.x("https", () => require("https"));
+
+module.exports = mod;
+}}),
+"[externals]/url [external] (url, cjs)": (function(__turbopack_context__) {
+
+var { g: global, __dirname, m: module, e: exports } = __turbopack_context__;
+{
+const mod = __turbopack_context__.x("url", () => require("url"));
+
+module.exports = mod;
+}}),
+"[externals]/fs [external] (fs, cjs)": (function(__turbopack_context__) {
+
+var { g: global, __dirname, m: module, e: exports } = __turbopack_context__;
+{
+const mod = __turbopack_context__.x("fs", () => require("fs"));
+
+module.exports = mod;
+}}),
+"[externals]/crypto [external] (crypto, cjs)": (function(__turbopack_context__) {
+
+var { g: global, __dirname, m: module, e: exports } = __turbopack_context__;
+{
+const mod = __turbopack_context__.x("crypto", () => require("crypto"));
+
+module.exports = mod;
+}}),
+"[externals]/assert [external] (assert, cjs)": (function(__turbopack_context__) {
+
+var { g: global, __dirname, m: module, e: exports } = __turbopack_context__;
+{
+const mod = __turbopack_context__.x("assert", () => require("assert"));
+
+module.exports = mod;
+}}),
+"[externals]/tty [external] (tty, cjs)": (function(__turbopack_context__) {
+
+var { g: global, __dirname, m: module, e: exports } = __turbopack_context__;
+{
+const mod = __turbopack_context__.x("tty", () => require("tty"));
+
+module.exports = mod;
+}}),
+"[externals]/os [external] (os, cjs)": (function(__turbopack_context__) {
+
+var { g: global, __dirname, m: module, e: exports } = __turbopack_context__;
+{
+const mod = __turbopack_context__.x("os", () => require("os"));
+
+module.exports = mod;
+}}),
+"[externals]/zlib [external] (zlib, cjs)": (function(__turbopack_context__) {
+
+var { g: global, __dirname, m: module, e: exports } = __turbopack_context__;
+{
+const mod = __turbopack_context__.x("zlib", () => require("zlib"));
+
+module.exports = mod;
+}}),
+"[externals]/events [external] (events, cjs)": (function(__turbopack_context__) {
+
+var { g: global, __dirname, m: module, e: exports } = __turbopack_context__;
+{
+const mod = __turbopack_context__.x("events", () => require("events"));
+
+module.exports = mod;
+}}),
 "[project]/src/app/admin/dashboard/page.jsx [app-ssr] (ecmascript)": ((__turbopack_context__) => {
 "use strict";
 
@@ -9,6 +113,7 @@ __turbopack_context__.s({
     "default": (()=>DashboardPage)
 });
 var __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__ = __turbopack_context__.i("[project]/node_modules/next/dist/server/route-modules/app-page/vendored/ssr/react-jsx-dev-runtime.js [app-ssr] (ecmascript)");
+var __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$axios$2f$lib$2f$axios$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__ = __turbopack_context__.i("[project]/node_modules/axios/lib/axios.js [app-ssr] (ecmascript)");
 var __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__ = __turbopack_context__.i("[project]/node_modules/next/dist/server/route-modules/app-page/vendored/ssr/react.js [app-ssr] (ecmascript)");
 var __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$navigation$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__ = __turbopack_context__.i("[project]/node_modules/next/navigation.js [app-ssr] (ecmascript)");
 var __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$lucide$2d$react$2f$dist$2f$esm$2f$icons$2f$package$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__$3c$export__default__as__PackageIcon$3e$__ = __turbopack_context__.i("[project]/node_modules/lucide-react/dist/esm/icons/package.js [app-ssr] (ecmascript) <export default as PackageIcon>");
@@ -20,104 +125,136 @@ var __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$lucide$2d$re
 ;
 ;
 ;
+;
+const getIconByType = (type)=>{
+    switch(type){
+        case 'sales':
+            return /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$lucide$2d$react$2f$dist$2f$esm$2f$icons$2f$trending$2d$up$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__$3c$export__default__as__TrendingUpIcon$3e$__["TrendingUpIcon"], {
+                size: 24,
+                className: "text-green-500"
+            }, void 0, false, {
+                fileName: "[project]/src/app/admin/dashboard/page.jsx",
+                lineNumber: 11,
+                columnNumber: 14
+            }, this);
+        case 'orders':
+            return /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$lucide$2d$react$2f$dist$2f$esm$2f$icons$2f$shopping$2d$cart$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__$3c$export__default__as__ShoppingCartIcon$3e$__["ShoppingCartIcon"], {
+                size: 24,
+                className: "text-blue-500"
+            }, void 0, false, {
+                fileName: "[project]/src/app/admin/dashboard/page.jsx",
+                lineNumber: 13,
+                columnNumber: 14
+            }, this);
+        case 'products':
+            return /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$lucide$2d$react$2f$dist$2f$esm$2f$icons$2f$package$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__$3c$export__default__as__PackageIcon$3e$__["PackageIcon"], {
+                size: 24,
+                className: "text-purple-500"
+            }, void 0, false, {
+                fileName: "[project]/src/app/admin/dashboard/page.jsx",
+                lineNumber: 15,
+                columnNumber: 14
+            }, this);
+        case 'members':
+        case 'customers':
+            return /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$lucide$2d$react$2f$dist$2f$esm$2f$icons$2f$users$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__$3c$export__default__as__UsersIcon$3e$__["UsersIcon"], {
+                size: 24,
+                className: "text-orange-500"
+            }, void 0, false, {
+                fileName: "[project]/src/app/admin/dashboard/page.jsx",
+                lineNumber: 18,
+                columnNumber: 14
+            }, this);
+        default:
+            return null;
+    }
+};
 function DashboardPage() {
     const router = (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$navigation$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["useRouter"])();
     const [stats, setStats] = (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["useState"])([]);
     const [recentOrders, setRecentOrders] = (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["useState"])([]);
     const [topProducts, setProducts] = (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["useState"])([]);
     (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["useEffect"])(()=>{
-        const fetchDashboardStats = async ()=>{
+        const token = localStorage.getItem('accessToken');
+        const fetchDashboardData = async ()=>{
             try {
-                const res = await axios.get('/api/admin/dashboard/stats');
-                const dataWithIcons = res.data.map((stat)=>({
-                        ...stat,
-                        icon: getIconByType(stat.type)
-                    }));
-                setStats(dataWithIcons);
+                const [statsRes, ordersRes, productsRes] = await Promise.all([
+                    __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$axios$2f$lib$2f$axios$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["default"].get('http://localhost:8080/api/admin/dashboard/stats', {
+                        headers: {
+                            Authorization: `Bearer ${token}`
+                        }
+                    }),
+                    __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$axios$2f$lib$2f$axios$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["default"].get('http://localhost:8080/api/admin/dashboard/recent-orders', {
+                        headers: {
+                            Authorization: `Bearer ${token}`
+                        }
+                    }),
+                    __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$axios$2f$lib$2f$axios$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["default"].get('http://localhost:8080/api/admin/dashboard/top-products', {
+                        headers: {
+                            Authorization: `Bearer ${token}`
+                        }
+                    })
+                ]);
+                console.log("✅ ordersRes.data:", ordersRes.data);
+                console.log("✅ productsRes.data:", productsRes.data);
+                // ✅ 통계 처리
+                const statsObj = statsRes.data;
+                const statsWithIcons = [
+                    {
+                        title: '총 매출',
+                        value: `₩ ${statsObj.totalSalesAmount.toLocaleString()}`,
+                        change: '+12.5%',
+                        type: 'sales',
+                        icon: getIconByType('sales')
+                    },
+                    {
+                        title: '총 주문',
+                        value: statsObj.totalOrderCount.toLocaleString(),
+                        change: '+8.2%',
+                        type: 'orders',
+                        icon: getIconByType('orders')
+                    },
+                    {
+                        title: '총 상품',
+                        value: statsObj.totalProductCount.toLocaleString(),
+                        change: '+3.1%',
+                        type: 'products',
+                        icon: getIconByType('products')
+                    },
+                    {
+                        title: '총 회원',
+                        value: statsObj.totalUserCount.toLocaleString(),
+                        change: '+5.7%',
+                        type: 'members',
+                        icon: getIconByType('members')
+                    }
+                ];
+                setStats(statsWithIcons);
+                // ✅ 📌 이 부분에 넣으세요!
+                if (ordersRes.data.length > 0) {
+                    const formattedOrders = ordersRes.data.map((order)=>({
+                            id: `OD-${order.orderId}`,
+                            customer: order.userName,
+                            date: order.createdAt.slice(0, 10),
+                            total: `₩ ${order.totalAmount.toLocaleString()}`,
+                            status: order.status
+                        }));
+                    setRecentOrders(formattedOrders);
+                }
+                if (productsRes.data.length > 0) {
+                    const formattedProducts = productsRes.data.map((product)=>({
+                            id: product.productId,
+                            name: product.productName,
+                            sales: `${product.totalSales.toLocaleString()}개`,
+                            amount: `₩ ${product.totalRevenue.toLocaleString()}`
+                        }));
+                    setProducts(formattedProducts);
+                }
             } catch (error) {
-                console.error('❌ 대시보드 통계 가져오기 실패', error);
+                console.error('대시보드 데이터 불러오기 실패:', error);
             }
         };
-        fetchDashboardStats();
-    }, []);
-    /*
-  const stats = [
-      { title: '총 매출', value: '₩ 24,389,000', change: '+12.5%', icon: <TrendingUpIcon size={24} className="text-green-500" /> },
-      { title: '총 주문', value: '1,284', change: '+8.2%', icon: <ShoppingCartIcon size={24} className="text-blue-500" /> },
-      { title: '총 상품', value: '3,467', change: '+3.1%', icon: <PackageIcon size={24} className="text-purple-500" /> },
-      { title: '총 회원', value: '12,456', change: '+5.7%', icon: <UsersIcon size={24} className="text-orange-500" /> }
-    ];
-
-  const recentOrders = [
-    { id: 'OD-7892', customer: '김지민', date: '2023-05-12', amount: '₩ 56,000', status: '배송완료' },
-    { id: 'OD-7891', customer: '이하준', date: '2023-05-12', amount: '₩ 128,000', status: '배송중' },
-    { id: 'OD-7890', customer: '박서연', date: '2023-05-11', amount: '₩ 32,500', status: '결제완료' },
-    { id: 'OD-7889', customer: '최준호', date: '2023-05-11', amount: '₩ 77,000', status: '주문접수' },
-    { id: 'OD-7888', customer: '정민지', date: '2023-05-10', amount: '₩ 45,000', status: '배송완료' }
-  ];
-
-  const topProducts = [
-    { id: 1, name: '아이오페 UV 쉴드', sales: '1,234개', amount: '₩ 3,702,000' },
-    { id: 2, name: '이니스프리 그린티 세럼', sales: '987개', amount: '₩ 2,961,000' },
-    { id: 3, name: '라네즈 워터 슬리핑 마스크', sales: '876개', amount: '₩ 2,628,000' },
-    { id: 4, name: '에뛰드 드로잉 아이브로우', sales: '765개', amount: '₩ 1,147,500' },
-    { id: 5, name: '미샤 타임 레볼루션 에센스', sales: '654개', amount: '₩ 1,962,000' }
-  ];
-*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["useEffect"])(()=>{
-        setStats([
-            {
-                title: '총 매출',
-                value: '₩ 24,389,000',
-                change: '+12.5%',
-                icon: /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$lucide$2d$react$2f$dist$2f$esm$2f$icons$2f$trending$2d$up$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__$3c$export__default__as__TrendingUpIcon$3e$__["TrendingUpIcon"], {
-                    size: 24,
-                    className: "text-green-500"
-                }, void 0, false, {
-                    fileName: "[project]/src/app/admin/dashboard/page.jsx",
-                    lineNumber: 57,
-                    columnNumber: 71
-                }, this)
-            },
-            {
-                title: '총 주문',
-                value: '1,284',
-                change: '+8.2%',
-                icon: /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$lucide$2d$react$2f$dist$2f$esm$2f$icons$2f$shopping$2d$cart$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__$3c$export__default__as__ShoppingCartIcon$3e$__["ShoppingCartIcon"], {
-                    size: 24,
-                    className: "text-blue-500"
-                }, void 0, false, {
-                    fileName: "[project]/src/app/admin/dashboard/page.jsx",
-                    lineNumber: 58,
-                    columnNumber: 63
-                }, this)
-            },
-            {
-                title: '총 상품',
-                value: '3,467',
-                change: '+3.1%',
-                icon: /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$lucide$2d$react$2f$dist$2f$esm$2f$icons$2f$package$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__$3c$export__default__as__PackageIcon$3e$__["PackageIcon"], {
-                    size: 24,
-                    className: "text-purple-500"
-                }, void 0, false, {
-                    fileName: "[project]/src/app/admin/dashboard/page.jsx",
-                    lineNumber: 59,
-                    columnNumber: 63
-                }, this)
-            },
-            {
-                title: '총 회원',
-                value: '12,456',
-                change: '+5.7%',
-                icon: /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$lucide$2d$react$2f$dist$2f$esm$2f$icons$2f$users$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__$3c$export__default__as__UsersIcon$3e$__["UsersIcon"], {
-                    size: 24,
-                    className: "text-orange-500"
-                }, void 0, false, {
-                    fileName: "[project]/src/app/admin/dashboard/page.jsx",
-                    lineNumber: 60,
-                    columnNumber: 64
-                }, this)
-            }
-        ]);
+        fetchDashboardData();
     }, []);
     return /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
         className: "space-y-6",
@@ -127,7 +264,7 @@ function DashboardPage() {
                 children: "대시보드"
             }, void 0, false, {
                 fileName: "[project]/src/app/admin/dashboard/page.jsx",
-                lineNumber: 67,
+                lineNumber: 98,
                 columnNumber: 7
             }, this),
             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -144,7 +281,7 @@ function DashboardPage() {
                                             children: stat.title
                                         }, void 0, false, {
                                             fileName: "[project]/src/app/admin/dashboard/page.jsx",
-                                            lineNumber: 73,
+                                            lineNumber: 104,
                                             columnNumber: 17
                                         }, this),
                                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("p", {
@@ -152,7 +289,7 @@ function DashboardPage() {
                                             children: stat.value
                                         }, void 0, false, {
                                             fileName: "[project]/src/app/admin/dashboard/page.jsx",
-                                            lineNumber: 74,
+                                            lineNumber: 105,
                                             columnNumber: 17
                                         }, this),
                                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("p", {
@@ -163,13 +300,13 @@ function DashboardPage() {
                                             ]
                                         }, void 0, true, {
                                             fileName: "[project]/src/app/admin/dashboard/page.jsx",
-                                            lineNumber: 75,
+                                            lineNumber: 106,
                                             columnNumber: 17
                                         }, this)
                                     ]
                                 }, void 0, true, {
                                     fileName: "[project]/src/app/admin/dashboard/page.jsx",
-                                    lineNumber: 72,
+                                    lineNumber: 103,
                                     columnNumber: 15
                                 }, this),
                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -177,23 +314,23 @@ function DashboardPage() {
                                     children: stat.icon
                                 }, void 0, false, {
                                     fileName: "[project]/src/app/admin/dashboard/page.jsx",
-                                    lineNumber: 79,
+                                    lineNumber: 110,
                                     columnNumber: 15
                                 }, this)
                             ]
                         }, void 0, true, {
                             fileName: "[project]/src/app/admin/dashboard/page.jsx",
-                            lineNumber: 71,
+                            lineNumber: 102,
                             columnNumber: 13
                         }, this)
                     }, index, false, {
                         fileName: "[project]/src/app/admin/dashboard/page.jsx",
-                        lineNumber: 70,
+                        lineNumber: 101,
                         columnNumber: 11
                     }, this))
             }, void 0, false, {
                 fileName: "[project]/src/app/admin/dashboard/page.jsx",
-                lineNumber: 68,
+                lineNumber: 99,
                 columnNumber: 7
             }, this),
             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -210,7 +347,7 @@ function DashboardPage() {
                                         children: "최근 주문"
                                     }, void 0, false, {
                                         fileName: "[project]/src/app/admin/dashboard/page.jsx",
-                                        lineNumber: 89,
+                                        lineNumber: 120,
                                         columnNumber: 13
                                     }, this),
                                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("button", {
@@ -219,13 +356,13 @@ function DashboardPage() {
                                         children: "모든 주문 보기"
                                     }, void 0, false, {
                                         fileName: "[project]/src/app/admin/dashboard/page.jsx",
-                                        lineNumber: 90,
+                                        lineNumber: 121,
                                         columnNumber: 13
                                     }, this)
                                 ]
                             }, void 0, true, {
                                 fileName: "[project]/src/app/admin/dashboard/page.jsx",
-                                lineNumber: 88,
+                                lineNumber: 119,
                                 columnNumber: 11
                             }, this),
                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("table", {
@@ -240,7 +377,7 @@ function DashboardPage() {
                                                     children: "주문번호"
                                                 }, void 0, false, {
                                                     fileName: "[project]/src/app/admin/dashboard/page.jsx",
-                                                    lineNumber: 101,
+                                                    lineNumber: 132,
                                                     columnNumber: 15
                                                 }, this),
                                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("th", {
@@ -248,7 +385,7 @@ function DashboardPage() {
                                                     children: "고객명"
                                                 }, void 0, false, {
                                                     fileName: "[project]/src/app/admin/dashboard/page.jsx",
-                                                    lineNumber: 102,
+                                                    lineNumber: 133,
                                                     columnNumber: 15
                                                 }, this),
                                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("th", {
@@ -256,7 +393,7 @@ function DashboardPage() {
                                                     children: "주문일자"
                                                 }, void 0, false, {
                                                     fileName: "[project]/src/app/admin/dashboard/page.jsx",
-                                                    lineNumber: 103,
+                                                    lineNumber: 134,
                                                     columnNumber: 15
                                                 }, this),
                                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("th", {
@@ -264,7 +401,7 @@ function DashboardPage() {
                                                     children: "금액"
                                                 }, void 0, false, {
                                                     fileName: "[project]/src/app/admin/dashboard/page.jsx",
-                                                    lineNumber: 104,
+                                                    lineNumber: 135,
                                                     columnNumber: 15
                                                 }, this),
                                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("th", {
@@ -272,18 +409,18 @@ function DashboardPage() {
                                                     children: "상태"
                                                 }, void 0, false, {
                                                     fileName: "[project]/src/app/admin/dashboard/page.jsx",
-                                                    lineNumber: 105,
+                                                    lineNumber: 136,
                                                     columnNumber: 15
                                                 }, this)
                                             ]
                                         }, void 0, true, {
                                             fileName: "[project]/src/app/admin/dashboard/page.jsx",
-                                            lineNumber: 100,
+                                            lineNumber: 131,
                                             columnNumber: 13
                                         }, this)
                                     }, void 0, false, {
                                         fileName: "[project]/src/app/admin/dashboard/page.jsx",
-                                        lineNumber: 99,
+                                        lineNumber: 130,
                                         columnNumber: 13
                                     }, this),
                                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("tbody", {
@@ -295,7 +432,7 @@ function DashboardPage() {
                                                         children: order.id
                                                     }, void 0, false, {
                                                         fileName: "[project]/src/app/admin/dashboard/page.jsx",
-                                                        lineNumber: 111,
+                                                        lineNumber: 142,
                                                         columnNumber: 19
                                                     }, this),
                                                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("td", {
@@ -303,7 +440,7 @@ function DashboardPage() {
                                                         children: order.customer
                                                     }, void 0, false, {
                                                         fileName: "[project]/src/app/admin/dashboard/page.jsx",
-                                                        lineNumber: 112,
+                                                        lineNumber: 143,
                                                         columnNumber: 19
                                                     }, this),
                                                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("td", {
@@ -311,7 +448,7 @@ function DashboardPage() {
                                                         children: order.date
                                                     }, void 0, false, {
                                                         fileName: "[project]/src/app/admin/dashboard/page.jsx",
-                                                        lineNumber: 113,
+                                                        lineNumber: 144,
                                                         columnNumber: 19
                                                     }, this),
                                                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("td", {
@@ -319,7 +456,7 @@ function DashboardPage() {
                                                         children: order.total
                                                     }, void 0, false, {
                                                         fileName: "[project]/src/app/admin/dashboard/page.jsx",
-                                                        lineNumber: 114,
+                                                        lineNumber: 145,
                                                         columnNumber: 19
                                                     }, this),
                                                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("td", {
@@ -329,131 +466,190 @@ function DashboardPage() {
                                                             children: order.status
                                                         }, void 0, false, {
                                                             fileName: "[project]/src/app/admin/dashboard/page.jsx",
-                                                            lineNumber: 116,
+                                                            lineNumber: 147,
                                                             columnNumber: 11
                                                         }, this)
                                                     }, void 0, false, {
                                                         fileName: "[project]/src/app/admin/dashboard/page.jsx",
-                                                        lineNumber: 115,
+                                                        lineNumber: 146,
                                                         columnNumber: 19
                                                     }, this)
                                                 ]
                                             }, order.id, true, {
                                                 fileName: "[project]/src/app/admin/dashboard/page.jsx",
-                                                lineNumber: 110,
+                                                lineNumber: 141,
                                                 columnNumber: 17
                                             }, this))
                                     }, void 0, false, {
                                         fileName: "[project]/src/app/admin/dashboard/page.jsx",
-                                        lineNumber: 108,
+                                        lineNumber: 139,
                                         columnNumber: 13
                                     }, this)
                                 ]
                             }, void 0, true, {
                                 fileName: "[project]/src/app/admin/dashboard/page.jsx",
-                                lineNumber: 98,
+                                lineNumber: 129,
                                 columnNumber: 11
                             }, this)
                         ]
                     }, void 0, true, {
                         fileName: "[project]/src/app/admin/dashboard/page.jsx",
-                        lineNumber: 87,
+                        lineNumber: 118,
                         columnNumber: 9
                     }, this),
                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
                         className: "p-6 bg-white border border-gray-100 rounded-lg shadow-sm",
-                        children: /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
-                            className: "flex items-center justify-between mb-4",
-                            children: [
-                                /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("h2", {
-                                    className: "text-lg font-bold text-gray-800",
-                                    children: "인기 상품"
-                                }, void 0, false, {
-                                    fileName: "[project]/src/app/admin/dashboard/page.jsx",
-                                    lineNumber: 134,
-                                    columnNumber: 13
-                                }, this),
-                                /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("button", {
-                                    className: "text-sm text-[#9BCC47] hover:underline",
-                                    onClick: ()=>router.push('/admin/products'),
-                                    children: "모든 상품 보기"
-                                }, void 0, false, {
-                                    fileName: "[project]/src/app/admin/dashboard/page.jsx",
-                                    lineNumber: 135,
-                                    columnNumber: 13
-                                }, this)
-                            ]
-                        }, void 0, true, {
-                            fileName: "[project]/src/app/admin/dashboard/page.jsx",
-                            lineNumber: 133,
-                            columnNumber: 11
-                        }, this)
-                    }, void 0, false, {
+                        children: [
+                            /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
+                                className: "flex items-center justify-between mb-4",
+                                children: [
+                                    /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("h2", {
+                                        className: "text-lg font-bold text-gray-800",
+                                        children: "인기 상품"
+                                    }, void 0, false, {
+                                        fileName: "[project]/src/app/admin/dashboard/page.jsx",
+                                        lineNumber: 165,
+                                        columnNumber: 13
+                                    }, this),
+                                    /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("button", {
+                                        className: "text-sm text-[#9BCC47] hover:underline",
+                                        onClick: ()=>router.push('/admin/products'),
+                                        children: "모든 상품 보기"
+                                    }, void 0, false, {
+                                        fileName: "[project]/src/app/admin/dashboard/page.jsx",
+                                        lineNumber: 166,
+                                        columnNumber: 13
+                                    }, this)
+                                ]
+                            }, void 0, true, {
+                                fileName: "[project]/src/app/admin/dashboard/page.jsx",
+                                lineNumber: 164,
+                                columnNumber: 11
+                            }, this),
+                            /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("table", {
+                                className: "w-full",
+                                children: [
+                                    /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("thead", {
+                                        children: /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("tr", {
+                                            className: "text-xs text-gray-500 uppercase bg-gray-50",
+                                            children: [
+                                                /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("th", {
+                                                    className: "px-4 py-2 text-left",
+                                                    children: "순위"
+                                                }, void 0, false, {
+                                                    fileName: "[project]/src/app/admin/dashboard/page.jsx",
+                                                    lineNumber: 177,
+                                                    columnNumber: 15
+                                                }, this),
+                                                /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("th", {
+                                                    className: "px-4 py-2 text-left",
+                                                    children: "상품명"
+                                                }, void 0, false, {
+                                                    fileName: "[project]/src/app/admin/dashboard/page.jsx",
+                                                    lineNumber: 178,
+                                                    columnNumber: 15
+                                                }, this),
+                                                /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("th", {
+                                                    className: "px-4 py-2 text-left",
+                                                    children: "판매수"
+                                                }, void 0, false, {
+                                                    fileName: "[project]/src/app/admin/dashboard/page.jsx",
+                                                    lineNumber: 179,
+                                                    columnNumber: 15
+                                                }, this),
+                                                /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("th", {
+                                                    className: "px-4 py-2 text-left",
+                                                    children: "총 매출"
+                                                }, void 0, false, {
+                                                    fileName: "[project]/src/app/admin/dashboard/page.jsx",
+                                                    lineNumber: 180,
+                                                    columnNumber: 15
+                                                }, this)
+                                            ]
+                                        }, void 0, true, {
+                                            fileName: "[project]/src/app/admin/dashboard/page.jsx",
+                                            lineNumber: 176,
+                                            columnNumber: 13
+                                        }, this)
+                                    }, void 0, false, {
+                                        fileName: "[project]/src/app/admin/dashboard/page.jsx",
+                                        lineNumber: 175,
+                                        columnNumber: 13
+                                    }, this),
+                                    /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("tbody", {
+                                        className: "divide-y divide-gray-200",
+                                        children: topProducts.map((product, index)=>/*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("tr", {
+                                                children: [
+                                                    /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("td", {
+                                                        className: "px-4 py-2 text-sm font-medium text-gray-800",
+                                                        children: index + 1
+                                                    }, void 0, false, {
+                                                        fileName: "[project]/src/app/admin/dashboard/page.jsx",
+                                                        lineNumber: 186,
+                                                        columnNumber: 19
+                                                    }, this),
+                                                    /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("td", {
+                                                        className: "px-4 py-2 text-sm text-gray-700",
+                                                        children: product.name
+                                                    }, void 0, false, {
+                                                        fileName: "[project]/src/app/admin/dashboard/page.jsx",
+                                                        lineNumber: 187,
+                                                        columnNumber: 19
+                                                    }, this),
+                                                    /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("td", {
+                                                        className: "px-4 py-2 text-sm text-gray-700",
+                                                        children: product.sales
+                                                    }, void 0, false, {
+                                                        fileName: "[project]/src/app/admin/dashboard/page.jsx",
+                                                        lineNumber: 188,
+                                                        columnNumber: 19
+                                                    }, this),
+                                                    /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("td", {
+                                                        className: "px-4 py-2 text-sm text-gray-700",
+                                                        children: product.amount
+                                                    }, void 0, false, {
+                                                        fileName: "[project]/src/app/admin/dashboard/page.jsx",
+                                                        lineNumber: 189,
+                                                        columnNumber: 19
+                                                    }, this)
+                                                ]
+                                            }, product.id, true, {
+                                                fileName: "[project]/src/app/admin/dashboard/page.jsx",
+                                                lineNumber: 185,
+                                                columnNumber: 17
+                                            }, this))
+                                    }, void 0, false, {
+                                        fileName: "[project]/src/app/admin/dashboard/page.jsx",
+                                        lineNumber: 183,
+                                        columnNumber: 13
+                                    }, this)
+                                ]
+                            }, void 0, true, {
+                                fileName: "[project]/src/app/admin/dashboard/page.jsx",
+                                lineNumber: 174,
+                                columnNumber: 11
+                            }, this)
+                        ]
+                    }, void 0, true, {
                         fileName: "[project]/src/app/admin/dashboard/page.jsx",
-                        lineNumber: 132,
+                        lineNumber: 163,
                         columnNumber: 9
                     }, this)
                 ]
             }, void 0, true, {
                 fileName: "[project]/src/app/admin/dashboard/page.jsx",
-                lineNumber: 86,
+                lineNumber: 117,
                 columnNumber: 7
             }, this)
         ]
     }, void 0, true, {
         fileName: "[project]/src/app/admin/dashboard/page.jsx",
-        lineNumber: 66,
+        lineNumber: 97,
         columnNumber: 5
     }, this);
 }
 }}),
-"[project]/node_modules/lucide-react/dist/esm/icons/trending-up.js [app-ssr] (ecmascript)": ((__turbopack_context__) => {
-"use strict";
-
-var { g: global, __dirname } = __turbopack_context__;
-{
-/**
- * @license lucide-react v0.525.0 - ISC
- *
- * This source code is licensed under the ISC license.
- * See the LICENSE file in the root directory of this source tree.
- */ __turbopack_context__.s({
-    "__iconNode": (()=>__iconNode),
-    "default": (()=>TrendingUp)
-});
-var __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$lucide$2d$react$2f$dist$2f$esm$2f$createLucideIcon$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__ = __turbopack_context__.i("[project]/node_modules/lucide-react/dist/esm/createLucideIcon.js [app-ssr] (ecmascript)");
-;
-const __iconNode = [
-    [
-        "path",
-        {
-            d: "M16 7h6v6",
-            key: "box55l"
-        }
-    ],
-    [
-        "path",
-        {
-            d: "m22 7-8.5 8.5-5-5L2 17",
-            key: "1t1m79"
-        }
-    ]
-];
-const TrendingUp = (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$lucide$2d$react$2f$dist$2f$esm$2f$createLucideIcon$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["default"])("trending-up", __iconNode);
-;
- //# sourceMappingURL=trending-up.js.map
-}}),
-"[project]/node_modules/lucide-react/dist/esm/icons/trending-up.js [app-ssr] (ecmascript) <export default as TrendingUpIcon>": ((__turbopack_context__) => {
-"use strict";
-
-var { g: global, __dirname } = __turbopack_context__;
-{
-__turbopack_context__.s({
-    "TrendingUpIcon": (()=>__TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$lucide$2d$react$2f$dist$2f$esm$2f$icons$2f$trending$2d$up$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["default"])
-});
-var __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$lucide$2d$react$2f$dist$2f$esm$2f$icons$2f$trending$2d$up$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__ = __turbopack_context__.i("[project]/node_modules/lucide-react/dist/esm/icons/trending-up.js [app-ssr] (ecmascript)");
-}}),
 
 };
 
-//# sourceMappingURL=_a921265d._.js.map
+//# sourceMappingURL=%5Broot-of-the-server%5D__5b856066._.js.map
